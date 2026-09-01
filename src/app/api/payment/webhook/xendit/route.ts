@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server"
 import { createServiceSupabase } from "@/lib/supabase"
 
+export async function GET() {
+  return NextResponse.json({ status: "ok", endpoint: "/api/payment/webhook/xendit", message: "Xendit webhook ready — configure in Xendit dashboard to https://lkbbvoting.vercel.app/api/payment/webhook/xendit (or https://lkbb.vercel.app/api/payment/webhook/xendit)" })
+}
+
 // POST /api/webhook/xendit — verify signature, idempotency, create ledger only on PAID
 export async function POST(req: Request) {
   try {
