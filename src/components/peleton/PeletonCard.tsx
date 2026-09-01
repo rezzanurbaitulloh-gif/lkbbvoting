@@ -61,12 +61,12 @@ export function PeletonCard({ peleton }: { peleton: any; rank?: number }) {
           <Button size="sm" className="w-full rounded-full h-9 font-black tracking-wide">DUKUNG</Button>
         </Link>
 
-        <div className="mt-2 grid grid-cols-2 gap-2">
-          <Button variant="outline" size="sm" className="rounded-full h-8 text-xs font-bold gap-1.5" onClick={() => handleShare("profile")}>
-            <Share2 className="h-3.5 w-3.5" /> BAGIKAN PROFIL
+        <div className="mt-2 flex gap-2 justify-end">
+          <Button variant="outline" size="icon" className="rounded-full h-8 w-8" onClick={() => handleShare("profile")} aria-label="Bagikan Profil">
+            <Share2 className="h-3.5 w-3.5" />
           </Button>
-          <Button variant="outline" size="sm" className="rounded-full h-8 text-xs font-bold gap-1.5" onClick={() => handleShare("support")}>
-            <QrCode className="h-3.5 w-3.5" /> BAGIKAN DUKUNGAN
+          <Button variant="outline" size="icon" className="rounded-full h-8 w-8" onClick={() => handleShare("support")} aria-label="Bagikan Dukungan">
+            <QrCode className="h-3.5 w-3.5" />
           </Button>
         </div>
       </div>
