@@ -7,24 +7,26 @@ export default function AdminOverview(){
   const [stats, setStats] = useState<any>({})
   const [ranking, setRanking] = useState<any[]>([])
   const [recentTx, setRecentTx] = useState<any[]>([])
-  const [announcements, setAnn] = useState<any[]>([])
+  const [auditLogs, setAuditLogs] = useState<any[]>([])
   useEffect(()=>{
-    const supabase = createBrowserSupabase()
-    supabase.from("peletons").select("*", {count:"exact", head:true}).eq("active", true).then(({count})=> setStats((s:any)=> ({...s, totalTeams: count})))
-    supabase.from("peletons").select("*", {count:"exact", head:true}).eq("category", "SMP").eq("active", true).then(({count})=> setStats((s:any)=> ({...s, smp: count})))
-    supabase.from("peletons").select("*", {count:"exact", head:true}).eq("category", "SMA").eq("active", true).then(({count})=> setStats((s:any)=> ({...s, sma: count})))
-    supabase.from("transactions").select("*", {count:"exact", head:true}).then(({count})=> setStats((s:any)=> ({...s, transactions: count})))
-    supabase.from("profiles").select("*", {count:"exact", head:true}).then(({count})=> setStats((s:any)=> ({...s, totalUsers: count})))
-    supabase.from("supports").select("supports,source").then(({data})=>{
-      const total = (data||[]).reduce((a:any,b:any)=> a + (b.supports||0), 0)
-      const online = (data||[]).filter((x:any)=> x.source==="online").reduce((a:any,b:any)=> a + b.supports,0)
-      const offline = total - online
-      setStats((s:any)=> ({...s, total, online, offline}))
-    })
-    supabase.from("team_ranking").select("*").order("total_ballots", {ascending:false}).limit(5).then(({data})=> setRanking(data||[]))
-    supabase.from("transactions").select("*").order("created_at", {ascending:false}).limit(5).then(({data})=> setRecentTx(data||[]))
-    supabase.from("announcements").select("*").order("created_at", {ascending:false}).limit(3).then(({data})=> setAnn(data||[]))
-    supabase.from("competitions").select("*").order("created_at", {ascending:false}).limit(1).single().then(({data})=> setStats((s:any)=> ({...s, state: data?.state, event: data})))
+    fetch("/api/admin/stats").then(r=> r.json()).then(data=>{
+      if(data.error) return
+      setStats({
+        totalTeams: data.totalTeams,
+        smp: data.smp,
+        sma: data.sma,
+        totalUsers: data.totalUsers,
+        transactions: data.totalTransactions,
+        total: data.totalBallots,
+        online: data.onlineBallots,
+        offline: data.offlineBallots,
+        state: data.event?.state,
+        event: data.event,
+      })
+      setRanking(data.ranking || [])
+      setRecentTx(data.recentTransactions || [])
+      setAuditLogs(data.auditLogs || [])
+    }).catch(()=>{})
   },[])
   return (
     <div className="min-h-screen bg-[#0B0C0F] text-white p-4 md:p-6 space-y-4">
@@ -151,10 +153,15 @@ export default function AdminOverview(){
           </div>
           <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
             <h3 className="text-xs font-black tracking-wide">AKTIVITAS TERBARU</h3>
-            <div className="mt-3 space-y-2 text-xs">
-              <div className="flex gap-2"><span className="h-2 w-2 rounded-full bg-emerald-500 mt-1"/> <span className="text-white/70">Offline ballot ditambahkan — #01 500</span></div>
-              <div className="flex gap-2"><span className="h-2 w-2 rounded-full bg-[#C9A86A] mt-1"/> <span className="text-white/70">Transaksi baru — 100 ballot</span></div>
+            <div className="mt-3 space-y-2 text-xs max-h-[120px] overflow-y-auto">
+              {auditLogs.length===0 ? <div className="text-white/40">Belum ada aktivitas.</div> : auditLogs.slice(0,5).map((log:any)=> (
+                <div key={log.id} className="flex gap-2">
+                  <span className="h-2 w-2 rounded-full bg-[#C9A86A] mt-1 shrink-0"/> 
+                  <span className="text-white/70 truncate">{log.action} — {log.target?.slice(0,8) || "-"} <span className="text-white/40">{new Date(log.created_at).toLocaleDateString("id-ID")}</span></span>
+                </div>
+              ))}
             </div>
+            <a href="/admin/audit-log" className="mt-2 inline-flex text-[11px] font-bold text-[#C9A86A]">Lihat Audit Log →</a>
           </div>
         </div>
       </div>

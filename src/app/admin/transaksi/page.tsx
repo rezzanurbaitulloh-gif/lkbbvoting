@@ -1,10 +1,8 @@
 "use client"
 import { useEffect, useState } from "react"
-import Link from "next/link"
-import { createBrowserSupabase } from "@/lib/supabase"
 export default function Transaksi(){
   const [txs,setTxs]=useState<any[]>([])
-  useEffect(()=>{ const s=createBrowserSupabase(); s.from("transactions").select("*, peletons(name,number)").order("created_at",{ascending:false}).limit(50).then(({data})=> setTxs(data||[])) },[])
+  useEffect(()=>{ fetch("/api/transactions").then(r=> r.json()).then(data=> setTxs(Array.isArray(data)? data : [])).catch(()=>{}) },[])
   return (
     <div className="p-4 md:p-6 space-y-4">
       <div className="flex items-center justify-between"><h1 className="text-[18px] font-black">Transaksi</h1><div className="text-xs text-muted-foreground">{txs.length} transaksi dari DB (RLS: admin lihat semua, user lihat own)</div></div>

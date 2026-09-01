@@ -12,7 +12,9 @@ import { Heart, LogOut, Settings, Trophy, Clock } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 export default function ProfilePage(){
-  const { currentUser, logout, favorites, dukunganHistory } = useApp()
+  const { currentUser, logout, favorites } = useApp()
+  const [transactions,setTransactions]=useState<any[]>([])
+  useEffect(()=>{ if(currentUser) fetch("/api/transactions").then(r=>r.json()).then(d=> setTransactions(Array.isArray(d)? d : [])) },[currentUser])
   const router=useRouter()
   const [allPeletons,setAllPeletons]=useState<any[]>([])
   useEffect(()=>{ const s=createBrowserSupabase(); s.from("peletons").select("*").eq("verified", true).eq("active", true).then(({data})=> setAllPeletons(data||[])) },[])
@@ -59,7 +61,7 @@ export default function ProfilePage(){
 
               <div className="mt-6 grid md:grid-cols-3 gap-4">
                 <div className="rounded-xl bg-muted p-4 text-center">
-                  <div className="text-[24px] font-black tabular-nums">{dukunganHistory.length}</div>
+                  <div className="text-[24px] font-black tabular-nums">{transactions.length}</div>
                   <div className="text-xs text-muted-foreground">Transaksi Dukungan</div>
                 </div>
                 <div className="rounded-xl bg-muted p-4 text-center">
@@ -107,18 +109,18 @@ export default function ProfilePage(){
 
             <div className="rounded-[16px] border border-border bg-card p-5">
               <h3 className="text-sm font-black">Riwayat Dukungan Terbaru</h3>
-              {dukunganHistory.length===0 ? (
+              {transactions.length===0 ? (
                 <div className="mt-3 rounded-xl border border-dashed border-border p-6 text-center">
                   <p className="text-sm text-muted-foreground">Belum ada dukungan. Dukung peleton favoritmu sekarang!</p>
                   <Link href="/peleton"><Button size="sm" className="mt-2 rounded-full">Dukung</Button></Link>
                 </div>
               ) : (
                 <div className="mt-3 grid gap-2">
-                  {dukunganHistory.slice(0,5).map(tx=> (
+                  {transactions.slice(0,5).map((tx:any)=> (
                     <div key={tx.id} className="flex items-center justify-between rounded-xl border border-border p-3">
                       <div>
-                        <div className="text-sm font-bold">{tx.peletonName}</div>
-                        <div className="text-xs text-muted-foreground">{new Date(tx.date).toLocaleDateString("id-ID")} • {tx.supports} ballot • Rp{tx.amount.toLocaleString("id-ID")}</div>
+                        <div className="text-sm font-bold">{tx.peletons?.name || tx.peletonName}</div>
+                        <div className="text-xs text-muted-foreground">{new Date(tx.created_at || tx.date).toLocaleDateString("id-ID")} • {tx.supports} ballot • Rp{(tx.amount||0).toLocaleString("id-ID")}</div>
                       </div>
                       <Badge className="bg-emerald-500 text-white border-emerald-500">{tx.status}</Badge>
                     </div>

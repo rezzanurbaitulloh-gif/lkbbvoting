@@ -10,7 +10,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 export default function SubProfile(){
-  const { currentUser, favorites, dukunganHistory } = useApp()
+  const { currentUser, favorites } = useApp()
+  const [transactions,setTransactions]=useState<any[]>([])
+  useEffect(()=>{ if(currentUser) fetch("/api/transactions").then(r=>r.json()).then(d=> setTransactions(Array.isArray(d)? d : [])) },[currentUser])
   const [allPeletons,setAllPeletons]=useState<any[]>([])
   useEffect(()=>{ const s=createBrowserSupabase(); s.from("peletons").select("*").eq("verified", true).eq("active", true).then(({data})=> setAllPeletons(data||[])) },[])
   const path = typeof window !== 'undefined' ? window.location.pathname : ''
@@ -59,15 +61,15 @@ export default function SubProfile(){
 
           {isDuk && (
             <div className="mt-4 space-y-2">
-              {dukunganHistory.length===0 ? <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Belum ada transaksi.</div> :
-                dukunganHistory.map(tx=> (
+              {transactions.length===0 ? <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Belum ada transaksi. Transaksi dari DB akan muncul di sini dan di dashboard.</div> :
+                transactions.map((tx:any)=> (
                   <div key={tx.id} className="rounded-xl border border-border bg-card p-4 flex justify-between items-center">
                     <div>
-                      <div className="text-sm font-bold">{tx.peletonName}</div>
-                      <div className="text-xs text-muted-foreground">{new Date(tx.date).toLocaleString("id-ID")} • {tx.supports} ballot</div>
+                      <div className="text-sm font-bold">{tx.peletons?.name || tx.peletonName || tx.peleton_id}</div>
+                      <div className="text-xs text-muted-foreground">{new Date(tx.created_at || tx.date).toLocaleString("id-ID")} • {tx.supports} ballot</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm font-black">Rp{tx.amount.toLocaleString("id-ID")}</div>
+                      <div className="text-sm font-black">Rp{(tx.amount || 0).toLocaleString("id-ID")}</div>
                       <div className="text-xs font-bold text-emerald-600">{tx.status}</div>
                     </div>
                   </div>
