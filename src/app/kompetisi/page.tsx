@@ -1,0 +1,108 @@
+import { Navbar } from "@/components/layout/Navbar"
+import { Footer } from "@/components/layout/Footer"
+import { BottomNav } from "@/components/layout/BottomNav"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { Calendar, MapPin, Users, Award, Shield, FileText } from "lucide-react"
+
+export default function KompetisiPage(){
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-1 pb-[72px] md:pb-0">
+        <div className="border-b border-border bg-[#08090B] text-white relative overflow-hidden">
+          <div className="absolute inset-0 opacity-20"><img src="https://images.unsplash.com/photo-1599707367072-cd6ada2bc32d?w=1600&auto=format&fit=crop&q=60" alt="" className="h-full w-full object-cover" /></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08090B] via-[#08090B]/85 to-transparent" />
+          <div className="relative mx-auto max-w-[1280px] px-4 md:px-6 py-10">
+            <Badge className="bg-[#C9A86A] text-[#0C0A06] border-[#C9A86A]">TENTANG KOMPETISI</Badge>
+            <h1 className="mt-3 text-[30px] md:text-[44px] font-black tracking-[-0.03em] leading-none">LKBB JAVASOMA<br/><span className="text-[#C9A86A]">THE IMPRESSION</span></h1>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/60">Astra Dharma Hayuning Budaya — Kompetisi baris-berbaris paling prestisius se-Jawa Timur. Diselenggarakan oleh Paskibra SMKN 1 Kertosono.</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/peleton"><Button className="rounded-full">Lihat Peserta</Button></Link>
+              <Link href="/timeline"><Button variant="outline" className="rounded-full bg-white/10 border-white/15 text-white hover:bg-white/15">Lihat Timeline</Button></Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-8 space-y-8">
+          <section className="grid lg:grid-cols-3 gap-4">
+            {[
+              {icon: Calendar, title:"Pelaksanaan", desc:"24 Oktober 2026", sub:"SMKN 1 Kertosono, Nganjuk"},
+              {icon: Users, title:"Kategori", desc:"SMP & SMA / Sederajat", sub:"20 kuota per kategori • 16 anggota/peleton"},
+              {icon: Award, title:"Sistem Penilaian", desc:"PBB + Variasi + Formasi", sub:"Dewan juri kompeten & independen"},
+            ].map(item=> (
+              <div key={item.title} className="rounded-[16px] border border-border bg-card p-5">
+                <item.icon className="h-5 w-5 text-muted-foreground"/>
+                <div className="mt-2 text-sm font-black">{item.title}</div>
+                <div className="text-sm font-bold">{item.desc}</div>
+                <div className="text-xs text-muted-foreground">{item.sub}</div>
+              </div>
+            ))}
+          </section>
+
+          <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8">
+            <div className="space-y-6">
+              <div className="rounded-[16px] border border-border bg-card p-6">
+                <h2 className="text-[18px] font-black tracking-tight">Tentang Kompetisi</h2>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground text-pretty">LKBB Javasoma The Impression adalah ajang kompetisi ketangkasan baris-berbaris tingkat SMP/MTs & SMA/MA/SMK se-derajat se-Jawa Timur. Kompetisi ini menguji kedisiplinan, kekompakan, dan kreativitas setiap peleton dalam menampilkan gerakan PBB, variasi, dan formasi. Dengan tagline <b className="text-foreground">Astra Dharma Hayuning Budaya</b>, kompetisi ini tidak hanya menilai ketepatan gerakan, tetapi juga menghayati nilai budaya dan kebersamaan.</p>
+                <div className="mt-4 grid sm:grid-cols-2 gap-3 text-sm">
+                  <div className="rounded-xl bg-muted p-3"><div className="label-ceremonial">Penyelenggara</div><div className="font-bold">PASKIBRA SMKN 1 KERTOSONO</div><div className="text-xs text-muted-foreground">Satria Cengkara</div></div>
+                  <div className="rounded-xl bg-muted p-3"><div className="label-ceremonial">Lokasi</div><div className="font-bold">SMKN 1 KERTOSONO</div><div className="text-xs text-muted-foreground">Kertosono, Nganjuk, Jawa Timur</div></div>
+                </div>
+              </div>
+
+              <div className="rounded-[16px] border border-border bg-card p-6">
+                <h3 className="text-sm font-black">Persyaratan Peserta</h3>
+                <ul className="mt-3 grid gap-2 text-sm leading-relaxed text-muted-foreground list-disc list-inside">
+                  <li>Siswa aktif SMP/MTs atau SMA/MA/SMK sederajat se-Jawa Timur</li>
+                  <li>Satu peleton terdiri dari 16 anggota termasuk Danton & Danru</li>
+                  <li>Membawa surat tugas/rekomendasi dari sekolah</li>
+                  <li>Melengkapi administrasi pendaftaran dan verifikasi</li>
+                  <li>Mentaati peraturan kompetisi dan keputusan juri</li>
+                </ul>
+              </div>
+
+              <div className="rounded-[16px] border border-border bg-card p-6">
+                <h3 className="text-sm font-black">Format Kompetisi</h3>
+                <div className="mt-3 grid sm:grid-cols-3 gap-3">
+                  {[
+                    ["PBB Dasar","Gerakan dasar baris-berbaris presisi"],
+                    ["Variasi","Kreativitas gerakan & yel-yel"],
+                    ["Formasi","Keindahan transisi & kekompakan"],
+                  ].map(([t,d])=> (
+                    <div key={t} className="rounded-xl border border-border p-4 text-center">
+                      <div className="text-xs font-black tracking-wide">{t}</div>
+                      <div className="mt-1 text-xs text-muted-foreground">{d}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="rounded-[16px] border border-border overflow-hidden bg-card">
+                <img src="/assets/poster/lkbb-poster.jpg" alt="Poster LKBB" className="w-full object-cover" />
+                <div className="p-4">
+                  <div className="text-sm font-black">Poster Resmi LKBB 2026</div>
+                  <div className="text-xs text-muted-foreground">Pendaftaran Agustus s.d. kuota terpenuhi • IDR 550.000/pasukan</div>
+                </div>
+              </div>
+              <div className="rounded-[16px] border border-border bg-card p-5">
+                <h4 className="text-sm font-black">Kontak Pendaftaran</h4>
+                <div className="mt-3 grid gap-2 text-sm">
+                  <div className="flex justify-between"><span className="text-muted-foreground">SMP/MTs</span><span className="font-mono font-bold">0815-7820-2646</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">SMA/SMK/MA</span><span className="font-mono font-bold">0878-6688-2594</span></div>
+                  <div className="hairline my-2" />
+                  <div className="flex justify-between"><span className="text-muted-foreground">Biaya</span><span className="font-bold">Rp550.000 / pasukan</span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+      <Footer />
+      <BottomNav />
+    </div>
+  )
+}
