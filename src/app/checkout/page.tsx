@@ -26,18 +26,31 @@ function CheckoutInner(){
     }
   },[slug, id])
 
-  // Poll transaction status every 3s when pending
+  // Poll transaction status every 3s when pending — via Xendit-aware API (handles webhook delay)
   useEffect(()=>{
     if(!id || !trx || trx.status === "Success") return
     const interval = setInterval(async ()=>{
-      const supabase = createBrowserSupabase()
-      const { data } = await supabase.from("transactions").select("status").eq("id", id).single()
-      if(data && data.status !== trx.status){
-        setTrx((prev:any)=> ({...prev, status: data.status}))
-        if(data.status === "Success"){
-          clearInterval(interval)
+      try {
+        const res = await fetch(`/api/payment/status/${id}`)
+        if(res.ok){
+          const data = await res.json()
+          const newStatus = data.status || data.transaction?.status
+          if(newStatus && newStatus !== trx.status){
+            setTrx((prev:any)=> ({...prev, status: newStatus}))
+            if(newStatus === "Success" || newStatus === "PAID"){
+              clearInterval(interval)
+            }
+          }
+        } else {
+          // fallback to direct DB
+          const supabase = createBrowserSupabase()
+          const { data } = await supabase.from("transactions").select("status").eq("id", id).single()
+          if(data && data.status !== trx.status){
+            setTrx((prev:any)=> ({...prev, status: data.status}))
+            if(data.status === "Success") clearInterval(interval)
+          }
         }
-      }
+      } catch {}
     }, 3000)
     return ()=> clearInterval(interval)
   },[id, trx])
@@ -45,11 +58,34 @@ function CheckoutInner(){
   const handleCheckStatus = async ()=>{
     if(!id) return
     setPolling(true)
-    const supabase = createBrowserSupabase()
-    const { data } = await supabase.from("transactions").select("*").eq("id", id).single()
-    if(data) setTrx(data)
+    try {
+      const res = await fetch(`/api/payment/status/${id}`)
+      if(res.ok){
+        const data = await res.json()
+        // API returns {status, transaction}
+        if(data.transaction) setTrx(data.transaction)
+        else if(data.status) setTrx((prev:any)=> ({...prev, status: data.status}))
+        else {
+          const supabase = createBrowserSupabase()
+          const { data } = await supabase.from("transactions").select("*").eq("id", id).single()
+          if(data) setTrx(data)
+        }
+      } else {
+        const supabase = createBrowserSupabase()
+        const { data } = await supabase.from("transactions").select("*").eq("id", id).single()
+        if(data) setTrx(data)
+      }
+    } catch {}
     setPolling(false)
   }
+
+  // If Xendit redirects with ?status=success but DB still Pending, auto-check Xendit
+  useEffect(()=>{
+    const qsStatus = sp.get("status")
+    if(qsStatus === "success" && trx && trx.status !== "Success"){
+      handleCheckStatus()
+    }
+  },[trx?.id])
 
   if(!peleton) return <div className="mx-auto max-w-[560px] px-4 py-12 text-center text-sm text-muted-foreground">Memuat peleton...</div>
   const p: any = peleton
