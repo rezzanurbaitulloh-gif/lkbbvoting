@@ -5,7 +5,12 @@ import { createServiceSupabase } from "@/lib/supabase"
 export async function POST(req: Request) {
   try {
     const payload = await req.json()
-    const { provider_ref, status, amount } = payload // Xendit sends provider_ref and status
+    // Xendit Invoice webhook sends: id, external_id, status, amount, payment_method, etc.
+    // Our mock sends: provider_ref, status, amount
+    const provider_ref = payload.provider_ref || payload.id || payload.external_id
+    const external_id = payload.external_id
+    const status = payload.status
+    const amount = payload.amount
 
     // 1. Verify webhook token (Xendit sends X-CALLBACK-TOKEN header)
     const token = req.headers.get("x-callback-token") || req.headers.get("X-CALLBACK-TOKEN")
@@ -13,12 +18,25 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid webhook token" }, { status: 401 })
     }
 
-    if (!provider_ref) return NextResponse.json({ error: "Missing provider_ref" }, { status: 400 })
+    if (!provider_ref && !external_id) return NextResponse.json({ error: "Missing provider_ref / external_id" }, { status: 400 })
 
     const service = createServiceSupabase()
 
-    // 2. Find transaction by provider_ref
-    const { data: trx } = await service.from("transactions").select("*").eq("provider_ref", provider_ref).single()
+    // 2. Find transaction by provider_ref or external_id (lkbb-<trx.id>)
+    let trx: any = null
+    if (external_id && external_id.startsWith("lkbb-")) {
+      const trxId = external_id.replace("lkbb-", "")
+      const { data } = await service.from("transactions").select("*").eq("id", trxId).single()
+      trx = data
+    }
+    if (!trx && provider_ref) {
+      const { data } = await service.from("transactions").select("*").eq("provider_ref", provider_ref).single()
+      trx = data
+    }
+    if (!trx && external_id) {
+      const { data } = await service.from("transactions").select("*").eq("provider_ref", external_id).single()
+      trx = data
+    }
     if (!trx) return NextResponse.json({ error: "Transaction not found" }, { status: 404 })
 
     // 3. Idempotency: if already Success, do not create ledger again

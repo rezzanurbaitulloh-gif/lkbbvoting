@@ -11,26 +11,58 @@ import { CheckCircle2, Clock3, XCircle, Timer } from "lucide-react"
 
 function CheckoutInner(){
   const sp = useSearchParams()
-  const status = sp.get("status") || "pending"
-  const id = sp.get("id") || "TRX-00000000"
+  const id = sp.get("id") || ""
   const slug = sp.get("peleton")
-  const qty = sp.get("qty") || "50"
-  const total = sp.get("total") || "150000"
   const [peleton,setPeleton]=useState<any>(null)
+  const [trx,setTrx]=useState<any>(null)
+  const [polling,setPolling]=useState(false)
   useEffect(()=>{
     const supabase = createBrowserSupabase()
     if(slug) supabase.from("peletons").select("*").eq("slug", slug).single().then(({data})=> setPeleton(data))
     else supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("display_order").limit(1).single().then(({data})=> setPeleton(data))
-  },[slug])
+    if(id) {
+      // Fetch transaction from DB (via service? Use anon but RLS will filter to own)
+      supabase.from("transactions").select("*").eq("id", id).single().then(({data})=> setTrx(data))
+    }
+  },[slug, id])
+
+  // Poll transaction status every 3s when pending
+  useEffect(()=>{
+    if(!id || !trx || trx.status === "Success") return
+    const interval = setInterval(async ()=>{
+      const supabase = createBrowserSupabase()
+      const { data } = await supabase.from("transactions").select("status").eq("id", id).single()
+      if(data && data.status !== trx.status){
+        setTrx((prev:any)=> ({...prev, status: data.status}))
+        if(data.status === "Success"){
+          clearInterval(interval)
+        }
+      }
+    }, 3000)
+    return ()=> clearInterval(interval)
+  },[id, trx])
+
+  const handleCheckStatus = async ()=>{
+    if(!id) return
+    setPolling(true)
+    const supabase = createBrowserSupabase()
+    const { data } = await supabase.from("transactions").select("*").eq("id", id).single()
+    if(data) setTrx(data)
+    setPolling(false)
+  }
+
   if(!peleton) return <div className="mx-auto max-w-[560px] px-4 py-12 text-center text-sm text-muted-foreground">Memuat peleton...</div>
   const p: any = peleton
+  const status = (trx?.status?.toLowerCase() === "success" ? "success" : trx?.status?.toLowerCase() === "failed" ? "failed" : trx?.status?.toLowerCase() === "expired" ? "expired" : "pending") as string
+  const qty = trx ? String(trx.supports) : (sp.get("qty") || "50")
+  const total = trx ? String(trx.amount) : (sp.get("total") || "150000")
 
   const config = {
-    success: { title:"DUKUNGAN BERHASIL", desc:`Terima kasih telah memberikan dukungan kepada ${p.name}`, icon: CheckCircle2, color:"bg-emerald-500", bg:"bg-emerald-500/10 border-emerald-500/20" },
-    pending: { title:"PEMBAYARAN MENUNGGU", desc:"Selesaikan pembayaran sebelum waktu habis", icon: Clock3, color:"bg-amber-500", bg:"bg-amber-500/10 border-amber-500/20" },
+    success: { title:"DUKUNGAN BERHASIL", desc:`Terima kasih telah memberikan dukungan kepada ${p.name} — ballot akan masuk setelah webhook Xendit terverifikasi`, icon: CheckCircle2, color:"bg-emerald-500", bg:"bg-emerald-500/10 border-emerald-500/20" },
+    pending: { title:"PEMBAYARAN MENUNGGU", desc:"Selesaikan pembayaran QRIS via Xendit. Ballot hanya bertambah setelah pembayaran terverifikasi webhook.", icon: Clock3, color:"bg-amber-500", bg:"bg-amber-500/10 border-amber-500/20" },
     failed: { title:"PEMBAYARAN TIDAK BERHASIL", desc:"Pembayaran gagal. Silakan coba lagi.", icon: XCircle, color:"bg-red-500", bg:"bg-red-500/10 border-red-500/20" },
     expired: { title:"TRANSAKSI KEDALUWARSA", desc:"Waktu pembayaran telah habis", icon: Timer, color:"bg-zinc-500", bg:"bg-zinc-500/10 border-zinc-500/20" },
-  }[status as string] || { title:"PEMBAYARAN MENUNGGU", desc:"Menunggu", icon: Clock3, color:"bg-amber-500", bg:"bg-amber-500/10 border-amber-500/20" }
+  }[status as string] || { title:"PEMBAYARAN MENUNGGU", desc:"Menunggu verifikasi Xendit", icon: Clock3, color:"bg-amber-500", bg:"bg-amber-500/10 border-amber-500/20" }
 
   const Icon = config.icon
 
@@ -62,24 +94,30 @@ function CheckoutInner(){
 
         {status==="pending" && (
           <div className="mt-4 rounded-2xl border border-border bg-card p-4">
-            <div className="text-xs font-bold tracking-widest">BAYAR SEBELUM</div>
-            <div className="tabular-nums text-[24px] font-black text-amber-600">14:59</div>
-            <div className="mx-auto mt-3 h-40 w-40 rounded-xl border border-border bg-white grid place-items-center">
-              <div className="text-[10px] leading-tight text-center text-muted-foreground">QRIS<br/>Scan untuk membayar<br/><span className="font-mono text-xs">● ● ● ●</span></div>
+            <div className="text-xs font-bold tracking-widest">BAYAR VIA XENDIT QRIS</div>
+            <div className="tabular-nums text-[24px] font-black text-amber-600">Menunggu</div>
+            <div className="mx-auto mt-3 h-40 w-40 rounded-xl border border-border bg-white grid place-items-center p-2">
+              <div className="text-[11px] leading-tight text-center text-muted-foreground">
+                QRIS Xendit<br/><span className="font-bold text-foreground">Scan di halaman Xendit</span><br/>
+                <span className="text-[10px]">Invoice akan terbuka otomatis<br/>atau klik tombol di bawah</span>
+              </div>
             </div>
-            <p className="mt-2 text-xs text-muted-foreground">Gunakan aplikasi e-wallet atau mobile banking untuk scan QRIS</p>
+            <p className="mt-2 text-xs text-muted-foreground">Ballot <b>tidak</b> langsung bertambah. Menunggu webhook Xendit <b>PAID</b> terverifikasi.</p>
+            <p className="mt-1 text-[11px] text-muted-foreground">Jika sudah bayar di Xendit, klik Cek Status. Polling otomatis tiap 3 detik.</p>
           </div>
         )}
 
         <div className="mt-6 grid gap-2">
           {status==="success" ? (
             <>
+              <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-3 text-xs text-emerald-700">Pembayaran terverifikasi via Xendit webhook. Ballot masuk ke ledger.</div>
               <Link href="/profile/dukungan"><Button className="w-full rounded-full h-11">Lihat Transaksi</Button></Link>
               <Link href="/"><Button variant="outline" className="w-full rounded-full">Kembali ke Beranda</Button></Link>
             </>
           ) : status==="pending" ? (
             <>
-              <Button className="w-full rounded-full h-11" onClick={()=>window.location.href=`/checkout?status=success&id=${id}&peleton=${slug}&qty=${qty}&total=${total}`}>Saya Sudah Bayar</Button>
+              <Button className="w-full rounded-full h-11" onClick={handleCheckStatus} disabled={polling}>{polling ? "Memeriksa..." : "Cek Status Pembayaran"}</Button>
+              <p className="text-center text-[11px] text-muted-foreground">Jangan klik Saya Sudah Bayar palsu — status hanya dari Xendit.</p>
               <Link href="/peleton"><Button variant="outline" className="w-full rounded-full">Batal</Button></Link>
             </>
           ) : (

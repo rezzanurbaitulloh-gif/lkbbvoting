@@ -9,10 +9,12 @@ import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { Minus, Plus, ShieldCheck, ArrowRight } from "lucide-react"
 import { createBrowserSupabase } from "@/lib/supabase"
+import { useApp } from "@/lib/store"
 
 function DukunganInner(){
   const sp = useSearchParams()
   const router = useRouter()
+  const { currentUser } = useApp()
   const slug = sp.get("peleton")
   const [peleton, setPeleton] = useState<any>(null)
   const [event, setEvent] = useState<any>(null)
@@ -38,6 +40,10 @@ function DukunganInner(){
   const isClosed = event?.state === "VOTING_CLOSED" || event?.state === "COMPLETED" || event?.state === "RESULT_PUBLISHED"
 
   const handlePay = async ()=>{
+    if(!currentUser){
+      router.push(`/login?redirect=${encodeURIComponent(`/dukungan?peleton=${peleton.slug}`)}`)
+      return
+    }
     if(isClosed){
       setError("DUKUNGAN TELAH DITUTUP — server menolak transaksi")
       return
@@ -52,13 +58,21 @@ function DukunganInner(){
       })
       const data = await res.json()
       if(!res.ok){
+        if(res.status===401){
+          router.push(`/login?redirect=${encodeURIComponent(`/dukungan?peleton=${peleton.slug}`)}`)
+          return
+        }
         setError(data.error || "Gagal membuat transaksi")
         setLoading(false)
         return
       }
       // Do NOT add ballot here — only after webhook PAID
-      // Redirect to pending checkout, which will poll webhook
-      router.push(data.paymentUrl)
+      // Redirect to checkout with transaction id — will show real Xendit QRIS
+      if(data.paymentUrl && data.paymentUrl.startsWith("http")){
+        window.location.href = data.paymentUrl
+      } else {
+        router.push(data.paymentUrl)
+      }
     } catch(e:any){
       setError(e.message)
       setLoading(false)
