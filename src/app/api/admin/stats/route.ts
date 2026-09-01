@@ -28,7 +28,7 @@ export async function GET() {
   const auth = await requireAdmin()
   if (!auth.ok) return NextResponse.json({ error: auth.status === 401 ? "Unauthorized" : "Forbidden" }, { status: auth.status })
   const service = createServiceSupabase()
-  const [peletons, peletonsSMP, peletonsSMA, users, transactions, supports, ranking, recentTx, competitions, auditLogs] = await Promise.all([
+  const [peletons, peletonsSMP, peletonsSMA, users, transactions, supports, ranking, recentTx, competitions, auditLogs, chartSupports] = await Promise.all([
     service.from("peletons").select("*", { count: "exact", head: true }).eq("active", true),
     service.from("peletons").select("*", { count: "exact", head: true }).eq("category", "SMP").eq("active", true),
     service.from("peletons").select("*", { count: "exact", head: true }).eq("category", "SMA").eq("active", true),
@@ -39,11 +39,34 @@ export async function GET() {
     service.from("transactions").select("*, peletons(name,number)").order("created_at", { ascending: false }).limit(5),
     service.from("competitions").select("*").order("created_at", { ascending: false }).limit(1).single(),
     service.from("audit_logs").select("*").order("created_at", { ascending: false }).limit(5),
+    service.from("supports").select("supports,source,created_at").order("created_at", { ascending: true }),
   ])
 
   const total = (supports.data || []).reduce((a: any, b: any) => a + (b.supports || 0), 0)
   const online = (supports.data || []).filter((x: any) => x.source === "online").reduce((a: any, b: any) => a + b.supports, 0)
   const offline = total - online
+
+  // Build chart data for last 5 days (online vs offline)
+  const chartMap = new Map<string, { date: string; label: string; online: number; offline: number }>()
+  const now = new Date()
+  for (let i = 4; i >= 0; i--) {
+    const d = new Date(now)
+    d.setDate(now.getDate() - i)
+    const key = d.toISOString().slice(0, 10) // YYYY-MM-DD
+    const label = d.toLocaleDateString("id-ID", { day: "2-digit", month: "short" }) // e.g. 20 Okt
+    chartMap.set(key, { date: key, label, online: 0, offline: 0 })
+  }
+  for (const row of (chartSupports.data || []) as any[]) {
+    const key = new Date(row.created_at).toISOString().slice(0, 10)
+    if (chartMap.has(key)) {
+      const entry = chartMap.get(key)!
+      if (row.source === "online") entry.online += row.supports || 0
+      else if (row.source === "offline") entry.offline += row.supports || 0
+      else entry.online += row.supports || 0
+    }
+  }
+  const chartData = Array.from(chartMap.values())
+  const maxVal = Math.max(1, ...chartData.map(c => Math.max(c.online, c.offline)))
 
   return NextResponse.json({
     totalTeams: peletons.count ?? 0,
@@ -58,5 +81,7 @@ export async function GET() {
     recentTransactions: recentTx.data || [],
     event: competitions.data || null,
     auditLogs: auditLogs.data || [],
+    chartData,
+    chartMax: maxVal,
   })
 }

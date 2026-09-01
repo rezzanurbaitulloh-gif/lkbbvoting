@@ -1,7 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { createBrowserSupabase } from "@/lib/supabase"
 
 export default function AdminOverview(){
   const [stats, setStats] = useState<any>({})
@@ -22,6 +21,8 @@ export default function AdminOverview(){
         offline: data.offlineBallots,
         state: data.event?.state,
         event: data.event,
+        chartData: data.chartData || [],
+        chartMax: data.chartMax || 1,
       })
       setRanking(data.ranking || [])
       setRecentTx(data.recentTransactions || [])
@@ -91,20 +92,28 @@ export default function AdminOverview(){
         <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
           <h3 className="text-xs font-black tracking-wide">GRAFIK DUKUNGAN</h3>
           <div className="mt-3 h-[120px] flex items-end gap-1">
-            {[60,80,45,90,70].map((h,i)=> (
-              <div key={i} className="flex-1 flex flex-col gap-1">
-                <div className="flex-1 flex flex-col justify-end gap-1">
-                  <div className="rounded-t bg-[#C9A86A]" style={{height: `${h}%`}} />
-                  <div className="rounded-t bg-white/10" style={{height: `${h*0.6}%`}} />
+            {(stats.chartData || []).map((c:any)=> {
+              const max = stats.chartMax || 1
+              const onlineH = max ? (c.online / max) * 100 : 0
+              const offlineH = max ? (c.offline / max) * 100 : 0
+              const hasData = c.online > 0 || c.offline > 0
+              return (
+                <div key={c.date} className="flex-1 flex flex-col gap-1">
+                  <div className="flex-1 flex flex-col justify-end gap-1">
+                    <div className="rounded-t bg-[#C9A86A] transition-all" style={{height: hasData ? `${Math.max(4, onlineH)}%` : "4%"}} title={`Online: ${c.online}`} />
+                    <div className="rounded-t bg-white/10 transition-all" style={{height: hasData ? `${Math.max(2, offlineH)}%` : "2%"}} title={`Offline: ${c.offline}`} />
+                  </div>
+                  <div className="text-[9px] text-center text-white/30 truncate">{c.label}</div>
                 </div>
-                <div className="text-[9px] text-center text-white/30">0{i+1} Okt</div>
-              </div>
-            ))}
+              )
+            })}
+            {(!stats.chartData || stats.chartData.length===0) && <div className="flex-1 grid place-items-center text-[11px] text-white/30">Memuat grafik...</div>}
           </div>
           <div className="mt-2 flex gap-3 text-[10px] text-white/40">
             <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[#C9A86A]"/> Online</span>
             <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-white/20"/> Offline</span>
           </div>
+          <div className="mt-1 text-[10px] text-white/30">* 5 hari terakhir — data real dari supports ledger</div>
         </div>
         <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
           <h3 className="text-xs font-black tracking-wide">STATUS EVENT</h3>
