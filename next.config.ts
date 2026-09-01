@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.supabase.co" },
     ],
   },
+  async redirects() {
+    return [
+      { source: "/peleton", destination: "/tim", permanent: false },
+      { source: "/peleton/:slug*", destination: "/tim/:slug*", permanent: false },
+      { source: "/klasemen", destination: "/tim", permanent: false },
+      { source: "/klasemen/:path*", destination: "/tim/:path*", permanent: false },
+      { source: "/dukungan", destination: "/tim", permanent: false },
+    ]
+  },
   async headers() {
     return [
       {

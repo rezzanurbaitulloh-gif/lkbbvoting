@@ -51,6 +51,17 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
                 supports: trx.supports,
                 source: "online",
               })
+              // Dual notifications for realtime
+              const { data: peletonN } = await service.from("peletons").select("id, slug, name, school, category, number").eq("id", trx.peleton_id).single()
+              const { data: profileN } = await service.from("profiles").select("public_name, email").eq("id", trx.user_id).single()
+              const supporterNameN = profileN?.public_name || profileN?.email?.split("@")[0] || "Seseorang"
+              const peletonNameN = peletonN?.name || peletonN?.school || "peleton"
+              try {
+                await service.from("notifications").insert([
+                  { user_id: null, title: "Dukungan Baru!", body: `Selamat!! ${supporterNameN} telah mendukung ${peletonNameN}`, peleton_id: trx.peleton_id, peleton_name: peletonNameN, peleton_slug: peletonN?.slug||"", supporter_name: supporterNameN, data: { is_private:false, is_public:true, peleton_category: peletonN?.category, peleton_number: peletonN?.number } },
+                  { user_id: trx.user_id, title: "Dukungan Berhasil!", body: `Selamat!! Kamu telah mendukung ${peletonNameN} — ${trx.supports} ballot`, peleton_id: trx.peleton_id, peleton_name: peletonNameN, peleton_slug: peletonN?.slug||"", supporter_name: supporterNameN, data: { is_private:true, ballot_quantity: trx.supports, peleton_category: peletonN?.category, peleton_number: peletonN?.number } },
+                ])
+              } catch {}
               await service.from("audit_logs").insert({
                 action: "transaction_paid_via_status_check",
                 target: trx.id,

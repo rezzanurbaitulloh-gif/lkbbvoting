@@ -33,8 +33,7 @@ export function Footer(){
             <div className="label-ceremonial mb-3">Navigasi</div>
             <ul className="grid gap-2 text-sm">
               <li><Link href="/" className="hover:text-foreground text-muted-foreground">Beranda</Link></li>
-              <li><Link href="/peleton" className="hover:text-foreground text-muted-foreground">Peleton</Link></li>
-              <li><Link href="/klasemen" className="hover:text-foreground text-muted-foreground">Klasemen</Link></li>
+              <li><Link href="/tim" className="hover:text-foreground text-muted-foreground">Tim</Link></li>
               <li><Link href="/kompetisi" className="hover:text-foreground text-muted-foreground">Kompetisi</Link></li>
               <li><Link href="/galeri" className="hover:text-foreground text-muted-foreground">Galeri</Link></li>
             </ul>

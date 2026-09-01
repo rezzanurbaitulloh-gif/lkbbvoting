@@ -24,11 +24,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Quantity must be 1-1000" }, { status: 400 })
     }
 
-    // 1. Check event state server-side
+    // 1. Check event state server-side — ATURAN UTAMA #4: hanya VOTING_OPEN || ACTIVE yang boleh transaksi
     const { data: event } = await supabase.from("competitions").select("state, settings").order("created_at", { ascending: false }).limit(1).single()
     if (!event) return NextResponse.json({ error: "Event not configured" }, { status: 500 })
-    if (event.state === "VOTING_CLOSED" || event.state === "COMPLETED" || event.state === "RESULT_PUBLISHED") {
-      return NextResponse.json({ error: "DUKUNGAN TELAH DITUTUP" }, { status: 403 })
+    const isOnlineActive = event.state === "VOTING_OPEN" || (event.state as string) === "ACTIVE"
+    if (!isOnlineActive) {
+      return NextResponse.json({ error: "TRANSAKSI DITUTUP — voting nonaktif. Transaksi baru dihentikan total." }, { status: 403 })
     }
 
     // 2. Validate peleton
@@ -154,7 +155,7 @@ export async function GET(req: Request) {
     if (!isAdmin && data.user_id !== user.id) return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     return NextResponse.json(data)
   }
-  let query = supabase.from("transactions").select("*").order("created_at", { ascending: false }).limit(50)
+  let query = supabase.from("transactions").select("*, peletons(name,number)").order("created_at", { ascending: false }).limit(50)
   if (peletonId) query = query.eq("peleton_id", peletonId)
   if (!isAdmin) query = query.eq("user_id", user.id)
   const { data, error } = await query

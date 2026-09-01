@@ -37,15 +37,16 @@ function DukunganInner(){
   const onlinePrice = event?.settings?.online_price ?? 3000
   const total = qty * onlinePrice
   const presets = event?.settings?.ballot_presets || [10,50,100,300]
-  const isClosed = event?.state === "VOTING_CLOSED" || event?.state === "COMPLETED" || event?.state === "RESULT_PUBLISHED"
+  const isOnlineActive = event?.state === "VOTING_OPEN" || (event?.state as string) === "ACTIVE"
+  const isClosed = event ? !isOnlineActive : false
 
   const handlePay = async ()=>{
-    if(!currentUser){
-      router.push(`/login?redirect=${encodeURIComponent(`/dukungan?peleton=${peleton.slug}`)}`)
+    if(isClosed){
+      setError("TRANSAKSI DITUTUP — voting nonaktif. Transaksi baru dihentikan total.")
       return
     }
-    if(isClosed){
-      setError("DUKUNGAN TELAH DITUTUP — server menolak transaksi")
+    if(!currentUser){
+      router.push(`/login?redirect=${encodeURIComponent(`/dukungan?peleton=${peleton.slug}`)}`)
       return
     }
     setLoading(true)
@@ -97,20 +98,22 @@ function DukunganInner(){
           </div>
           <div className="px-5 pb-5">
             <div className="rounded-xl bg-muted p-3 text-xs leading-relaxed text-muted-foreground">
-              Dukungan untuk <b className="text-foreground">{peleton.name}</b> akan tercatat sebagai ballot resmi <b>hanya setelah pembayaran terverifikasi</b>. {isClosed && <span className="text-red-600 font-bold">Event telah ditutup — server akan menolak transaksi baru.</span>}
+              Dukungan untuk <b className="text-foreground">{peleton.name}</b> akan tercatat sebagai ballot resmi <b>hanya setelah pembayaran terverifikasi</b>. {isClosed && <span className="text-red-600 font-bold">Transaksi baru dihentikan — voting nonaktif. Riwayat transaksi lama tetap diproses.</span>}
             </div>
+            {isClosed && <div className="mt-3 rounded-xl bg-red-500/10 border border-red-500/20 p-2.5 text-xs font-bold text-red-600">TRANSAKSI DITUTUP — voting nonaktif. Fitur transaksi dinonaktifkan total (UI + backend 403).</div>}
           </div>
         </div>
 
         <div className="rounded-[16px] border border-border bg-card p-5">
           <h3 className="text-sm font-black">Pilih Paket Dukungan</h3>
           <p className="text-xs text-muted-foreground">Harga resmi (dari DB): Rp{onlinePrice.toLocaleString("id-ID")} / ballot (online)</p>
-          <div className="mt-4 grid grid-cols-2 gap-3">
+          {isClosed && <p className="mt-2 text-xs font-bold text-red-600">Pilih Paket dinonaktifkan — transaksi dihentikan.</p>}
+          <div className={`mt-4 grid grid-cols-2 gap-3 ${isClosed ? "opacity-50 pointer-events-none" : ""}`}>
             {presets.map((n:number)=> {
               const price = n * onlinePrice
               const isPop = n===50
               return (
-                <button key={n} onClick={()=>setQty(n)} className={`relative rounded-xl border p-4 text-left transition-colors ${qty===n ? "border-[#C9A86A] bg-[#C9A86A0A]" : "border-border bg-card hover:border-border-strong"}`}>
+                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border p-4 text-left transition-colors ${qty===n ? "border-[#C9A86A] bg-[#C9A86A0A]" : "border-border bg-card hover:border-border-strong"} ${isClosed ? "cursor-not-allowed" : ""}`}>
                   {isPop && <span className="absolute -top-2 right-3 rounded-full bg-gold px-2 py-0.5 text-[10px] font-black text-gold-foreground">POPULER</span>}
                   <div className="text-xs font-bold tracking-widest text-muted-foreground">{n} Dukungan</div>
                   <div className="mt-1 text-[18px] font-black tabular-nums">Rp{price.toLocaleString("id-ID")}</div>
@@ -121,10 +124,10 @@ function DukunganInner(){
           </div>
           <div className="mt-5">
             <div className="label-ceremonial">Atur Jumlah Ballot</div>
-            <div className="mt-2 flex items-center gap-3">
-              <button onClick={()=>setQty(q=>Math.max(1,q-1))} className="h-11 w-11 rounded-full border border-border grid place-items-center hover:bg-muted"><Minus className="h-4 w-4"/></button>
+            <div className={`mt-2 flex items-center gap-3 ${isClosed ? "opacity-50 pointer-events-none" : ""}`}>
+              <button disabled={isClosed} onClick={()=>setQty(q=>Math.max(1,q-1))} className="h-11 w-11 rounded-full border border-border grid place-items-center hover:bg-muted disabled:cursor-not-allowed"><Minus className="h-4 w-4"/></button>
               <div className="flex-1 rounded-full border border-border bg-muted h-11 grid place-items-center font-black tabular-nums">{qty}</div>
-              <button onClick={()=>setQty(q=>q+1)} className="h-11 w-11 rounded-full border border-border grid place-items-center hover:bg-muted"><Plus className="h-4 w-4"/></button>
+              <button disabled={isClosed} onClick={()=>setQty(q=>q+1)} className="h-11 w-11 rounded-full border border-border grid place-items-center hover:bg-muted disabled:cursor-not-allowed"><Plus className="h-4 w-4"/></button>
             </div>
           </div>
         </div>
@@ -140,9 +143,10 @@ function DukunganInner(){
             <div className="hairline my-3" />
             <div className="flex justify-between text-[16px]"><span className="font-bold">Total</span><span className="font-black tabular-nums">Rp{total.toLocaleString("id-ID")}</span></div>
           </div>
-          {error && <div className="mt-3 rounded-xl bg-red-500/10 border border-red-500/20 p-2.5 text-xs text-red-600">{error}</div>}
-          <Button onClick={handlePay} disabled={loading || isClosed} className="mt-5 w-full rounded-full h-[46px] gap-2">{loading ? "Memproses..." : isClosed ? "DUKUNGAN DITUTUP" : "Lanjutkan ke Pembayaran"} <ArrowRight className="h-4 w-4"/></Button>
-          <p className="mt-2 text-center text-xs text-muted-foreground">Server akan menghitung harga dan memverifikasi event state. Klik Bayar tidak langsung menambah ballot.</p>
+           {error && <div className="mt-3 rounded-xl bg-red-500/10 border border-red-500/20 p-2.5 text-xs text-red-600">{error}</div>}
+           <Button onClick={handlePay} disabled={loading || isClosed} className={`mt-5 w-full rounded-full h-[46px] gap-2 ${isClosed ? "opacity-50 cursor-not-allowed" : ""}`} title={isClosed ? "Transaksi dihentikan — voting nonaktif" : ""}>{loading ? "Memproses..." : isClosed ? "DUKUNGAN DITUTUP" : "Lanjutkan ke Pembayaran"} <ArrowRight className="h-4 w-4"/></Button>
+           {isClosed && <p className="mt-2 text-center text-xs font-bold text-red-600">Transaksi baru dihentikan — voting nonaktif. Riwayat transaksi lama tetap diproses.</p>}
+           {!isClosed && <p className="mt-2 text-center text-xs text-muted-foreground">Server akan menghitung harga dan memverifikasi event state. Klik Bayar tidak langsung menambah ballot.</p>}
           <div className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground"><ShieldCheck className="h-4 w-4"/> Pembayaran aman — webhook terverifikasi</div>
         </div>
       </div>

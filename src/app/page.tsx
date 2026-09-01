@@ -12,7 +12,7 @@ export default async function HomePage(){
   const supabase = await createServerSupabase()
   // Fetch event
   const { data: event } = await supabase.from("competitions").select("*").order("created_at", { ascending: false }).limit(1).single()
-  // Fetch peletons ordered by display_order (homepage)
+  // Fetch peletons ordered by display_order (homepage) — selalu display_order, bahkan saat nonaktif (Beranda tidak pernah ranking)
   const { data: peletons } = await supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("display_order", { ascending: true })
   // Fetch sponsors for story
   const { data: sponsors } = await supabase.from("sponsors").select("*").eq("active", true).order("display_order", { ascending: true })
@@ -20,13 +20,16 @@ export default async function HomePage(){
   // Fallback to hardcoded if DB empty (for build)
   const ev = event || null
   const teams = peletons || []
+  const isOnlineActive = ev?.state === "VOTING_OPEN" || (ev?.state as string) === "ACTIVE"
+  const showSementara = !isOnlineActive && ev?.show_provisional_result && !ev?.show_final_result
+  const showFinal = !isOnlineActive && ev?.show_final_result
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <Hero event={ev} />
-        <Featured peletons={teams} />
+        <Featured peletons={teams} showSementara={showSementara} showFinal={showFinal} />
         <Story sponsors={sponsors} event={ev} />
       </main>
       <Footer />

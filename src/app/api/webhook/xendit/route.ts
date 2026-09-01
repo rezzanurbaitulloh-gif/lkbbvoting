@@ -65,10 +65,17 @@ export async function POST(req: Request) {
         source: "online",
       })
 
-      // Optionally: update peletons.support_count via trigger or manually
-      // For now, rely on view team_ranking which aggregates supports, not support_count
-      // But we can also increment materialized count for backwards compat
-      // await service.rpc("increment_support", { peleton_id: trx.peleton_id, qty: trx.supports })
+      // Dual notifications (same as /api/payment/webhook/xendit)
+      const { data: peletonW } = await service.from("peletons").select("id, slug, name, school, category, number").eq("id", trx.peleton_id).single()
+      const { data: profileW } = await service.from("profiles").select("public_name, email").eq("id", trx.user_id).single()
+      const supporterW = profileW?.public_name || profileW?.email?.split("@")[0] || "Seseorang"
+      const peletonNameW = peletonW?.name || peletonW?.school || "peleton"
+      try {
+        await service.from("notifications").insert([
+          { user_id: null, title: "Dukungan Baru!", body: `Selamat!! ${supporterW} telah mendukung ${peletonNameW}`, peleton_id: trx.peleton_id, peleton_name: peletonNameW, peleton_slug: peletonW?.slug||"", supporter_name: supporterW, data: { is_private:false, is_public:true, peleton_category: peletonW?.category, peleton_number: peletonW?.number } },
+          { user_id: trx.user_id, title: "Dukungan Berhasil!", body: `Selamat!! Kamu telah mendukung ${peletonNameW} — ${trx.supports} ballot`, peleton_id: trx.peleton_id, peleton_name: peletonNameW, peleton_slug: peletonW?.slug||"", supporter_name: supporterW, data: { is_private:true, ballot_quantity: trx.supports, peleton_category: peletonW?.category, peleton_number: peletonW?.number } },
+        ])
+      } catch {}
 
       // Audit log
       await service.from("audit_logs").insert({
@@ -76,9 +83,6 @@ export async function POST(req: Request) {
         target: trx.id,
         details: { provider_ref, amount, peleton_id: trx.peleton_id, supports: trx.supports },
       })
-
-      // Realtime: Supabase Realtime will automatically broadcast if enabled on supports/transactions
-      // Public notification: "[USER] telah mendukung [TEAM]" — without quantity, handled via Realtime channel
 
       return NextResponse.json({ ok: true, shouldRecordSupport: true })
     }

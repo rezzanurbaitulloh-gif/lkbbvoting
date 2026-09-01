@@ -6,14 +6,15 @@ import { useState, useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "./ThemeToggle"
+import { SoundControl } from "./SoundControl"
 import { useApp } from "@/lib/store"
 
+// 4 MENU UTAMA sesuai ATURAN UTAMA: [Beranda, Tim, Kompetisi, Profile]
 const nav = [
   { href: "/", label: "Beranda" },
-  { href: "/peleton", label: "Peleton" },
-  { href: "/klasemen", label: "Klasemen" },
+  { href: "/tim", label: "Tim" },
   { href: "/kompetisi", label: "Kompetisi" },
-  { href: "/galeri", label: "Galeri" },
+  { href: "/profile", label: "Profile" },
 ]
 
 export function Navbar() {
@@ -47,7 +48,7 @@ export function Navbar() {
           </div>
         </Link>
 
-        {/* Desktop nav */}
+        {/* Desktop nav - 4 items */}
         <nav className="hidden lg:flex items-center gap-1">
           {nav.map(item=> {
             const active = pathname===item.href || (item.href!=="/" && pathname.startsWith(item.href))
@@ -64,6 +65,7 @@ export function Navbar() {
           <Link href="/search" className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:bg-muted transition-colors">
             <Search className="h-4 w-4 text-muted-foreground" />
           </Link>
+          <SoundControl />
           <ThemeToggle />
           {currentUser ? (
             <div className="hidden md:flex relative" ref={profileRef}>
@@ -118,7 +120,7 @@ export function Navbar() {
               </Button>
             </Link>
           )}
-          <Link href="/peleton" className="hidden md:inline-flex">
+          <Link href="/tim" className="hidden md:inline-flex">
             <Button size="sm" className="rounded-full px-5">Dukung</Button>
           </Link>
           <button onClick={()=>setOpen(!open)} className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-border">
@@ -156,7 +158,7 @@ export function Navbar() {
             ) : (
               <div className="grid grid-cols-2 gap-2">
                 <Link href="/login" onClick={()=>setOpen(false)}><Button variant="outline" className="w-full rounded-full">Masuk</Button></Link>
-                <Link href="/peleton" onClick={()=>setOpen(false)}><Button className="w-full rounded-full">Dukung Sekarang</Button></Link>
+                <Link href="/tim" onClick={()=>setOpen(false)}><Button className="w-full rounded-full">Dukung Sekarang</Button></Link>
               </div>
             )}
             <div className="flex gap-4 pt-2 text-xs text-muted-foreground">

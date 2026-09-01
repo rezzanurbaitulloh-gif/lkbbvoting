@@ -27,14 +27,15 @@ export default function Settings(){
         <div><label className="text-xs font-bold">Subtitle</label><Input defaultValue={event.subtitle} id="subtitle" /></div>
         <div><label className="text-xs font-bold">Tagline</label><Input defaultValue={event.tagline} id="tagline" /></div>
         <div><label className="text-xs font-bold">State</label><select defaultValue={event.state} id="state" className="w-full h-10 rounded-xl border border-input px-3 text-sm bg-transparent">
-          {["NOT_STARTED","REGISTRATION","VERIFICATION","VOTING_OPEN","VOTING_CLOSED","RESULT_VERIFICATION","RESULT_PUBLISHED","COMPLETED"].map(s=> <option key={s} value={s}>{s}</option>)}
+          {["NOT_STARTED","REGISTRATION","VERIFICATION","VOTING_OPEN","ACTIVE","VOTING_CLOSED","RESULT_VERIFICATION","RESULT_PUBLISHED","COMPLETED"].map(s=> <option key={s} value={s}>{s}</option>)}
         </select></div>
+        <div className="text-xs text-muted-foreground">Online aktif hanya VOTING_OPEN || ACTIVE — selain itu transaksi baru 403 total.</div>
         <Button disabled={saving} className="rounded-full" onClick={()=>{
           const name=(document.getElementById("name") as HTMLInputElement).value
           const subtitle=(document.getElementById("subtitle") as HTMLInputElement).value
           const state=(document.getElementById("state") as HTMLSelectElement).value
-          handleSave("name", name)
-        }}>Simpan Kompetisi</Button>
+          handleSave("state", state)
+        }}>Simpan State</Button>
       </div>
       <div className="rounded-[16px] border border-border bg-card p-5 space-y-3">
         <h3 className="text-sm font-black">Voting & Harga (dari settings JSONB)</h3>
@@ -57,7 +58,27 @@ export default function Settings(){
           if(res.ok) alert("Disimpan")
         }}>Simpan WhatsApp</Button>
       </div>
-      <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs">Semua perubahan tercatat di audit_logs via server API. Tidak ada hardcode pricing.</div>
+      <div className="rounded-[16px] border border-border bg-card p-5 space-y-3">
+        <h3 className="text-sm font-black">Hasil — Provisional & Final (Badge)</h3>
+        <div className="flex items-center gap-3">
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" defaultChecked={event.show_provisional_result} id="prov" /> Tampilkan HASIL SEMENTARA (kuning)</label>
+        </div>
+        <div className="flex items-center gap-3">
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" defaultChecked={event.show_final_result} id="final" /> Tampilkan HASIL FINAL (emas)</label>
+        </div>
+        <p className="text-xs text-muted-foreground">Hanya tampil saat voting nonaktif (!VOTING_OPEN && !ACTIVE) — di Beranda + Tim. Provisional & final saling eksklusif (jika final aktif, provisional disembunyikan walau true).</p>
+        <div className="flex gap-2">
+          <Button className="rounded-full" onClick={async ()=>{
+            const prov=(document.getElementById("prov") as HTMLInputElement).checked
+            const fin=(document.getElementById("final") as HTMLInputElement).checked
+            let r=await fetch("/api/admin/competitions",{ method:"PATCH", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ id: event.id, field:"show_provisional_result", value: prov }) })
+            if(r.ok) r=await fetch("/api/admin/competitions",{ method:"PATCH", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ id: event.id, field:"show_final_result", value: fin }) })
+            if(r.ok) alert("Disimpan — badge akan muncul di Beranda & Tim saat nonaktif")
+            else alert("Gagal")
+          }}>Simpan Hasil</Button>
+        </div>
+      </div>
+      <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs">Semua perubahan tercatat di audit_logs via server API. Tidak ada hardcode pricing. Transaksi nonaktif di-403 server-side.</div>
     </div>
   )
 }

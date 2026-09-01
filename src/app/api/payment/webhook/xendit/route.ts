@@ -69,10 +69,47 @@ export async function POST(req: Request) {
         source: "online",
       })
 
-      // Optionally: update peletons.support_count via trigger or manually
-      // For now, rely on view team_ranking which aggregates supports, not support_count
-      // But we can also increment materialized count for backwards compat
-      // await service.rpc("increment_support", { peleton_id: trx.peleton_id, qty: trx.supports })
+      // Fetch peleton + supporter name for notifications
+      const { data: peleton } = await service.from("peletons").select("id, slug, name, school, category, number").eq("id", trx.peleton_id).single()
+      const { data: profile } = await service.from("profiles").select("public_name, email").eq("id", trx.user_id).single()
+      const supporterName = profile?.public_name || profile?.email?.split("@")[0] || "Seseorang"
+      const peletonName = peleton?.name || peleton?.school || "peleton"
+      const peletonSlug = peleton?.slug || ""
+      const peletonCategory = peleton?.category || ""
+
+      // Dual notification system:
+      // 1. Public notification (user_id = null) — for ALL users realtime, WITHOUT ballot count, no amount
+      // 2. Private notification (user_id = trx.user_id) — for supporter only, WITH ballot_quantity
+      const publicTitle = "Dukungan Baru!"
+      const publicBody = `Selamat!! ${supporterName} telah mendukung ${peletonName}`
+      const privateTitle = "Dukungan Berhasil!"
+      const privateBody = `Selamat!! Kamu telah mendukung ${peletonName} — ${trx.supports} ballot`
+      try {
+        await service.from("notifications").insert([
+          {
+            user_id: null,
+            title: publicTitle,
+            body: publicBody,
+            peleton_id: trx.peleton_id,
+            peleton_name: peletonName,
+            peleton_slug: peletonSlug,
+            supporter_name: supporterName,
+            data: { is_private: false, is_public: true, peleton_category: peletonCategory, peleton_number: peleton?.number },
+          },
+          {
+            user_id: trx.user_id,
+            title: privateTitle,
+            body: privateBody,
+            peleton_id: trx.peleton_id,
+            peleton_name: peletonName,
+            peleton_slug: peletonSlug,
+            supporter_name: supporterName,
+            data: { is_private: true, ballot_quantity: trx.supports, peleton_category: peletonCategory, peleton_number: peleton?.number },
+          },
+        ])
+      } catch (notifErr) {
+        console.error("notifications insert failed", notifErr)
+      }
 
       // Audit log
       await service.from("audit_logs").insert({
@@ -80,9 +117,6 @@ export async function POST(req: Request) {
         target: trx.id,
         details: { provider_ref, amount, peleton_id: trx.peleton_id, supports: trx.supports },
       })
-
-      // Realtime: Supabase Realtime will automatically broadcast if enabled on supports/transactions
-      // Public notification: "[USER] telah mendukung [TEAM]" — without quantity, handled via Realtime channel
 
       return NextResponse.json({ ok: true, shouldRecordSupport: true })
     }
