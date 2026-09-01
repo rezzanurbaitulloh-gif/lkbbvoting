@@ -28,7 +28,7 @@ export default async function TimelinePage(){
             {timelineStages.map(s=> (
               <div key={s.id} className={`rounded-2xl border p-4 text-center ${s.status==="current" ? "border-[#C9A86A] bg-[#C9A86A0A]" : s.status==="completed" ? "border-emerald-500/20 bg-emerald-500/5" : "border-dashed bg-card"}`}>
                 <div className={`mx-auto h-10 w-10 rounded-full grid place-items-center text-sm font-black border ${s.status==="completed" ? "bg-emerald-500 text-white border-emerald-500" : s.status==="current" ? "bg-gold text-gold-foreground border-gold" : "bg-muted text-muted-foreground border-border"}`}>
-                  {s.status==="completed" ? <Check className="h-5 w-5"/> : s.id}
+                  {s.status==="completed" ? <Check className="h-5 w-5"/> : s.sort_order}
                 </div>
                 <div className="mt-3 text-xs font-black leading-tight">{s.title}</div>
                 <div className="text-[11px] text-muted-foreground">{s.date}</div>
@@ -41,7 +41,7 @@ export default async function TimelinePage(){
             {timelineStages.map(s=> (
               <div key={s.id} className={`flex gap-3 rounded-2xl border p-4 ${s.status==="current" ? "border-[#C9A86A] bg-[#C9A86A0A]" : "border-border bg-card"}`}>
                 <div className={`h-9 w-9 rounded-full grid place-items-center text-xs font-black shrink-0 ${s.status==="completed" ? "bg-emerald-500 text-white" : s.status==="current" ? "bg-gold text-gold-foreground" : "bg-muted text-muted-foreground"}`}>
-                  {s.status==="completed" ? <Check className="h-4 w-4"/> : s.id}
+                  {s.status==="completed" ? <Check className="h-4 w-4"/> : s.sort_order}
                 </div>
                 <div>
                   <div className="text-sm font-black">{s.title}</div>
