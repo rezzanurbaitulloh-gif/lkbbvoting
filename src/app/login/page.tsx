@@ -8,20 +8,21 @@ import { BottomNav } from "@/components/layout/BottomNav"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useApp } from "@/lib/store"
+import { Eye, EyeOff } from "lucide-react"
 
 export default function LoginPage(){
-  const [email,setEmail]=useState("")
+  const [name,setName]=useState("")
   const [password,setPassword]=useState("")
+  const [showPass,setShowPass]=useState(false)
   const [err,setErr]=useState("")
   const [loading,setLoading]=useState(false)
   const { login } = useApp()
   const router = useRouter()
   const onSubmit= async (e:React.FormEvent)=>{
     e.preventDefault()
-    if(!email || !password){ setErr("Email dan password wajib diisi"); return }
-    if(!email.includes("@")){ setErr("Format email tidak valid"); return }
+    if(!name || !password){ setErr("Nama dan password wajib diisi"); return }
     setErr(""); setLoading(true)
-    const res = await login(email, password)
+    const res = await login(name, password)
     setLoading(false)
     if(res.error){ setErr(res.error); return }
     router.push("/profile")
@@ -38,8 +39,16 @@ export default function LoginPage(){
             <p className="text-sm text-muted-foreground">Lanjutkan perjalanan dukunganmu</p>
           </div>
           <form onSubmit={onSubmit} className="mt-6 grid gap-3">
-            <div><label className="text-xs font-bold">Email</label><Input value={email} onChange={e=>setEmail(e.target.value)} placeholder="nama@email.id" type="email" /></div>
-            <div><label className="text-xs font-bold">Password</label><Input value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" type="password" /></div>
+            <div><label className="text-xs font-bold">Nama</label><Input value={name} onChange={e=>setName(e.target.value)} placeholder="Nama akun kamu (unik)" autoComplete="username" /></div>
+            <div>
+              <label className="text-xs font-bold">Password</label>
+              <div className="relative">
+                <Input value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" type={showPass ? "text" : "password"} className="pr-10" autoComplete="current-password" />
+                <button type="button" onClick={()=> setShowPass(!showPass)} className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 grid place-items-center rounded-full hover:bg-muted text-muted-foreground">
+                  {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
             {err && <div className="rounded-xl bg-red-500/10 border border-red-500/20 p-2.5 text-xs text-red-600">{err}</div>}
             <Button type="submit" disabled={loading} className="rounded-full h-11 w-full">{loading?"Memproses…":"Masuk"}</Button>
             <div className="flex justify-between text-xs">
@@ -48,10 +57,10 @@ export default function LoginPage(){
             </div>
           </form>
           <div className="hairline my-6" />
-          <div className="text-center text-xs text-muted-foreground">Admin: sc2026@gmail.com / Saceng1! — User baru dapat daftar via Register.</div>
+          <div className="text-center text-xs text-muted-foreground">Admin: SACENGMIN / Saceng1! — User baru daftar dengan Nama unik + Password.</div>
           <div className="mt-3 grid grid-cols-2 gap-2">
-            <Button variant="outline" className="rounded-full" type="button" onClick={()=>{setEmail("sc2026@gmail.com"); setPassword("Saceng1!")}}>Isi Admin</Button>
-            <Button variant="outline" className="rounded-full" type="button" onClick={()=>{setEmail("demo@lkbb.id"); setPassword("demo123")}}>Isi Demo</Button>
+            <Button variant="outline" className="rounded-full" type="button" onClick={()=>{setName("SACENGMIN"); setPassword("Saceng1!")}}>Isi Admin</Button>
+            <Button variant="outline" className="rounded-full" type="button" onClick={()=>{setName("demo"); setPassword("demo123")}}>Isi Demo</Button>
           </div>
         </div>
       </main>
