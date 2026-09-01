@@ -1,37 +1,23 @@
+"use client"
+import { useEffect, useState } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 export default function Page(){
+  const [list,setList]=useState<any[]>([])
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("peletons").select("id,name,image_url,number").eq("active", true).order("display_order").then(({data})=> setList(data||[])) },[])
   return (
     <div className="p-4 md:p-6 space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-[18px] font-black">Galeri</h1>
-          <p className="text-sm text-muted-foreground">Kelola foto kompetisi</p>
-        </div>
-        <Button size="sm" className="rounded-full">Tambah Baru</Button>
-      </div>
+      <div className="flex items-center justify-between"><div><h1 className="text-[18px] font-black">Galeri</h1><p className="text-sm text-muted-foreground">Galeri peleton — foto tim (DB) • {list.length} peleton</p></div><Button size="sm" className="rounded-full">Upload</Button></div>
       <div className="rounded-[16px] border border-border bg-card p-4">
-        <div className="flex gap-2 text-xs mb-3">
-          <span className="rounded-full bg-foreground text-background px-3 py-1">Semua</span>
-          <span className="rounded-full border border-border bg-card px-3 py-1">Published</span>
-          <span className="rounded-full border border-border bg-card px-3 py-1">Draft</span>
-        </div>
-        <div className="grid gap-2">
-          {[1,2,3].map(i=> (
-            <div key={i} className="flex items-center justify-between rounded-xl border border-border p-3">
-              <div>
-                <div className="text-sm font-bold">Contoh Galeri #{i}</div>
-                <div className="text-xs text-muted-foreground">Update 2 jam lalu • Status: Published</div>
-              </div>
-              <div className="flex gap-1.5">
-                <Button variant="outline" size="sm" className="rounded-full h-7 text-xs">Edit</Button>
-                <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600">Hapus</Button>
-              </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {list.map((p:any)=> (
+            <div key={p.id} className="rounded-xl overflow-hidden border border-border">
+              <img src={p.image_url} alt={p.name} className="aspect-[4/3] w-full object-cover"/>
+              <div className="p-2"><div className="text-xs font-bold truncate">#{p.number} {p.name}</div></div>
             </div>
           ))}
         </div>
-      </div>
-      <div className="rounded-xl border border-dashed border-border bg-muted/20 p-4 text-center text-xs text-muted-foreground">
-        CRUD untuk Galeri — Create, Edit, Publish, Unpublish, Delete, Reorder. Data terhubung ke backend via service abstraction.
+        {list.length===0 && <div className="p-8 text-center text-sm text-muted-foreground">Belum ada galeri.</div>}
       </div>
     </div>
   )

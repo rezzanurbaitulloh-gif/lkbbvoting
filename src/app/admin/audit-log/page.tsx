@@ -1,11 +1,9 @@
+"use client"
+import { useEffect, useState } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 export default function AuditLog(){
-  const logs=[
-    {time:"2026-08-30 14:32", user:"Admin", action:"Verifikasi Peleton", target:"SMKN 1 KERTOSONO", detail:"Disetujui"},
-    {time:"2026-08-30 13:11", user:"Admin", action:"Publish Pengumuman", target:"Voting Dibuka", detail:"Published"},
-    {time:"2026-08-29 19:45", user:"Finance", action:"Review Transaksi", target:"TRX-39278", detail:"Failed - timeout"},
-    {time:"2026-08-29 18:20", user:"Super Admin", action:"Ubah Role", target:"budi@lkbb.id", detail:"USER → PARTICIPANT"},
-    {time:"2026-08-28 09:12", user:"Admin", action:"Ubah Status Kompetisi", target:"Event", detail:"PRE_EVENT → VOTING_ACTIVE"},
-  ]
+  const [logs,setLogs]=useState<any[]>([])
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("audit_logs").select("*").order("created_at",{ascending:false}).limit(50).then(({data})=> setLogs(data||[])) },[])
   return (
     <div className="p-4 md:p-6 space-y-4">
       <h1 className="text-[18px] font-black">Audit Log</h1>
@@ -14,9 +12,10 @@ export default function AuditLog(){
           <div className="grid grid-cols-[160px_140px_160px_160px_1fr] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-border bg-muted/30">
             <div>WAKTU</div><div>USER</div><div>AKSI</div><div>TARGET</div><div>DETAIL</div>
           </div>
-          {logs.map((l,i)=> (
-            <div key={i} className="grid grid-cols-[160px_140px_160px_160px_1fr] gap-2 px-4 py-3 text-xs border-b border-border/50">
-              <div className="font-mono">{l.time}</div><div className="font-bold">{l.user}</div><div>{l.action}</div><div className="truncate">{l.target}</div><div className="text-muted-foreground">{l.detail}</div>
+          {logs.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada audit log. Aksi sensitif akan tercatat di sini.</div> :
+            logs.map((l:any,i:number)=> (
+            <div key={l.id || i} className="grid grid-cols-[160px_140px_160px_160px_1fr] gap-2 px-4 py-3 text-xs border-b border-border/50">
+              <div className="font-mono">{new Date(l.created_at).toLocaleString("id-ID")}</div><div className="font-bold">{l.user_id?.slice(0,8) || "System"}</div><div>{l.action}</div><div className="truncate">{l.target}</div><div className="text-muted-foreground">{JSON.stringify(l.details||l.details)}</div>
             </div>
           ))}
         </div>

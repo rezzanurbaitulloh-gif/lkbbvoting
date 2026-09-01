@@ -4,7 +4,7 @@ import { createServerSupabase } from "@/lib/supabase"
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const category = searchParams.get("category")
-  const supabase = createServerSupabase()
+  const supabase = await createServerSupabase()
   let query = supabase.from("team_ranking").select("*").order("total_ballots", { ascending: false })
   if (category) query = query.eq("category", category)
   const { data, error } = await query

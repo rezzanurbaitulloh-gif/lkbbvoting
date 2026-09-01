@@ -1,12 +1,12 @@
 "use client"
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { PeletonCard } from "@/components/peleton/PeletonCard"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { peletons } from "@/lib/data"
+import { createBrowserSupabase } from "@/lib/supabase"
 import { Search } from "lucide-react"
 
 const filters = ["Semua","SMP","SMA"]
@@ -20,16 +20,30 @@ export default function PeletonPage(){
   const [q,setQ]=useState("")
   const [filter,setFilter]=useState("Semua")
   const [sort,setSort]=useState("populer")
+  const [peletons, setPeletons]=useState<any[]>([])
+  const [loading,setLoading]=useState(true)
+
+  useEffect(()=>{
+    const supabase = createBrowserSupabase()
+    supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("display_order").then(({data})=>{
+      setPeletons(data||[])
+      setLoading(false)
+    })
+  },[])
 
   const list = useMemo(()=>{
-    let l=[...peletons].filter(p=>p.verified)
-    if(q) l=l.filter(p=> p.name.toLowerCase().includes(q.toLowerCase()) || p.school.toLowerCase().includes(q.toLowerCase()) || p.city.toLowerCase().includes(q.toLowerCase()))
+    let l=[...peletons]
+    if(q) l=l.filter(p=> `${p.name} ${p.school} ${p.city}`.toLowerCase().includes(q.toLowerCase()))
     if(filter!=="Semua") l=l.filter(p=>p.category===filter)
-    if(sort==="populer") l.sort((a,b)=>b.support-a.support)
+    if(sort==="populer") {
+      // populer should be ranking based, but for directory we show display_order by default unless API ranking available.
+      // We keep display_order for now; ranking order via /api/peletons?orderBy=ranking could be used.
+      l.sort((a,b)=>a.display_order-b.display_order)
+    }
     if(sort==="az") l.sort((a,b)=>a.name.localeCompare(b.name))
-    if(sort==="terbaru") l.sort((a,b)=> new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    if(sort==="terbaru") l.sort((a,b)=> new Date(b.created_at || b.createdAt).getTime() - new Date(a.created_at || a.createdAt).getTime())
     return l
-  },[q,filter,sort])
+  },[q,filter,sort,peletons])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -75,7 +89,11 @@ export default function PeletonPage(){
 
         {/* Grid */}
         <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-6">
-          {list.length===0 ? (
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+              {[1,2,3,4,5,6].map(i=> <div key={i} className="h-[320px] rounded-[16px] border border-border bg-muted animate-pulse" />)}
+            </div>
+          ) : list.length===0 ? (
             <div className="py-16 text-center">
               <div className="mx-auto max-w-sm rounded-2xl border border-dashed border-border p-8">
                 <div className="text-sm font-bold">Tidak ada peleton ditemukan</div>

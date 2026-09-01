@@ -1,19 +1,24 @@
-import { notFound } from "next/navigation"
-import { peletons } from "@/lib/data"
+"use client"
+import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { createBrowserSupabase } from "@/lib/supabase"
 
-export function generateStaticParams(){ return peletons.map(p=> ({id: p.id})) }
-export default async function Detail({ params }: { params: Promise<{id:string}>}){
-  const {id}=await params
-  const p=peletons.find(x=>x.id===id)
-  if(!p) return notFound()
+export default function Detail(){
+  const params = useParams() as { id: string }
+  const id = params.id
+  const [p,setP]=useState<any>(null)
+  const [loading,setLoading]=useState(true)
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("peletons").select("*").eq("id", id).single().then(({data})=> { setP(data); setLoading(false) }) },[id])
+  if(loading) return <div className="p-8 text-center text-sm">Memuat...</div>
+  if(!p) return <div className="p-8 text-center"><Link href="/admin/peleton" className="text-xs font-semibold">← Kembali</Link><div className="mt-4 text-sm font-bold">Peleton tidak ditemukan</div></div>
   return (
     <div className="p-4 md:p-6 space-y-4">
       <Link href="/admin/peleton" className="text-xs font-semibold">← Kembali</Link>
       <h1 className="text-[18px] font-black">{p.name} — Admin View</h1>
       <div className="grid lg:grid-cols-[320px_1fr] gap-4">
-        <img src={p.image} alt="" className="w-full rounded-xl border object-cover aspect-[4/3]" />
+        <img src={p.image_url || p.image} alt="" className="w-full rounded-xl border object-cover aspect-[4/3]" />
         <div className="rounded-[16px] border border-border bg-card p-5 space-y-3">
           <div className="grid gap-2 text-sm">
             <div className="flex justify-between"><span className="text-muted-foreground">Sekolah</span><span className="font-bold">{p.school}</span></div>

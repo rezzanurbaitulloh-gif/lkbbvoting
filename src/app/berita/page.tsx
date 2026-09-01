@@ -1,10 +1,14 @@
+"use client"
 import Link from "next/link"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
-import { news } from "@/lib/data"
+import { useEffect, useState } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 
 export default function BeritaPage(){
+  const [news,setNews]=useState<any[]>([])
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("news").select("*").eq("published", true).order("created_at",{ascending:false}).then(({data})=> setNews(data||[])) },[])
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -19,7 +23,7 @@ export default function BeritaPage(){
           {news.map(n=> (
             <Link key={n.id} href={`/berita/${n.slug}`} className="group rounded-[16px] border border-border bg-card overflow-hidden hover:shadow-soft transition-shadow">
               <div className="aspect-[16/9] overflow-hidden bg-muted">
-                <img src={n.image} alt={n.title} className="h-full w-full object-cover group-hover:scale-[1.04] transition-transform duration-500" />
+                <img src={n.image_url || n.image} alt={n.title} className="h-full w-full object-cover group-hover:scale-[1.04] transition-transform duration-500" />
               </div>
               <div className="p-4">
                 <div className="flex items-center gap-2 text-xs">

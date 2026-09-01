@@ -14,24 +14,23 @@ export default function OfflineRecap(){
 
   useEffect(()=>{
     supabase.from("peletons").select("id, number, name, category").eq("active", true).order("display_order").then(({data})=> setTeams(data||[]))
-    supabase.from("supports").select("*, peletons(number, name)").eq("source", "offline").order("created_at", {ascending:false}).limit(10).then(({data})=> setRecent(data||[]))
+    fetch("/api/admin/offline-recap").then(r=> r.json()).then(d=> { if(Array.isArray(d)) setRecent(d) }).catch(()=>{})
   },[])
 
   const handleAdd = async ()=>{
     if(!selected || !qty) return
-    const { error } = await supabase.from("supports").insert({
-      peleton_id: selected,
-      transaction_id: crypto.randomUUID(),
-      amount: qty * 5000,
-      supports: qty,
-      source: "offline",
-      note
+    const res = await fetch("/api/admin/offline-recap", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ peleton_id: selected, supports: qty, note })
     })
-    if(error) alert(error.message)
+    const data = await res.json()
+    if(!res.ok) alert(data.error || "Gagal")
     else {
-      await supabase.from("audit_logs").insert({ action: "offline_recap_add", target: selected, details: { qty, note } })
       alert(`+${qty} offline ballots ditambahkan (auditable)`)
       setNote("")
+      // refresh recent via API
+      fetch("/api/admin/offline-recap").then(r=> r.json()).then(d=> { if(Array.isArray(d)) setRecent(d) }).catch(()=>{})
     }
   }
 

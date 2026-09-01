@@ -5,7 +5,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const category = searchParams.get("category") // SMP or SMA
   const orderBy = searchParams.get("orderBy") // display_order or ranking
-  const supabase = createServerSupabase()
+  const supabase = await createServerSupabase()
 
   if (orderBy === "ranking") {
     // Use team_ranking view for performance-based order

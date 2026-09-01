@@ -1,12 +1,12 @@
 "use client"
 import { useSearchParams } from "next/navigation"
-import { Suspense } from "react"
+import { Suspense, useEffect, useState } from "react"
 import Link from "next/link"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { Button } from "@/components/ui/button"
-import { peletons } from "@/lib/data"
+import { createBrowserSupabase } from "@/lib/supabase"
 import { CheckCircle2, Clock3, XCircle, Timer } from "lucide-react"
 
 function CheckoutInner(){
@@ -16,10 +16,17 @@ function CheckoutInner(){
   const slug = sp.get("peleton")
   const qty = sp.get("qty") || "50"
   const total = sp.get("total") || "150000"
-  const peleton = peletons.find(p=>p.slug===slug) || peletons[0]
+  const [peleton,setPeleton]=useState<any>(null)
+  useEffect(()=>{
+    const supabase = createBrowserSupabase()
+    if(slug) supabase.from("peletons").select("*").eq("slug", slug).single().then(({data})=> setPeleton(data))
+    else supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("display_order").limit(1).single().then(({data})=> setPeleton(data))
+  },[slug])
+  if(!peleton) return <div className="mx-auto max-w-[560px] px-4 py-12 text-center text-sm text-muted-foreground">Memuat peleton...</div>
+  const p: any = peleton
 
   const config = {
-    success: { title:"DUKUNGAN BERHASIL", desc:`Terima kasih telah memberikan dukungan kepada ${peleton.name}`, icon: CheckCircle2, color:"bg-emerald-500", bg:"bg-emerald-500/10 border-emerald-500/20" },
+    success: { title:"DUKUNGAN BERHASIL", desc:`Terima kasih telah memberikan dukungan kepada ${p.name}`, icon: CheckCircle2, color:"bg-emerald-500", bg:"bg-emerald-500/10 border-emerald-500/20" },
     pending: { title:"PEMBAYARAN MENUNGGU", desc:"Selesaikan pembayaran sebelum waktu habis", icon: Clock3, color:"bg-amber-500", bg:"bg-amber-500/10 border-amber-500/20" },
     failed: { title:"PEMBAYARAN TIDAK BERHASIL", desc:"Pembayaran gagal. Silakan coba lagi.", icon: XCircle, color:"bg-red-500", bg:"bg-red-500/10 border-red-500/20" },
     expired: { title:"TRANSAKSI KEDALUWARSA", desc:"Waktu pembayaran telah habis", icon: Timer, color:"bg-zinc-500", bg:"bg-zinc-500/10 border-zinc-500/20" },
@@ -38,10 +45,10 @@ function CheckoutInner(){
 
         <div className="mt-6 rounded-2xl border border-border bg-card p-4 text-left">
           <div className="flex gap-3">
-            <img src={peleton.image} alt="" className="h-14 w-14 rounded-xl object-cover border border-border" />
+            <img src={p.image_url || p.image} alt="" className="h-14 w-14 rounded-xl object-cover border border-border" />
             <div>
-              <div className="text-sm font-black">{peleton.name}</div>
-              <div className="text-xs text-muted-foreground">{peleton.school}</div>
+              <div className="text-sm font-black">{p.name}</div>
+              <div className="text-xs text-muted-foreground">{p.school}</div>
               <div className="text-xs font-bold tabular-nums">{qty} BALLOT • Rp{Number(total).toLocaleString("id-ID")}</div>
             </div>
           </div>

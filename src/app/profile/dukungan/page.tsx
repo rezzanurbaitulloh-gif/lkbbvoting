@@ -4,12 +4,15 @@ import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { useApp } from "@/lib/store"
-import { peletons } from "@/lib/data"
+import { useEffect, useState } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 export default function SubProfile(){
   const { currentUser, favorites, dukunganHistory } = useApp()
+  const [allPeletons,setAllPeletons]=useState<any[]>([])
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("peletons").select("*").eq("verified", true).eq("active", true).then(({data})=> setAllPeletons(data||[])) },[])
   const path = typeof window !== 'undefined' ? window.location.pathname : ''
   const isEdit = path.includes('/edit')
   const isFav = path.includes('/favorit')
@@ -43,9 +46,9 @@ export default function SubProfile(){
             <div className="mt-4">
               {favorites.length===0 ? <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Belum ada peleton favorit.</div> :
                 <div className="grid sm:grid-cols-2 gap-3">
-                  {peletons.filter(p=> favorites.includes(p.id)).map(p=> (
+                  {allPeletons.filter(p=> favorites.includes(p.id)).map(p=> (
                     <div key={p.id} className="flex gap-3 rounded-xl border border-border bg-card p-3">
-                      <img src={p.image} alt="" className="h-14 w-14 rounded-lg object-cover"/>
+                      <img src={p.image_url || p.image} alt="" className="h-14 w-14 rounded-lg object-cover"/>
                       <div><div className="text-sm font-bold">{p.name}</div><div className="text-xs text-muted-foreground">{p.school}</div><Link href={`/peleton/${p.slug}`} className="text-xs font-bold text-gold">Lihat →</Link></div>
                     </div>
                   ))}

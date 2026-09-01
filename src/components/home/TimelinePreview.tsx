@@ -1,7 +1,14 @@
-import { timelineStages } from "@/lib/data"
+"use client"
+import { useEffect, useState } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 import { Check } from "lucide-react"
 
 export function TimelinePreview(){
+  const [timelineStages,setTimeline]=useState<any[]>([])
+  useEffect(()=>{
+    const supabase = createBrowserSupabase()
+    supabase.from("timeline_stages").select("*").order("sort_order").then(({data})=> setTimeline(data||[]))
+  },[])
   return (
     <section className="border-t border-border bg-surface">
       <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-10">

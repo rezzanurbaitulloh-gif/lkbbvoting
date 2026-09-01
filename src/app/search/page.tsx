@@ -3,16 +3,26 @@ import { useState, useMemo } from "react"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
-import { peletons, news, announcements } from "@/lib/data"
+import { useEffect } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 import Link from "next/link"
 import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 
 export default function SearchPage(){
   const [q,setQ]=useState("")
-  const peletonResults = useMemo(()=> q ? peletons.filter(p=> `${p.name} ${p.school} ${p.city}`.toLowerCase().includes(q.toLowerCase())).slice(0,6) : [],[q])
-  const newsResults = useMemo(()=> q ? news.filter(n=> `${n.title} ${n.excerpt}`.toLowerCase().includes(q.toLowerCase())).slice(0,4) : [],[q])
-  const annResults = useMemo(()=> q ? announcements.filter(a=> `${a.title} ${a.content}`.toLowerCase().includes(q.toLowerCase())).slice(0,4) : [],[q])
+  const [peletons,setPeletons]=useState<any[]>([])
+  const [allNews,setAllNews]=useState<any[]>([])
+  const [allAnn,setAllAnn]=useState<any[]>([])
+  useEffect(()=>{
+    const s=createBrowserSupabase()
+    s.from("peletons").select("*").eq("verified", true).eq("active", true).then(({data})=> setPeletons(data||[]))
+    s.from("news").select("*").eq("published", true).then(({data})=> setAllNews(data||[]))
+    s.from("announcements").select("*").then(({data})=> setAllAnn(data||[]))
+  },[])
+  const peletonResults = useMemo(()=> q ? peletons.filter((p:any)=> `${p.name} ${p.school} ${p.city}`.toLowerCase().includes(q.toLowerCase())).slice(0,6) : [],[q,peletons])
+  const newsResults = useMemo(()=> q ? allNews.filter((n:any)=> `${n.title} ${n.excerpt}`.toLowerCase().includes(q.toLowerCase())).slice(0,4) : [],[q,allNews])
+  const annResults = useMemo(()=> q ? allAnn.filter((a:any)=> `${a.title} ${a.content}`.toLowerCase().includes(q.toLowerCase())).slice(0,4) : [],[q,allAnn])
   const hasQuery = q.trim().length>1
   const total = peletonResults.length + newsResults.length + annResults.length
 

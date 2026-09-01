@@ -1,9 +1,13 @@
+"use client"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
-import { judges } from "@/lib/data"
+import { useEffect, useState } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 
 export default function JuriPage(){
+  const [judges,setJudges]=useState<any[]>([])
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("judges").select("*").eq("active", true).order("sort_order").then(({data})=> setJudges(data||[])) },[])
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -20,7 +24,7 @@ export default function JuriPage(){
             {judges.map(j=> (
               <div key={j.id} className="rounded-[20px] border border-border bg-card overflow-hidden">
                 <div className="aspect-[4/3] overflow-hidden bg-muted">
-                  <img src={j.photo} alt={j.name} className="h-full w-full object-cover" />
+                  <img src={j.photo_url || j.photo} alt={j.name} className="h-full w-full object-cover" />
                 </div>
                 <div className="p-5">
                   <div className="inline-flex rounded-full bg-gold px-2.5 py-1 text-[11px] font-bold tracking-widest text-gold-foreground">{j.role}</div>

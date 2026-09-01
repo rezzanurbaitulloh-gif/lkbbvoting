@@ -13,7 +13,7 @@ import { createServerSupabase } from "@/lib/supabase"
 export const revalidate = 0
 
 export default async function HomePage(){
-  const supabase = createServerSupabase()
+  const supabase = await createServerSupabase()
   // Fetch event
   const { data: event } = await supabase.from("competitions").select("*").order("created_at", { ascending: false }).limit(1).single()
   // Fetch peletons ordered by display_order (homepage)

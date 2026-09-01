@@ -1,16 +1,18 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
-import { peletons } from "@/lib/data"
+import { createBrowserSupabase } from "@/lib/supabase"
 
 const cats = ["All","Competition","Training","Participants","Ceremony","Behind the Scenes"]
 
 export default function GaleriPage(){
   const [cat,setCat]=useState("All")
   const [active,setActive]=useState<string|null>(null)
-  const allImages = peletons.flatMap(p=> p.gallery.map(g=> ({...g, peleton: p.name})))
+  const [peletons,setPeletons]=useState<any[]>([])
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("peletons").select("id,name,image_url").eq("verified", true).eq("active", true).order("display_order").then(({data})=> setPeletons(data||[])) },[])
+  const allImages = peletons.map((p:any)=> ({ url: p.image_url, caption: p.name, peleton: p.name, id: p.id }))
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />

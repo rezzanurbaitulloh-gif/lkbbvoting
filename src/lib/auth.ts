@@ -1,0 +1,34 @@
+// Server-side auth helpers — use in Server Components and Route Handlers
+import { createServerSupabase, createServiceSupabase } from "./supabase"
+
+export type AuthUser = {
+  id: string
+  email: string | undefined
+  role: string | null
+}
+
+export async function getServerUser(): Promise<{ user: AuthUser | null; supabase: Awaited<ReturnType<typeof createServerSupabase>> }> {
+  const supabase = await createServerSupabase()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { user: null, supabase }
+  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single()
+  return {
+    user: { id: user.id, email: user.email, role: profile?.role ?? null },
+    supabase,
+  }
+}
+
+export async function requireAdmin() {
+  const { user, supabase } = await getServerUser()
+  if (!user) return { authorized: false as const, status: 401, error: "Unauthorized", supabase, user: null }
+  if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
+    return { authorized: false as const, status: 403, error: "Forbidden — admin required", supabase, user }
+  }
+  return { authorized: true as const, supabase, user }
+}
+
+export async function requireAuth() {
+  const { user, supabase } = await getServerUser()
+  if (!user) return { authorized: false as const, status: 401, error: "Unauthorized", supabase, user: null }
+  return { authorized: true as const, supabase, user }
+}

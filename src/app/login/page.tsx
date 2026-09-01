@@ -16,12 +16,16 @@ export default function LoginPage(){
   const [loading,setLoading]=useState(false)
   const { login } = useApp()
   const router = useRouter()
-  const onSubmit=(e:React.FormEvent)=>{
+  const onSubmit= async (e:React.FormEvent)=>{
     e.preventDefault()
     if(!email || !password){ setErr("Email dan password wajib diisi"); return }
     if(!email.includes("@")){ setErr("Format email tidak valid"); return }
     setErr(""); setLoading(true)
-    setTimeout(()=>{ login(email); router.push("/profile"); },800)
+    const res = await login(email, password)
+    setLoading(false)
+    if(res.error){ setErr(res.error); return }
+    router.push("/profile")
+    router.refresh()
   }
   return (
     <div className="min-h-screen flex flex-col">
@@ -44,10 +48,10 @@ export default function LoginPage(){
             </div>
           </form>
           <div className="hairline my-6" />
-          <div className="text-center text-xs text-muted-foreground">Demo: gunakan email apapun & password apapun untuk masuk.</div>
+          <div className="text-center text-xs text-muted-foreground">Admin: sc2026@gmail.com / Saceng1! — User baru dapat daftar via Register.</div>
           <div className="mt-3 grid grid-cols-2 gap-2">
-            <Button variant="outline" className="rounded-full" onClick={()=>{setEmail("user@lkbb.id"); setPassword("password")}}>Isi Demo User</Button>
-            <Button variant="outline" className="rounded-full" onClick={()=>{setEmail("admin@lkbb.id"); setPassword("admin")}}>Isi Demo Admin</Button>
+            <Button variant="outline" className="rounded-full" type="button" onClick={()=>{setEmail("sc2026@gmail.com"); setPassword("Saceng1!")}}>Isi Admin</Button>
+            <Button variant="outline" className="rounded-full" type="button" onClick={()=>{setEmail("demo@lkbb.id"); setPassword("demo123")}}>Isi Demo</Button>
           </div>
         </div>
       </main>

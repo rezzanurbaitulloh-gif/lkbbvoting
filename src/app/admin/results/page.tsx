@@ -21,9 +21,16 @@ export default function ResultsControl(){
   useEffect(()=>{ load() },[])
 
   const toggle = async (field: "show_provisional_result" | "show_final_result")=>{
-    const supabase = createBrowserSupabase()
-    await supabase.from("competitions").update({ [field]: !event[field] }).eq("id", event.id)
-    await supabase.from("audit_logs").insert({ action: "result_publish_toggle", target: event.id, details: { field, newValue: !event[field] } })
+    const res = await fetch("/api/admin/competitions", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: event.id, field, value: !event[field] })
+    })
+    if(!res.ok) {
+      const d = await res.json()
+      alert(d.error || "Gagal toggle")
+      return
+    }
     load()
   }
 

@@ -1,7 +1,9 @@
+"use client"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
-import { announcements } from "@/lib/data"
+import { useEffect, useState } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 
 const catColor: Record<string,string> = {
   Important:"bg-red-500 text-white",
@@ -13,6 +15,8 @@ const catColor: Record<string,string> = {
 }
 
 export default function PengumumanPage(){
+  const [announcements,setAnnouncements]=useState<any[]>([])
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("announcements").select("*").order("created_at",{ascending:false}).then(({data})=> setAnnouncements(data||[])) },[])
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />

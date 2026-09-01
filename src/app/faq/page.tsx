@@ -1,17 +1,19 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
-import { faqs } from "@/lib/data"
+import { createBrowserSupabase } from "@/lib/supabase"
 import { ChevronDown } from "lucide-react"
 
 const cats = ["All","Competition","Peleton","Support","Payment","Results","Technical"] as const
 
 export default function FAQPage(){
   const [cat,setCat]=useState<string>("All")
-  const [open,setOpen]=useState<string|null>(faqs[0]?.id || null)
-  const list = cat==="All" ? faqs : faqs.filter(f=>f.category===cat)
+  const [faqs,setFaqs]=useState<any[]>([])
+  const [open,setOpen]=useState<string|null>(null)
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("faqs").select("*").order("sort_order").then(({data})=> { setFaqs(data||[]); if(data && data[0]) setOpen(data[0].id) }) },[])
+  const list = cat==="All" ? faqs : faqs.filter((f:any)=>f.category===cat)
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />

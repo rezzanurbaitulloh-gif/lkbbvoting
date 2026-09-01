@@ -15,14 +15,17 @@ export default function RegisterPage(){
   const [password,setPassword]=useState("")
   const [err,setErr]=useState("")
   const [loading,setLoading]=useState(false)
-  const { login } = useApp()
+  const { signUp } = useApp()
   const router=useRouter()
-  const onSubmit=(e:React.FormEvent)=>{
+  const onSubmit= async (e:React.FormEvent)=>{
     e.preventDefault()
     if(!name || !email || !password){ setErr("Semua field wajib diisi"); return}
     if(password.length<6){ setErr("Password minimal 6 karakter"); return}
     setErr(""); setLoading(true)
-    setTimeout(()=>{ login(email); router.push("/profile"); },800)
+    const res = await signUp(name, email, password)
+    setLoading(false)
+    if(res.error){ setErr(res.error); return }
+    router.push("/login")
   }
   return (
     <div className="min-h-screen flex flex-col">

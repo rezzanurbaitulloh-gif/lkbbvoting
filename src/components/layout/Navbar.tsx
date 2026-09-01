@@ -1,8 +1,8 @@
 "use client"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Search, Menu, X, Heart, User, Trophy, Home, Users, Calendar, Info } from "lucide-react"
-import { useState } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import { Search, Menu, X, Heart, User, Trophy, Home, Users, Calendar, Info, LogOut, Settings, LayoutDashboard, ChevronDown } from "lucide-react"
+import { useState, useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "./ThemeToggle"
@@ -18,8 +18,18 @@ const nav = [
 
 export function Navbar() {
   const pathname = usePathname()
+  const router = useRouter()
   const [open, setOpen] = useState(false)
-  const { currentUser } = useApp()
+  const [profileOpen, setProfileOpen] = useState(false)
+  const { currentUser, isAdmin, logout } = useApp()
+  const profileRef = useRef<HTMLDivElement>(null)
+  useEffect(()=>{
+    const handler = (e: MouseEvent) => {
+      if(profileRef.current && !profileRef.current.contains(e.target as Node)) setProfileOpen(false)
+    }
+    document.addEventListener("mousedown", handler)
+    return ()=> document.removeEventListener("mousedown", handler)
+  },[])
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-[64px] max-w-[1280px] items-center justify-between px-4 md:px-6">
@@ -55,11 +65,59 @@ export function Navbar() {
             <Search className="h-4 w-4 text-muted-foreground" />
           </Link>
           <ThemeToggle />
-          <Link href={currentUser ? "/profile" : "/login"} className="hidden md:inline-flex">
-            <Button variant="outline" size="sm" className="rounded-full gap-1.5">
-              <User className="h-3.5 w-3.5" /> {currentUser ? currentUser.name.slice(0,8) : "Masuk"}
-            </Button>
-          </Link>
+          {currentUser ? (
+            <div className="hidden md:flex relative" ref={profileRef}>
+              <button
+                onClick={()=> setProfileOpen(!profileOpen)}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card hover:bg-muted pl-1 pr-3 py-1 transition-colors"
+                aria-haspopup="menu"
+                aria-expanded={profileOpen}
+              >
+                <div className="h-7 w-7 rounded-full bg-foreground text-background grid place-items-center text-xs font-black">
+                  {currentUser.name.slice(0,2).toUpperCase()}
+                </div>
+                <span className="text-sm font-semibold max-w-[80px] truncate">{currentUser.name.split(" ")[0]}</span>
+                <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform", profileOpen && "rotate-180")} />
+              </button>
+              {profileOpen && (
+                <div className="absolute right-0 top-[calc(100%+8px)] w-[240px] rounded-2xl border border-border bg-card shadow-xl overflow-hidden z-50">
+                  <div className="px-4 py-3 border-b border-border bg-muted/30">
+                    <div className="text-sm font-bold leading-tight truncate">{currentUser.name}</div>
+                    <div className="text-xs text-muted-foreground truncate">{currentUser.email}</div>
+                    {isAdmin && <div className="mt-1 inline-flex rounded-full bg-gold px-2 py-0.5 text-[10px] font-black tracking-widest text-gold-foreground">ADMIN</div>}
+                  </div>
+                  <div className="p-1.5">
+                    <Link href="/profile" onClick={()=> setProfileOpen(false)} className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-muted transition-colors">
+                      <User className="h-4 w-4 text-muted-foreground" /> Profile
+                    </Link>
+                    <Link href="/profile/edit" onClick={()=> setProfileOpen(false)} className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-muted transition-colors">
+                      <Settings className="h-4 w-4 text-muted-foreground" /> Pengaturan
+                    </Link>
+                    {isAdmin && (
+                      <Link href="/admin" onClick={()=> setProfileOpen(false)} className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-bold hover:bg-muted transition-colors">
+                        <LayoutDashboard className="h-4 w-4 text-gold" /> Dashboard Admin
+                      </Link>
+                    )}
+                  </div>
+                  <div className="h-px bg-border" />
+                  <div className="p-1.5">
+                    <button
+                      onClick={async ()=>{ setProfileOpen(false); await logout(); router.push("/"); router.refresh() }}
+                      className="w-full flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors text-left"
+                    >
+                      <LogOut className="h-4 w-4" /> Logout
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link href="/login" className="hidden md:inline-flex">
+              <Button variant="outline" size="sm" className="rounded-full gap-1.5">
+                <User className="h-3.5 w-3.5" /> Masuk
+              </Button>
+            </Link>
+          )}
           <Link href="/peleton" className="hidden md:inline-flex">
             <Button size="sm" className="rounded-full px-5">Dukung</Button>
           </Link>
@@ -78,10 +136,29 @@ export function Navbar() {
               </Link>
             ))}
             <div className="hairline my-2" />
-            <div className="grid grid-cols-2 gap-2">
-              <Link href="/login" onClick={()=>setOpen(false)}><Button variant="outline" className="w-full rounded-full">Masuk</Button></Link>
-              <Link href="/peleton" onClick={()=>setOpen(false)}><Button className="w-full rounded-full">Dukung Sekarang</Button></Link>
-            </div>
+            {currentUser ? (
+              <div className="space-y-1">
+                <div className="flex items-center gap-3 rounded-xl bg-muted p-3">
+                  <div className="h-10 w-10 rounded-full bg-foreground text-background grid place-items-center text-sm font-black">
+                    {currentUser.name.slice(0,2).toUpperCase()}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-sm font-bold truncate">{currentUser.name}</div>
+                    <div className="text-xs text-muted-foreground truncate">{currentUser.email}</div>
+                  </div>
+                  {isAdmin && <span className="ml-auto rounded-full bg-gold px-2 py-0.5 text-[10px] font-black text-gold-foreground">ADMIN</span>}
+                </div>
+                <Link href="/profile" onClick={()=>setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium hover:bg-muted"><User className="h-4 w-4 text-muted-foreground"/> Profile</Link>
+                <Link href="/profile/edit" onClick={()=>setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium hover:bg-muted"><Settings className="h-4 w-4 text-muted-foreground"/> Pengaturan</Link>
+                {isAdmin && <Link href="/admin" onClick={()=>setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-bold hover:bg-muted"><LayoutDashboard className="h-4 w-4 text-gold"/> Dashboard Admin</Link>}
+                <button onClick={async ()=>{ setOpen(false); await logout(); router.push("/"); router.refresh() }} className="w-full flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-600 hover:bg-red-50 text-left"><LogOut className="h-4 w-4"/> Logout</button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-2">
+                <Link href="/login" onClick={()=>setOpen(false)}><Button variant="outline" className="w-full rounded-full">Masuk</Button></Link>
+                <Link href="/peleton" onClick={()=>setOpen(false)}><Button className="w-full rounded-full">Dukung Sekarang</Button></Link>
+              </div>
+            )}
             <div className="flex gap-4 pt-2 text-xs text-muted-foreground">
               <Link href="/tentang">Tentang</Link>
               <Link href="/kontak">Kontak</Link>

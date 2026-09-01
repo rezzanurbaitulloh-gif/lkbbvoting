@@ -1,11 +1,15 @@
+"use client"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
-import { sponsors } from "@/lib/data"
+import { useEffect, useState } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 
 const tiers = ["Main Sponsor","Official Partner","Supporting Partner","Media Partner"] as const
 
 export default function SponsorPage(){
+  const [sponsors,setSponsors]=useState<any[]>([])
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("sponsors").select("*").eq("active", true).order("display_order").then(({data})=> setSponsors(data||[])) },[])
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -27,7 +31,7 @@ export default function SponsorPage(){
                 <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {list.map(s=> (
                     <div key={s.id} className="rounded-xl border border-border bg-muted p-4 grid place-items-center h-[84px] text-center">
-                      <div className="text-sm font-black tracking-tight">{s.logo}</div>
+                      <div className="text-sm font-black tracking-tight">{s.name}</div>
                     </div>
                   ))}
                 </div>

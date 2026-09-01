@@ -4,7 +4,8 @@ import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { useApp } from "@/lib/store"
-import { peletons } from "@/lib/data"
+import { useEffect, useState } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Heart, LogOut, Settings, Trophy, Clock } from "lucide-react"
@@ -13,6 +14,9 @@ import { useRouter } from "next/navigation"
 export default function ProfilePage(){
   const { currentUser, logout, favorites, dukunganHistory } = useApp()
   const router=useRouter()
+  const [allPeletons,setAllPeletons]=useState<any[]>([])
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("peletons").select("*").eq("verified", true).eq("active", true).then(({data})=> setAllPeletons(data||[])) },[])
+  const favPeletons = allPeletons.filter((p:any)=> favorites.includes(p.id))
   if(!currentUser){
     return (
       <div className="min-h-screen flex flex-col">
@@ -31,7 +35,6 @@ export default function ProfilePage(){
       </div>
     )
   }
-  const favPeletons = peletons.filter(p=> favorites.includes(p.id))
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -90,7 +93,7 @@ export default function ProfilePage(){
                 <div className="mt-3 grid gap-2">
                   {favPeletons.map(p=> (
                     <div key={p.id} className="flex gap-3 rounded-xl border border-border p-3">
-                      <img src={p.image} alt="" className="h-12 w-12 rounded-lg object-cover" />
+                      <img src={p.image_url || p.image} alt="" className="h-12 w-12 rounded-lg object-cover" />
                       <div className="min-w-0">
                         <div className="text-sm font-bold truncate">{p.name}</div>
                         <div className="text-xs text-muted-foreground truncate">{p.school}</div>

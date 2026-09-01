@@ -1,5 +1,13 @@
+"use client"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 export function Footer(){
+  const [contact,setContact]=useState<any>(null)
+  useEffect(()=>{
+    const s=createBrowserSupabase()
+    s.from("competitions").select("settings").order("created_at",{ascending:false}).limit(1).single().then(({data})=> setContact(data?.settings?.contact || data?.settings?.whatsapp))
+  },[])
   return (
     <footer className="mt-auto border-t border-border bg-surface">
       <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-10">
@@ -44,9 +52,9 @@ export function Footer(){
           <div>
             <div className="label-ceremonial mb-3">Kontak</div>
             <div className="grid gap-2 text-sm text-muted-foreground">
-              <div>Email: <a href="mailto:info@lkbb-event.id" className="text-foreground">info@lkbb-event.id</a></div>
-              <div>WhatsApp: <span className="text-foreground">0812-3456-7890</span></div>
-              <div>Instagram: <a href="#" className="text-foreground">@lkbb_event</a></div>
+              <div>Email: <a href="mailto:info@lkbb-event.id" className="text-foreground">{contact?.email || "info@lkbb-event.id"}</a></div>
+              <div>WhatsApp: <span className="text-foreground">{contact?.whatsapp || contact?.number || "0812-3456-7890"}</span></div>
+              <div>Instagram: <a href={contact?.instagram || "#"} className="text-foreground">@lkbb_event</a></div>
               <div className="pt-2 flex gap-2">
                 <a href="#" className="h-8 w-8 grid place-items-center rounded-full border border-border hover:bg-muted text-xs">IG</a>
                 <a href="#" className="h-8 w-8 grid place-items-center rounded-full border border-border hover:bg-muted text-xs">YT</a>

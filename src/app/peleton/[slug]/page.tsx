@@ -6,19 +6,19 @@ import { BottomNav } from "@/components/layout/BottomNav"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Share2, Heart, QrCode, Trophy } from "lucide-react"
-import { createServerSupabase } from "@/lib/supabase"
+import { createServerSupabase, createStaticSupabase } from "@/lib/supabase"
 
 export const revalidate = 0
 
 export async function generateStaticParams(){
-  const supabase = createServerSupabase()
+  const supabase = createStaticSupabase()
   const { data } = await supabase.from("peletons").select("slug").eq("verified", true).eq("active", true)
   return (data || []).map((p:any)=> ({ slug: p.slug }))
 }
 
 export default async function PeletonDetail({ params }: { params: Promise<{slug:string}> }){
   const { slug } = await params
-  const supabase = createServerSupabase()
+  const supabase = await createServerSupabase()
   const { data: peleton } = await supabase.from("peletons").select("*").eq("slug", slug).eq("verified", true).eq("active", true).single()
   if(!peleton) return notFound()
 
@@ -32,7 +32,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
   const showRank = !isActive || event?.show_provisional_result || event?.show_final_result
 
   const photo = peleton.image_url
-  const logo = peleton.image_url // use same for now, logo_url could be separate
+  const logo = (peleton as any).logo_url || peleton.image_url
   const profileUrl = `/peleton/${peleton.slug}`
   const supportUrl = `/dukungan?peleton=${peleton.slug}`
 

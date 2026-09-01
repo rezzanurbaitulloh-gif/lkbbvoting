@@ -1,10 +1,14 @@
+"use client"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
-import { timelineStages } from "@/lib/data"
+import { useEffect, useState } from "react"
+import { createBrowserSupabase } from "@/lib/supabase"
 import { Check, Clock, Circle } from "lucide-react"
 
 export default function TimelinePage(){
+  const [timelineStages,setTimeline]=useState<any[]>([])
+  useEffect(()=>{ const s=createBrowserSupabase(); s.from("timeline_stages").select("*").order("sort_order").then(({data})=> setTimeline(data||[])) },[])
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />

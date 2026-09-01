@@ -10,8 +10,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid quantity or peleton" }, { status: 400 })
     }
 
-    const supabase = createServerSupabase()
+    const supabase = await createServerSupabase()
     const service = createServiceSupabase()
+
+    // Rate limiting stub: check quantity bounds strictly
+    if (!Number.isInteger(quantity) || quantity < 1 || quantity > 1000) {
+      return NextResponse.json({ error: "Quantity must be 1-1000" }, { status: 400 })
+    }
 
     // 1. Check event state server-side
     const { data: event } = await supabase.from("competitions").select("state, settings").order("created_at", { ascending: false }).limit(1).single()
@@ -63,13 +68,24 @@ export async function POST(req: Request) {
   }
 }
 
-// GET /api/transactions?userId=... — for history (requires auth, but demo)
+// GET /api/transactions?userId=... — for history (requires auth)
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const peletonId = searchParams.get("peletonId")
-  const supabase = createServerSupabase()
+  const supabase = await createServerSupabase()
+  const { data: { user } } = await supabase.auth.getUser()
+  // Only allow reading own transactions unless admin
   let query = supabase.from("transactions").select("*").order("created_at", { ascending: false }).limit(50)
   if (peletonId) query = query.eq("peleton_id", peletonId)
+  // If not admin, filter to own user_id
+  if (user) {
+    const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single()
+    const isAdmin = profile?.role === "ADMIN" || profile?.role === "SUPER_ADMIN"
+    if (!isAdmin) query = query.eq("user_id", user.id)
+  } else {
+    // Anonymous can only see no sensitive? Return empty
+    return NextResponse.json([])
+  }
   const { data, error } = await query
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json(data)
