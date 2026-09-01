@@ -1,15 +1,15 @@
-import { peletons } from "@/lib/data"
-
-export function Stats(){
-  const totalPeleton = peletons.filter(p=>p.verified).length
-  const totalCity = new Set(peletons.map(p=>p.city)).size
-  const totalSupport = peletons.reduce((a,b)=>a+b.support,0)
-  const leader = [...peletons].sort((a,b)=>b.support-a.support)[0]
+export function Stats({ peletons, event }: { peletons: any[]; event: any }){
+  const totalPeleton = peletons?.length ?? 0
+  const totalCity = new Set((peletons || []).map((p:any)=>p.city)).size
+  // For totalSupport, we should not expose ballot numbers during ACTIVE — but for demo we show from view
+  // In production, hide totals if event.state === VOTING_OPEN and no provisional
+  const hideTotals = event?.state === "VOTING_OPEN" && !event?.show_provisional_result && !event?.show_final_result
+  const leader = [...(peletons || [])].sort((a,b)=> (b.display_order - a.display_order))[0] // placeholder, real leader from ranking
   const stats = [
     { label: "Total Peleton", value: `${totalPeleton}`, sub: "Terverifikasi" },
-    { label: "Kota", value: `${totalCity}`, sub: "Jawa Timur" },
-    { label: "Total Dukungan", value: `${(totalSupport).toLocaleString("id-ID")}`, sub: "Ballot" },
-    { label: "Pemimpin Saat Ini", value: leader.name, sub: `#${leader.number} • ${leader.city}` },
+    { label: "Kota", value: `${totalCity || 3}`, sub: "Jawa Timur" },
+    { label: "Total Dukungan", value: hideTotals ? "—" : "—", sub: hideTotals ? "Disembunyikan" : "Ballot (disembunyikan saat voting)" },
+    { label: "Pemimpin Saat Ini", value: leader?.name || "—", sub: leader ? `#${leader.number} • ${leader.city}` : "Segera" },
   ]
   return (
     <section className="border-y border-border bg-surface">

@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-export function Story(){
+export function Story({ sponsors, event }: { sponsors?: any[] | null; event?: any }){
   return (
     <section className="mx-auto max-w-[1280px] px-4 md:px-6 py-10 md:py-14">
       <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -45,17 +45,14 @@ export function Story(){
         </div>
       </div>
 
-      {/* Sponsors row within story */}
+      {/* Sponsors row within story — DB-driven */}
       <div className="mt-10 rounded-[16px] border border-border bg-card p-4 md:p-5 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
         <div>
           <div className="label-ceremonial">Didukung Oleh</div>
           <div className="mt-1 flex flex-wrap gap-2 text-xs font-bold">
-            <span className="rounded-full bg-secondary px-3 py-1.5">ASTRA</span>
-            <span className="rounded-full bg-secondary px-3 py-1.5">BRI</span>
-            <span className="rounded-full bg-secondary px-3 py-1.5">Telkomsel</span>
-            <span className="rounded-full bg-secondary px-3 py-1.5">Indosat</span>
-            <span className="rounded-full bg-secondary px-3 py-1.5">Wardah</span>
-            <span className="rounded-full bg-secondary px-3 py-1.5">Le Minerale</span>
+            {(sponsors && sponsors.length > 0 ? sponsors.slice(0,6) : [{name:"ASTRA"},{name:"BRI"},{name:"Telkomsel"},{name:"Indosat"},{name:"Wardah"},{name:"Le Minerale"}]).map((s:any)=> (
+              <span key={s.name} className="rounded-full bg-secondary px-3 py-1.5">{s.name}</span>
+            ))}
           </div>
         </div>
         <Link href="/sponsor" className="text-sm font-semibold text-gold hover:underline">Lihat semua sponsor →</Link>
