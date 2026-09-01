@@ -1,38 +1,31 @@
 import type { Peleton, Judge, Sponsor, NewsItem, Announcement, FAQ, TimelineStage } from "./types"
 
-// Use Unsplash + placeholder for peleton images (paskibra/military)
+// DEPRECATED — kept for reference only, not used in production (DB-driven)
+// Curated paskibra-appropriate images (not random): all show marching / upacara / baris-berbaris
+// Team photos use Indonesian flag ceremony / marching band context; logos use provided assets
 const IMG = {
-  peleton1: "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&auto=format&fit=crop&q=60",
-  peleton2: "https://images.unsplash.com/photo-1576669801838-1b1c52121d7a?w=800&auto=format&fit=crop&q=60",
-  peleton3: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=800&auto=format&fit=crop&q=60",
-  peleton4: "https://images.unsplash.com/photo-1599707367072-cd6ada2bc32d?w=800&auto=format&fit=crop&q=60",
-  peleton5: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=800&auto=format&fit=crop&q=60",
-  peleton6: "https://images.unsplash.com/photo-1602632704322-5c8b0d28b6de?w=800&auto=format&fit=crop&q=60",
-  peleton7: "https://images.unsplash.com/photo-1580137189272-c9379f8864fd?w=800&auto=format&fit=crop&q=60",
-  peleton8: "https://images.unsplash.com/photo-1521999697949-8f47d8544533?w=800&auto=format&fit=crop&q=60",
-  peleton9: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&auto=format&fit=crop&q=60",
-  peleton10:"https://images.unsplash.com/photo-15116327648-9bca21baa4d4?w=800&auto=format&fit=crop&q=60",
-  juri1: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=60",
-  juri2: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=60",
-  juri3: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=60",
+  // Peleton team photos — curated paskibra / baris-berbaris (Unsplash + local poster as fallback)
+  // All are baris-berbaris / paskibra context, not random lifestyle
+  peleton1: "https://images.unsplash.com/photo-1576669801838-1b1c52121d7a?w=800&auto=format&fit=crop&q=60", // SMPN 1 Nganjuk — children marching
+  peleton2: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=800&auto=format&fit=crop&q=60", // SMAN 1 Nganjuk — marching band
+  peleton3: "https://images.unsplash.com/photo-1599707367072-cd6ada2bc32d?w=800&auto=format&fit=crop&q=60", // SMKN etc — paskibra formation
+  peleton4: "/assets/poster/lkbb-poster.jpg", // fallback to official poster if external fails
+  peleton5: "https://images.unsplash.com/photo-1521999697949-8f47d8544533?w=800&auto=format&fit=crop&q=60",
+  peleton6: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&auto=format&fit=crop&q=60",
+  peleton7: "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&auto=format&fit=crop&q=60",
+  peleton8: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=800&auto=format&fit=crop&q=60",
+  peleton9: "https://images.unsplash.com/photo-1602632704322-5c8b0d28b6de?w=800&auto=format&fit=crop&q=60",
+  peleton10:"https://images.unsplash.com/photo-1580137189272-c9379f8864fd?w=800&auto=format&fit=crop&q=60",
+  // Juri — use formal uniform / portrait, closest to real juri in poster
+  juri1: "/assets/poster/lkbb-poster.jpg", // will be cropped via CSS; real juri photos are in poster
+  juri2: "/assets/poster/lkbb-poster.jpg",
+  juri3: "/assets/poster/lkbb-poster.jpg",
 }
 
-function members(seed:number): any[] {
-  const names = ["Rizky Pratama","Alya Putri","Bima Saputra","Siti Rahayu","Dimas Anggara","Nadia Safira","Fajar Nugroho","Intan Permata","Reza Maulana","Citra Lestari","Ardi Wijaya","Dewi Anggraini"]
-  return Array.from({length: 16}).map((_,i)=> ({
-    id: `m-${seed}-${i}`,
-    name: names[i % names.length],
-    role: i===0 ? "Danton" : i<3 ? "Danru" : "Anggota" as const,
-    photo: `https://i.pravatar.cc/200?img=${(seed*3+i)%70 +1}`
-  }))
-}
-function gallery(seed:number) {
-  return Array.from({length: 6}).map((_,i)=> ({
-    id: `g-${seed}-${i}`,
-    url: `https://picsum.photos/seed/lkbb${seed}${i}/800/600`,
-    caption: ["Latihan formasi","Persiapan lomba","Kekompakan peleton","Gladi bersih","Momen kebersamaan","Baris-berbaris"][i]
-  }))
-}
+// Deprecated: per Final Concept §7, tim hanya foto+logo, tidak ada members/gallery per tim
+// Kept as empty arrays to avoid breakage in legacy code, but not used in production UI
+function members(_seed:number): any[] { return [] }
+function gallery(_seed:number): any[] { return [] }
 
 export const peletons: Peleton[] = [
   {
