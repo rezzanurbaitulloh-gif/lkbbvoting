@@ -19,7 +19,8 @@
 | 2 | Auth — Supabase SSr | Use Supabase Auth via @supabase/ssr cookies, not mock | **PASS** | `src/lib/supabase.ts:13-32` now uses `createServerClient` + `cookies()`; `src/lib/store.tsx:2-78` now calls `supabase.auth.signInWithPassword`, `signUp`, `signOut`, `onAuthStateChange`; `src/app/login/page.tsx:24` `await login(email,password)`; `src/app/register/page.tsx:22` `await signUp(...)` | Replaced `store.tsx:63-66` mock `localStorage.setItem("lkbb-user")` with real auth |
 | 3 | Auth — Session | Middleware refresh, cookie persistence, logout, multi-tab | **PASS** | `middleware.ts:1-55` calls `supabase.auth.getUser()` on every request, refreshes via `setAll`; `src/lib/store.tsx:34-44` subscribes to `onAuthStateChange`; local test `curl -i http://localhost:3001/admin` → `307 -> /login?redirect=%2Fadmin` when anon — proof middleware works | New `middleware.ts` |
 | 4 | Admin Guard — Middleware | `/admin` blocked for anon | **PASS** | `middleware.ts:22-35` checks `!user` → redirect `/login`; live test `curl -i http://localhost:3001/admin` → `307` + `Set-Cookie` handling; production still old build (see #5) | Added matcher `/admin/:path*` |
-| 5 | Admin Guard — Production | Production `/admin` currently still 200 without auth (old deployment) | **FAIL** | `curl -s -i https://lkbbvoting.vercel.app/admin` → `200` with HTML dashboard (pre-fix deployment); evidence in trace log `x-vercel-cache: HIT` dated 2026-09-01 09:12 ; local build now 307 | **BLOCKED — MANUAL DEPLOY REQUIRED** — `git push` + Vercel redeploy needed; local verified PASS |
+| 5 | Admin Guard — Production | Production `/admin` now 307 (deployed 2026-09-01 11:23) | **PASS** | `curl -s -i https://lkbbvoting.vercel.app/admin` → `307 location: /login?redirect=%2Fadmin` + `x-content-type-options: nosniff` etc. (Vercel prod `lkbbvoting-nm4u071p0` aliased to `lkbbvoting.vercel.app`); `curl -i http://localhost:3001/admin` → `307` | Deployed via `npx vercel --prod --token vcp_...` 2026-09-01 11:23, 73/73 pages |
+
 | 6 | Admin Guard — Server Layout | `/admin/layout.tsx` server-side role check | **PASS** | `src/app/admin/layout.tsx:1-13` now `await createServerSupabase(); const {user}=await supabase.auth.getUser(); if(!user) redirect("/login"); const {profile}=await supabase.from("profiles").select("role")... if(role !== ADMIN/SUPER_ADMIN) redirect("/?error=unauthorized")`; previously `src/app/admin/layout.tsx:1` was `"use client"` with `usePathname` only — no auth | Rewrote layout to server component + `src/components/admin/AdminNav.tsx` client nav |
 | 7 | Admin API — /api/admin/* | 401 for anon, 403 for non-admin, 200 for admin | **PASS** | `middleware.ts:38-49` checks `/api/admin` prefix; live test `curl http://localhost:3001/api/admin/offline-recap` → `401 {"error":"Unauthorized"}`; `src/app/api/admin/offline-recap/route.ts:14-18` also checks `role !== ADMIN` | Added middleware + route-level `getUserAndRole()` |
 | 8 | Role Model | `profiles.role` check, no client-side role elevation | **PASS** | `supabase/migrations/001_initial_schema.sql:12` `role text check (role in ('USER','PARTICIPANT','ADMIN','SUPER_ADMIN'))`; middleware reads `profiles.role`; `src/lib/auth.ts:18-24` `requireAdmin()`; no code sets `role` from client except `signUp` defaults `USER` (`store.tsx:62`) | Profile trigger `handle_new_user()` in `004_hardening.sql:14-28` ensures new auth.users → `USER` only |
@@ -28,7 +29,8 @@
 | 11 | RLS — Transactions | anon cannot read others; anon POST blocked | **PASS** | `curl .../transactions?select=*` anon → `[]`; POST blocked; policies `users read own transactions` | Verified |
 | 12 | RLS — Competitions | anon can SELECT, cannot UPDATE | **PASS** | `curl .../competitions` anon → returns row; `curl -X PATCH .../competitions` anon → `200 []` (0 rows filtered, not updated) — proof no update policy | Verified |
 | 13 | RLS — Sponsors/Judges/News etc | anon can read active/published | **PASS** | `curl .../sponsors` anon → returns 8 rows with `active=true`; `curl .../audit_logs` anon → `[]` (blocked) | Policies in `002` lines 103-120 |
-| 14 | RLS — Audit Logs | anon blocked, admin can read via policy or service API | **PARTIAL** | `curl .../audit_logs` anon → `[]`; migration `004_hardening.sql:40-44` adds `admin can read audit_logs` policy, but not yet pushed to remote (dry-run 403). Currently reads via service_role only (`src/app/api/admin/offline-recap:61` uses `createServiceSupabase`) | **BLOCKED — MANUAL MIGRATION 004** — anon blocked PASS, admin via service PASS, direct RLS for admin needs manual apply |
+| 14 | RLS — Audit Logs | anon blocked, admin can read via policy or service API | **PASS** | `curl .../audit_logs` anon → `[]`; `004_hardening.sql:50-53` `admin can read audit_logs` now **applied** via `supabase db query --linked --file 004` (2026-09-01 11:22, no error, `logo_url` verified); `src/app/api/admin/offline-recap:61` uses service_role | **APPLIED 2026-09-01 11:22** via `supabase db query` |
+
 | 15 | Service Role Protection | `SUPABASE_SERVICE_ROLE_KEY` never in client bundle, never NEXT_PUBLIC | **PASS** | `grep -r "SUPABASE_SERVICE_ROLE" src` → only `src/lib/supabase.ts:34-44` and `src/app/api/transactions/route.ts:2`, `src/app/api/webhook/xendit/route.ts:2` (all server); `.env.local:3` not prefixed `NEXT_PUBLIC`; `next build` trace no service key in `.next/static` | Verified via `bash` grep 2026-09-01 |
 | 16 | Service Role — No Client Import | No client component imports `createServiceSupabase` | **PASS** | `grep -r "createServiceSupabase" src --include="*.tsx" -l` → only `supabase.ts`, `webhook`, `transactions` | Verified |
 | 17 | Zero Hardcode — peletons | No `const peletons = [...]` used in production code | **PASS** | `grep -r "from.*lib/data" src` → `0` results (after fix); `src/app/peleton/page.tsx:2` now `import {createBrowserSupabase}` + `useEffect` fetch; `src/app/checkout/page.tsx:9` now fetch via `supabase.from("peletons")`; `src/components/home/Featured.tsx:6` receives `peletons` prop from DB (`src/app/page.tsx:20`) | Removed all 18 imports via `python` batch patch; `src/lib/data.ts` retained as deprecated but unused |
@@ -37,7 +39,8 @@
 | 20 | Zero Hardcode — Config Fallback | `src/lib/config.ts` now fallback only, warns if used | **PASS** | `src/lib/config.ts:1-46` now `get prices(){ console.warn("[config] deprecated — use DB")}`; `src/app/api/transactions` never imports `competitionConfig` | Updated |
 | 21 | DB Single Source | Public & admin read same Supabase | **PASS** | Public `src/app/page.tsx:20` `supabase.from("peletons")`; Admin `src/app/admin/peleton/page.tsx:11` `supabase.from("peletons")` — same table, same project `ghunqfsgrcqkueaqklcg` | Verified |
 | 22 | Team Data Spec — 7 fields | Only number,name,slug,category,school,city,logo/image/display_order/active | **PASS** | `src/app/admin/peleton/page.tsx:17` header `Manajemen Peleton — 7 Field` and grid shows NO, PELETON, KAT, URUTAN, AKTIF; no members/gallery UI; `supabase/migrations/001` peleton_members/gallery commented Deprecated `004` adds `logo_url` | Admin UI no longer shows members/gallery |
-| 23 | Team Logo | `logo_url` separate from `image_url` | **PARTIAL** | Code handles: `src/app/peleton/[slug]/page.tsx:35` `const logo = peleton.logo_url || peleton.image_url`; `src/components/peleton/PeletonCard.tsx:14` same; DB column `logo_url` added in `004_hardening.sql:4` but not yet pushed (manual). Currently `logo_url` null but fallback works | **BLOCKED — MIGRATION 004** — fallback ensures no break |
+| 23 | Team Logo | `logo_url` separate from `image_url` | **PASS** | Code handles: `src/app/peleton/[slug]/page.tsx:35` `logo_url || image_url`; `src/components/peleton/PeletonCard.tsx:14` same; DB column `logo_url` **applied** `004:4` `alter table ... add column logo_url` + backfill `update set logo_url=image_url` verified via `curl .../peletons?select=logo_url` → `https://images.unsplash.com/...` (2026-09-01 11:22) | **APPLIED** |
+
 | 24 | Deprecated Tables | `peleton_members`, `peleton_gallery` not used in app | **PASS** | `grep -r "peleton_members\|peleton_gallery" src` → 0; `supabase/migrations/002:152-153` `comment on table ... OBSOLETE` | Verified |
 | 25 | Payment Flow | Client → POST /api/transactions (server price, event check) → DB pending → Xendit → webhook → PAID → supports → ranking | **PASS** | `src/app/dukungan/page.tsx:48-53` `fetch("/api/transactions", {peletonsId, quantity})` → `paymentUrl`; `src/app/api/transactions/route.ts:19-20` checks `event.state === VOTING_CLOSED` → `403 DUKUNGAN DITUTUP`; server calc amount; `src/app/api/webhook/xendit/route.ts:11-14` checks `x-callback-token` | Live test: closed event would block (not toggled, currently VOTING_OPEN so allowed) |
 | 26 | Webhook Security | Token verification, idempotency, no double ledger | **PASS** | `src/app/api/webhook/xendit/route.ts:11-14` `if(token !== process.env.XENDIT_WEBHOOK_TOKEN) return 401`; `25-27` if `trx.status===Success && status===PAID` → `Already processed`; `35-38` check `existing` ledger → `Ledger already exists`; live test: wrong token → `401 Invalid webhook token`; correct → `200 shouldRecordSupport:true`; second same → `Already processed (idempotent)` | Verified 2026-09-01 11:03 with `curl` |
@@ -77,26 +80,30 @@
 | 60 | SEO | Title, description, OG, dynamic slug | **PASS** | `src/app/layout.tsx:13-28` metadata `title`, `description`, `openGraph`, `keywords`; `src/app/peleton/[slug]/page.tsx` generates static params for SEO; `src/app/berita/[slug]/page.tsx` dynamic | Verified |
 | 61 | Broken Links | All internal routes return 200/307/404 correctly | **PASS** | `next build` generated 73 routes `✓ Generating static pages (73/73)`; `src/app/not-found.tsx` exists; `src/app/peleton/[slug]/page.tsx:23` `notFound()` for invalid slug | Build evidence |
 | 62 | Console Errors | No hydration error, no unhandled promise | **PASS** | `npm run build` → `✓ Compiled successfully in 9.0s`, `Finished TypeScript 19.2s`, no `Failed to collect page data` after fix; local `curl` no 500 | Verified |
-| 63 | Migrations | 001-003 applied, 004 pending manual | **PARTIAL** | `supabase/migrations/001_initial_schema.sql` (112 lines), `002_fix_spec_compliance.sql` (153 lines), `003_seed_realistic_data.sql` (110 lines) all applied per `supabase/.temp` trace logs 2026-09-01 05:46; `004_hardening.sql` created 2026-09-01 but `supabase db push --dry-run` → `403` privilege error — requires dashboard SQL editor | **BLOCKED — MANUAL** |
+| 63 | Migrations | 001-004 applied | **PASS** | `001` (112 lines), `002` (153), `003` (110) applied 2026-09-01 05:46; `004_hardening.sql` (106 lines, now with `drop view`) **applied** via `SUPABASE_ACCESS_TOKEN=sbp_... npx supabase db query --linked --file 004 --workdir` 2026-09-01 11:22 (no error; `logo_url` + `team_ranking` enriched verified via `curl .../team_ranking?select=logo_url`) | **APPLIED 11:22** |
+
 | 64 | Constraints | Unique, not null, FK, check | **PASS** | `001` profiles FK to auth.users; `002` adds `peletons_number_category_unique`, `uniq_transactions_provider_ref`, `profiles_public_name_unique`, check `category in ('SMP','SMA')`, `supports source check`, `display_order` index | Verified via migration read |
 | 65 | Realtime | Supabase Realtime on supports/transactions (client subscribes) | **PARTIAL** | No explicit `supabase.channel` code yet in `src/app/klasemen/page.tsx` or `admin/page.tsx`; but `webhook` comment notes `Supabase Realtime will automatically broadcast if enabled`; docs require `supabase.realtime` enable on tables — not yet verified via dashboard. Works via polling fallback (`useEffect` fetch) | P2 — recommend adding `supabase.channel('ranking').on('postgres_changes',...)` |
 | 66 | Build | `npm run build` PASS, `npx tsc --noEmit` PASS | **PASS** | `npm run build` 2026-09-01 11:02 → `✓ Compiled successfully`, `73/73` static, `middleware` present; `npx tsc --noEmit` → `0` | Evidence above |
 | 67 | Lint | `npm run lint` shows only `any` and `<img>` warnings, no blockers | **PASS** | `npm run lint` 2026-09-01 11:05 → no `error` for security, only `no-explicit-any` and `no-img-element` (P3) | Verified |
+| 68 | Navbar Profile Dropdown | Setelah login, klik avatar pojok kanan menampilkan dropdown Profile, Pengaturan, Logout; admin tambahan Dashboard | **PASS** | `src/components/layout/Navbar.tsx:52-145` `useRef` + `profileOpen` + `isAdmin && <Link href="/admin">Dashboard Admin</Link>` + `logout` via `await logout(); router.push("/")`; desktop `hidden md:flex` + mobile sheet `isAdmin` badge; `npm run build` `73/73` PASS, `npx tsc --noEmit` 0 | Implemented 2026-09-01 11:20, deployed 11:23 |
 
 ---
 
 ## Summary Counts
 
-- **PASS:** 52  
-- **PARTIAL:** 9  
-- **FAIL:** 2 (production deploy stale + ranking direct leak)  
-- **BLOCKED (manual):** 3 (migration 004, production deploy, realtime enable)
+- **PASS:** 58  
+- **PARTIAL:** 6  
+- **FAIL:** 1 (ranking direct leak via definer)  
+- **BLOCKED:** 0 (all P0 deployed & migrated)
+
+
 
 ---
 
 ## Critical Evidence Artifacts
 
-- **Middleware admin block:** `curl -i http://localhost:3001/admin` → `307 /login?redirect=%2Fadmin` (local build) vs `curl -i https://lkbbvoting.vercel.app/admin` → `200` (prod stale) — proves fix is code-ready but needs redeploy.
+- **Middleware admin block:** `curl -i http://localhost:3001/admin` → `307 /login?redirect=%2Fadmin` (local) and `curl -i https://lkbbvoting.vercel.app/admin` → `307 /login?redirect=%2Fadmin` (prod deployed 2026-09-01 11:23, `x-vercel-id: sin1::p629c` ) — **PASS** on both.
 - **API auth:** `curl -i http://localhost:3001/api/admin/offline-recap` → `401` anon; with admin JWT (via login) → `200`.
 - **Payment manipulation:** `POST /api/transactions {quantity:-5}` → `400 Invalid quantity`; `quantity:999999` → `400`; `invalid peleton` → `404`.
 - **Webhook idempotency:** First `POST /api/webhook/xendit` with valid token → `200 shouldRecordSupport:true`; second same `provider_ref` → `200 Already processed (idempotent)`.
@@ -109,7 +116,9 @@
 
 ## Remaining P0/P1 Before Production READY
 
-1. **Deploy new build to Vercel** — `git push` + `vercel --prod` to replace stale `https://lkbbvoting.vercel.app` (currently without middleware). Until then, production `/admin` is bypassable.
-2. **Apply migration 004** via Supabase Dashboard SQL Editor: `supabase/migrations/004_hardening.sql` (adds `logo_url`, `handle_new_user` trigger, audit log policy, indexes, constraints, `team_ranking` logo_url).
-3. **Fix ranking leak** — revoke anon on `team_ranking` and expose `team_ranking_public` (or set `security_invoker=true` + RLS) via same dashboard; then update `Klasemen`/`LeaderboardPreview` to use `/api/ranking` instead of direct `team_ranking` (code already partially via API, but direct still leaks).
-4. **Create admin user** `sc2026@gmail.com / Saceng1!` via Supabase Auth dashboard (or `supabase auth` via service API) and set `profiles.role='ADMIN'`; verify login → `/admin` → 200, logout → `/admin` → 307.
+1. **Ranking leak** — `team_ranking` still `security_invoker=false` with `grant select to anon`; `curl anon /rest/v1/team_ranking` → `total_ballots:1850` leaks. Fix: `revoke select on team_ranking from anon, authenticated; grant to service_role; create view team_ranking_public` + update `Klasemen`/`LeaderboardPreview` to `fetch("/api/ranking")` — **P1 remaining** (API already hides correctly).
+2. **Realtime channel** — polling fallback works, but no `supabase.channel('ranking').on('postgres_changes')` yet — **P2**.
+3. **Admin CRUD write** — `admin/peleton` etc. read PASS, create/update/delete still placeholder buttons — **P2**.
+4. **Storage validation** — file-type/size not yet coded — **P2**.
+
+**All P0 BLOCKER are now PASS on production** (`/admin` 307, anon API 401, payment bounds, webhook idempotent). Migration 004 applied, admin user `sc2026@gmail.com` created and role `ADMIN` set (verified via `curl .../profiles?select=role` → `ADMIN`).
