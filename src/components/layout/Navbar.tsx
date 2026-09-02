@@ -110,24 +110,24 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                     <div className="text-xs text-muted-foreground truncate">{currentUser.email}</div>
                     {isAdmin && <div className="mt-1 inline-flex rounded-full bg-gold px-2 py-0.5 text-[10px] font-black tracking-widest text-gold-foreground">ADMIN</div>}
                   </div>
-                  <div className="p-1.5 space-y-1">
-                    <Link href="/profile" onClick={()=> setProfileOpen(false)} className="flex w-full items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-muted transition-colors text-center">
+                  <div className="p-1.5 space-y-1 flex flex-col items-center">
+                    <Link href="/profile" onClick={()=> setProfileOpen(false)} className="flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-muted transition-colors text-center">
                       <User className="h-4 w-4 text-muted-foreground shrink-0" /> <span>Profile</span>
                     </Link>
-                    <Link href="/profile/edit" onClick={()=> setProfileOpen(false)} className="flex w-full items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-muted transition-colors text-center">
+                    <Link href="/profile/edit" onClick={()=> setProfileOpen(false)} className="flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-muted transition-colors text-center">
                       <Settings className="h-4 w-4 text-muted-foreground shrink-0" /> <span>Pengaturan</span>
                     </Link>
                     {isAdmin && (
-                      <Link href="/admin" onClick={()=> setProfileOpen(false)} className="flex w-full items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-bold hover:bg-muted transition-colors text-center">
+                      <Link href="/admin" onClick={()=> setProfileOpen(false)} className="flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-bold hover:bg-muted transition-colors text-center">
                         <LayoutDashboard className="h-4 w-4 text-gold shrink-0" /> <span>Dashboard Admin</span>
                       </Link>
                     )}
                   </div>
                   <div className="h-px bg-border" />
-                  <div className="p-1.5">
+                  <div className="p-1.5 flex flex-col items-center">
                     <button
                       onClick={async ()=>{ setProfileOpen(false); await logout(); router.push("/"); router.refresh() }}
-                      className="flex w-full items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors text-center"
+                      className="flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors text-center"
                     >
                       <LogOut className="h-4 w-4 shrink-0" /> <span>Logout</span>
                     </button>
@@ -159,16 +159,16 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                   </div>
                 </div>
               </SheetHeader>
-              <nav className="flex-1 overflow-y-auto p-4 grid gap-1">
+              <nav className="flex-1 overflow-y-auto p-4 grid gap-1 place-items-center">
                 {nav.map(item=> (
-                  <Link key={item.href} href={item.href} onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-center", pathname===item.href || (item.href!=="/" && pathname.startsWith(item.href + "/")) ? "bg-secondary" : "hover:bg-muted")}>
+                  <Link key={item.href} href={item.href} onClick={()=>setOpen(false)} className={cn("flex w-[200px] max-w-[90%] mx-auto items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-center", pathname===item.href || (item.href!=="/" && pathname.startsWith(item.href + "/")) ? "bg-secondary" : "hover:bg-muted")}>
                     {item.label}
                   </Link>
                 ))}
-                <div className="h-px bg-border my-2" />
+                <div className="h-px bg-border my-2 w-full" />
                 {currentUser ? (
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-3 rounded-xl bg-muted p-3">
+                  <div className="space-y-1 w-full flex flex-col items-center">
+                    <div className="flex items-center gap-3 rounded-xl bg-muted p-3 w-full">
                       <div className="h-10 w-10 rounded-full bg-foreground text-background grid place-items-center text-sm font-black">
                         {currentUser.name.slice(0,2).toUpperCase()}
                       </div>
@@ -178,10 +178,10 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                       </div>
                       {isAdmin && <span className="ml-auto rounded-full bg-gold px-2 py-0.5 text-[10px] font-black text-gold-foreground">ADMIN</span>}
                     </div>
-                    <Link href="/profile" onClick={()=>setOpen(false)} className="flex w-full items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-medium hover:bg-muted text-center"><User className="h-4 w-4 text-muted-foreground shrink-0"/> <span>Profile</span></Link>
-                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className="flex w-full items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-medium hover:bg-muted text-center"><Settings className="h-4 w-4 text-muted-foreground shrink-0"/> <span>Pengaturan</span></Link>
-                    {isAdmin && <Link href="/admin" onClick={()=>setOpen(false)} className="flex w-full items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-bold hover:bg-muted text-center"><LayoutDashboard className="h-4 w-4 text-gold shrink-0"/> <span>Dashboard Admin</span></Link>}
-                    <button onClick={async ()=>{ setOpen(false); await logout(); router.push("/"); router.refresh() }} className="flex w-full items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-600 hover:bg-red-50 text-center"><LogOut className="h-4 w-4 shrink-0"/> <span>Logout</span></button>
+                    <Link href="/profile" onClick={()=>setOpen(false)} className="flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-medium hover:bg-muted text-center"><User className="h-4 w-4 text-muted-foreground shrink-0"/> <span>Profile</span></Link>
+                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className="flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-medium hover:bg-muted text-center"><Settings className="h-4 w-4 text-muted-foreground shrink-0"/> <span>Pengaturan</span></Link>
+                    {isAdmin && <Link href="/admin" onClick={()=>setOpen(false)} className="flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-bold hover:bg-muted text-center"><LayoutDashboard className="h-4 w-4 text-gold shrink-0"/> <span>Dashboard Admin</span></Link>}
+                    <button onClick={async ()=>{ setOpen(false); await logout(); router.push("/"); router.refresh() }} className="flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-600 hover:bg-red-50 text-center"><LogOut className="h-4 w-4 shrink-0"/> <span>Logout</span></button>
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 gap-2">

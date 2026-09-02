@@ -101,27 +101,55 @@ export function speakRandom(text: string): Promise<void> {
       resolve()
       return
     }
-    if (!("speechSynthesis" in window)) {
+    if (!("speechSynthesis" in window) || !text || !text.trim()) {
       resolve()
       return
     }
     try {
+      // Ensure synthesis is resumed (browsers may pause)
+      try { window.speechSynthesis.resume() } catch {}
       window.speechSynthesis.cancel()
-      const utter = new SpeechSynthesisUtterance(text)
+
+      const utter = new SpeechSynthesisUtterance(text.trim())
       utter.lang = "id-ID"
       utter.rate = 0.92
       utter.pitch = 1.0
       utter.volume = 1.0
-      const voice = getRandomIndonesianVoice()
-      if (voice) utter.voice = voice
-      utter.onend = () => resolve()
-      utter.onerror = () => resolve()
-      // Some browsers need a small delay after cancel
-      setTimeout(() => {
+
+      // Try to get voices — if empty, wait for onvoiceschanged
+      const assignVoice = () => {
+        const voice = getRandomIndonesianVoice()
+        if (voice) utter.voice = voice
+      }
+      assignVoice()
+      // If no voice yet, wait a bit and retry
+      if (!utter.voice) {
+        const voices = window.speechSynthesis.getVoices()
+        if (voices.length === 0) {
+          let waited = 0
+          const iv = setInterval(() => {
+            const vs = window.speechSynthesis.getVoices()
+            if (vs.length > 0 || waited > 10) {
+              clearInterval(iv)
+              assignVoice()
+              doSpeak()
+            }
+            waited++
+          }, 100)
+          return
+        }
+      }
+      const doSpeak = () => {
+        utter.onend = () => resolve()
+        utter.onerror = () => resolve()
+        // Unlock requires user gesture — ensure we are in resumed state
+        try { window.speechSynthesis.resume() } catch {}
         window.speechSynthesis.speak(utter)
-      }, 100)
-      // Fallback resolve after 5s
-      setTimeout(resolve, 5500)
+        // Fallback resolve after 6s (longer for longer text)
+        setTimeout(resolve, 6500)
+      }
+      // Some browsers need a small delay after cancel
+      setTimeout(doSpeak, 120)
     } catch {
       resolve()
     }

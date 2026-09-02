@@ -8,6 +8,7 @@ import { BottomNav } from "@/components/layout/BottomNav"
 import { Button } from "@/components/ui/button"
 import { createBrowserSupabase } from "@/lib/supabase"
 import { CheckCircle2, Clock3, XCircle, Timer } from "lucide-react"
+import { unlockAudio, playNotificationSequenceForce } from "@/lib/sound"
 
 function CheckoutInner(){
   const sp = useSearchParams()
@@ -26,6 +27,9 @@ function CheckoutInner(){
     }
   },[slug, id])
 
+  // Ensure audio unlocked on mount (user gesture may have happened on dukungan page)
+  useEffect(()=>{ unlockAudio() },[])
+
   // Poll transaction status every 3s when pending — via Xendit-aware API (handles webhook delay)
   useEffect(()=>{
     if(!id || !trx || trx.status === "Success") return
@@ -39,6 +43,9 @@ function CheckoutInner(){
             setTrx((prev:any)=> ({...prev, status: newStatus}))
             if(newStatus === "Success" || newStatus === "PAID"){
               clearInterval(interval)
+              // Play success sound + TTS after transaction (fix: suara membaca teks hilang)
+              const peletonName = peleton?.name || "peleton"
+              playNotificationSequenceForce(`Selamat! Dukungan untuk ${peletonName} berhasil — ${trx?.supports || ""} ballot`).catch(()=>{})
             }
           }
         } else {
@@ -47,33 +54,55 @@ function CheckoutInner(){
           const { data } = await supabase.from("transactions").select("status").eq("id", id).single()
           if(data && data.status !== trx.status){
             setTrx((prev:any)=> ({...prev, status: data.status}))
-            if(data.status === "Success") clearInterval(interval)
+            if(data.status === "Success") {
+              clearInterval(interval)
+              const peletonName = peleton?.name || "peleton"
+              playNotificationSequenceForce(`Selamat! Dukungan untuk ${peletonName} berhasil`).catch(()=>{})
+            }
           }
         }
       } catch {}
     }, 3000)
     return ()=> clearInterval(interval)
-  },[id, trx])
+  },[id, trx, peleton?.name])
 
   const handleCheckStatus = async ()=>{
     if(!id) return
     setPolling(true)
+    unlockAudio()
     try {
       const res = await fetch(`/api/payment/status/${id}`)
       if(res.ok){
         const data = await res.json()
         // API returns {status, transaction}
+        const newStatus = data.status || data.transaction?.status
+        if(newStatus === "Success" || newStatus === "PAID"){
+          const peletonName = peleton?.name || "peleton"
+          playNotificationSequenceForce(`Selamat! Dukungan untuk ${peletonName} berhasil`).catch(()=>{})
+        }
         if(data.transaction) setTrx(data.transaction)
         else if(data.status) setTrx((prev:any)=> ({...prev, status: data.status}))
         else {
           const supabase = createBrowserSupabase()
           const { data } = await supabase.from("transactions").select("*").eq("id", id).single()
-          if(data) setTrx(data)
+          if(data) {
+            if(data.status === "Success"){
+              const peletonName = peleton?.name || "peleton"
+              playNotificationSequenceForce(`Selamat! Dukungan untuk ${peletonName} berhasil`).catch(()=>{})
+            }
+            setTrx(data)
+          }
         }
       } else {
         const supabase = createBrowserSupabase()
         const { data } = await supabase.from("transactions").select("*").eq("id", id).single()
-        if(data) setTrx(data)
+        if(data) {
+          if(data.status === "Success"){
+            const peletonName = peleton?.name || "peleton"
+            playNotificationSequenceForce(`Selamat! Dukungan untuk ${peletonName} berhasil`).catch(()=>{})
+          }
+          setTrx(data)
+        }
       }
     } catch {}
     setPolling(false)
