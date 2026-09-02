@@ -109,7 +109,7 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
   if (!isPublished) return null
   return (
     <section className="bg-gradient-to-b from-[#0B0C0F] via-[#0B0C0F] to-[#0B0C0F]/95 border-y border-[#C9A86A]/20 py-10 md:py-14">
-      <div className="mx-auto max-w-[1280px] px-4 md:px-6">
+      <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6">
         <div className="text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-[#C9A86A] px-3 py-1 text-xs font-black text-[#0B0C0F]">
             🏆 HASIL AKHIR — TANGGA JUARA

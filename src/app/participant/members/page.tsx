@@ -9,7 +9,7 @@ export default function MembersRemoved(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0 bg-muted/20">
-        <div className="mx-auto max-w-[640px] px-4 md:px-6 py-12">
+        <div className="mx-auto max-w-[640px] px-3 sm:px-4 md:px-6 py-12">
           <div className="rounded-[16px] border border-amber-500/20 bg-amber-500/10 p-6 text-center">
             <h1 className="text-[18px] font-black">Fitur Anggota Dihapus</h1>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Sesuai spec §8, manajemen anggota individual telah dihapus. Peleton hanya membutuhkan <b>1 foto tim + 1 logo</b>. Tidak perlu upload anggota satu per satu.</p>

@@ -109,7 +109,7 @@ function DukunganInner(){
   }
 
   return (
-    <div className="mx-auto max-w-[1080px] px-4 md:px-6 py-6 grid lg:grid-cols-[1.1fr_0.9fr] gap-6">
+    <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6 grid lg:grid-cols-[1.1fr_0.9fr] gap-6">
       <div className="space-y-4">
         <div className="rounded-[16px] border border-border bg-card overflow-hidden">
           <div className="h-2 bg-gold" />
@@ -205,7 +205,7 @@ export default function DukunganPage(){
       <Navbar />
       <main className="flex-1 bg-muted/20 pb-[72px] md:pb-0">
         <div className="border-b border-border bg-card">
-          <div className="mx-auto max-w-[1080px] px-4 md:px-6 py-4">
+          <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-4">
             <div className="label-gold">Dukung Tim</div>
             <h1 className="text-[20px] font-black tracking-tight">DUKUNG PELETON FAVORITMU</h1>
           </div>

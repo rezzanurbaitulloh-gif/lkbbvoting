@@ -69,7 +69,7 @@ export default function Page(){
     setDelTarget(null)
   }
   return (
-    <div className="p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Sponsor</h1><p className="text-sm text-muted-foreground">{list.length} data tersimpan</p></div><div className="flex gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}<Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Baru</Button></div></div>
       <div className="rounded-[16px] border border-border bg-card p-4">
         <div className="grid gap-3">

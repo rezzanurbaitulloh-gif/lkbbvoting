@@ -17,13 +17,13 @@ export default function PeraturanPage(){
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="border-b border-border bg-[#08090B] text-white">
-          <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-8">
+          <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Regulasi Resmi</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">PERATURAN KOMPETISI</h1>
             <p className="mt-2 max-w-2xl text-sm text-white/60">Harap membaca dan memahami seluruh peraturan sebelum mendaftar dan berpartisipasi.</p>
           </div>
         </div>
-        <div className="mx-auto max-w-[1080px] px-4 md:px-6 py-8 space-y-4">
+        <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-8 space-y-4">
           {sections.map(sec=> (
             <div key={sec.title} className="rounded-[16px] border border-border bg-card p-6">
               <h2 className="text-sm font-black tracking-tight">{sec.title.toUpperCase()}</h2>

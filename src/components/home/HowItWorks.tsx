@@ -11,7 +11,7 @@ const steps = [
 export function HowItWorks(){
   return (
     <section className="border-y border-border bg-surface">
-      <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-10">
+      <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-10">
         <div className="label-gold">Cara Dukung</div>
         <h2 className="mt-1 text-[18px] font-bold tracking-tight">Dukunganmu sangat berarti bagi mereka.</h2>
         <div className="mt-6 grid grid-cols-5 gap-2 md:gap-4">

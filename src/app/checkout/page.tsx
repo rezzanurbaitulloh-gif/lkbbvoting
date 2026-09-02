@@ -103,7 +103,7 @@ function CheckoutInner(){
   const Icon = config.icon
 
   return (
-    <div className="mx-auto max-w-[560px] px-4 md:px-6 py-8">
+    <div className="mx-auto max-w-[560px] px-3 sm:px-4 md:px-6 py-8">
       <div className={`rounded-[20px] border p-6 md:p-8 text-center ${config.bg}`}>
         <div className={`mx-auto h-20 w-20 rounded-full ${config.color} grid place-items-center text-white shadow-lg`}>
           <Icon className="h-10 w-10" />

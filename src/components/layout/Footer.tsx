@@ -26,24 +26,24 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
   const yt = (dynamic["social.youtube"] as string) || "#"
   const tt = (dynamic["social.tiktok"] as string) || "#"
   return (
-    <footer className="mt-auto border-t border-border bg-surface">
-      <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-10">
-        <div className="grid gap-8 md:grid-cols-[1.4fr_0.9fr_0.9fr_1fr]">
-          <div>
-            <div className="flex items-center gap-3">
-              <img src={logoMain} alt={siteName} className="h-10 w-10 rounded-xl object-cover border border-[#C9A86A30]" />
-              <div>
-                <div className="text-sm font-extrabold tracking-tight">{siteName}</div>
-                <div className="text-[11px] tracking-[0.12em] text-gold font-bold">{siteSubtitle}</div>
+    <footer className="mt-auto border-t border-border bg-surface overflow-hidden">
+      <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 sm:py-10">
+        <div className="grid gap-6 sm:gap-8 grid-cols-1 min-[360px]:grid-cols-1 sm:grid-cols-2 md:grid-cols-[1.4fr_0.9fr_0.9fr_1fr]">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <img src={logoMain} alt={siteName} className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl object-cover border border-[#C9A86A30] shrink-0" />
+              <div className="min-w-0">
+                <div className="text-[13px] sm:text-sm font-extrabold tracking-tight break-words leading-tight">{siteName}</div>
+                <div className="text-[10px] sm:text-[11px] tracking-[0.12em] text-gold font-bold">{siteSubtitle}</div>
               </div>
             </div>
-            <p className="mt-3 max-w-sm text-[13px] leading-relaxed text-muted-foreground text-pretty">
+            <p className="mt-3 max-w-sm text-[12px] sm:text-[13px] leading-relaxed text-muted-foreground text-pretty break-words">
               {siteDesc}
             </p>
-            <div className="mt-4 flex items-center gap-2">
-              <img src={logoPaskibra} alt="Paskibra" className="h-8 w-8 rounded-lg object-cover border border-border" />
-              <img src={logoSchool} alt="SMK" className="h-8 w-8 rounded-lg object-cover border border-border" />
-              <span className="text-xs text-muted-foreground">Penyelenggara: <b className="text-foreground">{organizer}</b></span>
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <img src={logoPaskibra} alt="Paskibra" className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg object-cover border border-border shrink-0" />
+              <img src={logoSchool} alt="SMK" className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg object-cover border border-border shrink-0" />
+              <span className="text-[11px] sm:text-xs text-muted-foreground break-words">Penyelenggara: <b className="text-foreground">{organizer}</b></span>
             </div>
           </div>
           <div>
@@ -79,12 +79,12 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
             </div>
           </div>
         </div>
-        <div className="hairline my-8" />
-        <div className="flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
-          <div>© 2026 LKBB JAVASOMA THE IMPRESSION. All rights reserved. — Astra Dharma Hayuning Budaya</div>
-          <div className="flex gap-4">
-            <Link href="/peraturan">Kebijakan Privasi</Link>
-            <Link href="/peraturan">Syarat & Ketentuan</Link>
+        <div className="hairline my-6 sm:my-8" />
+        <div className="flex flex-col md:flex-row items-center md:justify-between gap-3 text-[11px] sm:text-xs text-muted-foreground text-center md:text-left">
+          <div className="leading-relaxed">© 2026 LKBB JAVASOMA THE IMPRESSION. All rights reserved. — Astra Dharma Hayuning Budaya</div>
+          <div className="flex gap-3 sm:gap-4 shrink-0">
+            <Link href="/peraturan" className="hover:text-foreground whitespace-nowrap">Kebijakan Privasi</Link>
+            <Link href="/peraturan" className="hover:text-foreground whitespace-nowrap">Syarat & Ketentuan</Link>
           </div>
         </div>
       </div>

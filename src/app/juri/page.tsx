@@ -13,13 +13,13 @@ export default function JuriPage(){
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="border-b border-border bg-[#08090B] text-white">
-          <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-8">
+          <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Dewan Juri</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">JURI KOMPETEN</h1>
             <p className="mt-2 text-sm text-white/60">Penilaian objektif, profesional, dan independen oleh praktisi terbaik.</p>
           </div>
         </div>
-        <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-8">
+        <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
           <div className="grid md:grid-cols-3 gap-6">
             {judges.map(j=> (
               <div key={j.id} className="rounded-[20px] border border-border bg-card overflow-hidden">

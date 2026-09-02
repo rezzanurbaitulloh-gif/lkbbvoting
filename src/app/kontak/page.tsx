@@ -19,12 +19,12 @@ export default function KontakPage(){
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="border-b border-border bg-[#08090B] text-white">
-          <div className="mx-auto max-w-[1080px] px-4 md:px-6 py-8">
+          <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Hubungi Kami</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">KONTAK</h1>
           </div>
         </div>
-        <div className="mx-auto max-w-[1080px] px-4 md:px-6 py-6 grid lg:grid-cols-[0.9fr_1.1fr] gap-6">
+        <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6 grid lg:grid-cols-[0.9fr_1.1fr] gap-6">
           <div className="space-y-4">
             <div className="rounded-[16px] border border-border bg-card p-5">
               <h3 className="text-sm font-black">Informasi Kontak</h3>

@@ -8,12 +8,12 @@ export default function TentangPage(){
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="border-b border-border bg-[#08090B] text-white">
-          <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-8">
+          <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Tentang Kami</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">TENTANG LKBB</h1>
           </div>
         </div>
-        <div className="mx-auto max-w-[1080px] px-4 md:px-6 py-8 space-y-6">
+        <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-8 space-y-6">
           <div className="rounded-[16px] border border-border bg-card p-6 grid md:grid-cols-[1.1fr_0.9fr] gap-6 items-center">
             <div>
               <h2 className="text-[20px] font-black tracking-tight">Siapa Kami</h2>

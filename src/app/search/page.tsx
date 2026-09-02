@@ -31,7 +31,7 @@ function SearchInner(){
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="border-b border-border bg-[#08090B] text-white">
-          <div className="mx-auto max-w-[1080px] px-4 md:px-6 py-6">
+          <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6">
             <h1 className="text-[22px] font-black tracking-tight">PENCARIAN</h1>
             <div className="mt-4 relative max-w-xl">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
@@ -39,7 +39,7 @@ function SearchInner(){
             </div>
           </div>
         </div>
-        <div className="mx-auto max-w-[1080px] px-4 md:px-6 py-6">
+        <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6">
           {!hasQuery ? (
             <div className="py-10 text-center">
               <div className="text-sm font-bold">Cari peleton atau pengumuman</div>

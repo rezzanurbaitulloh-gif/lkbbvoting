@@ -15,14 +15,14 @@ export default async function TimelinePage(){
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="border-b border-border bg-[#08090B] text-white">
-          <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-8">
+          <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Jadwal Kompetisi</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em] leading-none">TIMELINE</h1>
             <p className="mt-2 max-w-xl text-sm text-white/60">Ikuti setiap tahapan LKBB Javasoma 2026 dari pendaftaran hingga pengumuman pemenang.</p>
           </div>
         </div>
 
-        <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-8">
+        <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
           {/* Desktop horizontal, mobile vertical */}
           <div className="hidden md:grid grid-cols-8 gap-3">
             {timelineStages.map(s=> (

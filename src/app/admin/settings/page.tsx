@@ -85,7 +85,7 @@ export default function SettingsPage(){
   ]
 
   return (
-    <div className="p-4 md:p-6 space-y-4 max-w-4xl">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 max-w-4xl">
       <div>
         <h1 className="text-[18px] font-black flex items-center gap-2"><Settings className="h-5 w-5"/> Pengaturan Umum Website & Hak Akses</h1>
         <p className="text-xs text-muted-foreground">Semua disimpan di database (site_settings + competitions). Tanpa edit kode manual. Tercatat di audit log. Perubahan langsung tampil.</p>

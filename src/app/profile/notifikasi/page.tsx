@@ -29,7 +29,7 @@ export default function SubProfile(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="mx-auto max-w-[1080px] px-4 md:px-6 py-6">
+        <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6">
           <Link href="/profile" className="text-xs font-semibold text-muted-foreground hover:text-foreground">← Kembali ke Profil</Link>
           <h1 className="mt-2 text-[22px] font-black tracking-tight">
             {isEdit ? "Edit Profil" : isFav ? "Peleton Favorit" : isDuk ? "Riwayat Dukungan" : "Notifikasi"}

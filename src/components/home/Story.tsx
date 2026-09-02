@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 
 export function Story({ sponsors, event }: { sponsors?: any[] | null; event?: any }){
   return (
-    <section className="mx-auto max-w-[1280px] px-4 md:px-6 py-10 md:py-14">
+    <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-10 md:py-14">
       <div className="grid lg:grid-cols-2 gap-8 items-center">
         <div>
           <div className="label-gold">Tentang LKBB</div>

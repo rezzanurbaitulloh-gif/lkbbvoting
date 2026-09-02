@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 export default async function TransaksiDetail({ params }: { params: Promise<{id:string}>}){
   const {id}=await params
   return (
-    <div className="p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4">
       <Link href="/admin/transaksi" className="text-xs font-semibold">← Kembali</Link>
       <h1 className="text-[18px] font-black">Transaksi {id}</h1>
       <div className="rounded-[16px] border border-border bg-card p-5 grid gap-2 text-sm">

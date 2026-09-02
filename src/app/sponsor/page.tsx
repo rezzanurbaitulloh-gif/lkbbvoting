@@ -15,13 +15,13 @@ export default function SponsorPage(){
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="border-b border-border bg-[#08090B] text-white">
-          <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-8">
+          <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Mitra & Sponsor</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">SPONSOR</h1>
             <p className="mt-2 text-sm text-white/60">Terima kasih kepada mitra yang mendukung terselenggaranya LKBB Javasoma 2026.</p>
           </div>
         </div>
-        <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-8 space-y-8">
+        <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 space-y-8">
           {tiers.map(tier=> {
             const list = sponsors.filter(s=>s.tier===tier)
             if(list.length===0) return null

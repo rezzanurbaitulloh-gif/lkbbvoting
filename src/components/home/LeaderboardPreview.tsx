@@ -25,7 +25,7 @@ export function LeaderboardPreview(){
     </div>
   )
   return (
-    <section className="mx-auto max-w-[1280px] px-4 md:px-6 py-10">
+    <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-10">
       <div className="flex items-end justify-between">
         <div>
           <div className="label-gold flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-gold"/>Klasemen Sementara</div>

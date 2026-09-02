@@ -22,12 +22,12 @@ export default function PengumumanPage(){
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="border-b border-border bg-[#08090B] text-white">
-          <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-8">
+          <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Informasi Resmi</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">PENGUMUMAN</h1>
           </div>
         </div>
-        <div className="mx-auto max-w-[1080px] px-4 md:px-6 py-6 space-y-3">
+        <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6 space-y-3">
           {announcements.map(a=> (
             <div key={a.id} className="rounded-[16px] border border-border bg-card p-5">
               <div className="flex flex-wrap gap-2 items-center">

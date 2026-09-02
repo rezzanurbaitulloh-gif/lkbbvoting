@@ -52,19 +52,20 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
   }
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto flex h-[64px] max-w-[1280px] items-center justify-between px-4 md:px-6">
+      <div className="mx-auto flex h-[56px] sm:h-[60px] lg:h-[64px] max-w-[1280px] items-center justify-between px-3 sm:px-4 md:px-6 gap-2">
         {/* Logo — dynamic from site_settings */}
-        <Link href="/" className="flex items-center gap-3">
-          <div className="relative h-9 w-9 overflow-hidden rounded-xl border border-[#C9A86A30] bg-[#0B0C0F] flex items-center justify-center">
+        <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="relative h-8 w-8 sm:h-9 sm:w-9 max-[320px]:h-7 max-[320px]:w-7 overflow-hidden rounded-xl border border-[#C9A86A30] bg-[#0B0C0F] flex items-center justify-center shrink-0">
             <img src={logoUrl} alt={siteName} className="h-full w-full object-cover" />
           </div>
-          <div className="hidden sm:block">
+          <div className="hidden sm:block min-w-0">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-[15px] font-extrabold tracking-[-0.02em] text-foreground">{siteName.split(" ")[0] || "LKBB"}</span>
-              <span className="text-[11px] font-bold tracking-[0.14em] text-gold">{siteSubtitle}</span>
+              <span className="text-[14px] sm:text-[15px] font-extrabold tracking-[-0.02em] text-foreground truncate">{siteName.split(" ")[0] || "LKBB"}</span>
+              <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.14em] text-gold truncate">{siteSubtitle}</span>
             </div>
-            <div className=" -mt-1 text-[10px] font-medium tracking-[0.08em] text-muted-foreground">{siteTagline}</div>
+            <div className="-mt-1 text-[9px] sm:text-[10px] font-medium tracking-[0.08em] text-muted-foreground truncate max-w-[160px]">{siteTagline}</div>
           </div>
+          <span className="sm:hidden text-[13px] font-black tracking-tight truncate max-[360px]:max-w-[90px] max-[320px]:max-w-[70px]">{siteName.split(" ")[0] || "LKBB"}</span>
         </Link>
 
         {/* Desktop nav - 4 items */}
@@ -80,12 +81,14 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           <Link href="/search" className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:bg-muted transition-colors">
             <Search className="h-4 w-4 text-muted-foreground" />
           </Link>
+          <div className="max-[320px]:scale-90 origin-center flex items-center gap-1 sm:gap-1.5">
           <SoundControl />
           <ThemeToggle />
+          </div>
           {currentUser ? (
             <div className="hidden md:flex relative" ref={profileRef}>
               <button
@@ -143,10 +146,10 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
             <Button size="sm" className="rounded-full px-5">Dukung</Button>
           </Link>
           <Sheet open={open} onOpenChange={setOpen}>
-            <Button variant="ghost" size="icon" className="lg:hidden h-9 w-9 rounded-full border border-border" onClick={()=> setOpen(true)}>
+            <Button variant="ghost" size="icon" className="lg:hidden h-8 w-8 sm:h-9 sm:w-9 rounded-full border border-border shrink-0" onClick={()=> setOpen(true)}>
               <Menu className="h-4 w-4" />
             </Button>
-            <SheetContent side="right" className="w-[320px] p-0 overflow-hidden">
+            <SheetContent side="right" className="w-[88vw] max-w-[320px] sm:w-[320px] p-0 overflow-hidden">
               <SheetHeader className="p-5 border-b text-left">
                 <div className="flex items-center gap-3">
                   <img src={logoUrl} alt={siteName} className="h-8 w-8 rounded-xl object-cover border" />
@@ -197,17 +200,17 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
         </div>
       </div>
       {/* Mobile search bar — khusus untuk cari nama tim */}
-      <div className="lg:hidden border-t border-border bg-muted/20 px-4 py-3">
+      <div className="lg:hidden border-t border-border bg-muted/20 px-3 sm:px-4 py-2.5 sm:py-3">
         <form onSubmit={handleSearchSubmit} className="relative flex items-center">
           <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
           <input
             value={mobileSearch}
             onChange={e=> setMobileSearch(e.target.value)}
             placeholder="Cari nama tim..."
-            className="h-10 w-full rounded-full border border-border bg-background pl-10 pr-12 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#C9A86A]"
+            className="h-9 sm:h-10 w-full rounded-full border border-border bg-background pl-9 sm:pl-10 pr-11 sm:pr-12 text-[13px] sm:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#C9A86A]"
           />
-          <button type="submit" aria-label="Cari" className="absolute right-1 h-8 w-8 grid place-items-center rounded-full bg-foreground text-background">
-            <Search className="h-4 w-4" />
+          <button type="submit" aria-label="Cari" className="absolute right-1 h-7 w-7 sm:h-8 sm:w-8 grid place-items-center rounded-full bg-foreground text-background">
+            <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </button>
         </form>
       </div>

@@ -117,7 +117,7 @@ export default function AdminPeleton(){
   }
 
   return (
-    <div className="p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black">Kelola Tim Peserta</h1>

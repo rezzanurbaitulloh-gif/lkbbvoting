@@ -80,7 +80,7 @@ export default async function HomePage(){
           <CmsSections key={s.id} sections={[s]} />
         ))}
         {isVotingClosed && (
-          <div className="mx-auto max-w-[1280px] px-4 md:px-6 pb-6">
+          <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 pb-6">
             <div className="rounded-xl border border-[#FACC15]/30 bg-[#FACC15]/10 p-4 text-center">
               <p className="text-xs font-bold text-[#0B0C0F]">Voting ditutup — peringkat sementara online saja. Admin sedang merekap offline.</p>
             </div>

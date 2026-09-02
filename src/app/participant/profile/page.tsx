@@ -20,7 +20,7 @@ export default function ParticipantProfile(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0 bg-muted/20">
-        <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-6">
+        <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6">
           <div className="flex flex-wrap gap-2 text-xs font-semibold">
             <Link href="/participant" className="rounded-full border border-border bg-card px-3 py-1">Overview</Link>
             <Link href="/participant/profile" className="rounded-full bg-foreground text-background px-3 py-1">Profile</Link>

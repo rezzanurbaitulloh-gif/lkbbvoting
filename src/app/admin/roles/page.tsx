@@ -5,7 +5,7 @@ const roles=[
 ]
 export default function Roles(){
   return (
-    <div className="p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4">
       <div className="flex items-center justify-between"><div><h1 className="text-[18px] font-black">Peran Pengguna</h1><p className="text-xs text-muted-foreground">Hanya 2 peran: User Biasa dan Super Admin</p></div></div>
       <div className="grid gap-3">
         {roles.map(r=> (

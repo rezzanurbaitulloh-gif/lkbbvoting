@@ -210,7 +210,7 @@ export default function CmsSectionBuilder(){
   if(!page) return <div className="p-8 text-sm">Halaman {slug} tidak ditemukan. <Link href="/admin/cms" className="underline">Kembali</Link></div>
 
   return (
-    <div className="p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4">
       <div className="flex items-center gap-2 text-xs">
         <Link href="/admin/cms" className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:bg-muted"><ArrowLeft className="h-3.5 w-3.5"/> Daftar Halaman</Link>
         <span className="text-muted-foreground">/</span>

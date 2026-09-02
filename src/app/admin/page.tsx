@@ -49,7 +49,7 @@ export default function AdminOverview(){
     return ()=>{ clearInterval(interval); supabase.removeChannel(channel) }
   },[])
   return (
-    <div className="min-h-screen bg-[#0B0C0F] text-white p-4 md:p-6 space-y-4">
+    <div className="min-h-screen bg-[#0B0C0F] text-white p-3 sm:p-4 md:p-6 space-y-4">
       {/* Header like reference */}
       <div className="flex items-center justify-between">
         <div>
@@ -62,7 +62,7 @@ export default function AdminOverview(){
         </div>
       </div>
       {/* Row 1: peserta */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 min-[360px]:grid-cols-2 lg:grid-cols-4 gap-3">
         {[
           {label:"TOTAL PESERTA", value: stats.totalTeams ?? "-", sub:"Tim", dark:true},
           {label:"SMP / SEDERAJAT", value: stats.smp ?? "-", sub:"Tim"},
@@ -77,7 +77,7 @@ export default function AdminOverview(){
         ))}
       </div>
       {/* Row 2: transaksi */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 min-[360px]:grid-cols-2 lg:grid-cols-4 gap-3">
         {[
           {label:"TOTAL TRANSAKSI", value: stats.transactions ?? "-", sub:"Transaksi"},
           {label:"ONLINE BALLOT", value: (stats.online ?? 0).toLocaleString("id-ID"), sub:"Ballot"},
@@ -98,22 +98,22 @@ export default function AdminOverview(){
             <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMP <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
             <span className="text-[10px] text-white/40">Realtime</span>
           </div>
-          <div className="mt-3">
+          <div className="mt-3 overflow-hidden">
             {podiumSmp.length===0 ? <div className="h-[180px] grid place-items-center text-xs text-white/30">Belum ada data</div> : (
-              <div className="scale-[0.85] origin-top -mx-2">
+              <div className="scale-[0.68] min-[360px]:scale-[0.75] sm:scale-[0.85] origin-top -mx-2 sm:mx-0">
                 <Podium teams={podiumSmp} />
               </div>
             )}
           </div>
         </div>
-        <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-4">
+        <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-4 overflow-hidden">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMA <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
             <span className="text-[10px] text-white/40">Realtime</span>
           </div>
-          <div className="mt-3">
+          <div className="mt-3 overflow-hidden">
             {podiumSma.length===0 ? <div className="h-[180px] grid place-items-center text-xs text-white/30">Belum ada data</div> : (
-              <div className="scale-[0.85] origin-top -mx-2">
+              <div className="scale-[0.68] min-[360px]:scale-[0.75] sm:scale-[0.85] origin-top -mx-2 sm:mx-0">
                 <Podium teams={podiumSma} />
               </div>
             )}

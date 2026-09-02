@@ -53,7 +53,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
             <img src={photo} alt="" className="h-full w-full object-cover opacity-20" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#08090B] via-[#08090B]/70 to-transparent" />
           </div>
-          <div className="relative mx-auto max-w-[1280px] px-4 md:px-6 py-8 md:py-10">
+          <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 md:py-10">
             <div className="grid lg:grid-cols-[360px_1fr] gap-6 items-end">
               <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] border border-white/10 bg-muted shadow-elevated">
                 <img src={photo} alt={peleton.name} className="h-full w-full object-cover" />
@@ -101,7 +101,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
           </div>
         </div>
 
-        <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-8 grid lg:grid-cols-[1fr_340px] gap-8">
+        <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 grid lg:grid-cols-[1fr_340px] gap-8">
           <div className="space-y-6">
             <section className="rounded-[16px] border border-border bg-card p-5">
               <h2 className="text-sm font-black tracking-tight">Tentang Peleton</h2>
