@@ -22,17 +22,32 @@ function DukunganInner(){
   const [loading, setLoading]=useState(false)
   const [error, setError]=useState("")
 
+  const [loadError, setLoadError] = useState("")
   useEffect(()=>{
     const supabase = createBrowserSupabase()
     if(slug){
-      supabase.from("peletons").select("*").eq("slug", slug).single().then(({data})=> setPeleton(data))
+      supabase.from("peletons").select("*").eq("slug", slug).single().then(({data, error})=> {
+        if(error || !data) setLoadError("Peleton tidak ditemukan. Pilih dari halaman Tim.")
+        else setPeleton(data)
+      })
     } else {
-      supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("display_order").limit(1).single().then(({data})=> setPeleton(data))
+      supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("display_order").limit(1).single().then(({data, error})=>{
+        if(error || !data) setLoadError("Belum ada peleton aktif.")
+        else setPeleton(data)
+      })
     }
     supabase.from("competitions").select("*").order("created_at", {ascending:false}).limit(1).single().then(({data})=> setEvent(data))
   },[slug])
 
-  if(!peleton) return <div className="p-8 text-center text-sm">Memuat peleton...</div>
+  if(loadError) return (
+    <div className="mx-auto max-w-[480px] px-4 py-12 text-center">
+      <div className="rounded-2xl border border-border bg-card p-6">
+        <div className="text-sm font-bold">{loadError}</div>
+        <Link href="/tim" className="mt-4 inline-flex"><Button className="rounded-full">Pilih Peleton di Tim</Button></Link>
+      </div>
+    </div>
+  )
+  if(!peleton) return <div className="p-8 text-center text-sm text-muted-foreground">Memuat peleton...</div>
 
   const onlinePrice = event?.settings?.online_price ?? 3000
   const total = qty * onlinePrice

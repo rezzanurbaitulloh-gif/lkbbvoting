@@ -1,18 +1,16 @@
 "use client"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Users, ShieldCheck, Ticket, CreditCard, Trophy, Newspaper, Megaphone, Images, Calendar, Star, Handshake, HelpCircle, Settings, ScrollText, UserCog } from "lucide-react"
+import { LayoutDashboard, Users, Ticket, CreditCard, Trophy, Newspaper, Megaphone, Calendar, Star, Handshake, HelpCircle, Settings, ScrollText, UserCog } from "lucide-react"
 
 const nav = [
   { href:"/admin", label:"Dashboard", icon: LayoutDashboard },
   { href:"/admin/peleton", label:"Peleton", icon: Users },
-  { href:"/admin/verifikasi", label:"Verifikasi", icon: ShieldCheck },
   { href:"/admin/dukungan", label:"Dukungan", icon: Ticket },
   { href:"/admin/transaksi", label:"Transaksi", icon: CreditCard },
   { href:"/admin/klasemen", label:"Klasemen", icon: Trophy },
   { href:"/admin/berita", label:"Berita", icon: Newspaper },
   { href:"/admin/pengumuman", label:"Pengumuman", icon: Megaphone },
-  { href:"/admin/galeri", label:"Galeri", icon: Images },
   { href:"/admin/timeline", label:"Timeline", icon: Calendar },
   { href:"/admin/juri", label:"Juri", icon: Star },
   { href:"/admin/sponsor", label:"Sponsor", icon: Handshake },

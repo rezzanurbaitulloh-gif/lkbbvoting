@@ -26,10 +26,8 @@ export default function Detail(){
             <div className="flex justify-between"><span className="text-muted-foreground">Kategori</span><span className="font-bold">{p.category}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Status</span><span className={`rounded-full px-2 py-1 text-xs font-bold ${p.status==="Verified"?"bg-emerald-500 text-white":"bg-amber-500 text-white"}`}>{p.status}</span></div>
           </div>
-          <div className="flex gap-2">
-            <Button className="rounded-full flex-1">Verifikasi</Button>
-            <Button variant="outline" className="rounded-full flex-1">Tolak</Button>
-          </div>
+          <div className="rounded-xl bg-muted p-3 text-xs text-muted-foreground">Peleton ini otomatis terverifikasi — tidak perlu aksi verifikasi lagi.</div>
+          <Link href="/admin/peleton"><Button variant="outline" className="rounded-full w-full">Kembali ke Daftar</Button></Link>
         </div>
       </div>
     </div>

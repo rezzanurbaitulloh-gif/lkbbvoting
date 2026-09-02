@@ -46,14 +46,15 @@ export async function GET() {
   const online = (supports.data || []).filter((x: any) => x.source === "online").reduce((a: any, b: any) => a + b.supports, 0)
   const offline = total - online
 
-  // Build chart data for last 5 days (online vs offline)
+  // Build chart data for last 5 days (online vs offline) — use WIB date for label consistency
   const chartMap = new Map<string, { date: string; label: string; online: number; offline: number }>()
   const now = new Date()
   for (let i = 4; i >= 0; i--) {
     const d = new Date(now)
     d.setDate(now.getDate() - i)
-    const key = d.toISOString().slice(0, 10) // YYYY-MM-DD
-    const label = d.toLocaleDateString("id-ID", { day: "2-digit", month: "short" }) // e.g. 20 Okt
+    const key = d.toISOString().slice(0, 10) // UTC key for grouping
+    // WIB label: use Jakarta time
+    const label = d.toLocaleDateString("id-ID", { day: "2-digit", month: "short", timeZone: "Asia/Jakarta" })
     chartMap.set(key, { date: key, label, online: 0, offline: 0 })
   }
   for (const row of (chartSupports.data || []) as any[]) {
@@ -66,7 +67,7 @@ export async function GET() {
     }
   }
   const chartData = Array.from(chartMap.values())
-  const maxVal = Math.max(1, ...chartData.map(c => Math.max(c.online, c.offline)))
+  const maxVal = Math.max(1, ...chartData.map(c => (c.online + c.offline) || Math.max(c.online, c.offline)))
 
   return NextResponse.json({
     totalTeams: peletons.count ?? 0,

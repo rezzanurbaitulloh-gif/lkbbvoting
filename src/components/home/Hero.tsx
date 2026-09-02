@@ -1,8 +1,8 @@
 "use client"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { CaraDukungDialog } from "./CaraDukungDialog"
 
 function useCountdown(target: string){
   const [diff, setDiff] = useState({days:0,hours:0,minutes:0,seconds:0})
@@ -27,6 +27,7 @@ function useCountdown(target: string){
 export function Hero({ event }: { event: any }){
   const votingEnd = event?.voting_end || "2026-10-24T23:59:59+07:00"
   const cd = useCountdown(votingEnd)
+  const [caraOpen, setCaraOpen] = useState(false)
   return (
     <section className="relative overflow-hidden bg-[#08090B] text-white">
       <div className="absolute inset-0">
@@ -64,13 +65,12 @@ export function Hero({ event }: { event: any }){
               Dukung peleton terbaik pilihanmu dan jadilah bagian dari kemeriahan LKBB tahun ini.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/peleton">
+              <Link href="/tim">
                 <Button size="lg" className="rounded-full px-6 h-[42px] bg-[#C9A86A] text-[#0B0C0F] hover:bg-[#C4A06A] font-black tracking-wide">LIHAT PESERTA</Button>
               </Link>
-              <Link href="/#cara-dukung">
-                <Button variant="outline" size="lg" className="rounded-full px-6 h-[42px] bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white backdrop-blur">CARA DUKUNG</Button>
-              </Link>
+              <Button onClick={()=> setCaraOpen(true)} variant="outline" size="lg" className="rounded-full px-6 h-[42px] bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white backdrop-blur">CARA DUKUNG</Button>
             </div>
+            <CaraDukungDialog open={caraOpen} onOpenChange={setCaraOpen} />
           </div>
         </div>
         {/* Countdown bar like reference */}

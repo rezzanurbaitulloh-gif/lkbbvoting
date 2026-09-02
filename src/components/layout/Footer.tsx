@@ -35,7 +35,7 @@ export function Footer(){
               <li><Link href="/" className="hover:text-foreground text-muted-foreground">Beranda</Link></li>
               <li><Link href="/tim" className="hover:text-foreground text-muted-foreground">Tim</Link></li>
               <li><Link href="/kompetisi" className="hover:text-foreground text-muted-foreground">Kompetisi</Link></li>
-              <li><Link href="/galeri" className="hover:text-foreground text-muted-foreground">Galeri</Link></li>
+              <li><Link href="/timeline" className="hover:text-foreground text-muted-foreground">Timeline</Link></li>
             </ul>
           </div>
           <div>

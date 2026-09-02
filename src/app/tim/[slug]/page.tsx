@@ -5,8 +5,9 @@ import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Share2, Heart, QrCode, Trophy } from "lucide-react"
+import { Share2, Trophy } from "lucide-react"
 import { createServerSupabase, createStaticSupabase } from "@/lib/supabase"
+import { ShareButtons } from "@/components/tim/ShareButtons"
 
 export const revalidate = 0
 
@@ -74,7 +75,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                   <Link href={supportUrl}><Button size="lg" className="rounded-full px-8 h-[46px] font-black">DUKUNG PELETON INI</Button></Link>
                   <Link href={profileUrl}><Button variant="outline" size="lg" className="rounded-full bg-white/10 border-white/15 text-white hover:bg-white/15 hover:text-white gap-2"><Share2 className="h-4 w-4"/> Bagikan Profil</Button></Link>
                   {showRank && <span className="inline-flex items-center rounded-full bg-[#C9A86A] px-3 py-1 text-xs font-black text-white">RANK #{rank}</span>}
-                  <Link href={supportUrl}><Button variant="ghost" size="lg" className="rounded-full bg-white/5 text-white hover:bg-white/10 hover:text-white gap-2"><QrCode className="h-4 w-4"/> Bagikan Dukungan</Button></Link>
+                  <Link href={supportUrl}><Button variant="ghost" size="lg" className="rounded-full bg-white/5 text-white hover:bg-white/10 hover:text-white gap-2"> Bagikan Dukungan</Button></Link>
                 </div>
                 <div className="mt-6 flex gap-3 max-w-lg">
                   <div className="flex-1 rounded-xl border border-white/10 bg-white/5 backdrop-blur p-3 text-center">
@@ -138,10 +139,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                   {showFinal && <div className="mt-2 inline-flex rounded-full bg-[#C9A86A] text-white px-2.5 py-1 text-[10px] font-black">HASIL FINAL</div>}
                 </div>
                 <Link href={supportUrl}><Button className="w-full rounded-full h-[44px] font-black">DUKUNG</Button></Link>
-                <div className="grid grid-cols-2 gap-2">
-                  <Button variant="outline" className="rounded-full" onClick={() => typeof window !== 'undefined' && navigator.clipboard.writeText(window.location.origin + profileUrl)}>Bagikan Profil</Button>
-                  <Button variant="outline" className="rounded-full" onClick={() => typeof window !== 'undefined' && navigator.clipboard.writeText(window.location.origin + supportUrl)}>Bagikan Dukungan</Button>
-                </div>
+                <ShareButtons profileUrl={profileUrl} supportUrl={supportUrl} />
               </div>
             </div>
           </div>

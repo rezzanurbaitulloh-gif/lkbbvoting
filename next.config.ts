@@ -14,7 +14,10 @@ const nextConfig: NextConfig = {
       { source: "/peleton/:slug*", destination: "/tim/:slug*", permanent: false },
       { source: "/klasemen", destination: "/tim", permanent: false },
       { source: "/klasemen/:path*", destination: "/tim/:path*", permanent: false },
-      { source: "/dukungan", destination: "/tim", permanent: false },
+      { source: "/galeri", destination: "/tim", permanent: false },
+      { source: "/galeri/:path*", destination: "/tim", permanent: false },
+      { source: "/admin/galeri", destination: "/admin/peleton", permanent: false },
+      { source: "/admin/verifikasi", destination: "/admin/peleton", permanent: false },
     ]
   },
   async headers() {

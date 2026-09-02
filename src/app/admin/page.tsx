@@ -94,20 +94,25 @@ export default function AdminOverview(){
           <div className="mt-3 h-[120px] flex items-end gap-1">
             {(stats.chartData || []).map((c:any)=> {
               const max = stats.chartMax || 1
-              const onlineH = max ? (c.online / max) * 100 : 0
-              const offlineH = max ? (c.offline / max) * 100 : 0
-              const hasData = c.online > 0 || c.offline > 0
+              const total = c.online + c.offline
+              const hasData = total > 0
+              const totalH = max ? (total / max) * 100 : 0
               return (
                 <div key={c.date} className="flex-1 flex flex-col gap-1">
-                  <div className="flex-1 flex flex-col justify-end gap-1">
-                    <div className="rounded-t bg-[#C9A86A] transition-all" style={{height: hasData ? `${Math.max(4, onlineH)}%` : "4%"}} title={`Online: ${c.online}`} />
-                    <div className="rounded-t bg-white/10 transition-all" style={{height: hasData ? `${Math.max(2, offlineH)}%` : "2%"}} title={`Offline: ${c.offline}`} />
+                  <div className="flex-1 flex flex-col justify-end">
+                    {/* Single bar showing total, with online portion gold, offline portion subtle on top if any */}
+                    <div className="rounded-t overflow-hidden flex flex-col justify-end" style={{height: hasData ? `${Math.max(6, totalH)}%` : "0%"}} title={`Total: ${total} (Online:${c.online} Offline:${c.offline})`}>
+                      {c.offline > 0 && <div className="bg-white/25 w-full" style={{height: `${(c.offline/total)*100}%`}} />}
+                      <div className="bg-[#C9A86A] w-full flex-1 min-h-[4px]" />
+                    </div>
+                    {hasData && <div className="text-[9px] font-bold text-center text-white/60 tabular-nums">{total}</div>}
                   </div>
-                  <div className="text-[9px] text-center text-white/30 truncate">{c.label}</div>
+                  <div className="text-[9px] text-center text-white/40 truncate">{c.label}</div>
                 </div>
               )
             })}
             {(!stats.chartData || stats.chartData.length===0) && <div className="flex-1 grid place-items-center text-[11px] text-white/30">Memuat grafik...</div>}
+            {(stats.chartData || []).length>0 && (stats.chartData || []).every((c:any)=> c.online===0 && c.offline===0) && <div className="absolute inset-0 grid place-items-center text-[11px] text-white/30">Belum ada transaksi 5 hari terakhir</div>}
           </div>
           <div className="mt-2 flex gap-3 text-[10px] text-white/40">
             <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[#C9A86A]"/> Online</span>

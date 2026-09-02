@@ -1,8 +1,12 @@
 import type { Metadata, Viewport } from "next"
-import { Plus_Jakarta_Sans } from "next/font/google"
+import { Plus_Jakarta_Sans, Geist } from "next/font/google"
 import "./globals.css"
 import { AppProvider } from "@/lib/store"
 import { RealtimeSupportNotification } from "@/components/realtime/RealtimeSupportNotification"
+import { ToastProvider } from "@/components/ui/toast"
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -35,15 +39,17 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${jakarta.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="id" className={cn("h-full", "antialiased", jakarta.variable, "font-sans", geist.variable)} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{__html: `(function(){try{var t=localStorage.getItem('lkbb-theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';var v=t&&t!=='system'?t:(t==='system'?m:'dark');if(v==='dark')document.documentElement.classList.add('dark');}catch(e){document.documentElement.classList.add('dark')}})()`}} />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-[#C9A86A]/20">
-        <AppProvider>
-          {children}
-          <RealtimeSupportNotification />
-        </AppProvider>
+        <ToastProvider>
+          <AppProvider>
+            {children}
+            <RealtimeSupportNotification />
+          </AppProvider>
+        </ToastProvider>
       </body>
     </html>
   )
