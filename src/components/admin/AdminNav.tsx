@@ -2,12 +2,15 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
-import { LayoutDashboard, Users, CreditCard, Trophy, Megaphone, Calendar, Star, Handshake, Settings, ScrollText, UserCog, Menu } from "lucide-react"
+import { LayoutDashboard, Users, CreditCard, Trophy, Megaphone, Calendar, Star, Handshake, Settings, ScrollText, UserCog, Menu, FileText, Image as ImageIcon, Shield, Layers } from "lucide-react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 
 const nav = [
   { href:"/admin", label:"Dashboard", icon: LayoutDashboard },
+  // Dynamic CMS — baru
+  { href:"/admin/cms", label:"Konten Dinamis", icon: Layers },
+  { href:"/admin/media", label:"Media Manager", icon: ImageIcon },
   { href:"/admin/peleton", label:"Peleton", icon: Users },
   { href:"/admin/transaksi", label:"Transaksi", icon: CreditCard },
   { href:"/admin/klasemen", label:"Klasemen", icon: Trophy },
@@ -16,6 +19,7 @@ const nav = [
   { href:"/admin/juri", label:"Juri", icon: Star },
   { href:"/admin/sponsor", label:"Sponsor", icon: Handshake },
   { href:"/admin/users", label:"Pengguna", icon: UserCog },
+  { href:"/admin/access", label:"Hak Akses", icon: Shield },
   { href:"/admin/settings", label:"Pengaturan", icon: Settings },
   { href:"/admin/audit-log", label:"Riwayat", icon: ScrollText },
 ]
@@ -34,8 +38,29 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           </div>
         </div>
         <nav className="flex-1 overflow-y-auto p-3 space-y-1">
-          {nav.map(item=> {
-            const active = path===item.href
+          <div className="px-2 py-1 text-[10px] font-bold tracking-widest text-muted-foreground">CMS DINAMIS</div>
+          {nav.slice(0,3).map(item=> {
+            const active = path===item.href || path.startsWith(item.href + "/")
+            return (
+              <Link key={item.href} href={item.href} className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
+                <item.icon className="h-4 w-4" /> {item.label}
+              </Link>
+            )
+          })}
+          <div className="mt-2 h-px bg-border" />
+          <div className="px-2 pt-2 pb-1 text-[10px] font-bold tracking-widest text-muted-foreground">KOMPETISI</div>
+          {nav.slice(3,10).map(item=> {
+            const active = path===item.href || path.startsWith(item.href + "/")
+            return (
+              <Link key={item.href} href={item.href} className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
+                <item.icon className="h-4 w-4" /> {item.label}
+              </Link>
+            )
+          })}
+          <div className="mt-2 h-px bg-border" />
+          <div className="px-2 pt-2 pb-1 text-[10px] font-bold tracking-widest text-muted-foreground">SISTEM</div>
+          {nav.slice(10).map(item=> {
+            const active = path===item.href || path.startsWith(item.href + "/")
             return (
               <Link key={item.href} href={item.href} className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
                 <item.icon className="h-4 w-4" /> {item.label}
@@ -66,7 +91,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
                 </SheetHeader>
                 <nav className="flex-1 overflow-y-auto p-3 space-y-1">
                   {nav.map(item=> {
-                    const active = path===item.href
+                    const active = path===item.href || path.startsWith(item.href + "/")
                     return (
                       <Link key={item.href} href={item.href} onClick={()=> setOpen(false)} className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
                         <item.icon className="h-4 w-4" /> {item.label}

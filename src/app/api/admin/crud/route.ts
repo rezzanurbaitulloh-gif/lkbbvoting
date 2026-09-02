@@ -20,16 +20,18 @@ async function requireAdmin(){
   const { data: { user } } = await supabase.auth.getUser()
   if(!user) return { ok:false as const, status:401 }
   const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single()
-  if(profile?.role !== "ADMIN" && profile?.role !== "SUPER_ADMIN") return { ok:false as const, status:403 }
-  return { ok:true as const, user }
+  if(profile?.role !== "ADMIN" && profile?.role !== "SUPER_ADMIN" && profile?.role !== "EDITOR") return { ok:false as const, status:403 }
+  // EDITOR hanya boleh peletons/sponsors/judges/timeline; SUPER_ADMIN/ADMIN boleh semua — cek di handler
+  return { ok:true as const, user, role: profile?.role }
 }
 
 export async function POST(req: Request){
-  const auth = await requireAdmin()
+  const auth = await requireAdmin() as any
   if(!auth.ok) return NextResponse.json({ error:"Unauthorized" }, { status: auth.status })
   const body = await req.json()
   const { table, data } = body
   if(!ALLOWED_TABLES.includes(table)) return NextResponse.json({ error:"Table not allowed" }, { status:400 })
+  if(auth.role==="EDITOR" && ["profiles","audit_logs"].includes(table)) return NextResponse.json({ error:"Forbidden — EDITOR tidak boleh kelola "+table }, { status:403 })
   const service = createServiceSupabase()
   // For peletons, force verified
   if(table==="peletons"){
@@ -44,11 +46,12 @@ export async function POST(req: Request){
 }
 
 export async function PATCH(req: Request){
-  const auth = await requireAdmin()
+  const auth = await requireAdmin() as any
   if(!auth.ok) return NextResponse.json({ error:"Unauthorized" }, { status: auth.status })
   const body = await req.json()
   const { table, id, data } = body
   if(!ALLOWED_TABLES.includes(table) || !id) return NextResponse.json({ error:"Invalid" }, { status:400 })
+  if(auth.role==="EDITOR" && ["profiles","audit_logs"].includes(table)) return NextResponse.json({ error:"Forbidden — EDITOR tidak boleh kelola "+table }, { status:403 })
   const service = createServiceSupabase()
   const { data: updated, error } = await service.from(table).update(data).eq("id", id).select().single()
   if(error) return NextResponse.json({ error: error.message }, { status:500 })
@@ -57,12 +60,13 @@ export async function PATCH(req: Request){
 }
 
 export async function DELETE(req: Request){
-  const auth = await requireAdmin()
+  const auth = await requireAdmin() as any
   if(!auth.ok) return NextResponse.json({ error:"Unauthorized" }, { status: auth.status })
   const { searchParams } = new URL(req.url)
   const table = searchParams.get("table")
   const id = searchParams.get("id")
   if(!table || !id || !ALLOWED_TABLES.includes(table)) return NextResponse.json({ error:"Invalid" }, { status:400 })
+  if(auth.role==="EDITOR" && ["profiles","audit_logs"].includes(table)) return NextResponse.json({ error:"Forbidden — EDITOR tidak boleh hapus "+table }, { status:403 })
   const service = createServiceSupabase()
   const { error } = await service.from(table).delete().eq("id", id)
   if(error) return NextResponse.json({ error: error.message }, { status:500 })

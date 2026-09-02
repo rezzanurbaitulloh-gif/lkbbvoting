@@ -21,8 +21,28 @@ export async function getServerUser(): Promise<{ user: AuthUser | null; supabase
 export async function requireAdmin() {
   const { user, supabase } = await getServerUser()
   if (!user) return { authorized: false as const, status: 401, error: "Unauthorized", supabase, user: null }
-  if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
+  if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN" && user.role !== "EDITOR") {
     return { authorized: false as const, status: 403, error: "Forbidden — admin required", supabase, user }
+  }
+  return { authorized: true as const, supabase, user }
+}
+
+export async function requirePermission(permission: string) {
+  const { user, supabase } = await getServerUser()
+  if (!user) return { authorized: false as const, status: 401 as const, error: "Unauthorized", supabase, user: null }
+  if (user.role === "SUPER_ADMIN") return { authorized: true as const, supabase, user }
+  // check role_permissions override, fallback to defaults via RBAC
+  const { hasPermission } = await import("./rbac")
+  // try DB override
+  try {
+    const { data: rolePerm } = await supabase.from("role_permissions").select("granted").eq("role", user.role).eq("permission_key", permission).single()
+    if (rolePerm) {
+      if (!rolePerm.granted) return { authorized: false as const, status: 403 as const, error: "Forbidden — missing permission", supabase, user }
+      return { authorized: true as const, supabase, user }
+    }
+  } catch {}
+  if (!hasPermission(user.role, permission as any)) {
+    return { authorized: false as const, status: 403 as const, error: "Forbidden — missing permission", supabase, user }
   }
   return { authorized: true as const, supabase, user }
 }

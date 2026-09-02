@@ -18,7 +18,7 @@ const nav = [
   { href: "/profile", label: "Profile" },
 ]
 
-export function Navbar() {
+export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } = {}) {
   const pathname = usePathname()
   const router = useRouter()
   const [open, setOpen] = useState(false)
@@ -26,6 +26,15 @@ export function Navbar() {
   const [mobileSearch, setMobileSearch] = useState("")
   const { currentUser, isAdmin, logout } = useApp()
   const profileRef = useRef<HTMLDivElement>(null)
+  const [dynamicSettings, setDynamicSettings] = useState<Record<string, any>>(siteSettings || {})
+  useEffect(()=>{
+    if(siteSettings && Object.keys(siteSettings).length>0) { setDynamicSettings(siteSettings); return }
+    fetch("/api/cms/settings").then(r=> r.json()).then(j=> { if(j.settings) setDynamicSettings(j.settings) }).catch(()=>{})
+  },[siteSettings])
+  const siteName = (dynamicSettings["site.name"] as string) || "LKBB"
+  const siteSubtitle = (dynamicSettings["site.subtitle"] as string) || "JAVASOMA"
+  const siteTagline = (dynamicSettings["site.tagline"] as string) || "THE IMPRESSION • 2026"
+  const logoUrl = (dynamicSettings["branding.logo"] as string) || "/assets/brand/lkbb-logo.jpg"
   useEffect(()=>{
     const handler = (e: MouseEvent) => {
       if(profileRef.current && !profileRef.current.contains(e.target as Node)) setProfileOpen(false)
@@ -44,17 +53,17 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-[64px] max-w-[1280px] items-center justify-between px-4 md:px-6">
-        {/* Logo */}
+        {/* Logo — dynamic from site_settings */}
         <Link href="/" className="flex items-center gap-3">
           <div className="relative h-9 w-9 overflow-hidden rounded-xl border border-[#C9A86A30] bg-[#0B0C0F] flex items-center justify-center">
-            <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="h-full w-full object-cover" />
+            <img src={logoUrl} alt={siteName} className="h-full w-full object-cover" />
           </div>
           <div className="hidden sm:block">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-[15px] font-extrabold tracking-[-0.02em] text-foreground">LKBB</span>
-              <span className="text-[11px] font-bold tracking-[0.14em] text-gold">JAVASOMA</span>
+              <span className="text-[15px] font-extrabold tracking-[-0.02em] text-foreground">{siteName.split(" ")[0] || "LKBB"}</span>
+              <span className="text-[11px] font-bold tracking-[0.14em] text-gold">{siteSubtitle}</span>
             </div>
-            <div className=" -mt-1 text-[10px] font-medium tracking-[0.08em] text-muted-foreground">THE IMPRESSION • 2026</div>
+            <div className=" -mt-1 text-[10px] font-medium tracking-[0.08em] text-muted-foreground">{siteTagline}</div>
           </div>
         </Link>
 
@@ -140,10 +149,10 @@ export function Navbar() {
             <SheetContent side="right" className="w-[320px] p-0 overflow-hidden">
               <SheetHeader className="p-5 border-b text-left">
                 <div className="flex items-center gap-3">
-                  <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="h-8 w-8 rounded-xl object-cover border" />
+                  <img src={logoUrl} alt={siteName} className="h-8 w-8 rounded-xl object-cover border" />
                   <div>
-                    <SheetTitle className="text-sm font-black">LKBB JAVASOMA</SheetTitle>
-                    <div className="text-[11px] tracking-widest text-muted-foreground">THE IMPRESSION • 2026</div>
+                    <SheetTitle className="text-sm font-black">{siteName} {siteSubtitle}</SheetTitle>
+                    <div className="text-[11px] tracking-widest text-muted-foreground">{siteTagline}</div>
                   </div>
                 </div>
               </SheetHeader>

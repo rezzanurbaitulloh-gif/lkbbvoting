@@ -24,58 +24,81 @@ function useCountdown(target: string){
   return diff
 }
 
-export function Hero({ event }: { event: any }){
-  const votingEnd = event?.voting_end || "2026-10-24T23:59:59+07:00"
+export function Hero({ event, cms }: { event: any; cms?: any }){
+  // cms: content dari cms_sections key=hero (dynamic). Fallback ke event/ hardcode jika tidak ada
+  const cmsContent = cms?.content || {}
+  const cmsSettings = cms?.settings || {}
+  const votingEnd = event?.voting_end || cmsContent.fallbackDate || "2026-10-24T23:59:59+07:00"
   const cd = useCountdown(votingEnd)
   const [caraOpen, setCaraOpen] = useState(false)
+  const bgImage = cmsContent.backgroundImage || "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=1600&auto=format&fit=crop&q=70"
+  const logoImage = cmsContent.logoImage || "/assets/brand/lkbb-logo.jpg"
+  const eyebrow = cmsContent.eyebrow || "LKBB • JAVASOMA THE IMPRESSION"
+  const heading1 = cmsContent.headingLine1 || "PELETON"
+  const heading2 = cmsContent.headingLine2 || "TERFAVORIT"
+  const subtitle = cmsContent.subtitle || "LKBB"
+  const subtitle2 = cmsContent.subtitle2 || "JAVASOMA THE IMPRESSION"
+  const tagline = cmsContent.tagline || "ASTRA DHARMA HAYUNING BUDAYA"
+  const description = cmsContent.description || "Dukung peleton terbaik pilihanmu dan jadilah bagian dari kemeriahan LKBB tahun ini."
+  const ctaPrimaryLabel = cmsContent.ctaPrimaryLabel || "LIHAT PESERTA"
+  const ctaPrimaryLink = cmsContent.ctaPrimaryLink || "/tim"
+  const ctaSecondaryLabel = cmsContent.ctaSecondaryLabel || "CARA DUKUNG"
+  const overlayOpacity = cmsSettings.overlayOpacity ?? 0.32
+  const showLogo = cmsSettings.showLogo !== false
+  // if cms explicitly hidden, don't render (caller should handle)
+  if (cms && cms.is_visible === false) return null
   return (
     <section className="relative overflow-hidden bg-[#08090B] text-white">
       <div className="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=1600&auto=format&fit=crop&q=70" alt="" className="h-full w-full object-cover opacity-[0.32]" />
+        <img src={bgImage} alt="" className="h-full w-full object-cover" style={{ opacity: overlayOpacity }} />
         <div className="absolute inset-0 bg-gradient-to-b from-[#08090B]/30 via-[#08090B]/55 to-[#08090B]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#08090B] via-[#08090B]/80 to-transparent" />
       </div>
       {/* subtle grid */}
       <div className="absolute inset-0 opacity-[0.04]" style={{backgroundImage: `linear-gradient(#C9A86A 1px, transparent 1px), linear-gradient(90deg, #C9A86A 1px, transparent 1px)`, backgroundSize: '60px 60px'}} />
-      {/* Logo LKBB hero — sesuai permintaan pakai logo LKBB */}
-      <div className="absolute right-[4%] top-[10%] hidden lg:flex h-[380px] w-[380px] items-center justify-center opacity-95">
-        <img src="/assets/brand/lkbb-logo.jpg" alt="Logo LKBB Javasoma" className="h-[280px] w-[280px] object-contain rounded-2xl border border-white/10 shadow-elevated bg-white" />
-      </div>
-      <div className="absolute right-[6%] top-[14%] flex lg:hidden h-[120px] w-[120px] items-center justify-center opacity-90">
-        <img src="/assets/brand/lkbb-logo.jpg" alt="Logo LKBB" className="h-[90px] w-[90px] object-contain rounded-xl border border-white/10 bg-white shadow" />
-      </div>
+      {/* Logo LKBB hero */}
+      {showLogo && (
+        <>
+          <div className="absolute right-[4%] top-[10%] hidden lg:flex h-[380px] w-[380px] items-center justify-center opacity-95">
+            <img src={logoImage} alt="Logo LKBB Javasoma" className="h-[280px] w-[280px] object-contain rounded-2xl border border-white/10 shadow-elevated bg-white" />
+          </div>
+          <div className="absolute right-[6%] top-[14%] flex lg:hidden h-[120px] w-[120px] items-center justify-center opacity-90">
+            <img src={logoImage} alt="Logo LKBB" className="h-[90px] w-[90px] object-contain rounded-xl border border-white/10 bg-white shadow" />
+          </div>
+        </>
+      )}
       <div className="relative mx-auto max-w-[1280px] px-4 md:px-6">
         <div className="pt-10 md:pt-14 pb-6 md:pb-8">
           <div className="max-w-[640px]">
             <div className="inline-flex items-center gap-2">
               <span className="h-px w-8 bg-[#C9A86A]" />
-              <span className="text-[11px] font-bold tracking-[0.18em] text-[#C9A86A]">LKBB • JAVASOMA THE IMPRESSION</span>
+              <span className="text-[11px] font-bold tracking-[0.18em] text-[#C9A86A]">{eyebrow}</span>
             </div>
             <h1 className="mt-3 text-balance font-black leading-[0.85] tracking-[-0.05em]">
-              <span className="block text-[44px] md:text-[68px] lg:text-[76px] text-[#C9A86A]">PELETON</span>
-              <span className="block text-[44px] md:text-[68px] lg:text-[76px] text-[#C9A86A]">TERFAVORIT</span>
+              <span className="block text-[44px] md:text-[68px] lg:text-[76px] text-[#C9A86A]">{heading1}</span>
+              <span className="block text-[44px] md:text-[68px] lg:text-[76px] text-[#C9A86A]">{heading2}</span>
             </h1>
             <div className="mt-3">
-              <div className="text-[13px] font-bold tracking-[0.18em] text-white">LKBB</div>
-              <div className="text-[12px] font-semibold tracking-[0.12em] text-white/80">JAVASOMA THE IMPRESSION</div>
-              <div className="text-[11px] tracking-[0.14em] text-[#C9A86A] font-bold">ASTRA DHARMA HAYUNING BUDAYA</div>
+              <div className="text-[13px] font-bold tracking-[0.18em] text-white">{subtitle}</div>
+              <div className="text-[12px] font-semibold tracking-[0.12em] text-white/80">{subtitle2}</div>
+              <div className="text-[11px] tracking-[0.14em] text-[#C9A86A] font-bold">{tagline}</div>
             </div>
             <p className="mt-4 max-w-[520px] text-[13px] leading-relaxed text-white/65">
-              Dukung peleton terbaik pilihanmu dan jadilah bagian dari kemeriahan LKBB tahun ini.
+              {description}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/tim">
-                <Button size="lg" className="rounded-full px-6 h-[42px] bg-[#C9A86A] text-[#0B0C0F] hover:bg-[#C4A06A] font-black tracking-wide">LIHAT PESERTA</Button>
+              <Link href={ctaPrimaryLink}>
+                <Button size="lg" className="rounded-full px-6 h-[42px] bg-[#C9A86A] text-[#0B0C0F] hover:bg-[#C4A06A] font-black tracking-wide">{ctaPrimaryLabel}</Button>
               </Link>
-              <Button onClick={()=> setCaraOpen(true)} variant="outline" size="lg" className="rounded-full px-6 h-[42px] bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white backdrop-blur">CARA DUKUNG</Button>
+              <Button onClick={()=> setCaraOpen(true)} variant="outline" size="lg" className="rounded-full px-6 h-[42px] bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white backdrop-blur">{ctaSecondaryLabel}</Button>
             </div>
             <CaraDukungDialog open={caraOpen} onOpenChange={setCaraOpen} />
           </div>
         </div>
-        {/* Countdown bar like reference */}
+        {/* Countdown bar */}
         <div className="pb-8 md:pb-10">
           <div className="mx-auto max-w-[560px] text-center">
-            <div className="text-[10px] font-bold tracking-[0.18em] text-white/50">EVENT DIMULAI DALAM</div>
+            <div className="text-[10px] font-bold tracking-[0.18em] text-white/50">{cmsContent.title || "EVENT DIMULAI DALAM"}</div>
             <div className="mt-3 grid grid-cols-4 gap-2 md:gap-3">
               {[
                 {v: cd.days, l:"HARI"},
