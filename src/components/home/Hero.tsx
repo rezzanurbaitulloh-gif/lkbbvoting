@@ -43,8 +43,11 @@ export function Hero({ event, cms }: { event: any; cms?: any }){
   const ctaPrimaryLabel = cmsContent.ctaPrimaryLabel || "LIHAT PESERTA"
   const ctaPrimaryLink = cmsContent.ctaPrimaryLink || "/tim"
   const ctaSecondaryLabel = cmsContent.ctaSecondaryLabel || "CARA DUKUNG"
-  const overlayOpacity = cmsSettings.overlayOpacity ?? 0.32
-  const showLogo = cmsSettings.showLogo !== false
+  const overlayOpacity = cmsSettings.overlayOpacity ?? cmsContent.overlayOpacity ?? 0.32
+  const showLogo = (cmsSettings.showLogo !== false) && (cmsContent.showLogo !== false)
+  const logoOpacity = cmsSettings.logoOpacity ?? cmsContent.logoOpacity ?? 0.08
+  const bgPosition = cmsSettings.bgPosition || "center"
+  const logoAsBackground = cmsSettings.logoAsBackground ?? true
   // if cms explicitly hidden, don't render (caller should handle)
   if (cms && cms.is_visible === false) return null
   return (
@@ -56,16 +59,23 @@ export function Hero({ event, cms }: { event: any; cms?: any }){
       </div>
       {/* subtle grid */}
       <div className="absolute inset-0 opacity-[0.04]" style={{backgroundImage: `linear-gradient(#C9A86A 1px, transparent 1px), linear-gradient(90deg, #C9A86A 1px, transparent 1px)`, backgroundSize: '60px 60px'}} />
-      {/* Logo LKBB hero — dekstop tetap di kanan, mobile float kecil dan hilang di <320 */}
-      {showLogo && (
-        <>
-          <div className="absolute right-[4%] top-[10%] hidden lg:flex h-[380px] w-[380px] items-center justify-center opacity-95 pointer-events-none">
-            <img src={logoImage} alt="Logo LKBB Javasoma" className="h-[280px] w-[280px] object-contain rounded-2xl border border-white/10 shadow-elevated bg-white max-w-[90vw] max-h-[45vh]" />
-          </div>
-          <div className="absolute right-[4%] top-[10%] flex lg:hidden h-[96px] w-[96px] sm:h-[110px] sm:w-[110px] items-center justify-center opacity-90 pointer-events-none max-[360px]:h-[72px] max-[360px]:w-[72px] max-[320px]:h-[56px] max-[320px]:w-[56px] max-[300px]:hidden">
-            <img src={logoImage} alt="Logo LKBB" className="h-[72px] w-[72px] sm:h-[86px] sm:w-[86px] max-[360px]:h-[56px] max-[360px]:w-[56px] max-[320px]:h-[44px] max-[320px]:w-[44px] object-contain rounded-xl border border-white/10 bg-white shadow max-w-full" />
-          </div>
-        </>
+      {/* Logo LKBB sebagai background watermark — bukan card, opasitas rendah, dapat diubah admin via CMS hero.logoImage + settings.logoOpacity */}
+      {showLogo && logoAsBackground && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
+          <img
+            src={logoImage}
+            alt=""
+            aria-hidden="true"
+            className="h-[380px] w-[380px] sm:h-[480px] sm:w-[480px] lg:h-[620px] lg:w-[620px] max-h-[75vh] max-w-[92vw] object-contain select-none"
+            style={{ opacity: logoOpacity, objectPosition: bgPosition }}
+          />
+        </div>
+      )}
+      {/* Fallback: jika admin nonaktifkan logoAsBackground tapi showLogo true, tetap tampil sebagai watermark kecil di pojok tanpa card */}
+      {showLogo && !logoAsBackground && (
+        <div className="absolute right-[3%] top-[8%] hidden lg:flex pointer-events-none opacity-20">
+          <img src={logoImage} alt="" className="h-[220px] w-[220px] object-contain" style={{ opacity: logoOpacity * 2 }} />
+        </div>
       )}
       <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6">
         <div className="pt-8 sm:pt-10 md:pt-14 pb-6 md:pb-8">

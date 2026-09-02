@@ -43,6 +43,8 @@ const CONTENT_PRESETS: Record<string, Record<string, any>> = {
   image: { src:"", alt:"", caption:"" },
 }
 
+const HERO_SETTINGS_PRESET = { variant:"dark", showLogo:true, overlayOpacity:0.32, logoOpacity:0.08, logoAsBackground:true, bgPosition:"center" }
+
 function SectionContentEditor({ content, onChange, type }: { content: Record<string, any>; onChange: (c: Record<string, any>)=>void; type: string }){
   const [pickerFor, setPickerFor] = useState<string | null>(null)
   const keys = Object.keys(content||{})
@@ -152,7 +154,8 @@ export default function CmsSectionBuilder(){
   const openAdd = ()=>{
     setEditing(null)
     const preset = CONTENT_PRESETS[form.type] || {}
-    setForm({ key:"", title:"", type:"hero", is_visible:true, sort_order: sections.length+1, settings:{}, content: preset })
+    const isHero = form.type === "hero"
+    setForm({ key:"", title:"", type:"hero", is_visible:true, sort_order: sections.length+1, settings: isHero ? { ...HERO_SETTINGS_PRESET } : {}, content: preset })
     setOpen(true)
   }
   const openEdit = (s:any)=>{
@@ -162,7 +165,11 @@ export default function CmsSectionBuilder(){
   }
   // when type changes in add mode, apply preset
   const handleTypeChange = (v:string)=>{
-    setForm((prev:any)=> ({ ...prev, type:v, content: Object.keys(prev.content||{}).length===0 || !editing ? (CONTENT_PRESETS[v]||{}) : prev.content }))
+    setForm((prev:any)=> {
+      const nextContent = Object.keys(prev.content||{}).length===0 || !editing ? (CONTENT_PRESETS[v]||{}) : prev.content
+      const nextSettings = v === "hero" && (!editing || Object.keys(prev.settings||{}).length===0) ? { ...HERO_SETTINGS_PRESET } : prev.settings
+      return { ...prev, type:v, content: nextContent, settings: nextSettings }
+    })
   }
 
   const handleSave = async ()=>{
@@ -296,15 +303,37 @@ export default function CmsSectionBuilder(){
 
             <div className="rounded-xl border border-border bg-muted/20 p-3 space-y-3">
               <div className="text-xs font-black">Konten Dinamis (teks, gambar, banner, tombol)</div>
+              {form.type === "hero" && (
+                <div className="rounded-lg bg-amber-500/10 border border-amber-500/20 p-2.5 text-[11px] text-muted-foreground">
+                  <b>Logo</b> (<code>logoImage</code>) sekarang sebagai <b>background watermark</b> herosection dengan opasitas rendah — bukan card. Ganti gambar di field <code>logoImage</code> di atas, atur transparansi di panel bawah.
+                </div>
+              )}
               <SectionContentEditor content={form.content||{}} onChange={(c)=> setForm({...form, content:c})} type={form.type} />
             </div>
 
+            {form.type === "hero" && (
+              <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 space-y-3">
+                <div className="text-xs font-black">Logo Background — Herosection (bukan card)</div>
+                <p className="text-[11px] text-muted-foreground">Atur logo sebagai background watermark opasitas rendah. Semua dapat diubah admin tanpa edit kode.</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div><label className="text-xs font-bold">Opasitas Logo (0.02 - 0.30)</label><Input type="number" step="0.01" min="0" max="0.3" value={form.settings.logoOpacity ?? 0.08} onChange={e=> setForm({...form, settings:{...form.settings, logoOpacity: parseFloat(e.target.value)||0}})} /></div>
+                  <div><label className="text-xs font-bold">Opasitas Background</label><Input type="number" step="0.01" min="0" max="1" value={form.settings.overlayOpacity ?? 0.32} onChange={e=> setForm({...form, settings:{...form.settings, overlayOpacity: parseFloat(e.target.value)||0}})} /></div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div><label className="text-xs font-bold">Tampilkan Logo?</label><Select value={form.settings.showLogo === false ? "false":"true"} onValueChange={v=> setForm({...form, settings:{...form.settings, showLogo: v==="true"}})} options={[{value:"true",label:"Ya"},{value:"false",label:"Tidak"}]} /></div>
+                  <div><label className="text-xs font-bold">Mode Background?</label><Select value={form.settings.logoAsBackground === false ? "false":"true"} onValueChange={v=> setForm({...form, settings:{...form.settings, logoAsBackground: v==="true"}})} options={[{value:"true",label:"Ya — watermark tengah (rendah)"},{value:"false",label:"Tidak — pojok kecil"}]} /></div>
+                </div>
+                <div><label className="text-xs font-bold">Posisi Background</label><Select value={form.settings.bgPosition || "center"} onValueChange={v=> setForm({...form, settings:{...form.settings, bgPosition: v}})} options={[{value:"center",label:"Tengah"},{value:"top",label:"Atas"},{value:"center top",label:"Tengah Atas"},{value:"center center",label:"Tengah Tengah"}]} /></div>
+                <div className="text-[11px] text-muted-foreground">Ganti <code>logoImage</code> di konten atas untuk ganti logo. Perubahan langsung tampil di herosection.</div>
+              </div>
+            )}
+
             <div className="rounded-xl border border-border p-3 space-y-2">
-              <div className="text-xs font-black">Settings (layout / variant — opsional)</div>
+              <div className="text-xs font-black">Settings JSON (advanced — layout / variant)</div>
               <textarea value={JSON.stringify(form.settings||{}, null, 2)} onChange={e=> {
                 try{ const parsed=JSON.parse(e.target.value); setForm({...form, settings:parsed}) }catch{}
               }} className="w-full min-h-[80px] rounded-xl border border-input bg-background px-3 py-2 font-mono text-xs" placeholder='{"variant":"dark","columns":3}' />
-              <p className="text-[11px] text-muted-foreground">JSON untuk varian tampilan (tidak wajib). Kosongkan jika tidak perlu.</p>
+              <p className="text-[11px] text-muted-foreground">JSON untuk varian tampilan (tidak wajib). Untuk hero, gunakan panel di atas agar lebih mudah.</p>
             </div>
           </div>
           <DialogFooter><Button variant="outline" onClick={()=> setOpen(false)} disabled={saving}>Batal</Button><Button onClick={handleSave} disabled={saving}>{saving ? "Menyimpan..." : editing ? "Simpan" : "Tambah"}</Button></DialogFooter>
