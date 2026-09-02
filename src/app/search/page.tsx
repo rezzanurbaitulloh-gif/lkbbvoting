@@ -1,5 +1,6 @@
 "use client"
-import { useState, useMemo } from "react"
+import { useState, useMemo, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
@@ -7,13 +8,15 @@ import { useEffect } from "react"
 import { createBrowserSupabase } from "@/lib/supabase"
 import Link from "next/link"
 import { Search } from "lucide-react"
-import { Input } from "@/components/ui/input"
 
-export default function SearchPage(){
-  const [q,setQ]=useState("")
+function SearchInner(){
+  const searchParams = useSearchParams()
+  const initialQ = searchParams.get("q") || ""
+  const [q,setQ]=useState(initialQ)
   const [peletons,setPeletons]=useState<any[]>([])
   const [allNews,setAllNews]=useState<any[]>([])
   const [allAnn,setAllAnn]=useState<any[]>([])
+  useEffect(()=>{ setQ(initialQ) },[initialQ])
   useEffect(()=>{
     const s=createBrowserSupabase()
     s.from("peletons").select("*").eq("verified", true).eq("active", true).then(({data})=> setPeletons(data||[]))
@@ -59,8 +62,8 @@ export default function SearchPage(){
                   <h3 className="text-xs font-black tracking-widest">PELETON • {peletonResults.length}</h3>
                   <div className="mt-2 grid sm:grid-cols-2 gap-2">
                     {peletonResults.map(p=> (
-                      <Link key={p.id} href={`/peleton/${p.slug}`} className="flex gap-3 rounded-xl border border-border bg-card p-3 hover:bg-muted">
-                        <img src={p.image} alt="" className="h-12 w-12 rounded-lg object-cover" />
+                      <Link key={p.id} href={`/tim/${p.slug}`} className="flex gap-3 rounded-xl border border-border bg-card p-3 hover:bg-muted">
+                        <img src={p.image_url || p.image} alt="" className="h-12 w-12 rounded-lg object-cover" />
                         <div><div className="text-sm font-bold">{p.name}</div><div className="text-xs text-muted-foreground">{p.school} • {p.city}</div></div>
                       </Link>
                     ))}
@@ -100,5 +103,13 @@ export default function SearchPage(){
       <Footer />
       <BottomNav />
     </div>
+  )
+}
+
+export default function SearchPage(){
+  return (
+    <Suspense fallback={<div className="min-h-screen grid place-items-center text-sm">Memuat pencarian...</div>}>
+      <SearchInner />
+    </Suspense>
   )
 }

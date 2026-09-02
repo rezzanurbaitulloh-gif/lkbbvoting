@@ -4,8 +4,15 @@ import { ArrowRight } from "lucide-react"
 import { PeletonCard } from "@/components/peleton/PeletonCard"
 
 export function Featured({ peletons, showSementara, showFinal }: { peletons: any[]; showSementara?: boolean; showFinal?: boolean }){
-  const smp = (peletons || []).filter((p:any)=> p.category==="SMP")
-  const sma = (peletons || []).filter((p:any)=> p.category==="SMA")
+  // Beranda harus urut nomor peserta (01,02,03...) — bukan ranking
+  const sorted = [...(peletons || [])].sort((a:any,b:any)=>{
+    const an = String(a.number||a.display_order||"").padStart(4,"0")
+    const bn = String(b.number||b.display_order||"").padStart(4,"0")
+    if(an!==bn) return an.localeCompare(bn)
+    return (a.display_order||0)-(b.display_order||0)
+  })
+  const smp = sorted.filter((p:any)=> p.category==="SMP")
+  const sma = sorted.filter((p:any)=> p.category==="SMA")
   const hasBadge = showSementara || showFinal
   return (
     <section className="bg-[#08090B] border-y border-border/50">
@@ -20,7 +27,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
           <div>
             <div className="text-[11px] font-bold tracking-[0.16em] text-[#C9A86A]">PESERTA</div>
             <h2 className="mt-1 text-[18px] md:text-[22px] font-black tracking-tight text-white">DUKUNG PELETON FAVORITMU!</h2>
-            <p className="mt-1 text-xs text-white/50">Beranda selalu urut display_order — peringkat disembunyikan saat voting aktif</p>
+            <p className="mt-1 text-xs text-white/50">Beranda selalu urut nomor peserta (01, 02, 03...) — peringkat disembunyikan saat voting aktif</p>
           </div>
           <Link href="/tim" className="hidden md:inline-flex text-xs font-semibold text-[#C9A86A] hover:text-white gap-1 items-center">LIHAT SEMUA <ArrowRight className="h-3 w-3"/></Link>
         </div>

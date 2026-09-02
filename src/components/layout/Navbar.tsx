@@ -22,6 +22,7 @@ export function Navbar() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
+  const [mobileSearch, setMobileSearch] = useState("")
   const { currentUser, isAdmin, logout } = useApp()
   const profileRef = useRef<HTMLDivElement>(null)
   useEffect(()=>{
@@ -31,6 +32,14 @@ export function Navbar() {
     document.addEventListener("mousedown", handler)
     return ()=> document.removeEventListener("mousedown", handler)
   },[])
+  const handleSearchSubmit = (e: React.FormEvent)=>{
+    e.preventDefault()
+    const q = mobileSearch.trim()
+    if(!q) return
+    router.push(`/search?q=${encodeURIComponent(q)}`)
+    setMobileSearch("")
+    setOpen(false)
+  }
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-[64px] max-w-[1280px] items-center justify-between px-4 md:px-6">
@@ -128,6 +137,22 @@ export function Navbar() {
           </button>
         </div>
       </div>
+      {/* Mobile search bar — khusus untuk cari nama tim */}
+      <div className="lg:hidden border-t border-border bg-muted/20 px-4 py-3">
+        <form onSubmit={handleSearchSubmit} className="relative flex items-center">
+          <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <input
+            value={mobileSearch}
+            onChange={e=> setMobileSearch(e.target.value)}
+            placeholder="Cari nama tim..."
+            className="h-10 w-full rounded-full border border-border bg-background pl-10 pr-12 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#C9A86A]"
+          />
+          <button type="submit" aria-label="Cari" className="absolute right-1 h-8 w-8 grid place-items-center rounded-full bg-foreground text-background">
+            <Search className="h-4 w-4" />
+          </button>
+        </form>
+      </div>
+
       {/* Mobile sheet */}
       {open && (
         <div className="lg:hidden border-t border-border bg-background">

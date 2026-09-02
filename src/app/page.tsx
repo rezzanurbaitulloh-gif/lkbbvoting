@@ -12,8 +12,10 @@ export default async function HomePage(){
   const supabase = await createServerSupabase()
   // Fetch event
   const { data: event } = await supabase.from("competitions").select("*").order("created_at", { ascending: false }).limit(1).single()
-  // Fetch peletons ordered by display_order (homepage) — selalu display_order, bahkan saat nonaktif (Beranda tidak pernah ranking)
-  const { data: peletons } = await supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("display_order", { ascending: true })
+  // Fetch peletons beranda — selalu urut nomor peserta (number), bukan ranking
+  const { data: peletonsRaw } = await supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("number", { ascending: true })
+  // fallback sort di JS jika number belum konsisten
+  const peletons = (peletonsRaw||[]).sort((a:any,b:any)=> String(a.number).localeCompare(String(b.number)))
   // Fetch sponsors for story
   const { data: sponsors } = await supabase.from("sponsors").select("*").eq("active", true).order("display_order", { ascending: true })
 
