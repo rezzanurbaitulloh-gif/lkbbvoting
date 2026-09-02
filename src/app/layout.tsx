@@ -31,6 +31,15 @@ export const metadata: Metadata = {
   description: "Platform resmi PELETON TERFAVORIT — LKBB JAVASOMA THE IMPRESSION ASTRA DHARMA HAYUNING BUDAYA. Dukung peleton favoritmu.",
   keywords: ["LKBB","Paskibra","Peleton Terfavorit","Javasoma","SMK","Kertosono"],
   authors: [{ name: "PASKIBRA SMKN 1 KERTOSONO"}],
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/assets/brand/lkbb-logo.jpg", type: "image/jpeg" },
+    ],
+    apple: "/icon.png",
+    shortcut: "/favicon.ico",
+  },
   openGraph: {
     type: "website",
     locale: "id_ID",
