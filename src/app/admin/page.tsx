@@ -101,25 +101,25 @@ export default function AdminOverview(){
             <ChartContainer
               config={{
                 online: { label: "Online", color: "#C9A86A" },
-                offline: { label: "Offline", color: "rgba(255,255,255,0.22)" },
+                offline: { label: "Offline", color: "#9CA3AF" },
               }}
               className="mt-3 h-[160px] w-full"
             >
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={stats.chartData} margin={{ left: 4, right: 4, top: 4, bottom: 0 }}>
+                <BarChart data={stats.chartData} barCategoryGap="30%" barGap={4} margin={{ left: 4, right: 4, top: 4, bottom: 0 }}>
                   <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.08)" />
                   <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "rgba(255,255,255,0.6)" }} />
                   <YAxis hide domain={[0, (dataMax: number) => Math.max(10, dataMax + 5)]} />
                   <ChartTooltip content={<ChartTooltipContent />} cursor={{ fill: "rgba(255,255,255,0.04)" }} />
-                  <Bar dataKey="online" stackId="a" fill="#C9A86A" radius={[6,6,0,0]} barSize={22} />
-                  <Bar dataKey="offline" stackId="a" fill="rgba(255,255,255,0.22)" radius={[6,6,0,0]} barSize={22} />
+                  <Bar dataKey="online" fill="#C9A86A" radius={[6,6,0,0]} barSize={18} />
+                  <Bar dataKey="offline" fill="#9CA3AF" radius={[6,6,0,0]} barSize={18} />
                 </BarChart>
               </ResponsiveContainer>
             </ChartContainer>
           )}
           <div className="mt-2 flex gap-3 text-[10px] text-white/40">
             <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[#C9A86A]"/> Online</span>
-            <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-white/20"/> Offline</span>
+            <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[#9CA3AF]"/> Offline</span>
           </div>
           <div className="mt-1 text-[10px] text-white/30">* 5 hari terakhir — data real dari supports ledger</div>
         </div>
