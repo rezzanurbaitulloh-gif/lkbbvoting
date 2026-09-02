@@ -3,7 +3,7 @@ import { createServiceSupabase } from "@/lib/supabase"
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
 
-const ALLOWED_TABLES = ["peletons","news","announcements","timeline_stages","judges","sponsors","faqs","profiles"]
+const ALLOWED_TABLES = ["peletons","news","announcements","timeline_stages","judges","sponsors","faqs","profiles","audit_logs"]
 
 async function requireAdmin(){
   const cookieStore = await cookies()
