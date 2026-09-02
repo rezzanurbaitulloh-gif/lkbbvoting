@@ -15,31 +15,17 @@ export default async function TimPage(){
   const showFinal = !isOnlineActive && event?.show_final_result
   const showRanking = !isOnlineActive
 
-  let smp: any[] = []
-  let sma: any[] = []
-  if (isOnlineActive) {
-    const { data } = await supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("display_order", { ascending: true })
-    smp = (data||[]).filter(p=>p.category==='SMP')
-    sma = (data||[]).filter(p=>p.category==='SMA')
-  } else {
-    const { data } = await supabase.from("team_ranking").select("*").order("total_ballots", { ascending: false })
-    smp = (data||[]).filter(p=>p.category==='SMP')
-    sma = (data||[]).filter(p=>p.category==='SMA')
-  }
+  // Selalu urut poin terbesar (total_ballots DESC), compact hanya nomor/nama/logo
+  // Poin hidden saat transaksi aktif, tampil saat nonaktif
+  const { data: rankingData } = await supabase.from("team_ranking").select("*").order("total_ballots", { ascending: false })
+  let smp: any[] = (rankingData||[]).filter(p=>p.category==='SMP')
+  let sma: any[] = (rankingData||[]).filter(p=>p.category==='SMA')
 
   const renderGrid = (teams: any[]) => {
-    if (!showRanking) {
-      return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-          {teams.map((p:any)=> <PeletonCard key={p.id} peleton={p} />)}
-        </div>
-      )
-    }
-    // Ranking aktif: urut total_ballots DESC, tampil compact #number, nama, logo saja, peringkat = posisi, poin hidden
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {teams.map((p:any,i:number)=> (
-          <PeletonCardCompact key={p.id} peleton={p} rank={i+1} />
+          <PeletonCardCompact key={p.id} peleton={p} rank={i+1} showPoints={!isOnlineActive} />
         ))}
       </div>
     )
@@ -55,10 +41,10 @@ export default async function TimPage(){
           <div className="relative mx-auto max-w-[1280px] px-4 md:px-6 py-8">
             {showSementara && <div className="inline-flex rounded-full bg-[#FACC15] text-[#0B0C0F] px-3 py-1 text-xs font-black tracking-wide">HASIL SEMENTARA</div>}
             {showFinal && <div className="inline-flex rounded-full bg-[#C9A86A] text-[#0B0C0F] px-3 py-1 text-xs font-black tracking-wide">HASIL FINAL</div>}
-            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#C9A86A30] bg-[#C9A86A14] px-3 py-1 text-[11px] font-bold tracking-[0.14em] text-[#D4B77A]"><Trophy className="h-3.5 w-3.5"/> {showRanking ? (showFinal ? "HASIL FINAL" : showSementara ? "HASIL SEMENTARA" : "PAPAN PERINGKAT") : "DIREKTORI PESERTA"}</div>
-            <h1 className="mt-3 text-[28px] md:text-[36px] font-black tracking-[-0.03em] leading-none">{showRanking ? "PAPAN PERINGKAT" : "PELETON PESERTA"}</h1>
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#C9A86A30] bg-[#C9A86A14] px-3 py-1 text-[11px] font-bold tracking-[0.14em] text-[#D4B77A]"><Trophy className="h-3.5 w-3.5"/> {showFinal ? "HASIL FINAL" : showSementara ? "HASIL SEMENTARA" : "PAPAN PERINGKAT"}</div>
+            <h1 className="mt-3 text-[28px] md:text-[36px] font-black tracking-[-0.03em] leading-none">PAPAN PERINGKAT</h1>
             <p className="mt-2 max-w-xl text-sm text-white/60">
-              {showRanking ? "Peringkat diurut total_ballots DESC (online+offline). Nomor peserta (#03) tetap. Poin/ballot tidak ditampilkan — hanya ranking." : "Temukan peleton favoritmu. Dukung dengan ballot resmi — peringkat disembunyikan selama voting aktif."}
+              {isOnlineActive ? "Diurut tim dengan dukungan terbanyak di atas. Jumlah dukungan disembunyikan selama masa dukungan berlangsung." : "Diurut tim dengan dukungan terbanyak. Jumlah dukungan tampil karena masa dukungan sudah selesai."}
             </p>
           </div>
         </div>
@@ -83,14 +69,13 @@ export default async function TimPage(){
             <span className="text-xs text-muted-foreground">{sma.length} tim</span>
           </div>
           {sma.length===0 ? <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Belum ada peleton SMA.</div> : renderGrid(sma)}
-          {!showRanking && (
+          {isOnlineActive ? (
             <div className="mt-8 rounded-xl border border-[#C9A86A20] bg-[#C9A86A0A] p-4 text-center">
-              <p className="text-xs leading-relaxed text-muted-foreground">Klasemen disembunyikan selama voting aktif. Beranda & Tim menampilkan urutan <b>display_order</b> panitia.</p>
+              <p className="text-xs leading-relaxed text-muted-foreground">Nomor peserta (<code>#03</code>) tetap — urutan berdasar dukungan terbanyak. Jumlah dukungan disembunyikan selama masa dukungan berlangsung.</p>
             </div>
-          )}
-          {showRanking && (
+          ) : (
             <div className="mt-8 rounded-xl border border-[#C9A86A20] bg-[#C9A86A0A] p-4 text-center">
-              <p className="text-xs leading-relaxed text-muted-foreground">Diurut <b>total_ballots DESC</b>. Nomor peserta (<code>#03</code>) tetap — ranking terpisah (#1). Poin tidak ditampilkan.</p>
+              <p className="text-xs leading-relaxed text-muted-foreground">Urutan berdasar dukungan terbanyak. Nomor peserta (<code>#03</code>) tetap. Jumlah dukungan tampil di setiap kartu.</p>
             </div>
           )}
         </div>

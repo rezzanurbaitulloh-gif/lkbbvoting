@@ -78,7 +78,7 @@ export function PeletonCard({ peleton }: { peleton: any }){
 }
 
 // Compact variant for /tim — only #number, name, logo, ordered by total_ballots but number stays original
-export function PeletonCardCompact({ peleton, rank }: { peleton: any, rank?: number }){
+export function PeletonCardCompact({ peleton, rank, showPoints }: { peleton: any, rank?: number, showPoints?: boolean }){
   const logo = peleton.logo_url || peleton.image_url || peleton.image
   return (
     <Link href={`/dukungan?peleton=${peleton.slug}`} className="flex items-center gap-3 rounded-[16px] border border-border bg-card p-3 hover:bg-muted/50 transition-colors">
@@ -91,7 +91,10 @@ export function PeletonCardCompact({ peleton, rank }: { peleton: any, rank?: num
         <div className="text-sm font-black leading-tight truncate">{peleton.name}</div>
         <div className="text-xs text-muted-foreground truncate">{peleton.school}</div>
       </div>
-      <div className="hidden sm:block text-[11px] font-bold text-muted-foreground">#{peleton.number}</div>
+      <div className="text-right">
+        <div className="text-[11px] font-bold text-muted-foreground">#{peleton.number}</div>
+        {showPoints && peleton.total_ballots != null && <div className="text-xs font-black tabular-nums">{Number(peleton.total_ballots).toLocaleString("id-ID")} dukungan</div>}
+      </div>
     </Link>
   )
 }

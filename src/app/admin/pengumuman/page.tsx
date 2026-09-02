@@ -14,10 +14,14 @@ export default function Page(){
   const [open,setOpen]=useState(false)
   const [editing,setEditing]=useState<any|null>(null)
   const [delTarget,setDelTarget]=useState<any|null>(null)
-  const [form,setForm]=useState<any>({ title:"", category:"Important", content:"" })
+  const [selected,setSelected]=useState<Set<string>>(new Set())
+  const [form,setForm]=useState<any>({ title:"", category:"Penting", content:"" })
   const load = ()=>{ const s=createBrowserSupabase(); s.from("announcements").select("*").order("created_at",{ascending:false}).then(({data})=> setList(data||[])) }
   useEffect(()=>{ load() },[])
-  const openAdd = ()=>{ setEditing(null); setForm({ title:"", category:"Important", content:"" }); setOpen(true) }
+  const toggleSelect = (id:string)=>{ const n=new Set(selected); if(n.has(id)) n.delete(id); else n.add(id); setSelected(n) }
+  const toggleAll = ()=>{ if(selected.size===list.length) setSelected(new Set()); else setSelected(new Set(list.map((i:any)=>i.id))) }
+  const handleBulkDelete = async ()=>{ if(selected.size===0) return; for(const id of selected){ await fetch(`/api/admin/crud?table=announcements&id=${id}`, { method:"DELETE" }) } ; toast({ title: `${selected.size} data dihapus`, variant:"success"}); setSelected(new Set()); load() }
+  const openAdd = ()=>{ setEditing(null); setForm({ title:"", category:"Penting", content:"" }); setOpen(true) }
   const openEdit = (item:any)=>{ setEditing(item); setForm({ title: item.title ?? "", category: item.category ?? "", content: item.content ?? "" }); setOpen(true) }
   const handleSave = async ()=>{
     const payload = { ...form };
@@ -40,25 +44,34 @@ export default function Page(){
   }
   return (
     <div className="p-4 md:p-6 space-y-4">
-      <div className="flex items-center justify-between"><div><h1 className="text-[18px] font-black">Pengumuman</h1><p className="text-sm text-muted-foreground">{list.length} data dari DB</p></div><Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Baru</Button></div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Pengumuman</h1><p className="text-sm text-muted-foreground">{list.length} data tersimpan</p></div><div className="flex gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}<Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Baru</Button></div></div>
       <div className="rounded-[16px] border border-border bg-card p-4">
         <div className="grid gap-2">
           {list.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada data.</div> :
             list.map((item:any)=> (
-            <div key={item.id} className="flex items-center justify-between rounded-xl border border-border p-3 gap-3">
+            <div key={item.id} className="flex items-center gap-2 rounded-xl border border-border p-3">
+              <input type="checkbox" checked={selected.has(item.id)} onChange={()=> toggleSelect(item.id)} />
+              <div className="flex flex-1 items-center justify-between gap-3">
               <div className="min-w-0 flex-1"><div className="text-sm font-bold truncate">{item.title || item.name || item.question}</div><div className="text-xs text-muted-foreground truncate">{item.category || item.role || item.tier || ""} • {new Date(item.created_at).toLocaleDateString("id-ID")}</div></div>
-              <div className="flex gap-1.5 shrink-0"><Button variant="outline" size="sm" className="rounded-full h-7 text-xs" onClick={()=> openEdit(item)}>Edit</Button><Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600" onClick={()=> setDelTarget(item)}>Hapus</Button></div>
+              <div className="flex gap-1.5 shrink-0"><Button variant="outline" size="sm" className="rounded-full h-7 text-xs" onClick={()=> openEdit(item)}>Ubah</Button><Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600" onClick={()=> setDelTarget(item)}>Hapus</Button></div>
+              </div>
             </div>
           ))}
         </div>
+        {list.length>0 && (
+          <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
+            <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={selected.size===list.length && list.length>0} onChange={toggleAll} /> Pilih semua ({list.length})</label>
+            {selected.size>0 && <span className="text-xs font-bold">{selected.size} dipilih</span>}
+          </div>
+        )}
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[520px] max-h-[85vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>{editing ? "Edit Pengumuman" : "Tambah Pengumuman"}</DialogTitle><DialogDescription>Isi semua field yang wajib.</DialogDescription></DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? "Ubah Pengumuman" : "Tambah Pengumuman"}</DialogTitle><DialogDescription>Isi semua kolom yang wajib.</DialogDescription></DialogHeader>
           <div className="grid gap-3">
-            <div><label className="text-xs font-bold">Judul *</label><Input value={form.title} onChange={e=> setForm({...form, title:e.target.value})} placeholder="Judul pengumuman" /></div>
-            <div><label className="text-xs font-bold">Kategori</label><Input value={form.category} onChange={e=> setForm({...form, category:e.target.value})} placeholder="Important" /></div>
-            <div><label className="text-xs font-bold">Isi</label><textarea value={form.content} onChange={e=> setForm({...form, content:e.target.value})} placeholder="Isi pengumuman" className="w-full min-h-[80px] rounded-xl border border-input bg-background px-3 py-2 text-sm" /></div>
+            <div><label className="text-xs font-bold">Judul Pengumuman *</label><Input value={form.title} onChange={e=> setForm({...form, title:e.target.value})} placeholder="Tulis judul pengumuman" /></div>
+            <div><label className="text-xs font-bold">Jenis Pengumuman</label><Input value={form.category} onChange={e=> setForm({...form, category:e.target.value})} placeholder="Contoh: Penting" /></div>
+            <div><label className="text-xs font-bold">Isi Pengumuman</label><textarea value={form.content} onChange={e=> setForm({...form, content:e.target.value})} placeholder="Tulis isi pengumuman" className="w-full min-h-[80px] rounded-xl border border-input bg-background px-3 py-2 text-sm" /></div>
           </div>
           <DialogFooter><Button variant="outline" onClick={()=> setOpen(false)}>Batal</Button><Button onClick={handleSave}>{editing ? "Simpan" : "Tambah"}</Button></DialogFooter>
         </DialogContent>

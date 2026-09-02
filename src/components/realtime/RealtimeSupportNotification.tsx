@@ -34,8 +34,8 @@ function SupportPopup({ item, onClose }: { item: QueueItem; onClose: () => void 
 
   return (
     <div
-      className={`relative w-[300px] md:w-[340px] rounded-[16px] border border-[#C9A86A30] bg-gradient-to-br from-[#1A1208] to-[#0B0C0F] text-white shadow-2xl overflow-hidden ${reduced ? "" : "animate-in slide-in-from-bottom-2 duration-400"} `}
-      style={{ boxShadow: "0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,106,0.15)"}}
+      className={`relative w-[420px] max-w-[90vw] md:w-[480px] rounded-[20px] border border-[#C9A86A30] bg-gradient-to-br from-[#1A1208] to-[#0B0C0F] text-white shadow-2xl overflow-hidden ${reduced ? "" : "animate-in zoom-in-95 duration-300"} `}
+      style={{ boxShadow: "0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,106,0.15)"}}
       role="status"
       aria-live="polite"
     >
@@ -46,25 +46,25 @@ function SupportPopup({ item, onClose }: { item: QueueItem; onClose: () => void 
           <div className="absolute inset-0 bg-gradient-to-t from-[#C9A86A30] to-transparent animate-ping" style={{ animationDuration: "0.7s" }} />
         </div>
       )}
-      <div className="relative p-4 flex gap-3">
-        <div className={`h-10 w-10 rounded-full grid place-items-center shrink-0 ${item.isPrivate ? "bg-emerald-500" : "bg-[#C9A86A]"} text-white`}>
-          <PartyPopper className="h-5 w-5" />
+      <div className="relative p-6 flex gap-4">
+        <div className={`h-12 w-12 rounded-full grid place-items-center shrink-0 ${item.isPrivate ? "bg-emerald-500" : "bg-[#C9A86A]"} text-white`}>
+          <PartyPopper className="h-6 w-6" />
         </div>
         <div className="min-w-0 flex-1">
           <div className="text-[11px] font-bold tracking-[0.14em] text-[#C9A86A] flex items-center gap-1">
             <Sparkles className="h-3 w-3" /> DUKUNGAN BARU!
           </div>
-          <p className="mt-1 text-[13px] font-semibold leading-snug text-white text-pretty">
+          <p className="mt-2 text-[16px] font-bold leading-snug text-white text-pretty">
             {item.displayText}
           </p>
           {item.isPrivate && item.ballotQuantity ? (
-            <p className="mt-1 text-xs text-white/60">{item.ballotQuantity} ballot • terima kasih!</p>
+            <p className="mt-2 text-sm text-white/70">{item.ballotQuantity} ballot • terima kasih!</p>
           ) : (
-            <p className="mt-1 text-xs text-white/50">Tanpa menyebutkan jumlah • realtime</p>
+            <p className="mt-2 text-sm text-white/60">Terima kasih sudah meramaikan!</p>
           )}
         </div>
-        <button onClick={onClose} aria-label="Tutup notifikasi" className="h-7 w-7 grid place-items-center rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white shrink-0">
-          <X className="h-3.5 w-3.5" />
+        <button onClick={onClose} aria-label="Tutup notifikasi" className="h-8 w-8 grid place-items-center rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white shrink-0">
+          <X className="h-4 w-4" />
         </button>
       </div>
       {item.peletonSlug && (
@@ -195,23 +195,8 @@ export function RealtimeSupportNotification(){
   if(!current) return null
 
   return (
-    <div
-      className="fixed z-[60] pointer-events-none flex flex-col gap-2"
-      style={{
-        // Mobile: bottom-center above BottomNav (72px + safe-area + 12px), Desktop: right-6 bottom-6
-        // Use JS to decide? Use CSS media query trick via tailwind: bottom
-        left: "50%",
-        transform: "translateX(-50%)",
-        // Bottom position calculated: 72px BottomNav + 12px margin on mobile
-        bottom: "calc(72px + env(safe-area-inset-bottom, 0px) + 12px)",
-      }}
-    >
-      {/* Desktop reposition via nested */}
-      <div className="hidden md:block fixed right-6 bottom-6 pointer-events-auto">
-        <SupportPopup item={current} onClose={handleClose} />
-      </div>
-      {/* Mobile */}
-      <div className="md:hidden pointer-events-auto">
+    <div className="fixed inset-0 z-[60] pointer-events-none grid place-items-center p-4">
+      <div className="pointer-events-auto">
         <SupportPopup item={current} onClose={handleClose} />
       </div>
     </div>

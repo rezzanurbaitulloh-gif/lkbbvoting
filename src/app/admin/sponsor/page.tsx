@@ -14,13 +14,34 @@ export default function Page(){
   const [open,setOpen]=useState(false)
   const [editing,setEditing]=useState<any|null>(null)
   const [delTarget,setDelTarget]=useState<any|null>(null)
-  const [form,setForm]=useState<any>({ name:"", tier:"Official Partner", logo_url:"", url:"", display_order:1, active:"true" })
+  const [selected,setSelected]=useState<Set<string>>(new Set())
+  const [form,setForm]=useState<any>({ name:"", tier:"Mitra Resmi", logo_url:"", url:"", display_order:1, active:"true" })
+  const [uploading,setUploading]=useState<string|null>(null)
+  const uploadImage = async (file: File, field: string)=>{
+    if(!file) return
+    setUploading(field)
+    try{
+      const supabase = createBrowserSupabase()
+      const ext = file.name.split(".").pop()
+      const path = `${field}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+      const { error } = await supabase.storage.from("media").upload(path, file)
+      if(error) throw error
+      const { data } = supabase.storage.from("media").getPublicUrl(path)
+      setForm((prev:any)=> ({ ...prev, [field]: data.publicUrl }))
+      toast({ title:"Gambar berhasil diunggah", variant:"success"})
+    } catch(e:any){
+      toast({ title:"Gagal unggah", description:e.message, variant:"error"})
+    } finally{ setUploading(null)}
+  }
   const load = ()=>{ const s=createBrowserSupabase(); s.from("sponsors").select("*").order("display_order").then(({data})=> setList(data||[])) }
   useEffect(()=>{ load() },[])
-  const openAdd = ()=>{ setEditing(null); setForm({ name:"", tier:"Official Partner", logo_url:"", url:"", display_order:1, active:"true" }); setOpen(true) }
-  const openEdit = (item:any)=>{ setEditing(item); setForm({ name: item.name ?? "", tier: item.tier ?? "Official Partner", logo_url: item.logo_url ?? "", url: item.url ?? "", display_order: item.display_order ?? 1, active: String(item.active ?? true) }); setOpen(true) }
+  const toggleSelect = (id:string)=>{ const n=new Set(selected); if(n.has(id)) n.delete(id); else n.add(id); setSelected(n) }
+  const toggleAll = ()=>{ if(selected.size===list.length) setSelected(new Set()); else setSelected(new Set(list.map((i:any)=>i.id))) }
+  const handleBulkDelete = async ()=>{ if(selected.size===0) return; for(const id of selected){ await fetch(`/api/admin/crud?table=sponsors&id=${id}`, { method:"DELETE" }) } ; toast({ title: `${selected.size} data dihapus`, variant:"success"}); setSelected(new Set()); load() }
+  const openAdd = ()=>{ setEditing(null); setForm({ name:"", tier:"Mitra Resmi", logo_url:"", url:"", display_order:1, active:"true" }); setOpen(true) }
+  const openEdit = (item:any)=>{ setEditing(item); setForm({ name: item.name ?? "", tier: item.tier==="Official Partner" ? "Mitra Resmi" : item.tier==="Main Sponsor" ? "Sponsor Utama" : item.tier==="Supporting Partner" ? "Mitra Pendukung" : item.tier==="Media Partner" ? "Mitra Media" : item.tier ?? "Mitra Resmi", logo_url: item.logo_url ?? "", url: item.url ?? "", display_order: item.display_order ?? 1, active: String(item.active ?? true) }); setOpen(true) }
   const handleSave = async ()=>{
-    const payload:any = { ...form, display_order: parseInt(form.display_order)||1, active: form.active==="true" };
+    const payload:any = { ...form, display_order: parseInt(form.display_order)||1, active: form.active==="true", tier: form.tier==="Mitra Resmi" ? "Official Partner" : form.tier==="Sponsor Utama" ? "Main Sponsor" : form.tier==="Mitra Pendukung" ? "Supporting Partner" : form.tier==="Mitra Media" ? "Media Partner" : form.tier };
     if(!payload.title && !payload.name && !payload.question) { toast({ title:"Lengkapi data", variant:"error" }); return }
     try{
       let res
@@ -40,28 +61,45 @@ export default function Page(){
   }
   return (
     <div className="p-4 md:p-6 space-y-4">
-      <div className="flex items-center justify-between"><div><h1 className="text-[18px] font-black">Sponsor</h1><p className="text-sm text-muted-foreground">{list.length} data dari DB</p></div><Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Baru</Button></div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Sponsor</h1><p className="text-sm text-muted-foreground">{list.length} data tersimpan</p></div><div className="flex gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}<Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Baru</Button></div></div>
       <div className="rounded-[16px] border border-border bg-card p-4">
         <div className="grid gap-2">
           {list.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada data.</div> :
             list.map((item:any)=> (
-            <div key={item.id} className="flex items-center justify-between rounded-xl border border-border p-3 gap-3">
+            <div key={item.id} className="flex items-center gap-2 rounded-xl border border-border p-3">
+              <input type="checkbox" checked={selected.has(item.id)} onChange={()=> toggleSelect(item.id)} />
+              <div className="flex flex-1 items-center justify-between gap-3">
               <div className="min-w-0 flex-1"><div className="text-sm font-bold truncate">{item.title || item.name || item.question}</div><div className="text-xs text-muted-foreground truncate">{item.category || item.role || item.tier || ""} • {new Date(item.created_at).toLocaleDateString("id-ID")}</div></div>
-              <div className="flex gap-1.5 shrink-0"><Button variant="outline" size="sm" className="rounded-full h-7 text-xs" onClick={()=> openEdit(item)}>Edit</Button><Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600" onClick={()=> setDelTarget(item)}>Hapus</Button></div>
+              <div className="flex gap-1.5 shrink-0"><Button variant="outline" size="sm" className="rounded-full h-7 text-xs" onClick={()=> openEdit(item)}>Ubah</Button><Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600" onClick={()=> setDelTarget(item)}>Hapus</Button></div>
+              </div>
             </div>
           ))}
         </div>
+        {list.length>0 && (
+          <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
+            <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={selected.size===list.length && list.length>0} onChange={toggleAll} /> Pilih semua ({list.length})</label>
+            {selected.size>0 && <span className="text-xs font-bold">{selected.size} dipilih</span>}
+          </div>
+        )}
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[520px] max-h-[85vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>{editing ? "Edit Sponsor" : "Tambah Sponsor"}</DialogTitle><DialogDescription>Isi semua field yang wajib.</DialogDescription></DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? "Ubah Sponsor" : "Tambah Sponsor"}</DialogTitle><DialogDescription>Isi semua kolom yang wajib.</DialogDescription></DialogHeader>
           <div className="grid gap-3">
-            <div><label className="text-xs font-bold">Nama *</label><Input value={form.name} onChange={e=> setForm({...form, name:e.target.value})} placeholder="Nama sponsor" /></div>
-            <div><label className="text-xs font-bold">Tier</label><Select value={String(form.tier)} onValueChange={v=> setForm({...form, tier:v})} options={[{value:"Main Sponsor",label:"Main Sponsor"},{value:"Official Partner",label:"Official Partner"},{value:"Supporting Partner",label:"Supporting Partner"},{value:"Media Partner",label:"Media Partner"}]} /></div>
-            <div><label className="text-xs font-bold">Logo (teks/URL)</label><Input value={form.logo_url} onChange={e=> setForm({...form, logo_url:e.target.value})} placeholder="Logo URL atau teks" /></div>
-            <div><label className="text-xs font-bold">Website URL</label><Input value={form.url} onChange={e=> setForm({...form, url:e.target.value})} placeholder="https://..." /></div>
-            <div><label className="text-xs font-bold">Urutan</label><Input type="number" value={form.display_order} onChange={e=> setForm({...form, display_order: parseInt(e.target.value)||0})} placeholder="1" /></div>
-            <div><label className="text-xs font-bold">Aktif</label><Select value={String(form.active)} onValueChange={v=> setForm({...form, active:v})} options={[{value:"true",label:"Aktif"},{value:"false",label:"Nonaktif"}]} /></div>
+            <div><label className="text-xs font-bold">Nama Sponsor *</label><Input value={form.name} onChange={e=> setForm({...form, name:e.target.value})} placeholder="Tulis nama sponsor" /></div>
+            <div><label className="text-xs font-bold">Tingkatan Sponsor</label><Select value={String(form.tier)} onValueChange={v=> setForm({...form, tier:v})} options={[{value:"Main Sponsor",label:"Sponsor Utama"},{value:"Official Partner",label:"Mitra Resmi"},{value:"Supporting Partner",label:"Mitra Pendukung"},{value:"Media Partner",label:"Mitra Media"}]} /></div>
+            <div>
+              <label className="text-xs font-bold">Logo Sponsor</label>
+              {form.logo_url && <img src={form.logo_url} alt="" className="mt-1 h-32 w-full object-cover rounded-xl border" />}
+              <div className="mt-2 flex gap-2">
+                <Input type="file" accept="image/*" onChange={e=> e.target.files?.[0] && uploadImage(e.target.files[0], "logo_url")} className="flex-1" />
+                {uploading==="logo_url" && <span className="text-xs py-2">Mengunggah...</span>}
+              </div>
+              <Input value={form.logo_url} onChange={e=> setForm({...form, logo_url:e.target.value})} placeholder="atau tempel tautan gambar https://..." className="mt-2" />
+            </div>
+            <div><label className="text-xs font-bold">Alamat Website</label><Input value={form.url} onChange={e=> setForm({...form, url:e.target.value})} placeholder="https://..." /></div>
+            <div><label className="text-xs font-bold">Urutan Tampil</label><Input type="number" value={form.display_order} onChange={e=> setForm({...form, display_order: parseInt(e.target.value)||0})} placeholder="1" /></div>
+            <div><label className="text-xs font-bold">Tampilkan di Website?</label><Select value={String(form.active)} onValueChange={v=> setForm({...form, active:v})} options={[{value:"true",label:"Ya, tampilkan"},{value:"false",label:"Sembunyikan"}]} /></div>
           </div>
           <DialogFooter><Button variant="outline" onClick={()=> setOpen(false)}>Batal</Button><Button onClick={handleSave}>{editing ? "Simpan" : "Tambah"}</Button></DialogFooter>
         </DialogContent>

@@ -8,8 +8,6 @@ import { useToast } from "@/components/ui/toast"
 
 const STATE_OPTIONS = [
   { value:"NOT_STARTED", label:"Belum Dimulai — pendaftaran belum dibuka" },
-  { value:"REGISTRATION", label:"Pendaftaran Dibuka — peserta bisa daftar" },
-  { value:"VERIFICATION", label:"Verifikasi Berkas — cek kelengkapan peserta" },
   { value:"VOTING_OPEN", label:"Voting Dibuka — dukungan online aktif ✅" },
   { value:"ACTIVE", label:"Aktif — dukungan online aktif ✅" },
   { value:"VOTING_CLOSED", label:"Voting Ditutup — dukungan dihentikan" },
