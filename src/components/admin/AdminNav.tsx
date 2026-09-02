@@ -30,11 +30,11 @@ export function AdminNav({ children }: { children: React.ReactNode }){
   return (
     <div className="min-h-screen bg-muted/20 flex">
       <aside className="hidden lg:flex w-[260px] shrink-0 flex-col border-r border-border bg-card">
-        <div className="h-[64px] flex items-center gap-3 px-5 border-b border-border">
+        <div className="h-[64px] flex items-center justify-center gap-3 px-5 border-b border-border text-center">
           <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="h-8 w-8 rounded-lg object-cover border border-border" />
-          <div>
-            <div className="text-sm font-black leading-none">LKBB ADMIN</div>
-            <div className="text-[11px] tracking-widest text-muted-foreground">JAVASOMA 2026</div>
+          <div className="text-center">
+            <div className="text-sm font-black leading-none text-center">LKBB ADMIN</div>
+            <div className="text-[11px] tracking-widest text-muted-foreground text-center">JAVASOMA 2026</div>
           </div>
         </div>
         <nav className="flex-1 overflow-y-auto p-3 space-y-1">
@@ -81,11 +81,11 @@ export function AdminNav({ children }: { children: React.ReactNode }){
               </Button>
               <SheetContent side="left" className="w-[300px] p-0 overflow-hidden">
                 <SheetHeader className="p-5 border-b">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center gap-3 text-center">
                     <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="h-8 w-8 rounded-lg object-cover border" />
-                    <div>
-                      <SheetTitle className="text-sm font-black leading-none text-left">LKBB ADMIN</SheetTitle>
-                      <div className="text-[11px] tracking-widest text-muted-foreground text-left">JAVASOMA 2026</div>
+                    <div className="text-center">
+                      <SheetTitle className="text-sm font-black leading-none text-center">LKBB ADMIN</SheetTitle>
+                      <div className="text-[11px] tracking-widest text-muted-foreground text-center">JAVASOMA 2026</div>
                     </div>
                   </div>
                 </SheetHeader>

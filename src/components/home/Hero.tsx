@@ -69,24 +69,25 @@ export function Hero({ event, cms }: { event: any; cms?: any }){
       )}
       <div className="relative mx-auto max-w-[1280px] px-4 md:px-6">
         <div className="pt-10 md:pt-14 pb-6 md:pb-8">
-          <div className="max-w-[640px]">
-            <div className="inline-flex items-center gap-2">
+          <div className="mx-auto max-w-[720px] text-center flex flex-col items-center">
+            <div className="inline-flex items-center justify-center gap-3">
               <span className="h-px w-8 bg-[#C9A86A]" />
               <span className="text-[11px] font-bold tracking-[0.18em] text-[#C9A86A]">{eyebrow}</span>
+              <span className="h-px w-8 bg-[#C9A86A]" />
             </div>
-            <h1 className="mt-3 text-balance font-black leading-[0.85] tracking-[-0.05em]">
+            <h1 className="mt-3 text-balance font-black leading-[0.85] tracking-[-0.05em] text-center">
               <span className="block text-[44px] md:text-[68px] lg:text-[76px] text-[#C9A86A]">{heading1}</span>
               <span className="block text-[44px] md:text-[68px] lg:text-[76px] text-[#C9A86A]">{heading2}</span>
             </h1>
-            <div className="mt-3">
+            <div className="mt-3 text-center">
               <div className="text-[13px] font-bold tracking-[0.18em] text-white">{subtitle}</div>
               <div className="text-[12px] font-semibold tracking-[0.12em] text-white/80">{subtitle2}</div>
               <div className="text-[11px] tracking-[0.14em] text-[#C9A86A] font-bold">{tagline}</div>
             </div>
-            <p className="mt-4 max-w-[520px] text-[13px] leading-relaxed text-white/65">
+            <p className="mt-4 max-w-[520px] text-[13px] leading-relaxed text-white/65 text-center">
               {description}
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3 justify-center">
               <Link href={ctaPrimaryLink}>
                 <Button size="lg" className="rounded-full px-6 h-[42px] bg-[#C9A86A] text-[#0B0C0F] hover:bg-[#C4A06A] font-black tracking-wide">{ctaPrimaryLabel}</Button>
               </Link>
