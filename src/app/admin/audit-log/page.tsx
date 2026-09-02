@@ -107,18 +107,33 @@ export default function AuditLog(){
         <h1 className="text-[18px] font-black">Riwayat Aktivitas</h1>
         <p className="text-xs text-muted-foreground">Semua perubahan penting tercatat otomatis untuk transparansi.</p>
       </div>
-      <div className="rounded-[16px] border border-border bg-card overflow-hidden overflow-x-auto">
-        <div className="min-w-[720px]">
-          <div className="grid grid-cols-[150px_130px_200px_1fr] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-border bg-muted/30">
+      <div className="rounded-[16px] border border-border bg-card overflow-hidden">
+        {/* Desktop */}
+        <div className="hidden md:block overflow-x-auto">
+          <div className="min-w-[600px] grid grid-cols-[140px_120px_180px_1fr] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-border bg-muted/30">
             <div>WAKTU</div><div>PENGGUNA</div><div>KEJADIAN</div><div>RINCIAN</div>
           </div>
-          {logs.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada aktivitas. Setiap perubahan akan tercatat di sini.</div> :
+          {logs.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada aktivitas.</div> :
             logs.map((l:any,i:number)=> (
-            <div key={l.id || i} className="grid grid-cols-[150px_130px_200px_1fr] gap-3 px-4 py-3 text-xs border-b border-border/50 items-start">
-              <div className="tabular-nums text-muted-foreground">{new Date(l.created_at).toLocaleString("id-ID",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})}</div>
+            <div key={l.id || i} className="min-w-[600px] grid grid-cols-[140px_120px_180px_1fr] gap-3 px-4 py-3 text-xs border-b border-border/50 items-start">
+              <div className="tabular-nums text-muted-foreground">{new Date(l.created_at).toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}</div>
               <div className="font-bold truncate">{l.user_id ? (users[l.user_id] || "Pengguna") : "Sistem"}</div>
               <div className="font-medium">{humanAksi(l.action)}</div>
-              <div className="text-muted-foreground leading-relaxed">{humanDetail(l)}</div>
+              <div className="text-muted-foreground leading-relaxed line-clamp-2">{humanDetail(l)}</div>
+            </div>
+          ))}
+        </div>
+        {/* Mobile */}
+        <div className="md:hidden space-y-2 p-3">
+          {logs.length===0 ? <div className="p-6 text-center text-sm text-muted-foreground">Belum ada aktivitas.</div> :
+            logs.map((l:any,i:number)=> (
+            <div key={l.id || i} className="rounded-xl border border-border p-3 flex flex-col gap-1.5">
+              <div className="flex justify-between items-center">
+                <span className="text-[11px] tabular-nums text-muted-foreground">{new Date(l.created_at).toLocaleDateString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}</span>
+                <span className="text-[11px] font-bold">{l.user_id ? (users[l.user_id] || "Pengguna") : "Sistem"}</span>
+              </div>
+              <div className="text-sm font-bold">{humanAksi(l.action)}</div>
+              <div className="text-xs text-muted-foreground leading-relaxed">{humanDetail(l)}</div>
             </div>
           ))}
         </div>

@@ -204,11 +204,14 @@
 
 @media (max-width: 640px) {
   html { font-size: 14px; }
-  /* Perkecil sedikit di mobile agar tidak memenuhi layar */
-  .text-\[44px\] { font-size: 32px !important; }
-  .text-\[28px\] { font-size: 22px !important; }
+  /* DPI mengecil sedikit di HP — tidak terlalu kecil, tidak terlalu besar */
+  .text-\[44px\] { font-size: 30px !important; }
+  .text-\[28px\] { font-size: 20px !important; }
   .text-\[30px\] { font-size: 22px !important; }
-  h1.text-\[36px\] { font-size: 24px !important; }
+  h1.text-\[36px\] { font-size: 22px !important; }
+}
+@media (max-width: 375px) {
+  html { font-size: 13px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

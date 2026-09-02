@@ -15,19 +15,35 @@ export default function Peserta(){
   return (
     <div className="p-4 md:p-6 space-y-4">
       <div className="flex items-center justify-between"><div><h1 className="text-[18px] font-black">Daftar Peserta</h1><p className="text-xs text-muted-foreground">{list.length} peserta — hanya User Biasa</p></div>{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}</div>
-      <div className="rounded-[16px] border border-border bg-card overflow-hidden overflow-x-auto">
-        <div className="min-w-[760px]">
-          <div className="grid grid-cols-[40px_1.4fr_1.2fr_120px_100px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-border bg-muted/30">
+      <div className="rounded-[16px] border border-border bg-card overflow-hidden">
+        {/* Desktop */}
+        <div className="hidden md:block overflow-x-auto">
+          <div className="min-w-[560px] grid grid-cols-[40px_1.4fr_1.2fr_110px_90px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-border bg-muted/30">
             <div><input type="checkbox" checked={selected.size===list.length && list.length>0} onChange={toggleAll} /></div><div>NAMA LENGKAP</div><div>ALAMAT EMAIL</div><div>PERAN</div><div>AKSI</div>
           </div>
           {list.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada peserta.</div> :
             list.map((p:any)=> (
-            <div key={p.id} className="grid grid-cols-[40px_1.4fr_1.2fr_120px_100px] gap-2 px-4 py-3 items-center border-b border-border/50 text-sm">
+            <div key={p.id} className="min-w-[560px] grid grid-cols-[40px_1.4fr_1.2fr_110px_90px] gap-2 px-4 py-3 items-center border-b border-border/50 text-sm">
               <div><input type="checkbox" checked={selected.has(p.id)} onChange={()=> toggleSelect(p.id)} /></div>
               <div className="font-bold truncate">{p.public_name || "-"}</div>
               <div className="text-xs text-muted-foreground truncate">{p.email}</div>
               <div><span className="rounded-full bg-secondary px-2 py-1 text-xs font-bold">User Biasa</span></div>
               <div><Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600" onClick={async()=>{ await fetch(`/api/admin/crud?table=profiles&id=${p.id}`, {method:"DELETE"}); toast({title:"Dihapus", variant:"success"}); load() }}>Hapus</Button></div>
+            </div>
+          ))}
+        </div>
+        {/* Mobile */}
+        <div className="md:hidden space-y-2 p-3">
+          {list.length===0 ? <div className="p-6 text-center text-sm text-muted-foreground">Belum ada peserta.</div> :
+            list.map((p:any)=> (
+            <div key={p.id} className="rounded-xl border border-border p-3 flex gap-3">
+              <input type="checkbox" className="mt-1" checked={selected.has(p.id)} onChange={()=> toggleSelect(p.id)} />
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-bold truncate">{p.public_name || "-"}</div>
+                <div className="text-xs text-muted-foreground truncate">{p.email}</div>
+                <div className="mt-1"><span className="rounded-full bg-secondary px-2 py-1 text-[11px] font-bold">User Biasa</span></div>
+              </div>
+              <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600 shrink-0" onClick={async()=>{ await fetch(`/api/admin/crud?table=profiles&id=${p.id}`, {method:"DELETE"}); toast({title:"Dihapus", variant:"success"}); load() }}>Hapus</Button>
             </div>
           ))}
         </div>

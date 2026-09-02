@@ -143,19 +143,36 @@ export default function AdminOverview(){
             <h3 className="text-xs font-black tracking-wide">TRANSAKSI TERBARU</h3>
             <Link href="/admin/transaksi" className="text-[11px] text-[#C9A86A]">Lihat Semua →</Link>
           </div>
-          <div className="mt-3 overflow-x-auto">
-            <div className="min-w-[520px] grid grid-cols-[110px_1fr_60px_90px_70px] gap-2 px-2 py-1 text-[10px] font-bold tracking-widest text-white/30 border-b border-white/5">
-              <div>ID</div><div>USER</div><div>JUMLAH</div><div>NOMINAL</div><div>STATUS</div>
-            </div>
-            {recentTx.map((t:any)=> (
-              <div key={t.id} className="min-w-[520px] grid grid-cols-[110px_1fr_60px_90px_70px] gap-2 px-2 py-2 text-xs border-b border-white/5">
-                <div className="font-mono text-white/70">{t.id.slice(0,12)}</div>
-                <div className="truncate">{t.peletons?.name || t.peleton_id.slice(0,8)}</div>
-                <div className="tabular-nums">{t.supports}</div>
-                <div className="tabular-nums">Rp{t.amount?.toLocaleString("id-ID")}</div>
-                <div><span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${t.status==="Success" ? "bg-emerald-500 text-white" : t.status==="Failed" ? "bg-red-500 text-white" : "bg-amber-500 text-white"}`}>{t.status}</span></div>
+          <div className="mt-3">
+            {/* Desktop table */}
+            <div className="hidden md:block overflow-x-auto -mx-4 px-4">
+              <div className="min-w-[520px] grid grid-cols-[110px_1fr_60px_90px_70px] gap-2 px-2 py-1 text-[10px] font-bold tracking-widest text-white/30 border-b border-white/5">
+                <div>ID</div><div>USER</div><div>JUMLAH</div><div>NOMINAL</div><div>STATUS</div>
               </div>
-            ))}
+              {recentTx.map((t:any)=> (
+                <div key={t.id} className="min-w-[520px] grid grid-cols-[110px_1fr_60px_90px_70px] gap-2 px-2 py-2 text-xs border-b border-white/5">
+                  <div className="font-mono text-white/70">{t.id.slice(0,12)}</div>
+                  <div className="truncate">{t.peletons?.name || t.peleton_id.slice(0,8)}</div>
+                  <div className="tabular-nums">{t.supports}</div>
+                  <div className="tabular-nums">Rp{t.amount?.toLocaleString("id-ID")}</div>
+                  <div><span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${t.status==="Success" ? "bg-emerald-500 text-white" : t.status==="Failed" ? "bg-red-500 text-white" : "bg-amber-500 text-white"}`}>{t.status}</span></div>
+                </div>
+              ))}
+            </div>
+            {/* Mobile cards */}
+            <div className="md:hidden space-y-2">
+              {recentTx.map((t:any)=> (
+                <div key={t.id} className="rounded-xl border border-white/10 bg-white/[0.04] p-3 flex flex-col gap-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="font-mono text-[11px] text-white/60">{t.id.slice(0,8)}</span>
+                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${t.status==="Success" ? "bg-emerald-500 text-white" : t.status==="Failed" ? "bg-red-500 text-white" : "bg-amber-500 text-white"}`}>{t.status==="Success"?"Berhasil":t.status==="Failed"?"Gagal":"Menunggu"}</span>
+                  </div>
+                  <div className="text-sm font-bold truncate">{t.peletons?.name || t.peleton_id.slice(0,8)}</div>
+                  <div className="flex justify-between text-xs"><span className="text-white/50">Jumlah</span><span className="font-bold tabular-nums">{t.supports} • Rp{t.amount?.toLocaleString("id-ID")}</span></div>
+                </div>
+              ))}
+              {recentTx.length===0 && <div className="text-xs text-white/40 text-center py-4">Belum ada transaksi.</div>}
+            </div>
           </div>
         </div>
         <div className="space-y-4">
