@@ -269,8 +269,8 @@
   .max-\[320px\]\:hidden { display: none !important; }
 }
 @media (max-width: 280px) {
-  /* Pada layar 280, paksa semua grid 2 jadi 1 kolom untuk keterbacaan */
-  .grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+  /* Di 280 tetap jaga 2 kolom untuk dashboard stats (grid-cols-2) — jangan paksa jadi 1 kolom */
+  /* Hanya perkecil padding agar muat: sudah ditangani via p-2.5 & text clamp */
 }
 
 @media (prefers-reduced-motion: reduce) {

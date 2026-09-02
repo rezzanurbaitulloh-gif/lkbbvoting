@@ -61,33 +61,33 @@ export default function AdminOverview(){
           <span className="hidden md:inline-flex text-xs text-white/50">20 Okt - 24 Okt 2026</span>
         </div>
       </div>
-      {/* Row 1: peserta */}
-      <div className="grid grid-cols-1 min-[360px]:grid-cols-2 lg:grid-cols-4 gap-3">
+      {/* Row 1: peserta — selalu 2 kolom di mobile (2-2 kesamping) */}
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
         {[
           {label:"TOTAL PESERTA", value: stats.totalTeams ?? "-", sub:"Tim", dark:true},
           {label:"SMP / SEDERAJAT", value: stats.smp ?? "-", sub:"Tim"},
           {label:"SMA / SEDERAJAT", value: stats.sma ?? "-", sub:"Tim"},
           {label:"TOTAL USER", value: stats.totalUsers ?? "-", sub:"User"},
         ].map(card=> (
-          <div key={card.label} className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
-            <div className="text-[10px] font-bold tracking-widest text-white/40">{card.label}</div>
-            <div className="mt-1 text-[22px] font-black leading-none text-white">{card.value}</div>
-            <div className="text-[11px] text-white/40">{card.sub}</div>
+          <div key={card.label} className="rounded-[10px] sm:rounded-[12px] border border-white/10 bg-[#17191F] p-2.5 sm:p-3 md:p-4">
+            <div className="text-[9px] sm:text-[10px] font-bold tracking-[0.08em] sm:tracking-widest text-white/40 leading-tight break-words">{card.label}</div>
+            <div className="mt-1 text-[16px] sm:text-[18px] md:text-[22px] font-black leading-none text-white break-words">{card.value}</div>
+            <div className="text-[10px] sm:text-[11px] text-white/40">{card.sub}</div>
           </div>
         ))}
       </div>
-      {/* Row 2: transaksi */}
-      <div className="grid grid-cols-1 min-[360px]:grid-cols-2 lg:grid-cols-4 gap-3">
+      {/* Row 2: transaksi — selalu 2 kolom di mobile */}
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
         {[
           {label:"TOTAL TRANSAKSI", value: stats.transactions ?? "-", sub:"Transaksi"},
           {label:"ONLINE BALLOT", value: (stats.online ?? 0).toLocaleString("id-ID"), sub:"Ballot"},
           {label:"OFFLINE BALLOT", value: (stats.offline ?? 0).toLocaleString("id-ID"), sub:"Ballot"},
           {label:"TOTAL BALLOT", value: (stats.total ?? 0).toLocaleString("id-ID"), sub:"Ballot", gold:true},
         ].map(card=> (
-          <div key={card.label} className={`rounded-[12px] border p-4 ${card.gold ? "bg-[#C9A86A] border-[#C9A86A] text-[#0B0C0F]" : "bg-[#17191F] border-white/10 text-white"}`}>
-            <div className={`text-[10px] font-bold tracking-widest ${card.gold ? "text-[#0B0C0F]/70" : "text-white/40"}`}>{card.label}</div>
-            <div className="mt-1 text-[20px] font-black leading-none">{card.value}</div>
-            <div className={`text-[11px] ${card.gold ? "text-[#0B0C0F]/60" : "text-white/40"}`}>{card.sub}</div>
+          <div key={card.label} className={`rounded-[10px] sm:rounded-[12px] border p-2.5 sm:p-3 md:p-4 ${card.gold ? "bg-[#C9A86A] border-[#C9A86A] text-[#0B0C0F]" : "bg-[#17191F] border-white/10 text-white"}`}>
+            <div className={`text-[9px] sm:text-[10px] font-bold tracking-[0.08em] sm:tracking-widest leading-tight break-words ${card.gold ? "text-[#0B0C0F]/70" : "text-white/40"}`}>{card.label}</div>
+            <div className="mt-1 text-[14px] sm:text-[16px] md:text-[20px] font-black leading-none break-words truncate">{card.value}</div>
+            <div className={`text-[10px] sm:text-[11px] ${card.gold ? "text-[#0B0C0F]/60" : "text-white/40"}`}>{card.sub}</div>
           </div>
         ))}
       </div>
