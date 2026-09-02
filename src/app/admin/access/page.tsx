@@ -126,7 +126,6 @@ export default function AccessControl(){
             </div>
           ))}
         </div>
-        <div className="p-3 border-t border-border bg-amber-500/10 text-xs">Hanya SUPER_ADMIN yang bisa mengubah. ADMIN/EDITOR akan langsung terpengaruh pada percobaan akses berikutnya. Perubahan tercatat di audit_logs.</div>
       </div>
 
       <div className="rounded-[16px] border border-border bg-card overflow-hidden">
@@ -154,7 +153,6 @@ export default function AccessControl(){
           <DialogHeader><DialogTitle>Kelola Peran Pengguna</DialogTitle><DialogDescription>{editingUser?.public_name} — {editingUser?.email}</DialogDescription></DialogHeader>
           <div className="grid gap-3">
             <div><label className="text-xs font-bold">Peran Baru</label><Select value={newRole} onValueChange={setNewRole} options={[{value:"USER",label:"USER — User Biasa"},{value:"EDITOR",label:"EDITOR — Konten & Media"},{value:"ADMIN",label:"ADMIN — Hampir penuh"},{value:"SUPER_ADMIN",label:"SUPER_ADMIN — Penuh"}]} /></div>
-            <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs">EDITOR hanya boleh CMS/media/peleton (tidak bisa kelola pengguna sensitif). SUPER_ADMIN wajib minimal 1 orang — jangan turunkan semua.</div>
           </div>
           <DialogFooter><Button variant="outline" onClick={()=> setEditingUser(null)}>Batal</Button><Button onClick={handleSaveUserRole}>Simpan</Button></DialogFooter>
         </DialogContent>

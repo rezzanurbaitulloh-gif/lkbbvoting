@@ -303,11 +303,6 @@ export default function CmsSectionBuilder(){
 
             <div className="rounded-xl border border-border bg-muted/20 p-3 space-y-3">
               <div className="text-xs font-black">Konten Dinamis (teks, gambar, banner, tombol)</div>
-              {form.type === "hero" && (
-                <div className="rounded-lg bg-amber-500/10 border border-amber-500/20 p-2.5 text-[11px] text-muted-foreground">
-                  <b>Logo</b> (<code>logoImage</code>) sekarang sebagai <b>background watermark</b> herosection dengan opasitas rendah — bukan card. Ganti gambar di field <code>logoImage</code> di atas, atur transparansi di panel bawah.
-                </div>
-              )}
               <SectionContentEditor content={form.content||{}} onChange={(c)=> setForm({...form, content:c})} type={form.type} />
             </div>
 

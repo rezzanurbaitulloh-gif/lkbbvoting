@@ -75,7 +75,6 @@ export default function CmsPages(){
         </div>
       </div>
 
-      <div className="rounded-[12px] border border-amber-500/20 bg-amber-500/10 p-3 text-xs">Semua perubahan tersimpan di database (cms_pages & cms_sections). Halaman sistem (Beranda, Tim) tidak boleh dihapus slug-nya. Gunakan section builder untuk ubah teks, gambar, banner, struktur halaman.</div>
 
       <div className="grid gap-3">
         {pages.map(p=> (

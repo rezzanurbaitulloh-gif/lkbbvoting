@@ -256,7 +256,6 @@ export default function AdminPeleton(){
 
       <AlertDialog open={!!delTarget} onOpenChange={(o)=> !o && setDelTarget(null)} title="Hapus tim?" description={`Yakin hapus ${delTarget?.name} (#${delTarget?.number})? Data tidak bisa dikembalikan.`} onConfirm={handleDelete} />
       <ImageCropDialog open={cropOpen} onOpenChange={setCropOpen} src={cropSrc} onCropped={handleCropped} />
-      <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs">Tim yang ditambahkan admin langsung tampil. Tidak ada proses persetujuan lagi.</div>
     </div>
   )
 }

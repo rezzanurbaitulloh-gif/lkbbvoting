@@ -166,7 +166,6 @@ export default function MediaManager(){
 
       <AlertDialog open={!!delTarget} onOpenChange={(o)=> !o && setDelTarget(null)} title="Hapus media?" description={`Yakin hapus ${delTarget?.original_name}? File di storage ikut terhapus dan link yang sudah dipakai di CMS akan broken.`} onConfirm={handleDelete} />
 
-      <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs">Semua URL bersifat publik. Setelah upload, klik “Salin URL” lalu paste di editor section CMS (field gambar/banner). Perubahan gambar langsung tampil tanpa deploy.</div>
     </div>
   )
 }

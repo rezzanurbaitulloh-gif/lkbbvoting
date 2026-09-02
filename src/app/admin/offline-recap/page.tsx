@@ -67,7 +67,6 @@ export default function OfflineRecap(){
           {recent.length===0 && <div className="text-xs text-muted-foreground">Belum ada rekap offline.</div>}
         </div>
       </div>
-      <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs">Koreksi: jangan hapus, tambah entri baru dengan qty negatif (mis. -100) + alasan, tetap auditable.</div>
     </div>
   )
 }

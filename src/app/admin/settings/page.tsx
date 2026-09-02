@@ -270,7 +270,6 @@ export default function SettingsPage(){
         </div>
       )}
 
-      <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs">Semua perubahan tercatat di audit_logs & cms_revisions. Frontend (Navbar, Footer, Hero) otomatis membaca dari site_settings / cms_sections.</div>
 
       {/* List settings — tanpa bahasa pemrograman, hanya nilai bersih */}
       <details className="rounded-[12px] border border-border bg-card">

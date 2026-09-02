@@ -60,7 +60,6 @@ export default function AdminKlasemen(){
         <Section title="SMP / Sederajat" list={smp} />
         <Section title="SMA / Sederajat" list={sma} />
       </div>
-      <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs text-amber-800 dark:text-amber-200">⚠️ Ranking otomatis dari ledger supports. Podium di atas update realtime tiap 4 detik.</div>
     </div>
   )
 }
