@@ -1,4 +1,4 @@
-export type CompetitionState = "NOT_STARTED" | "REGISTRATION" | "VERIFICATION" | "VOTING_OPEN" | "VOTING_CLOSED" | "RESULT_VERIFICATION" | "RESULT_PUBLISHED" | "COMPLETED"
+export type CompetitionState = "NOT_STARTED" | "REGISTRATION" | "VERIFICATION" | "VOTING_OPEN" | "ACTIVE" | "VOTING_CLOSED" | "RESULT_VERIFICATION" | "RESULT_PUBLISHED" | "COMPLETED"
 
 export type PeletonCategory = "SMP" | "SMA"
 export type PeletonStatus = "Draft" | "Pending" | "Verified" | "Rejected" | "Suspended"

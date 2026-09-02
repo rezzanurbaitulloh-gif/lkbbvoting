@@ -7,13 +7,10 @@ import { createBrowserSupabase } from "@/lib/supabase"
 import { useToast } from "@/components/ui/toast"
 
 const STATE_OPTIONS = [
-  { value:"NOT_STARTED", label:"Belum Dimulai — pendaftaran belum dibuka" },
-  { value:"VOTING_OPEN", label:"Voting Dibuka — dukungan online aktif ✅" },
-  { value:"ACTIVE", label:"Aktif — dukungan online aktif ✅" },
-  { value:"VOTING_CLOSED", label:"Voting Ditutup — dukungan dihentikan" },
-  { value:"RESULT_VERIFICATION", label:"Verifikasi Hasil — rekap online & offline" },
-  { value:"RESULT_PUBLISHED", label:"Hasil Dipublikasikan — ranking final tayang" },
-  { value:"COMPLETED", label:"Selesai — event selesai total" },
+  { value:"NOT_STARTED", label:"Belum Dimulai — belum bisa dukung" },
+  { value:"ACTIVE", label:"Aktif — masa dukungan dibuka" },
+  { value:"VOTING_CLOSED", label:"Voting Ditutup — transaksi dihentikan, tampil peringkat online saja" },
+  { value:"RESULT_PUBLISHED", label:"Hasil Dipublikasikan — tampil peringkat akhir + podium juara" },
 ]
 
 export default function Settings(){
@@ -51,7 +48,7 @@ export default function Settings(){
         <div><label className="text-xs font-bold">Sub-judul</label><Input defaultValue={event.subtitle} id="subtitle" /></div>
         <div><label className="text-xs font-bold">Tagline</label><Input defaultValue={event.tagline} id="tagline" /></div>
         <div><label className="text-xs font-bold">Status Event Saat Ini</label><Select value={stateVal} onValueChange={setStateVal} options={STATE_OPTIONS} /></div>
-        <div className="text-xs text-muted-foreground">Hanya <b>Voting Dibuka</b> & <b>Aktif</b> yang mengizinkan transaksi — selain itu backend 403 total.</div>
+        <div className="text-xs text-muted-foreground">Hanya <b>Aktif</b> yang mengizinkan transaksi. <b>Belum Dimulai</b>: belum bisa dukung. <b>Voting Ditutup</b>: transaksi dihentikan, tampil peringkat <b>online saja</b> (admin bisa rekap offline). <b>Hasil Dipublikasikan</b>: tampil peringkat akhir <b>online+offline</b> + podium juara.</div>
         <div className="flex flex-wrap gap-2">
           <Button disabled={saving} className="rounded-full" onClick={()=>{
             const name=(document.getElementById("name") as HTMLInputElement).value

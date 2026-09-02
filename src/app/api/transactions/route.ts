@@ -24,12 +24,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Quantity must be 1-1000" }, { status: 400 })
     }
 
-    // 1. Check event state server-side — ATURAN UTAMA #4: hanya VOTING_OPEN || ACTIVE yang boleh transaksi
+    // Hanya status Aktif yang boleh transaksi (4 status baru)
     const { data: event } = await supabase.from("competitions").select("state, settings").order("created_at", { ascending: false }).limit(1).single()
     if (!event) return NextResponse.json({ error: "Event not configured" }, { status: 500 })
-    const isOnlineActive = event.state === "VOTING_OPEN" || (event.state as string) === "ACTIVE"
-    if (!isOnlineActive) {
-      return NextResponse.json({ error: "TRANSAKSI DITUTUP — voting nonaktif. Transaksi baru dihentikan total." }, { status: 403 })
+    const state = event.state as string
+    const canTransact = state === "ACTIVE" || state === "VOTING_OPEN"
+    if (!canTransact) {
+      const msg =
+        state === "NOT_STARTED" ? "Belum dimulai — transaksi belum dibuka" :
+        state === "VOTING_CLOSED" ? "Voting ditutup — transaksi dihentikan" :
+        state === "RESULT_PUBLISHED" ? "Hasil sudah dipublikasikan — transaksi dihentikan" :
+        "Transaksi ditutup — status tidak mengizinkan"
+      return NextResponse.json({ error: msg }, { status: 403 })
     }
 
     // 2. Validate peleton

@@ -23,16 +23,21 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
   const { data: peleton } = await supabase.from("peletons").select("*").eq("slug", slug).eq("verified", true).eq("active", true).single()
   if(!peleton) return notFound()
 
-  // Ranking for this peleton (category-specific) — but hide totals if active and not provisional
-  const { data: ranking } = await supabase.from("team_ranking").select("*").eq("category", peleton.category).order("total_ballots", { ascending: false })
+  const { data: event } = await supabase.from("competitions").select("state, show_provisional_result, show_final_result").order("created_at", { ascending: false }).limit(1).single()
+  const state = (event?.state as string) || "NOT_STARTED"
+  const isNotStarted = state === "NOT_STARTED"
+  const isActive = state === "ACTIVE" || state === "VOTING_OPEN"
+  const isVotingClosed = state === "VOTING_CLOSED"
+  const isPublished = state === "RESULT_PUBLISHED"
+  const showRank = isVotingClosed || isPublished
+  const showSementara = isVotingClosed
+  const showFinal = isPublished
+
+  // Ranking: VOTING_CLOSED -> online saja, RESULT_PUBLISHED -> total
+  const orderField = isPublished ? "total_ballots" : isVotingClosed ? "online_ballots" : "total_ballots"
+  const { data: ranking } = await supabase.from("team_ranking").select("*").eq("category", peleton.category).order(orderField as any, { ascending: false })
   const rankIndex = (ranking || []).findIndex((r:any)=> r.id === peleton.id)
   const rank = rankIndex >= 0 ? rankIndex + 1 : null
-
-  const { data: event } = await supabase.from("competitions").select("state, show_provisional_result, show_final_result").order("created_at", { ascending: false }).limit(1).single()
-  const isOnlineActive = event?.state === "VOTING_OPEN" || (event?.state as string) === "ACTIVE"
-  const showRank = !isOnlineActive
-  const showSementara = !isOnlineActive && event?.show_provisional_result && !event?.show_final_result
-  const showFinal = !isOnlineActive && event?.show_final_result
 
   const photo = peleton.image_url
   const logo = (peleton as any).logo_url || peleton.image_url
@@ -134,9 +139,11 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                 )}
                 <div className="rounded-xl border border-[#C9A86A20] bg-[#C9A86A0A] p-3 text-center flex flex-col gap-1">
                   <div className="label-gold">Status Kompetisi</div>
-                  <div className="inline-flex self-center rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white">{isOnlineActive ? "VOTING BERLANGSUNG" : event?.state}</div>
-                  {showSementara && <div className="inline-flex self-center rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">HASIL SEMENTARA</div>}
-                  {showFinal && <div className="inline-flex self-center rounded-full bg-[#C9A86A] text-white px-2.5 py-1 text-[10px] font-black">HASIL FINAL</div>}
+                  <div className="inline-flex self-center rounded-full px-3 py-1 text-xs font-bold text-white" style={{background: isNotStarted ? "#6B7280" : isActive ? "#10B981" : isVotingClosed ? "#FACC15" : "#C9A86A", color: isVotingClosed ? "#0B0C0F" : "white"}}>
+                    {isNotStarted ? "Belum Dimulai" : isActive ? "Aktif" : isVotingClosed ? "Voting Ditutup" : isPublished ? "Hasil Dipublikasikan" : state}
+                  </div>
+                  {isVotingClosed && <div className="inline-flex self-center rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">Peringkat Online Saja</div>}
+                  {isPublished && <div className="inline-flex self-center rounded-full bg-[#C9A86A] text-white px-2.5 py-1 text-[10px] font-black">Peringkat Akhir</div>}
                 </div>
                 <Link href={supportUrl}><Button className="w-full rounded-full h-[44px] font-black">DUKUNG</Button></Link>
                 <ShareButtons profileUrl={profileUrl} supportUrl={supportUrl} />

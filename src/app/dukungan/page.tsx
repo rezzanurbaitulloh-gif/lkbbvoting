@@ -52,13 +52,22 @@ function DukunganInner(){
   const onlinePrice = event?.settings?.online_price ?? 3000
   const total = qty * onlinePrice
   const presets = event?.settings?.ballot_presets || [10,50,100,300]
-  const isOnlineActive = event?.state === "VOTING_OPEN" || (event?.state as string) === "ACTIVE"
-  const isClosed = event ? !isOnlineActive : false
+  const state = (event?.state as string) || ""
+  const isNotStarted = state === "NOT_STARTED"
+  const isActive = state === "ACTIVE" || state === "VOTING_OPEN"
+  const isVotingClosed = state === "VOTING_CLOSED"
+  const isPublished = state === "RESULT_PUBLISHED"
+  const isClosed = event ? !isActive : false
+  const closedMessage =
+    isNotStarted ? "Belum dimulai — transaksi belum dibuka" :
+    isVotingClosed ? "Voting ditutup — transaksi dihentikan. Peringkat online saja ditampilkan." :
+    isPublished ? "Hasil dipublikasikan — transaksi dihentikan. Lihat podium juara." :
+    "Transaksi ditutup"
 
   const handlePay = async ()=>{
     if(loading) return
     if(isClosed){
-      setError("TRANSAKSI DITUTUP — voting nonaktif. Transaksi baru dihentikan total.")
+      setError(closedMessage)
       return
     }
     if(!currentUser){
@@ -117,9 +126,9 @@ function DukunganInner(){
           </div>
           <div className="px-5 pb-5">
             <div className="rounded-xl bg-muted p-3 text-xs leading-relaxed text-muted-foreground">
-              Dukungan untuk <b className="text-foreground">{peleton.name}</b> akan tercatat sebagai ballot resmi <b>hanya setelah pembayaran terverifikasi</b>. {isClosed && <span className="text-red-600 font-bold">Transaksi baru dihentikan — voting nonaktif. Riwayat transaksi lama tetap diproses.</span>}
+              Dukungan untuk <b className="text-foreground">{peleton.name}</b> akan tercatat sebagai ballot resmi <b>hanya setelah pembayaran terverifikasi</b>. {isClosed && <span className="text-red-600 font-bold">{closedMessage}. Riwayat transaksi lama tetap diproses.</span>}
             </div>
-            {isClosed && <div className="mt-3 rounded-xl bg-red-500/10 border border-red-500/20 p-2.5 text-xs font-bold text-red-600">TRANSAKSI DITUTUP — voting nonaktif. Fitur transaksi dinonaktifkan total (UI + backend 403).</div>}
+            {isClosed && <div className="mt-3 rounded-xl bg-amber-500/10 border border-amber-500/20 p-2.5 text-xs font-bold text-amber-700">{closedMessage}</div>}
           </div>
         </div>
 
