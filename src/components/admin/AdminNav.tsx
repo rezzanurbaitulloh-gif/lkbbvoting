@@ -46,8 +46,8 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           {nav.slice(0,3).map(item=> {
             const active = isActive(item.href)
             return (
-              <Link key={item.href} href={item.href} className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
-                <item.icon className="h-4 w-4" /> {item.label}
+              <Link key={item.href} href={item.href} className={`flex w-full items-center justify-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors text-center ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
+                <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
               </Link>
             )
           })}
@@ -56,8 +56,8 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           {nav.slice(3,10).map(item=> {
             const active = isActive(item.href)
             return (
-              <Link key={item.href} href={item.href} className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
-                <item.icon className="h-4 w-4" /> {item.label}
+              <Link key={item.href} href={item.href} className={`flex w-full items-center justify-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors text-center ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
+                <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
               </Link>
             )
           })}
@@ -66,8 +66,8 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           {nav.slice(10).map(item=> {
             const active = isActive(item.href)
             return (
-              <Link key={item.href} href={item.href} className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
-                <item.icon className="h-4 w-4" /> {item.label}
+              <Link key={item.href} href={item.href} className={`flex w-full items-center justify-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors text-center ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
+                <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
               </Link>
             )
           })}
@@ -97,8 +97,8 @@ export function AdminNav({ children }: { children: React.ReactNode }){
                   {nav.map(item=> {
                     const active = isActive(item.href)
                     return (
-                      <Link key={item.href} href={item.href} onClick={()=> setOpen(false)} className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
-                        <item.icon className="h-4 w-4" /> {item.label}
+                      <Link key={item.href} href={item.href} onClick={()=> setOpen(false)} className={`flex w-full items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-center ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
+                        <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
                       </Link>
                     )
                   })}
