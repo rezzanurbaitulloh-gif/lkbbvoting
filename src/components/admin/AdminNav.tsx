@@ -2,25 +2,22 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
-import { LayoutDashboard, Users, Ticket, CreditCard, Trophy, Newspaper, Megaphone, Calendar, Star, Handshake, HelpCircle, Settings, ScrollText, UserCog, Menu } from "lucide-react"
+import { LayoutDashboard, Users, CreditCard, Trophy, Megaphone, Calendar, Star, Handshake, Settings, ScrollText, UserCog, Menu } from "lucide-react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 
 const nav = [
   { href:"/admin", label:"Dashboard", icon: LayoutDashboard },
   { href:"/admin/peleton", label:"Peleton", icon: Users },
-  { href:"/admin/dukungan", label:"Dukungan", icon: Ticket },
   { href:"/admin/transaksi", label:"Transaksi", icon: CreditCard },
   { href:"/admin/klasemen", label:"Klasemen", icon: Trophy },
-  { href:"/admin/berita", label:"Berita", icon: Newspaper },
   { href:"/admin/pengumuman", label:"Pengumuman", icon: Megaphone },
-  { href:"/admin/timeline", label:"Timeline", icon: Calendar },
+  { href:"/admin/timeline", label:"Jadwal", icon: Calendar },
   { href:"/admin/juri", label:"Juri", icon: Star },
   { href:"/admin/sponsor", label:"Sponsor", icon: Handshake },
-  { href:"/admin/faq", label:"FAQ", icon: HelpCircle },
-  { href:"/admin/users", label:"Users", icon: UserCog },
+  { href:"/admin/users", label:"Pengguna", icon: UserCog },
   { href:"/admin/settings", label:"Pengaturan", icon: Settings },
-  { href:"/admin/audit-log", label:"Audit Log", icon: ScrollText },
+  { href:"/admin/audit-log", label:"Riwayat", icon: ScrollText },
 ]
 
 export function AdminNav({ children }: { children: React.ReactNode }){

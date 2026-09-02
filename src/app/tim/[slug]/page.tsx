@@ -117,10 +117,10 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
             </section>
           </div>
 
-          <div className="space-y-4 lg:sticky lg:top-[76px] h-fit">
-            <div className="rounded-[16px] border border-border bg-card p-5">
+          <div className="flex flex-col gap-4 lg:sticky lg:top-[76px] h-fit">
+            <div className="rounded-[16px] border border-border bg-card p-5 flex flex-col gap-4">
               <h3 className="text-sm font-black">Dukungan</h3>
-              <div className="mt-3 space-y-3">
+              <div className="flex flex-col gap-4">
                 {showRank && rank ? (
                   <div className="flex items-center justify-between rounded-xl bg-muted p-3">
                     <span className="text-sm text-muted-foreground">Peringkat ({peleton.category})</span>
@@ -132,11 +132,11 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                     <p className="text-xs text-muted-foreground">Ballot disembunyikan selama voting aktif.</p>
                   </div>
                 )}
-                <div className="rounded-xl border border-[#C9A86A20] bg-[#C9A86A0A] p-3 text-center">
+                <div className="rounded-xl border border-[#C9A86A20] bg-[#C9A86A0A] p-3 text-center flex flex-col gap-1">
                   <div className="label-gold">Status Kompetisi</div>
-                  <div className="mt-1 inline-flex rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white">{isOnlineActive ? "VOTING BERLANGSUNG" : event?.state}</div>
-                  {showSementara && <div className="mt-2 inline-flex rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">HASIL SEMENTARA</div>}
-                  {showFinal && <div className="mt-2 inline-flex rounded-full bg-[#C9A86A] text-white px-2.5 py-1 text-[10px] font-black">HASIL FINAL</div>}
+                  <div className="inline-flex self-center rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white">{isOnlineActive ? "VOTING BERLANGSUNG" : event?.state}</div>
+                  {showSementara && <div className="inline-flex self-center rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">HASIL SEMENTARA</div>}
+                  {showFinal && <div className="inline-flex self-center rounded-full bg-[#C9A86A] text-white px-2.5 py-1 text-[10px] font-black">HASIL FINAL</div>}
                 </div>
                 <Link href={supportUrl}><Button className="w-full rounded-full h-[44px] font-black">DUKUNG</Button></Link>
                 <ShareButtons profileUrl={profileUrl} supportUrl={supportUrl} />

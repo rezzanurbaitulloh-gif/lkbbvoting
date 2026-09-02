@@ -9,6 +9,7 @@ import { Select } from "@/components/ui/select"
 import { AlertDialog } from "@/components/ui/alert-dialog"
 import { createBrowserSupabase } from "@/lib/supabase"
 import { useToast } from "@/components/ui/toast"
+import { ImageCropDialog } from "@/components/ui/image-crop-dialog"
 
 export default function AdminPeleton(){
   const { toast } = useToast()
@@ -20,6 +21,9 @@ export default function AdminPeleton(){
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [uploading, setUploading] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
+  const [cropSrc, setCropSrc] = useState<string>("")
+  const [cropField, setCropField] = useState<"image_url"|"logo_url"|null>(null)
+  const [cropOpen, setCropOpen] = useState(false)
   const [form, setForm] = useState<any>({ number:"", name:"", school:"", city:"Kertosono", province:"Jawa Timur", category:"SMA", image_url:"", logo_url:"", display_order:1, active:true })
 
   const load = ()=>{
@@ -49,21 +53,29 @@ export default function AdminPeleton(){
     load()
   }
 
-  const uploadImage = async (file: File, field: "image_url"|"logo_url")=>{
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, field: "image_url"|"logo_url")=>{
+    const file = e.target.files?.[0]
     if(!file) return
-    setUploading(field)
+    const url = URL.createObjectURL(file)
+    setCropSrc(url)
+    setCropField(field)
+    setCropOpen(true)
+    e.target.value = ""
+  }
+  const handleCropped = async (blob: Blob)=>{
+    if(!cropField) return
+    setUploading(cropField)
     try{
       const supabase = createBrowserSupabase()
-      const ext = file.name.split(".").pop()
-      const path = `peleton/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-      const { error } = await supabase.storage.from("media").upload(path, file)
+      const path = `peleton/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`
+      const { error } = await supabase.storage.from("media").upload(path, blob)
       if(error) throw error
       const { data } = supabase.storage.from("media").getPublicUrl(path)
-      setForm((prev:any)=> ({ ...prev, [field]: data.publicUrl }))
+      setForm((prev:any)=> ({ ...prev, [cropField]: data.publicUrl }))
       toast({ title:"Gambar berhasil diunggah", variant:"success"})
     } catch(e:any){
       toast({ title:"Gagal unggah", description:e.message, variant:"error"})
-    } finally{ setUploading(null)}
+    } finally{ setUploading(null); setCropSrc(""); setCropField(null) }
   }
 
   const openAdd = ()=>{
@@ -177,21 +189,29 @@ export default function AdminPeleton(){
             </div>
             <div>
               <label className="text-xs font-bold">Foto Tim</label>
-              {form.image_url && <img src={form.image_url} alt="" className="mt-1 h-32 w-full object-cover rounded-xl border" />}
-              <div className="mt-2 flex gap-2">
-                <Input type="file" accept="image/*" onChange={e=> e.target.files?.[0] && uploadImage(e.target.files[0], "image_url")} className="flex-1" />
-                {uploading==="image_url" && <span className="text-xs py-2">Mengunggah...</span>}
+              {form.image_url ? (
+                <img src={form.image_url} alt="Preview Foto Tim" className="mt-2 h-40 w-full object-cover rounded-xl border" />
+              ) : (
+                <div className="mt-2 h-32 grid place-items-center rounded-xl border border-dashed bg-muted text-xs text-muted-foreground">Belum ada foto — unggah di bawah</div>
+              )}
+              <div className="mt-2">
+                <Input type="file" accept="image/*" onChange={e=> handleFileSelect(e, "image_url")} />
+                {uploading==="image_url" && <span className="text-xs py-1 text-muted-foreground">Mengunggah...</span>}
+                <p className="text-[11px] text-muted-foreground mt-1">Pilih gambar, lalu sesuaikan potongan dengan rasio bebas. Pratinjau langsung tampil.</p>
               </div>
-              <Input value={form.image_url} onChange={e=> setForm({...form, image_url:e.target.value})} placeholder="atau tempel tautan gambar https://..." className="mt-2" />
             </div>
             <div>
               <label className="text-xs font-bold">Logo Sekolah</label>
-              {form.logo_url && <img src={form.logo_url} alt="" className="mt-1 h-20 w-20 object-cover rounded-xl border" />}
-              <div className="mt-2 flex gap-2">
-                <Input type="file" accept="image/*" onChange={e=> e.target.files?.[0] && uploadImage(e.target.files[0], "logo_url")} className="flex-1" />
-                {uploading==="logo_url" && <span className="text-xs py-2">Mengunggah...</span>}
+              {form.logo_url ? (
+                <img src={form.logo_url} alt="Preview Logo" className="mt-2 h-24 w-24 object-cover rounded-xl border" />
+              ) : (
+                <div className="mt-2 h-24 w-24 grid place-items-center rounded-xl border border-dashed bg-muted text-xs text-muted-foreground text-center">Belum ada logo</div>
+              )}
+              <div className="mt-2">
+                <Input type="file" accept="image/*" onChange={e=> handleFileSelect(e, "logo_url")} />
+                {uploading==="logo_url" && <span className="text-xs py-1 text-muted-foreground">Mengunggah...</span>}
+                <p className="text-[11px] text-muted-foreground mt-1">Unggah logo, potong bebas.</p>
               </div>
-              <Input value={form.logo_url} onChange={e=> setForm({...form, logo_url:e.target.value})} placeholder="atau tempel tautan logo https://..." className="mt-2" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div><label className="text-xs font-bold">Urutan Tampil</label><Input type="number" value={form.display_order} onChange={e=> setForm({...form, display_order: parseInt(e.target.value)||1})} /></div>
@@ -206,6 +226,7 @@ export default function AdminPeleton(){
       </Dialog>
 
       <AlertDialog open={!!delTarget} onOpenChange={(o)=> !o && setDelTarget(null)} title="Hapus tim?" description={`Yakin hapus ${delTarget?.name} (#${delTarget?.number})? Data tidak bisa dikembalikan.`} onConfirm={handleDelete} />
+      <ImageCropDialog open={cropOpen} onOpenChange={setCropOpen} src={cropSrc} onCropped={handleCropped} />
       <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs">Tim yang ditambahkan admin langsung tampil. Tidak ada proses persetujuan lagi.</div>
     </div>
   )

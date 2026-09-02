@@ -180,7 +180,7 @@ export function Navbar() {
                 <div className="flex gap-4 pt-2 text-xs text-muted-foreground">
                   <Link href="/tentang">Tentang</Link>
                   <Link href="/kontak">Kontak</Link>
-                  <Link href="/faq">FAQ</Link>
+                  <Link href="/pengumuman">Info</Link>
                 </div>
               </nav>
             </SheetContent>

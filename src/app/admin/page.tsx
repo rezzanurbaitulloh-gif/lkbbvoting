@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts"
 
 export default function AdminOverview(){
   const [stats, setStats] = useState<any>({})
@@ -101,18 +101,20 @@ export default function AdminOverview(){
             <ChartContainer
               config={{
                 online: { label: "Online", color: "#C9A86A" },
-                offline: { label: "Offline", color: "rgba(255,255,255,0.2)" },
+                offline: { label: "Offline", color: "rgba(255,255,255,0.22)" },
               }}
-              className="mt-3 h-[140px] w-full"
+              className="mt-3 h-[160px] w-full"
             >
-              <BarChart data={stats.chartData} margin={{ left: 0, right: 0, top: 4, bottom: 0 }}>
-                <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.06)" />
-                <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fontSize: 10, fill: "rgba(255,255,255,0.5)" }} />
-                <YAxis hide />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="online" stackId="a" fill="#C9A86A" radius={[4,4,0,0]} />
-                <Bar dataKey="offline" stackId="a" fill="rgba(255,255,255,0.2)" radius={[4,4,0,0]} />
-              </BarChart>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={stats.chartData} margin={{ left: 4, right: 4, top: 4, bottom: 0 }}>
+                  <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.08)" />
+                  <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "rgba(255,255,255,0.6)" }} />
+                  <YAxis hide domain={[0, (dataMax: number) => Math.max(10, dataMax + 5)]} />
+                  <ChartTooltip content={<ChartTooltipContent />} cursor={{ fill: "rgba(255,255,255,0.04)" }} />
+                  <Bar dataKey="online" stackId="a" fill="#C9A86A" radius={[6,6,0,0]} barSize={22} />
+                  <Bar dataKey="offline" stackId="a" fill="rgba(255,255,255,0.22)" radius={[6,6,0,0]} barSize={22} />
+                </BarChart>
+              </ResponsiveContainer>
             </ChartContainer>
           )}
           <div className="mt-2 flex gap-3 text-[10px] text-white/40">

@@ -14,20 +14,17 @@ function SearchInner(){
   const initialQ = searchParams.get("q") || ""
   const [q,setQ]=useState(initialQ)
   const [peletons,setPeletons]=useState<any[]>([])
-  const [allNews,setAllNews]=useState<any[]>([])
   const [allAnn,setAllAnn]=useState<any[]>([])
   useEffect(()=>{ setQ(initialQ) },[initialQ])
   useEffect(()=>{
     const s=createBrowserSupabase()
     s.from("peletons").select("*").eq("verified", true).eq("active", true).then(({data})=> setPeletons(data||[]))
-    s.from("news").select("*").eq("published", true).then(({data})=> setAllNews(data||[]))
     s.from("announcements").select("*").then(({data})=> setAllAnn(data||[]))
   },[])
   const peletonResults = useMemo(()=> q ? peletons.filter((p:any)=> `${p.name} ${p.school} ${p.city}`.toLowerCase().includes(q.toLowerCase())).slice(0,6) : [],[q,peletons])
-  const newsResults = useMemo(()=> q ? allNews.filter((n:any)=> `${n.title} ${n.excerpt}`.toLowerCase().includes(q.toLowerCase())).slice(0,4) : [],[q,allNews])
   const annResults = useMemo(()=> q ? allAnn.filter((a:any)=> `${a.title} ${a.content}`.toLowerCase().includes(q.toLowerCase())).slice(0,4) : [],[q,allAnn])
   const hasQuery = q.trim().length>1
-  const total = peletonResults.length + newsResults.length + annResults.length
+  const total = peletonResults.length + annResults.length
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -45,7 +42,7 @@ function SearchInner(){
         <div className="mx-auto max-w-[1080px] px-4 md:px-6 py-6">
           {!hasQuery ? (
             <div className="py-10 text-center">
-              <div className="text-sm font-bold">Cari peleton, berita, atau informasi kompetisi</div>
+              <div className="text-sm font-bold">Cari peleton atau pengumuman</div>
               <p className="text-xs text-muted-foreground">Ketik minimal 2 karakter untuk memulai pencarian</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 {["SMKN 1 Kertosono","Paskibra","Javasoma","Peleton"].map(k=> (
@@ -65,19 +62,6 @@ function SearchInner(){
                       <Link key={p.id} href={`/tim/${p.slug}`} className="flex gap-3 rounded-xl border border-border bg-card p-3 hover:bg-muted">
                         <img src={p.image_url || p.image} alt="" className="h-12 w-12 rounded-lg object-cover" />
                         <div><div className="text-sm font-bold">{p.name}</div><div className="text-xs text-muted-foreground">{p.school} • {p.city}</div></div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {newsResults.length>0 && (
-                <div>
-                  <h3 className="text-xs font-black tracking-widest">BERITA • {newsResults.length}</h3>
-                  <div className="mt-2 grid gap-2">
-                    {newsResults.map(n=> (
-                      <Link key={n.id} href={`/berita/${n.slug}`} className="rounded-xl border border-border bg-card p-3 hover:bg-muted">
-                        <div className="text-sm font-bold">{n.title}</div>
-                        <div className="text-xs text-muted-foreground line-clamp-1">{n.excerpt}</div>
                       </Link>
                     ))}
                   </div>

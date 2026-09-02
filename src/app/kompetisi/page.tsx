@@ -5,8 +5,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Calendar, MapPin, Users, Award, Shield, FileText } from "lucide-react"
+import { createServerSupabase } from "@/lib/supabase"
 
-export default function KompetisiPage(){
+export const revalidate = 0
+
+export default async function KompetisiPage(){
+  const supabase = await createServerSupabase()
+  const { data: judges } = await supabase.from("judges").select("name,role,photo_url").eq("active", true).order("sort_order")
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -19,7 +24,7 @@ export default function KompetisiPage(){
             <h1 className="mt-3 text-[30px] md:text-[44px] font-black tracking-[-0.03em] leading-none">LKBB JAVASOMA<br/><span className="text-[#C9A86A]">THE IMPRESSION</span></h1>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/60">Astra Dharma Hayuning Budaya — Kompetisi baris-berbaris paling prestisius se-Jawa Timur. Diselenggarakan oleh Paskibra SMKN 1 Kertosono.</p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/peleton"><Button className="rounded-full">Lihat Peserta</Button></Link>
+              <Link href="/tim"><Button className="rounded-full">Lihat Peserta</Button></Link>
               <Link href="/timeline"><Button variant="outline" className="rounded-full bg-white/10 border-white/15 text-white hover:bg-white/15">Lihat Timeline</Button></Link>
             </div>
           </div>
@@ -50,6 +55,23 @@ export default function KompetisiPage(){
                   <div className="rounded-xl bg-muted p-3"><div className="label-ceremonial">Penyelenggara</div><div className="font-bold">PASKIBRA SMKN 1 KERTOSONO</div><div className="text-xs text-muted-foreground">Satria Cengkara</div></div>
                   <div className="rounded-xl bg-muted p-3"><div className="label-ceremonial">Lokasi</div><div className="font-bold">SMKN 1 KERTOSONO</div><div className="text-xs text-muted-foreground">Kertosono, Nganjuk, Jawa Timur</div></div>
                 </div>
+              </div>
+
+              <div className="rounded-[16px] border border-border bg-card p-6">
+                <h3 className="text-sm font-black">Dewan Juri</h3>
+                <p className="text-xs text-muted-foreground">Penilai kompeten dan independen</p>
+                <div className="mt-3 grid sm:grid-cols-2 gap-3">
+                  {(judges && judges.length>0 ? judges : [{name:"Akan diumumkan",role:"Juri LKBB"}, {name:"Akan diumumkan",role:"Juri LKBB"}, {name:"Akan diumumkan",role:"Juri LKBB"}]).map((j:any)=> (
+                    <div key={j.name} className="flex items-center gap-3 rounded-xl border border-border p-3">
+                      <img src={j.photo_url || "/assets/brand/lkbb-logo.jpg"} alt={j.name} className="h-10 w-10 rounded-full object-cover border bg-muted" />
+                      <div className="min-w-0">
+                        <div className="text-sm font-bold truncate">{j.name}</div>
+                        <div className="text-xs text-muted-foreground truncate">{j.role}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <Link href="/juri" className="mt-3 inline-flex text-xs font-bold text-gold hover:underline">Lihat profil juri lengkap →</Link>
               </div>
 
               <div className="rounded-[16px] border border-border bg-card p-6">

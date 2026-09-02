@@ -42,10 +42,10 @@ export function Footer(){
             <div className="label-ceremonial mb-3">Informasi</div>
             <ul className="grid gap-2 text-sm">
               <li><Link href="/peraturan" className="hover:text-foreground text-muted-foreground">Peraturan</Link></li>
-              <li><Link href="/timeline" className="hover:text-foreground text-muted-foreground">Timeline</Link></li>
+              <li><Link href="/timeline" className="hover:text-foreground text-muted-foreground">Jadwal</Link></li>
               <li><Link href="/juri" className="hover:text-foreground text-muted-foreground">Dewan Juri</Link></li>
-              <li><Link href="/berita" className="hover:text-foreground text-muted-foreground">Berita</Link></li>
-              <li><Link href="/faq" className="hover:text-foreground text-muted-foreground">FAQ</Link></li>
+              <li><Link href="/pengumuman" className="hover:text-foreground text-muted-foreground">Pengumuman</Link></li>
+              <li><Link href="/kompetisi" className="hover:text-foreground text-muted-foreground">Kompetisi</Link></li>
             </ul>
           </div>
           <div>
@@ -66,8 +66,8 @@ export function Footer(){
         <div className="flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
           <div>© 2026 LKBB JAVASOMA THE IMPRESSION. All rights reserved. — Astra Dharma Hayuning Budaya</div>
           <div className="flex gap-4">
-            <Link href="/faq">Kebijakan Privasi</Link>
-            <Link href="/faq">Syarat & Ketentuan</Link>
+            <Link href="/peraturan">Kebijakan Privasi</Link>
+            <Link href="/peraturan">Syarat & Ketentuan</Link>
           </div>
         </div>
       </div>

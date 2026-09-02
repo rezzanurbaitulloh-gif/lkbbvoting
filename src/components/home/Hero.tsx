@@ -37,13 +37,12 @@ export function Hero({ event }: { event: any }){
       </div>
       {/* subtle grid */}
       <div className="absolute inset-0 opacity-[0.04]" style={{backgroundImage: `linear-gradient(#C9A86A 1px, transparent 1px), linear-gradient(90deg, #C9A86A 1px, transparent 1px)`, backgroundSize: '60px 60px'}} />
-      {/* LKBB triangle watermark */}
-      <div className="absolute right-[8%] top-[12%] hidden lg:block opacity-90">
-        <div className="relative h-[420px] w-[420px] border border-[#C9A86A]/20 rotate-0" style={{clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)', background: 'linear-gradient(180deg, rgba(201,168,106,0.08), transparent)'}} />
-        <div className="absolute inset-0 flex flex-col items-center justify-end pb-10">
-          <div className="text-[11px] tracking-[0.32em] text-[#C9A86A] font-bold">LKBB</div>
-          <div className="text-[10px] tracking-[0.18em] text-white/70">JAVASOMA</div>
-        </div>
+      {/* Logo LKBB hero — sesuai permintaan pakai logo LKBB */}
+      <div className="absolute right-[4%] top-[10%] hidden lg:flex h-[380px] w-[380px] items-center justify-center opacity-95">
+        <img src="/assets/brand/lkbb-logo.jpg" alt="Logo LKBB Javasoma" className="h-[280px] w-[280px] object-contain rounded-2xl border border-white/10 shadow-elevated bg-white" />
+      </div>
+      <div className="absolute right-[6%] top-[14%] flex lg:hidden h-[120px] w-[120px] items-center justify-center opacity-90">
+        <img src="/assets/brand/lkbb-logo.jpg" alt="Logo LKBB" className="h-[90px] w-[90px] object-contain rounded-xl border border-white/10 bg-white shadow" />
       </div>
       <div className="relative mx-auto max-w-[1280px] px-4 md:px-6">
         <div className="pt-10 md:pt-14 pb-6 md:pb-8">
