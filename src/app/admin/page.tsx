@@ -1,6 +1,8 @@
 "use client"
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts"
 
 export default function AdminOverview(){
   const [stats, setStats] = useState<any>({})
@@ -91,29 +93,28 @@ export default function AdminOverview(){
         </div>
         <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
           <h3 className="text-xs font-black tracking-wide">GRAFIK DUKUNGAN</h3>
-          <div className="mt-3 h-[120px] flex items-end gap-1">
-            {(stats.chartData || []).map((c:any)=> {
-              const max = stats.chartMax || 1
-              const total = c.online + c.offline
-              const hasData = total > 0
-              const totalH = max ? (total / max) * 100 : 0
-              return (
-                <div key={c.date} className="flex-1 flex flex-col gap-1">
-                  <div className="flex-1 flex flex-col justify-end">
-                    {/* Single bar showing total, with online portion gold, offline portion subtle on top if any */}
-                    <div className="rounded-t overflow-hidden flex flex-col justify-end" style={{height: hasData ? `${Math.max(6, totalH)}%` : "0%"}} title={`Total: ${total} (Online:${c.online} Offline:${c.offline})`}>
-                      {c.offline > 0 && <div className="bg-white/25 w-full" style={{height: `${(c.offline/total)*100}%`}} />}
-                      <div className="bg-[#C9A86A] w-full flex-1 min-h-[4px]" />
-                    </div>
-                    {hasData && <div className="text-[9px] font-bold text-center text-white/60 tabular-nums">{total}</div>}
-                  </div>
-                  <div className="text-[9px] text-center text-white/40 truncate">{c.label}</div>
-                </div>
-              )
-            })}
-            {(!stats.chartData || stats.chartData.length===0) && <div className="flex-1 grid place-items-center text-[11px] text-white/30">Memuat grafik...</div>}
-            {(stats.chartData || []).length>0 && (stats.chartData || []).every((c:any)=> c.online===0 && c.offline===0) && <div className="absolute inset-0 grid place-items-center text-[11px] text-white/30">Belum ada transaksi 5 hari terakhir</div>}
-          </div>
+          {(!stats.chartData || stats.chartData.length===0) ? (
+            <div className="mt-3 h-[140px] grid place-items-center text-[11px] text-white/30">Memuat grafik...</div>
+          ) : (stats.chartData || []).every((c:any)=> c.online===0 && c.offline===0) ? (
+            <div className="mt-3 h-[140px] grid place-items-center text-[11px] text-white/30">Belum ada transaksi 5 hari terakhir</div>
+          ) : (
+            <ChartContainer
+              config={{
+                online: { label: "Online", color: "#C9A86A" },
+                offline: { label: "Offline", color: "rgba(255,255,255,0.2)" },
+              }}
+              className="mt-3 h-[140px] w-full"
+            >
+              <BarChart data={stats.chartData} margin={{ left: 0, right: 0, top: 4, bottom: 0 }}>
+                <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.06)" />
+                <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fontSize: 10, fill: "rgba(255,255,255,0.5)" }} />
+                <YAxis hide />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar dataKey="online" stackId="a" fill="#C9A86A" radius={[4,4,0,0]} />
+                <Bar dataKey="offline" stackId="a" fill="rgba(255,255,255,0.2)" radius={[4,4,0,0]} />
+              </BarChart>
+            </ChartContainer>
+          )}
           <div className="mt-2 flex gap-3 text-[10px] text-white/40">
             <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[#C9A86A]"/> Online</span>
             <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-white/20"/> Offline</span>

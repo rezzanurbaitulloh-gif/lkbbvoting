@@ -1,12 +1,13 @@
 "use client"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { Search, Menu, X, Heart, User, Trophy, Home, Users, Calendar, Info, LogOut, Settings, LayoutDashboard, ChevronDown } from "lucide-react"
+import { Search, Menu, Heart, User, Trophy, Home, Users, Calendar, Info, LogOut, Settings, LayoutDashboard, ChevronDown } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "./ThemeToggle"
 import { SoundControl } from "./SoundControl"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { useApp } from "@/lib/store"
 
 // 4 MENU UTAMA sesuai ATURAN UTAMA: [Beranda, Tim, Kompetisi, Profile]
@@ -132,9 +133,58 @@ export function Navbar() {
           <Link href="/tim" className="hidden md:inline-flex">
             <Button size="sm" className="rounded-full px-5">Dukung</Button>
           </Link>
-          <button onClick={()=>setOpen(!open)} className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-border">
-            {open ? <X className="h-4 w-4"/> : <Menu className="h-4 w-4"/>}
-          </button>
+          <Sheet open={open} onOpenChange={setOpen}>
+            <Button variant="ghost" size="icon" className="lg:hidden h-9 w-9 rounded-full border border-border" onClick={()=> setOpen(true)}>
+              <Menu className="h-4 w-4" />
+            </Button>
+            <SheetContent side="right" className="w-[320px] p-0 overflow-hidden">
+              <SheetHeader className="p-5 border-b text-left">
+                <div className="flex items-center gap-3">
+                  <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="h-8 w-8 rounded-xl object-cover border" />
+                  <div>
+                    <SheetTitle className="text-sm font-black">LKBB JAVASOMA</SheetTitle>
+                    <div className="text-[11px] tracking-widest text-muted-foreground">THE IMPRESSION • 2026</div>
+                  </div>
+                </div>
+              </SheetHeader>
+              <nav className="flex-1 overflow-y-auto p-4 grid gap-1">
+                {nav.map(item=> (
+                  <Link key={item.href} href={item.href} onClick={()=>setOpen(false)} className={cn("flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium", pathname===item.href ? "bg-secondary" : "hover:bg-muted")}>
+                    {item.label}
+                  </Link>
+                ))}
+                <div className="h-px bg-border my-2" />
+                {currentUser ? (
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-3 rounded-xl bg-muted p-3">
+                      <div className="h-10 w-10 rounded-full bg-foreground text-background grid place-items-center text-sm font-black">
+                        {currentUser.name.slice(0,2).toUpperCase()}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-sm font-bold truncate">{currentUser.name}</div>
+                        <div className="text-xs text-muted-foreground truncate">{currentUser.email}</div>
+                      </div>
+                      {isAdmin && <span className="ml-auto rounded-full bg-gold px-2 py-0.5 text-[10px] font-black text-gold-foreground">ADMIN</span>}
+                    </div>
+                    <Link href="/profile" onClick={()=>setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium hover:bg-muted"><User className="h-4 w-4 text-muted-foreground"/> Profile</Link>
+                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium hover:bg-muted"><Settings className="h-4 w-4 text-muted-foreground"/> Pengaturan</Link>
+                    {isAdmin && <Link href="/admin" onClick={()=>setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-bold hover:bg-muted"><LayoutDashboard className="h-4 w-4 text-gold"/> Dashboard Admin</Link>}
+                    <button onClick={async ()=>{ setOpen(false); await logout(); router.push("/"); router.refresh() }} className="w-full flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-600 hover:bg-red-50 text-left"><LogOut className="h-4 w-4"/> Logout</button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-2">
+                    <Link href="/login" onClick={()=>setOpen(false)}><Button variant="outline" className="w-full rounded-full">Masuk</Button></Link>
+                    <Link href="/tim" onClick={()=>setOpen(false)}><Button className="w-full rounded-full">Dukung Sekarang</Button></Link>
+                  </div>
+                )}
+                <div className="flex gap-4 pt-2 text-xs text-muted-foreground">
+                  <Link href="/tentang">Tentang</Link>
+                  <Link href="/kontak">Kontak</Link>
+                  <Link href="/faq">FAQ</Link>
+                </div>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
       {/* Mobile search bar — khusus untuk cari nama tim */}
@@ -153,47 +203,6 @@ export function Navbar() {
         </form>
       </div>
 
-      {/* Mobile sheet */}
-      {open && (
-        <div className="lg:hidden border-t border-border bg-background">
-          <nav className="mx-auto max-w-[1280px] p-4 grid gap-1">
-            {nav.map(item=> (
-              <Link key={item.href} href={item.href} onClick={()=>setOpen(false)} className={cn("flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium", pathname===item.href ? "bg-secondary" : "hover:bg-muted")}>
-                {item.label}
-              </Link>
-            ))}
-            <div className="hairline my-2" />
-            {currentUser ? (
-              <div className="space-y-1">
-                <div className="flex items-center gap-3 rounded-xl bg-muted p-3">
-                  <div className="h-10 w-10 rounded-full bg-foreground text-background grid place-items-center text-sm font-black">
-                    {currentUser.name.slice(0,2).toUpperCase()}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-sm font-bold truncate">{currentUser.name}</div>
-                    <div className="text-xs text-muted-foreground truncate">{currentUser.email}</div>
-                  </div>
-                  {isAdmin && <span className="ml-auto rounded-full bg-gold px-2 py-0.5 text-[10px] font-black text-gold-foreground">ADMIN</span>}
-                </div>
-                <Link href="/profile" onClick={()=>setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium hover:bg-muted"><User className="h-4 w-4 text-muted-foreground"/> Profile</Link>
-                <Link href="/profile/edit" onClick={()=>setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium hover:bg-muted"><Settings className="h-4 w-4 text-muted-foreground"/> Pengaturan</Link>
-                {isAdmin && <Link href="/admin" onClick={()=>setOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-bold hover:bg-muted"><LayoutDashboard className="h-4 w-4 text-gold"/> Dashboard Admin</Link>}
-                <button onClick={async ()=>{ setOpen(false); await logout(); router.push("/"); router.refresh() }} className="w-full flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-600 hover:bg-red-50 text-left"><LogOut className="h-4 w-4"/> Logout</button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 gap-2">
-                <Link href="/login" onClick={()=>setOpen(false)}><Button variant="outline" className="w-full rounded-full">Masuk</Button></Link>
-                <Link href="/tim" onClick={()=>setOpen(false)}><Button className="w-full rounded-full">Dukung Sekarang</Button></Link>
-              </div>
-            )}
-            <div className="flex gap-4 pt-2 text-xs text-muted-foreground">
-              <Link href="/tentang">Tentang</Link>
-              <Link href="/kontak">Kontak</Link>
-              <Link href="/faq">FAQ</Link>
-            </div>
-          </nav>
-        </div>
-      )}
     </header>
   )
 }

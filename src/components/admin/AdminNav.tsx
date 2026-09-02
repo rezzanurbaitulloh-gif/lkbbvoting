@@ -1,7 +1,10 @@
 "use client"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Users, Ticket, CreditCard, Trophy, Newspaper, Megaphone, Calendar, Star, Handshake, HelpCircle, Settings, ScrollText, UserCog } from "lucide-react"
+import { useState } from "react"
+import { LayoutDashboard, Users, Ticket, CreditCard, Trophy, Newspaper, Megaphone, Calendar, Star, Handshake, HelpCircle, Settings, ScrollText, UserCog, Menu } from "lucide-react"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
 
 const nav = [
   { href:"/admin", label:"Dashboard", icon: LayoutDashboard },
@@ -22,6 +25,7 @@ const nav = [
 
 export function AdminNav({ children }: { children: React.ReactNode }){
   const path = usePathname()
+  const [open, setOpen] = useState(false)
   return (
     <div className="min-h-screen bg-muted/20 flex">
       <aside className="hidden lg:flex w-[260px] shrink-0 flex-col border-r border-border bg-card">
@@ -49,23 +53,40 @@ export function AdminNav({ children }: { children: React.ReactNode }){
       <div className="flex-1 flex flex-col min-w-0">
         <header className="lg:hidden sticky top-0 z-30 h-[56px] flex items-center justify-between px-4 border-b border-border bg-card">
           <div className="flex items-center gap-2">
+            <Sheet open={open} onOpenChange={setOpen}>
+              <Button variant="ghost" size="icon" className="h-9 w-9" onClick={()=> setOpen(true)}>
+                <Menu className="h-5 w-5" />
+              </Button>
+              <SheetContent side="left" className="w-[300px] p-0 overflow-hidden">
+                <SheetHeader className="p-5 border-b">
+                  <div className="flex items-center gap-3">
+                    <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="h-8 w-8 rounded-lg object-cover border" />
+                    <div>
+                      <SheetTitle className="text-sm font-black leading-none text-left">LKBB ADMIN</SheetTitle>
+                      <div className="text-[11px] tracking-widest text-muted-foreground text-left">JAVASOMA 2026</div>
+                    </div>
+                  </div>
+                </SheetHeader>
+                <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+                  {nav.map(item=> {
+                    const active = path===item.href
+                    return (
+                      <Link key={item.href} href={item.href} onClick={()=> setOpen(false)} className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
+                        <item.icon className="h-4 w-4" /> {item.label}
+                      </Link>
+                    )
+                  })}
+                </nav>
+                <div className="p-3 border-t">
+                  <Link href="/" onClick={()=> setOpen(false)} className="block rounded-xl border border-border bg-muted p-3 text-center text-xs font-bold">← Kembali ke Website</Link>
+                </div>
+              </SheetContent>
+            </Sheet>
             <img src="/assets/brand/lkbb-logo.jpg" alt="" className="h-7 w-7 rounded-lg object-cover" />
             <span className="text-sm font-black">ADMIN LKBB</span>
           </div>
           <Link href="/" className="text-xs font-bold border border-border rounded-full px-3 py-1">Website →</Link>
         </header>
-        <div className="lg:hidden border-b border-border bg-card overflow-x-auto scrollbar-none">
-          <nav className="flex gap-1.5 p-2">
-            {nav.map(item=> {
-              const active = path===item.href
-              return (
-                <Link key={item.href} href={item.href} className={`shrink-0 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold border ${active ? "bg-foreground text-background border-foreground" : "bg-card border-border"}`}>
-                  <item.icon className="h-3.5 w-3.5" /> {item.label}
-                </Link>
-              )
-            })}
-          </nav>
-        </div>
         <div className="flex-1 min-w-0">
           {children}
         </div>
