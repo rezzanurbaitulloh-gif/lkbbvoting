@@ -3,8 +3,10 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { createBrowserSupabase } from "@/lib/supabase"
+import { useToast } from "@/components/ui/toast"
 
 export default function OfflineRecap(){
+  const { toast } = useToast()
   const [teams, setTeams] = useState<any[]>([])
   const [selected, setSelected] = useState("")
   const [qty, setQty] = useState(100)
@@ -17,21 +19,25 @@ export default function OfflineRecap(){
     fetch("/api/admin/offline-recap").then(r=> r.json()).then(d=> { if(Array.isArray(d)) setRecent(d) }).catch(()=>{})
   },[])
 
+  const [saving,setSaving]=useState(false)
   const handleAdd = async ()=>{
+    if(saving) return
     if(!selected || !qty) return
+    setSaving(true)
     const res = await fetch("/api/admin/offline-recap", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ peleton_id: selected, supports: qty, note })
     })
     const data = await res.json()
-    if(!res.ok) alert(data.error || "Gagal")
+    if(!res.ok) toast({ title: "Gagal", description: data.error || "Gagal", variant: "error" })
     else {
-      alert(`+${qty} offline ballots ditambahkan (auditable)`)
+      toast({ title: `Berhasil`, description: `+${qty} dukungan offline ditambahkan`, variant: "success" })
       setNote("")
       // refresh recent via API
       fetch("/api/admin/offline-recap").then(r=> r.json()).then(d=> { if(Array.isArray(d)) setRecent(d) }).catch(()=>{})
     }
+    setSaving(false)
   }
 
   return (
@@ -47,7 +53,7 @@ export default function OfflineRecap(){
         </div>
         <div><label className="text-xs font-bold">Jumlah Ballot Offline</label><Input type="number" value={qty} onChange={e=> setQty(parseInt(e.target.value)||0)} /></div>
         <div><label className="text-xs font-bold">Alasan / Catatan</label><Input value={note} onChange={e=> setNote(e.target.value)} placeholder="Rekap panitia hari H" /></div>
-        <Button onClick={handleAdd} className="rounded-full">Tambah Offline Ballots</Button>
+        <Button onClick={handleAdd} disabled={saving} className="rounded-full">{saving ? "Memproses..." : "Tambah Dukungan Offline"}</Button>
       </div>
       <div className="rounded-[16px] border border-border bg-card p-4">
         <h3 className="text-sm font-black">Riwayat Offline Terbaru (ledger)</h3>

@@ -32,7 +32,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
             <span className="text-xs text-white/50">{smp.length} tim</span>
           </div>
           {smp.length===0 ? <p className="text-xs text-white/40">Belum ada peleton SMP.</p> : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {smp.map((p:any)=> <PeletonCard key={p.id} peleton={{...p, image: p.image_url || p.image, cover: p.image_url || p.cover}} />)}
           </div>
           )}
@@ -45,7 +45,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
             <span className="text-xs text-white/50">{sma.length} tim</span>
           </div>
           {sma.length===0 ? <p className="text-xs text-white/40">Belum ada peleton SMA.</p> : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {sma.map((p:any)=> <PeletonCard key={p.id} peleton={{...p, image: p.image_url || p.image, cover: p.image_url || p.cover}} />)}
           </div>
           )}

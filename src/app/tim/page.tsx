@@ -23,9 +23,9 @@ export default async function TimPage(){
 
   const renderGrid = (teams: any[]) => {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {teams.map((p:any,i:number)=> (
-          <PeletonCardCompact key={p.id} peleton={p} rank={i+1} showPoints={!isOnlineActive} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {teams.map((p:any)=> (
+          <PeletonCardCompact key={p.id} peleton={p} showPoints={!isOnlineActive} />
         ))}
       </div>
     )

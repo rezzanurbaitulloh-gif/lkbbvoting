@@ -19,6 +19,7 @@ export default function AdminPeleton(){
   const [delTarget, setDelTarget] = useState<any|null>(null)
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [uploading, setUploading] = useState<string | null>(null)
+  const [saving, setSaving] = useState(false)
   const [form, setForm] = useState<any>({ number:"", name:"", school:"", city:"Kertosono", province:"Jawa Timur", category:"SMA", image_url:"", logo_url:"", display_order:1, active:true })
 
   const load = ()=>{
@@ -75,7 +76,7 @@ export default function AdminPeleton(){
     setForm({ number:p.number, name:p.name, school:p.school, city:p.city, province:p.province, category:p.category, image_url:p.image_url||"", logo_url:p.logo_url||"", display_order:p.display_order, active:p.active })
     setOpen(true)
   }
-  const handleSave = async ()=>{
+  const handleSave = async ()=>{ if(saving) return; setSaving(true);
     if(!form.number || !form.name || !form.school || !form.category){
       toast({ title:"Lengkapi data", description:"Nomor, nama, sekolah, kategori wajib diisi", variant:"error" })
       return
@@ -95,7 +96,7 @@ export default function AdminPeleton(){
       load()
     } catch(e:any){
       toast({ title:"Gagal", description:e.message, variant:"error" })
-    }
+    } finally { setSaving(false) }
   }
   const handleDelete = async ()=>{
     if(!delTarget) return
@@ -198,8 +199,8 @@ export default function AdminPeleton(){
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={()=> setOpen(false)}>Batal</Button>
-            <Button onClick={handleSave}>{editing ? "Simpan" : "Tambah"}</Button>
+            <Button variant="outline" onClick={()=> setOpen(false)} disabled={saving}>Batal</Button>
+            <Button onClick={handleSave} disabled={saving}>{saving ? "Memproses..." : editing ? "Simpan" : "Tambah"}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

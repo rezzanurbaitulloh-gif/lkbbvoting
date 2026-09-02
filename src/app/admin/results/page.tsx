@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { createBrowserSupabase } from "@/lib/supabase"
+import { useToast } from "@/components/ui/toast"
 
 export default function ResultsControl(){
+  const { toast } = useToast()
   const [event, setEvent] = useState<any>(null)
   const [provisional, setProvisional] = useState<any[]>([])
   const [final, setFinal] = useState<any[]>([])
@@ -20,7 +22,10 @@ export default function ResultsControl(){
   }
   useEffect(()=>{ load() },[])
 
+  const [toggling,setToggling]=useState<string|null>(null)
   const toggle = async (field: "show_provisional_result" | "show_final_result")=>{
+    if(toggling) return
+    setToggling(field)
     const res = await fetch("/api/admin/competitions", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -28,10 +33,13 @@ export default function ResultsControl(){
     })
     if(!res.ok) {
       const d = await res.json()
-      alert(d.error || "Gagal toggle")
+      toast({ title: "Gagal", description: d.error || "Gagal mengubah", variant: "error" })
+      setToggling(null)
       return
     }
+    toast({ title: "Berhasil diperbarui", variant: "success" })
     load()
+    setToggling(null)
   }
 
   if(!event) return <div className="p-8">Memuat...</div>
@@ -45,7 +53,7 @@ export default function ResultsControl(){
           <div className="mt-3 space-y-1">
             {provisional.map((p:any,i:number)=> <div key={p.id} className="flex justify-between rounded-xl border border-border p-2 text-xs"><span>{i+1}st #{p.number} {p.name}</span><span>{p.online_ballots} online</span></div>)}
           </div>
-          <Button onClick={()=>toggle("show_provisional_result")} className={`mt-3 w-full rounded-full ${event.show_provisional_result ? "bg-emerald-600" : ""}`}>{event.show_provisional_result ? "✓ Ditampilkan" : "Tampilkan Provisional"}</Button>
+          <Button disabled={!!toggling} onClick={()=>toggle("show_provisional_result")} className={`mt-3 w-full rounded-full ${event.show_provisional_result ? "bg-emerald-600" : ""}`}>{toggling==="show_provisional_result" ? "Memproses..." : event.show_provisional_result ? "✓ Ditampilkan" : "Tampilkan Sementara"}</Button>
         </div>
         <div className="rounded-[16px] border border-[#C9A86A30] bg-[#C9A86A0A] p-4">
           <h3 className="text-sm font-black">Hasil Akhir</h3>
@@ -53,7 +61,7 @@ export default function ResultsControl(){
           <div className="mt-3 space-y-1">
             {final.map((p:any,i:number)=> <div key={p.id} className="flex justify-between rounded-xl border border-border bg-white p-2 text-xs"><span>{i+1}st #{p.number} {p.name}</span><span className="font-black">{p.total_ballots} total</span></div>)}
           </div>
-          <Button onClick={()=>toggle("show_final_result")} className="mt-3 w-full rounded-full">{event.show_final_result ? "✓ Ditampilkan" : "Tampilkan Final"}</Button>
+          <Button disabled={!!toggling} onClick={()=>toggle("show_final_result")} className="mt-3 w-full rounded-full">{toggling==="show_final_result" ? "Memproses..." : event.show_final_result ? "✓ Ditampilkan" : "Tampilkan Final"}</Button>
         </div>
       </div>
       <div className="rounded-xl border border-border bg-card p-4">

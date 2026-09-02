@@ -14,6 +14,7 @@ export default function Users(){
   const [role,setRole]=useState("USER")
   const [newPassword,setNewPassword]=useState("")
   const [showPass,setShowPass]=useState(false)
+  const [saving,setSaving]=useState(false)
   const [selected,setSelected]=useState<Set<string>>(new Set())
   const load = ()=>{ const s=createBrowserSupabase(); s.from("profiles").select("*").order("created_at",{ascending:false}).then(({data})=> setUsers(data||[])) }
   useEffect(()=>{ load() },[])
@@ -21,20 +22,20 @@ export default function Users(){
   const toggleAll = ()=>{ if(selected.size===users.length) setSelected(new Set()); else setSelected(new Set(users.map((u:any)=>u.id))) }
   const handleBulkDelete = async ()=>{ if(selected.size===0) return; for(const id of selected){ await fetch(`/api/admin/crud?table=profiles&id=${id}`, { method:"DELETE" }) } ; toast({ title: `${selected.size} pengguna dihapus`, variant:"success"}); setSelected(new Set()); load() }
   const openEdit = (u:any)=>{ setEditing(u); setRole(u.role==="SUPER_ADMIN" ? "SUPER_ADMIN" : "USER"); setNewPassword(""); setShowPass(false); setOpen(true) }
-  const handleSave = async ()=>{
+  const handleSave = async ()=>{ if(saving) return; setSaving(true);
     if(!editing) return
     // update role via crud
     let res = await fetch("/api/admin/crud", { method:"PATCH", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ table:"profiles", id: editing.id, data: { role } }) })
     let j = await res.json()
-    if(!res.ok){ toast({ title:"Gagal", description:j.error, variant:"error" }); return }
+    if(!res.ok){ toast({ title:"Gagal", description:j.error, variant:"error" }); setSaving(false); return }
     // if password provided, update via admin api
     if(newPassword){
       if(newPassword.length<6){ toast({ title:"Kata sandi minimal 6 karakter", variant:"error"}); return }
       res = await fetch("/api/admin/users/password", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ userId: editing.id, newPassword }) })
       j = await res.json()
-      if(!res.ok){ toast({ title:"Gagal ubah kata sandi", description:j.error, variant:"error"}); return }
+      if(!res.ok){ toast({ title:"Gagal ubah kata sandi", description:j.error, variant:"error"}); setSaving(false); return }
     }
-    toast({ title:"Pengguna diperbarui", variant:"success" }); setOpen(false); load()
+    toast({ title:"Pengguna diperbarui", variant:"success" }); setOpen(false); load(); setSaving(false)
   }
   return (
     <div className="p-4 md:p-6 space-y-4">
@@ -76,7 +77,7 @@ export default function Users(){
               <p className="text-[11px] text-muted-foreground mt-1">Demi keamanan, kata sandi lama tidak bisa dilihat. Masukkan kata sandi baru jika ingin mengubah.</p>
             </div>
           </div>
-          <DialogFooter><Button variant="outline" onClick={()=> setOpen(false)}>Batal</Button><Button onClick={handleSave}>Simpan</Button></DialogFooter>
+          <DialogFooter><Button variant="outline" onClick={()=> setOpen(false)}>Batal</Button><Button onClick={handleSave} disabled={saving}>{saving ? "Memproses..." : "Simpan"}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

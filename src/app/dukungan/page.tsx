@@ -56,6 +56,7 @@ function DukunganInner(){
   const isClosed = event ? !isOnlineActive : false
 
   const handlePay = async ()=>{
+    if(loading) return
     if(isClosed){
       setError("TRANSAKSI DITUTUP — voting nonaktif. Transaksi baru dihentikan total.")
       return
@@ -64,13 +65,16 @@ function DukunganInner(){
       router.push(`/login?redirect=${encodeURIComponent(`/dukungan?peleton=${peleton.slug}`)}`)
       return
     }
+    // Validate qty manual input
+    const safeQty = Math.max(1, Math.min(10000, Math.floor(Number(qty)||1)))
+    if(safeQty !== qty) setQty(safeQty)
     setLoading(true)
     setError("")
     try {
       const res = await fetch("/api/transactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ peletonId: peleton.id, slug: peleton.slug, quantity: qty })
+        body: JSON.stringify({ peletonId: peleton.id, slug: peleton.slug, quantity: safeQty })
       })
       const data = await res.json()
       if(!res.ok){
@@ -139,10 +143,27 @@ function DukunganInner(){
           </div>
           <div className="mt-5">
             <div className="label-ceremonial">Atur Jumlah Ballot</div>
+            <p className="mt-1 text-xs text-muted-foreground">Ketik langsung atau gunakan tombol plus/minus. Maks 10.000 per transaksi.</p>
             <div className={`mt-2 flex items-center gap-3 ${isClosed ? "opacity-50 pointer-events-none" : ""}`}>
-              <button disabled={isClosed} onClick={()=>setQty(q=>Math.max(1,q-1))} className="h-11 w-11 rounded-full border border-border grid place-items-center hover:bg-muted disabled:cursor-not-allowed"><Minus className="h-4 w-4"/></button>
-              <div className="flex-1 rounded-full border border-border bg-muted h-11 grid place-items-center font-black tabular-nums">{qty}</div>
-              <button disabled={isClosed} onClick={()=>setQty(q=>q+1)} className="h-11 w-11 rounded-full border border-border grid place-items-center hover:bg-muted disabled:cursor-not-allowed"><Plus className="h-4 w-4"/></button>
+              <button disabled={isClosed || loading} onClick={()=>setQty(q=>Math.max(1, (Number(q)||1)-1))} className="h-11 w-11 rounded-full border border-border grid place-items-center hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"><Minus className="h-4 w-4"/></button>
+              <input
+                type="number"
+                inputMode="numeric"
+                min={1}
+                max={10000}
+                value={qty}
+                onChange={e=>{
+                  const v = e.target.value
+                  if(v==="") setQty(1)
+                  else {
+                    const n = parseInt(v,10)
+                    if(!isNaN(n)) setQty(Math.max(1, Math.min(10000, n)))
+                  }
+                }}
+                disabled={isClosed}
+                className="flex-1 rounded-full border border-border bg-muted h-11 text-center font-black tabular-nums focus:outline-none focus:ring-2 focus:ring-[#C9A86A] disabled:opacity-50"
+              />
+              <button disabled={isClosed || loading} onClick={()=>setQty(q=> Math.min(10000, (Number(q)||1)+1))} className="h-11 w-11 rounded-full border border-border grid place-items-center hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"><Plus className="h-4 w-4"/></button>
             </div>
           </div>
         </div>

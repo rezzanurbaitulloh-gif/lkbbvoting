@@ -15,6 +15,7 @@ export default function Page(){
   const [editing,setEditing]=useState<any|null>(null)
   const [delTarget,setDelTarget]=useState<any|null>(null)
   const [selected,setSelected]=useState<Set<string>>(new Set())
+  const [saving,setSaving]=useState(false)
   const [form,setForm]=useState<any>({ title:"", slug:"", category:"Kompetisi", excerpt:"", content:"", image_url:"", author:"Panitia LKBB", published:"false" })
   const [uploading,setUploading]=useState<string|null>(null)
   const uploadImage = async (file: File, field: string)=>{
@@ -40,7 +41,7 @@ export default function Page(){
   const handleBulkDelete = async ()=>{ if(selected.size===0) return; for(const id of selected){ await fetch(`/api/admin/crud?table=news&id=${id}`, { method:"DELETE" }) } ; toast({ title: `${selected.size} data dihapus`, variant:"success"}); setSelected(new Set()); load() }
   const openAdd = ()=>{ setEditing(null); setForm({ title:"", slug:"", category:"Kompetisi", excerpt:"", content:"", image_url:"", author:"Panitia LKBB", published:"false" }); setOpen(true) }
   const openEdit = (item:any)=>{ setEditing(item); setForm({ title: item.title ?? "", slug: item.slug ?? "", category: item.category ?? "", excerpt: item.excerpt ?? "", content: item.content ?? "", image_url: item.image_url ?? "", author: item.author ?? "", published: String(item.published ?? false) }); setOpen(true) }
-  const handleSave = async ()=>{
+  const handleSave = async ()=>{ if(saving) return; setSaving(true);
     const payload:any = { ...form }; if(!payload.slug) payload.slug = payload.title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""); payload.published = payload.published==="true";
     if(!payload.title && !payload.name && !payload.question) { toast({ title:"Lengkapi data", variant:"error" }); return }
     try{
@@ -51,7 +52,7 @@ export default function Page(){
       if(!res.ok) throw new Error(j.error)
       toast({ title: editing ? "Diperbarui" : "Ditambahkan", variant:"success" })
       setOpen(false); load()
-    } catch(e:any){ toast({ title:"Gagal", description:e.message, variant:"error" }) }
+    } catch(e:any){ toast({ title:"Gagal", description:e.message, variant:"error" }) } finally { setSaving(false) }
   }
   const handleDelete = async ()=>{
     if(!delTarget) return
@@ -63,7 +64,7 @@ export default function Page(){
     <div className="p-4 md:p-6 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Berita</h1><p className="text-sm text-muted-foreground">{list.length} data tersimpan</p></div><div className="flex gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}<Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Baru</Button></div></div>
       <div className="rounded-[16px] border border-border bg-card p-4">
-        <div className="grid gap-2">
+        <div className="grid gap-3">
           {list.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada data.</div> :
             list.map((item:any)=> (
             <div key={item.id} className="flex items-center gap-2 rounded-xl border border-border p-3">
@@ -103,7 +104,7 @@ export default function Page(){
             <div><label className="text-xs font-bold">Nama Penulis</label><Input value={form.author} onChange={e=> setForm({...form, author:e.target.value})} placeholder="Panitia LKBB" /></div>
             <div><label className="text-xs font-bold">Tampilkan di Website?</label><Select value={String(form.published)} onValueChange={v=> setForm({...form, published:v})} options={[{value:"true",label:"Ya, tampilkan"},{value:"false",label:"Simpan sebagai draf"}]} /></div>
           </div>
-          <DialogFooter><Button variant="outline" onClick={()=> setOpen(false)}>Batal</Button><Button onClick={handleSave}>{editing ? "Simpan" : "Tambah"}</Button></DialogFooter>
+          <DialogFooter><Button variant="outline" onClick={()=> setOpen(false)} disabled={saving}>Batal</Button><Button onClick={handleSave} disabled={saving}>{saving ? "Memproses..." : editing ? "Simpan" : "Tambah"}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
       <AlertDialog open={!!delTarget} onOpenChange={(o:any)=> !o && setDelTarget(null)} title="Hapus data?" description={`Yakin hapus ${delTarget?.title || delTarget?.name || ""}?`} onConfirm={handleDelete} />

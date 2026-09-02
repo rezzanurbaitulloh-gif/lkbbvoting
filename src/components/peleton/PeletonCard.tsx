@@ -1,10 +1,12 @@
 "use client"
 import Link from "next/link"
+import { useState } from "react"
 import { Heart, Share2, QrCode } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useApp } from "@/lib/store"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/components/ui/toast"
+import { ShareSheet } from "@/components/share/ShareSheet"
 
 export function PeletonCard({ peleton }: { peleton: any }){
   const { toggleFavorite, isFavorite } = useApp()
@@ -19,17 +21,21 @@ export function PeletonCard({ peleton }: { peleton: any }){
   const profileUrl = `/tim/${slug}`
   const supportUrl = `/dukungan?peleton=${slug}`
 
+  const [shareOpen, setShareOpen] = useState(false)
+  const [shareUrl, setShareUrl] = useState("")
+  const [shareTitle, setShareTitle] = useState("")
+
   const handleShare = async (type: "profile" | "support") => {
     const url = `${window.location.origin}${type === "profile" ? profileUrl : supportUrl}`
+    const title = type==="profile" ? `Profil ${name}` : `Dukung ${name} di LKBB Javasoma`
+    // Try native share first
     if (navigator.share) {
-      try { await navigator.share({ title: name, url }); toast({ title: "Berhasil dibagikan", description: url }); return } catch {}
+      try { await navigator.share({ title, url }); toast({ title: "Berhasil dibagikan", variant: "success" }); return } catch {}
     }
-    try {
-      await navigator.clipboard.writeText(url)
-      toast({ title: type==="profile" ? "Link profil disalin" : "Link dukungan disalin", description: url, variant: "success" })
-    } catch {
-      toast({ title: "Gagal menyalin", description: url, variant: "error" })
-    }
+    // Fallback to custom sheet with QR
+    setShareUrl(url)
+    setShareTitle(title)
+    setShareOpen(true)
   }
 
   const handleFav = ()=>{
@@ -73,27 +79,27 @@ export function PeletonCard({ peleton }: { peleton: any }){
           </Button>
         </div>
       </div>
+      <ShareSheet open={shareOpen} onOpenChange={setShareOpen} url={shareUrl} title={shareTitle} />
     </div>
   )
 }
 
-// Compact variant for /tim — only #number, name, logo, ordered by total_ballots but number stays original
-export function PeletonCardCompact({ peleton, rank, showPoints }: { peleton: any, rank?: number, showPoints?: boolean }){
+// Compact variant for /tim — only #number, name, logo, ordered by total_ballots but number stays original (no rank)
+export function PeletonCardCompact({ peleton, showPoints }: { peleton: any, showPoints?: boolean }){
   const logo = peleton.logo_url || peleton.image_url || peleton.image
   return (
-    <Link href={`/dukungan?peleton=${peleton.slug}`} className="flex items-center gap-3 rounded-[16px] border border-border bg-card p-3 hover:bg-muted/50 transition-colors">
-      {rank && <div className={`h-8 w-8 rounded-full grid place-items-center text-xs font-black shrink-0 ${rank===1 ? "bg-[#C9A86A] text-[#0B0C0F]" : rank===2 ? "bg-[#9AA0A9] text-white" : rank===3 ? "bg-[#B45309] text-white" : "bg-muted text-foreground"}`}>{rank}</div>}
+    <Link href={`/dukungan?peleton=${peleton.slug}`} className="flex items-center gap-3 rounded-[16px] border border-border bg-card p-4 hover:bg-muted/50 transition-colors min-w-0">
       <div className="h-11 w-11 rounded-xl overflow-hidden border border-border bg-muted shrink-0">
         <img src={logo} alt={peleton.name} className="h-full w-full object-cover" />
       </div>
-      <div className="flex-1 min-w-0">
-        <div className="text-[11px] font-bold tracking-[0.12em] text-gold">#{peleton.number}</div>
+      <div className="flex-1 min-w-0 overflow-hidden">
+        <div className="text-[11px] font-bold tracking-[0.12em] text-gold truncate">#{peleton.number}</div>
         <div className="text-sm font-black leading-tight truncate">{peleton.name}</div>
         <div className="text-xs text-muted-foreground truncate">{peleton.school}</div>
       </div>
-      <div className="text-right">
-        <div className="text-[11px] font-bold text-muted-foreground">#{peleton.number}</div>
-        {showPoints && peleton.total_ballots != null && <div className="text-xs font-black tabular-nums">{Number(peleton.total_ballots).toLocaleString("id-ID")} dukungan</div>}
+      <div className="text-right shrink-0 ml-2">
+        <div className="inline-flex rounded-full bg-muted px-2.5 py-1 text-xs font-black">#{peleton.number}</div>
+        {showPoints && peleton.total_ballots != null && <div className="mt-1 text-xs font-black tabular-nums">{Number(peleton.total_ballots).toLocaleString("id-ID")} dukungan</div>}
       </div>
     </Link>
   )
