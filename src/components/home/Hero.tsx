@@ -85,9 +85,9 @@ export function Hero({ event, cms }: { event: any; cms?: any }){
               <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.14em] sm:tracking-[0.18em] text-[#C9A86A] break-words text-center">{eyebrow}</span>
               <span className="h-px w-6 sm:w-8 bg-[#C9A86A] shrink-0" />
             </div>
-            <h1 className="mt-3 text-balance font-black leading-[0.85] tracking-[-0.05em] text-center max-w-full break-words">
-              <span className="block text-[44px] md:text-[68px] lg:text-[76px] text-[#C9A86A] leading-[0.9]">{heading1}</span>
-              <span className="block text-[44px] md:text-[68px] lg:text-[76px] text-[#C9A86A] leading-[0.9]">{heading2}</span>
+            <h1 className="mt-3 text-balance font-black leading-[0.82] tracking-[-0.04em] text-center max-w-full break-words animate-[fadeIn_0.7s_ease-out]">
+              <span className="block text-[44px] md:text-[68px] lg:text-[76px] leading-[0.9] font-display gold-gradient-text text-gold-glow">{heading1}</span>
+              <span className="block text-[44px] md:text-[68px] lg:text-[76px] leading-[0.9] font-display gold-gradient-text">{heading2}</span>
             </h1>
             <div className="mt-3 text-center max-w-full">
               <div className="text-[11px] sm:text-[13px] font-bold tracking-[0.14em] sm:tracking-[0.18em] text-white break-words">{subtitle}</div>

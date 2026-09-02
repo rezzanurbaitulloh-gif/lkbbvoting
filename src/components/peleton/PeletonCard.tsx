@@ -44,7 +44,8 @@ export function PeletonCard({ peleton }: { peleton: any }){
   }
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-[14px] sm:rounded-[16px] border border-border bg-card shadow-subtle hover:shadow-soft transition-all duration-300 max-w-full">
+    <div className="group relative flex flex-col overflow-hidden rounded-[16px] border border-white/5 bg-card premium-card max-w-full">
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C9A86A]/0 group-hover:via-[#C9A86A]/50 to-transparent transition-all duration-500" />
       <Link href={profileUrl} className="block">
         <div className="relative aspect-[4/3] overflow-hidden bg-muted">
           <img src={photo} alt={name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />

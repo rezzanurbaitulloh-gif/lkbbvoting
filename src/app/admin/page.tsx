@@ -50,17 +50,22 @@ export default function AdminOverview(){
   },[])
   return (
     <div className="min-h-screen bg-[#0B0C0F] text-white p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5 md:space-y-6">
-      {/* Header like reference */}
-      <div className="flex items-center justify-between">
+      {/* Header — premium, not generic */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-[18px] font-black tracking-tight">DASHBOARD</h1>
-          <p className="text-xs text-white/50">Kontrol penuh LKBB JAVASOMA THE IMPRESSION</p>
+          <div className="inline-flex items-center gap-2">
+            <span className="h-px w-6 bg-gradient-to-r from-transparent to-[#C9A86A]" />
+            <span className="text-[10px] font-black tracking-[0.18em] text-[#C9A86A]">ADMIN • CONTROL CENTER</span>
+          </div>
+          <h1 className="mt-1 text-[18px] sm:text-[20px] font-black tracking-[-0.02em] text-white">DASHBOARD</h1>
+          <p className="text-xs text-white/50">Kontrol penuh LKBB JAVASOMA THE IMPRESSION — premium</p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="rounded-full bg-[#C9A86A] px-3 py-1 text-xs font-black text-[#0B0C0F]">{stats.state || "ACTIVE"}</span>
-          <span className="hidden md:inline-flex text-xs text-white/50">20 Okt - 24 Okt 2026</span>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <span className="rounded-full bg-gradient-to-r from-[#C9A86A] to-[#8C6A2A] px-3 py-1 text-xs font-black tracking-wide text-white shadow">{stats.state || "ACTIVE"}</span>
+          <span className="hidden md:inline-flex text-xs text-white/40">20 Okt - 24 Okt 2026</span>
         </div>
       </div>
+      <div className="gold-hairline-premium opacity-40" />
       {/* Row 1: peserta — konsisten 2 kolom di HP (2-2), spacing lega tidak dempet */}
       <div className="grid grid-cols-2 gap-3 sm:gap-4">
         {[

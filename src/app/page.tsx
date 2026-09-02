@@ -69,8 +69,8 @@ export default async function HomePage(){
         {extraSections.filter((s:any)=> s.sort_order < (cmsSections.find((x:any)=> x.key==="featured")?.sort_order ?? 999)).map((s:any)=> (
           <CmsSections key={s.id} sections={[s]} />
         ))}
-        {isPublished && showPodiumViaCms && (smpPodium.length>0 || smaPodium.length>0) && (
-          <PodiumSection smp={teams.filter(p=>p.category==='SMP')} sma={teams.filter(p=>p.category==='SMA')} isPublished={isPublished} />
+        {(isPublished || isVotingClosed) && showPodiumViaCms && (smpPodium.length>0 || smaPodium.length>0) && (
+          <PodiumSection smp={teams.filter(p=>p.category==='SMP')} sma={teams.filter(p=>p.category==='SMA')} isPublished={true} />
         )}
         {showFeatured && <Featured peletons={teams} showSementara={showSementara} showFinal={showFinal} />}
         {extraSections.filter((s:any)=> {

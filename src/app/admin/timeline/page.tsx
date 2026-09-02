@@ -46,15 +46,21 @@ export default function Page(){
   return (
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Jadwal Acara</h1><p className="text-sm text-muted-foreground">{list.length} data tersimpan</p></div><div className="flex gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}<Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Baru</Button></div></div>
-      <div className="rounded-[16px] border border-border bg-card p-4">
+      <div className="rounded-[16px] border border-border bg-card p-3 sm:p-4 overflow-hidden">
         <div className="grid gap-3">
           {list.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada data.</div> :
             list.map((item:any)=> (
-            <div key={item.id} className="flex items-center gap-2 rounded-xl border border-border p-3">
-              <input type="checkbox" checked={selected.has(item.id)} onChange={()=> toggleSelect(item.id)} />
-              <div className="flex flex-1 items-center justify-between gap-3">
-              <div className="min-w-0 flex-1"><div className="text-sm font-bold truncate">{item.title || item.name || item.question}</div><div className="text-xs text-muted-foreground truncate">{item.category || item.role || item.tier || ""} • {new Date(item.created_at).toLocaleDateString("id-ID")}</div></div>
-              <div className="flex gap-1.5 shrink-0"><Button variant="outline" size="sm" className="rounded-full h-7 text-xs" onClick={()=> openEdit(item)}>Ubah</Button><Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600" onClick={()=> setDelTarget(item)}>Hapus</Button></div>
+            <div key={item.id} className="flex flex-col sm:flex-row sm:items-center gap-2.5 rounded-xl border border-border p-3 min-w-0 overflow-hidden">
+              <div className="flex gap-2.5 min-w-0 flex-1">
+                <input type="checkbox" checked={selected.has(item.id)} onChange={()=> toggleSelect(item.id)} className="mt-1 sm:mt-0 shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <div className="text-sm font-bold truncate pr-2">{item.title || item.name || item.question}</div>
+                  <div className="text-xs text-muted-foreground truncate">{item.category || item.role || item.tier || ""} • {new Date(item.created_at).toLocaleDateString("id-ID")}</div>
+                </div>
+              </div>
+              <div className="flex gap-1.5 shrink-0 self-end sm:self-auto">
+                <Button variant="outline" size="sm" className="rounded-full h-7 text-xs" onClick={()=> openEdit(item)}>Ubah</Button>
+                <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600" onClick={()=> setDelTarget(item)}>Hapus</Button>
               </div>
             </div>
           ))}

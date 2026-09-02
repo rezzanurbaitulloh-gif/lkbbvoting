@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next"
-import { Plus_Jakarta_Sans, Geist } from "next/font/google"
+import { Plus_Jakarta_Sans, Geist, Cormorant_Garamond } from "next/font/google"
 import "./globals.css"
 import { AppProvider } from "@/lib/store"
 import { RealtimeSupportNotification } from "@/components/realtime/RealtimeSupportNotification"
@@ -13,6 +13,14 @@ const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
   display: "swap",
   weight: ["300","400","500","600","700","800"],
+})
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  display: "swap",
+  weight: ["300","400","500","600","700"],
+  style: ["normal","italic"],
 })
 
 export const metadata: Metadata = {
@@ -42,7 +50,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={cn("h-full", "antialiased", jakarta.variable, "font-sans", geist.variable)} suppressHydrationWarning>
+    <html lang="id" className={cn("h-full", "antialiased", jakarta.variable, cormorant.variable, "font-sans", geist.variable)} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{__html: `(function(){try{var t=localStorage.getItem('lkbb-theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';var v=t&&t!=='system'?t:(t==='system'?m:'dark');if(v==='dark')document.documentElement.classList.add('dark');}catch(e){document.documentElement.classList.add('dark')}})()`}} />
       </head>
