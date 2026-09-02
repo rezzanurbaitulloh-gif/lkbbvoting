@@ -69,7 +69,7 @@ export async function POST(req: Request) {
 
     // 5. Create Xendit Invoice (real QRIS) — if keys present, call Xendit; else fallback to mock checkout
     const xenditKey = process.env.XENDIT_SECRET_KEY
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://lkbbvoting.vercel.app"
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://lkbbvoting.my.id"
     let paymentUrl = `/checkout?id=${trx.id}&peleton=${slug}&qty=${quantity}&total=${amount}`
     let xenditInvoiceId: string | null = null
     let xenditQrString: string | null = null
