@@ -44,7 +44,7 @@ export default function ResultsControl(){
 
   if(!event) return <div className="p-8">Memuat...</div>
   return (
-    <div className="p-3 sm:p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <h1 className="text-[18px] font-black">Kontrol Publikasi Hasil</h1>
       <div className="grid md:grid-cols-2 gap-4">
         <div className="rounded-[16px] border border-border bg-card p-4">

@@ -49,7 +49,7 @@ export default function AdminOverview(){
     return ()=>{ clearInterval(interval); supabase.removeChannel(channel) }
   },[])
   return (
-    <div className="min-h-screen bg-[#0B0C0F] text-white p-3 sm:p-4 md:p-6 space-y-4">
+    <div className="min-h-screen bg-[#0B0C0F] text-white p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5 md:space-y-6">
       {/* Header like reference */}
       <div className="flex items-center justify-between">
         <div>
@@ -61,39 +61,39 @@ export default function AdminOverview(){
           <span className="hidden md:inline-flex text-xs text-white/50">20 Okt - 24 Okt 2026</span>
         </div>
       </div>
-      {/* Row 1: peserta — selalu 2 kolom di mobile (2-2 kesamping) */}
-      <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
+      {/* Row 1: peserta — konsisten 2 kolom di HP (2-2), spacing lega tidak dempet */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         {[
           {label:"TOTAL PESERTA", value: stats.totalTeams ?? "-", sub:"Tim", dark:true},
           {label:"SMP / SEDERAJAT", value: stats.smp ?? "-", sub:"Tim"},
           {label:"SMA / SEDERAJAT", value: stats.sma ?? "-", sub:"Tim"},
           {label:"TOTAL USER", value: stats.totalUsers ?? "-", sub:"User"},
         ].map(card=> (
-          <div key={card.label} className="rounded-[10px] sm:rounded-[12px] border border-white/10 bg-[#17191F] p-2.5 sm:p-3 md:p-4">
-            <div className="text-[9px] sm:text-[10px] font-bold tracking-[0.08em] sm:tracking-widest text-white/40 leading-tight break-words">{card.label}</div>
-            <div className="mt-1 text-[16px] sm:text-[18px] md:text-[22px] font-black leading-none text-white break-words">{card.value}</div>
-            <div className="text-[10px] sm:text-[11px] text-white/40">{card.sub}</div>
+          <div key={card.label} className="rounded-[12px] border border-white/10 bg-[#17191F] p-3.5 sm:p-4 min-w-0 overflow-hidden">
+            <div className="text-[10px] font-bold tracking-widest text-white/40 leading-tight break-words">{card.label}</div>
+            <div className="mt-1.5 text-[18px] sm:text-[20px] md:text-[22px] font-black leading-none text-white truncate tracking-tight">{card.value}</div>
+            <div className="mt-1 text-[11px] text-white/40">{card.sub}</div>
           </div>
         ))}
       </div>
-      {/* Row 2: transaksi — selalu 2 kolom di mobile */}
-      <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
+      {/* Row 2: transaksi — konsisten 2 kolom di HP */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         {[
           {label:"TOTAL TRANSAKSI", value: stats.transactions ?? "-", sub:"Transaksi"},
           {label:"ONLINE BALLOT", value: (stats.online ?? 0).toLocaleString("id-ID"), sub:"Ballot"},
           {label:"OFFLINE BALLOT", value: (stats.offline ?? 0).toLocaleString("id-ID"), sub:"Ballot"},
           {label:"TOTAL BALLOT", value: (stats.total ?? 0).toLocaleString("id-ID"), sub:"Ballot", gold:true},
         ].map(card=> (
-          <div key={card.label} className={`rounded-[10px] sm:rounded-[12px] border p-2.5 sm:p-3 md:p-4 ${card.gold ? "bg-[#C9A86A] border-[#C9A86A] text-[#0B0C0F]" : "bg-[#17191F] border-white/10 text-white"}`}>
-            <div className={`text-[9px] sm:text-[10px] font-bold tracking-[0.08em] sm:tracking-widest leading-tight break-words ${card.gold ? "text-[#0B0C0F]/70" : "text-white/40"}`}>{card.label}</div>
-            <div className="mt-1 text-[14px] sm:text-[16px] md:text-[20px] font-black leading-none break-words truncate">{card.value}</div>
-            <div className={`text-[10px] sm:text-[11px] ${card.gold ? "text-[#0B0C0F]/60" : "text-white/40"}`}>{card.sub}</div>
+          <div key={card.label} className={`rounded-[12px] border p-3.5 sm:p-4 min-w-0 overflow-hidden ${card.gold ? "bg-[#C9A86A] border-[#C9A86A] text-[#0B0C0F]" : "bg-[#17191F] border-white/10 text-white"}`}>
+            <div className={`text-[10px] font-bold tracking-widest leading-tight break-words ${card.gold ? "text-[#0B0C0F]/70" : "text-white/40"}`}>{card.label}</div>
+            <div className="mt-1.5 text-[16px] sm:text-[18px] md:text-[20px] font-black leading-none truncate tracking-tight">{card.value}</div>
+            <div className={`mt-1 text-[11px] ${card.gold ? "text-[#0B0C0F]/60" : "text-white/40"}`}>{card.sub}</div>
           </div>
         ))}
       </div>
       {/* Podium juara realtime — 2 kategori */}
-      <div className="grid lg:grid-cols-2 gap-4">
-        <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-4">
+      <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
+        <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-3 sm:p-4">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMP <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
             <span className="text-[10px] text-white/40">Realtime</span>
@@ -106,7 +106,7 @@ export default function AdminOverview(){
             )}
           </div>
         </div>
-        <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-4 overflow-hidden">
+        <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-3 sm:p-4 overflow-hidden">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMA <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
             <span className="text-[10px] text-white/40">Realtime</span>
@@ -121,8 +121,8 @@ export default function AdminOverview(){
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-[1.4fr_1fr_0.9fr] gap-4">
-        <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
+      <div className="grid lg:grid-cols-[1.4fr_1fr_0.9fr] gap-3 sm:gap-4">
+        <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-3 sm:p-4">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black tracking-wide">RANKING TERATAS (SMA / SEDERAJAT)</h3>
             <Link href="/admin/klasemen" className="text-[11px] font-bold text-[#C9A86A]">Lihat Selengkapnya →</Link>
@@ -138,7 +138,7 @@ export default function AdminOverview(){
             {ranking.length===0 && <div className="text-xs text-white/40">Belum ada ranking.</div>}
           </div>
         </div>
-        <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
+        <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-3 sm:p-4">
           <h3 className="text-xs font-black tracking-wide">GRAFIK DUKUNGAN</h3>
           {(!stats.chartData || stats.chartData.length===0) ? (
             <div className="mt-3 h-[140px] grid place-items-center text-[11px] text-white/30">Memuat grafik...</div>
@@ -170,7 +170,7 @@ export default function AdminOverview(){
           </div>
           <div className="mt-1 text-[10px] text-white/30">* 5 hari terakhir — data real dari supports ledger</div>
         </div>
-        <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
+        <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-3 sm:p-4">
           <h3 className="text-xs font-black tracking-wide">STATUS EVENT</h3>
           <div className="mt-3">
             <div className="text-[11px] text-white/40">STATUS SAAT INI</div>
@@ -184,15 +184,15 @@ export default function AdminOverview(){
           </div>
         </div>
       </div>
-      <div className="grid lg:grid-cols-[1.6fr_0.9fr] gap-4">
-        <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
+      <div className="grid lg:grid-cols-[1.6fr_0.9fr] gap-3 sm:gap-4">
+        <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-3 sm:p-4">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black tracking-wide">TRANSAKSI TERBARU</h3>
             <Link href="/admin/transaksi" className="text-[11px] text-[#C9A86A]">Lihat Semua →</Link>
           </div>
           <div className="mt-3">
-            {/* Desktop table */}
-            <div className="hidden md:block overflow-x-auto -mx-4 px-4">
+            {/* Desktop table — konsisten padding, no overflow di HP */}
+            <div className="hidden md:block overflow-x-auto -mx-3 sm:-mx-4 px-3 sm:px-4">
               <div className="min-w-[520px] grid grid-cols-[110px_1fr_60px_90px_70px] gap-2 px-2 py-1 text-[10px] font-bold tracking-widest text-white/30 border-b border-white/5">
                 <div>ID</div><div>USER</div><div>JUMLAH</div><div>NOMINAL</div><div>STATUS</div>
               </div>
@@ -222,17 +222,17 @@ export default function AdminOverview(){
             </div>
           </div>
         </div>
-        <div className="space-y-4">
-          <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
+        <div className="space-y-3 sm:space-y-4 sm:space-y-5">
+          <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-3 sm:p-4">
             <h3 className="text-xs font-black tracking-wide">KONTROL CEPAT</h3>
-            <div className="mt-3 grid grid-cols-2 gap-2">
+            <div className="mt-3 grid grid-cols-2 gap-3 sm:gap-4">
               <Link href="/admin/peleton" className="rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 p-3 text-center text-xs font-bold">Tambah Tim</Link>
               <Link href="/admin/offline-recap" className="rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 p-3 text-center text-xs font-bold">Tambah Offline Ballot</Link>
               <Link href="/admin/settings" className="rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 p-3 text-center text-xs font-bold">Kelola Event</Link>
               <Link href="/admin/klasemen" className="rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 p-3 text-center text-xs font-bold">Lihat Ranking</Link>
             </div>
           </div>
-          <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
+          <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-3 sm:p-4">
             <h3 className="text-xs font-black tracking-wide">AKTIVITAS TERBARU</h3>
             <div className="mt-3 space-y-2 text-xs max-h-[120px] overflow-y-auto">
               {auditLogs.length===0 ? <div className="text-white/40">Belum ada aktivitas.</div> : auditLogs.slice(0,5).map((log:any)=> (

@@ -14,7 +14,7 @@ export default function Detail(){
   if(loading) return <div className="p-8 text-center text-sm">Memuat...</div>
   if(!p) return <div className="p-8 text-center"><Link href="/admin/peleton" className="text-xs font-semibold">← Kembali</Link><div className="mt-4 text-sm font-bold">Peleton tidak ditemukan</div></div>
   return (
-    <div className="p-3 sm:p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <Link href="/admin/peleton" className="text-xs font-semibold">← Kembali</Link>
       <h1 className="text-[18px] font-black">{p.name} — Admin View</h1>
       <div className="grid lg:grid-cols-[320px_1fr] gap-4">

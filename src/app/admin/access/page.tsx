@@ -75,7 +75,7 @@ export default function AccessControl(){
   if(loading) return <div className="p-8 text-sm">Memuat hak akses...</div>
 
   return (
-    <div className="p-3 sm:p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black flex items-center gap-2"><Shield className="h-5 w-5"/> Hak Akses & Kontrol Admin</h1>

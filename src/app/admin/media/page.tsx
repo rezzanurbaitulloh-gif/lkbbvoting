@@ -70,7 +70,7 @@ export default function MediaManager(){
   }
 
   return (
-    <div className="p-3 sm:p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black flex items-center gap-2"><ImgIcon className="h-5 w-5"/> Media Manager</h1>
@@ -138,7 +138,7 @@ export default function MediaManager(){
               <div className="rounded-xl bg-muted p-2 font-mono text-[11px] break-all">{editing.url}</div>
               <div><label className="text-xs font-bold">Alt Text (untuk SEO & aksesibilitas)</label><Input value={editForm.alt_text} onChange={e=> setEditForm({...editForm, alt_text:e.target.value})} placeholder="Deskripsi gambar" /></div>
               <div><label className="text-xs font-bold">Caption</label><Input value={editForm.caption} onChange={e=> setEditForm({...editForm, caption:e.target.value})} placeholder="Keterangan opsional" /></div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div><label className="text-xs font-bold">Folder</label><Select value={editForm.folder} onValueChange={v=> setEditForm({...editForm, folder:v})} options={FOLDERS.filter(f=> f!=="all").map(f=> ({value:f,label:f}))} /></div>
                 <div><label className="text-xs font-bold">Tags (pisah koma)</label><Input value={editForm.tags} onChange={e=> setEditForm({...editForm, tags:e.target.value})} placeholder="hero, banner" /></div>
               </div>

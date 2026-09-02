@@ -27,6 +27,10 @@ const nav = [
 export function AdminNav({ children }: { children: React.ReactNode }){
   const path = usePathname()
   const [open, setOpen] = useState(false)
+  const isActive = (href: string) => {
+    if (href === "/admin") return path === "/admin"
+    return path === href || path.startsWith(href + "/")
+  }
   return (
     <div className="min-h-screen bg-muted/20 flex">
       <aside className="hidden lg:flex w-[260px] shrink-0 flex-col border-r border-border bg-card">
@@ -40,7 +44,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
         <nav className="flex-1 overflow-y-auto p-3 space-y-1">
           <div className="px-2 py-1 text-[10px] font-bold tracking-widest text-muted-foreground">CMS DINAMIS</div>
           {nav.slice(0,3).map(item=> {
-            const active = path===item.href || path.startsWith(item.href + "/")
+            const active = isActive(item.href)
             return (
               <Link key={item.href} href={item.href} className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
                 <item.icon className="h-4 w-4" /> {item.label}
@@ -50,7 +54,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           <div className="mt-2 h-px bg-border" />
           <div className="px-2 pt-2 pb-1 text-[10px] font-bold tracking-widest text-muted-foreground">KOMPETISI</div>
           {nav.slice(3,10).map(item=> {
-            const active = path===item.href || path.startsWith(item.href + "/")
+            const active = isActive(item.href)
             return (
               <Link key={item.href} href={item.href} className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
                 <item.icon className="h-4 w-4" /> {item.label}
@@ -60,7 +64,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           <div className="mt-2 h-px bg-border" />
           <div className="px-2 pt-2 pb-1 text-[10px] font-bold tracking-widest text-muted-foreground">SISTEM</div>
           {nav.slice(10).map(item=> {
-            const active = path===item.href || path.startsWith(item.href + "/")
+            const active = isActive(item.href)
             return (
               <Link key={item.href} href={item.href} className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
                 <item.icon className="h-4 w-4" /> {item.label}
@@ -91,7 +95,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
                 </SheetHeader>
                 <nav className="flex-1 overflow-y-auto p-3 space-y-1">
                   {nav.map(item=> {
-                    const active = path===item.href || path.startsWith(item.href + "/")
+                    const active = isActive(item.href)
                     return (
                       <Link key={item.href} href={item.href} onClick={()=> setOpen(false)} className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
                         <item.icon className="h-4 w-4" /> {item.label}

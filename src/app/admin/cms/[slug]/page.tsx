@@ -210,7 +210,7 @@ export default function CmsSectionBuilder(){
   if(!page) return <div className="p-8 text-sm">Halaman {slug} tidak ditemukan. <Link href="/admin/cms" className="underline">Kembali</Link></div>
 
   return (
-    <div className="p-3 sm:p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex items-center gap-2 text-xs">
         <Link href="/admin/cms" className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:bg-muted"><ArrowLeft className="h-3.5 w-3.5"/> Daftar Halaman</Link>
         <span className="text-muted-foreground">/</span>
@@ -284,12 +284,12 @@ export default function CmsSectionBuilder(){
             <DialogDescription>Isi semua teks, gambar, banner di sini — langsung tampil di website tanpa edit manual.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div><label className="text-xs font-bold">Key * (unik per halaman)</label><Input value={form.key} onChange={e=> setForm({...form, key:e.target.value.toLowerCase()})} placeholder="hero" disabled={!!editing} /></div>
               <div><label className="text-xs font-bold">Tipe *</label><Select value={form.type} onValueChange={handleTypeChange} options={TYPE_OPTIONS} /></div>
             </div>
             <div><label className="text-xs font-bold">Judul Section (label admin) *</label><Input value={form.title} onChange={e=> setForm({...form, title:e.target.value})} placeholder="Hero Utama" /></div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div><label className="text-xs font-bold">Urutan</label><Input type="number" value={form.sort_order} onChange={e=> setForm({...form, sort_order:e.target.value})} /></div>
               <div><label className="text-xs font-bold">Tampilkan?</label><Select value={form.is_visible ? "true":"false"} onValueChange={v=> setForm({...form, is_visible: v==="true"})} options={[{value:"true",label:"Ya, tampilkan"},{value:"false",label:"Sembunyikan"}]} /></div>
             </div>

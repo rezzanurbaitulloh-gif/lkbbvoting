@@ -31,7 +31,7 @@ export default function AdminKlasemen(){
     </div>
   )
   return (
-    <div className="p-3 sm:p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-[18px] font-black">Klasemen — Admin</h1>

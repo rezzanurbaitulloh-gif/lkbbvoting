@@ -62,7 +62,7 @@ export default function CmsPages(){
   }
 
   return (
-    <div className="p-3 sm:p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black flex items-center gap-2"><Layers className="h-5 w-5" /> Konten Dinamis — Halaman</h1>
@@ -106,13 +106,13 @@ export default function CmsPages(){
         <DialogContent className="sm:max-w-[560px]">
           <DialogHeader><DialogTitle>{editing ? "Ubah Halaman" : "Tambah Halaman Baru"}</DialogTitle><DialogDescription>Slug dipakai sebagai URL (contoh: about → /about). Halaman tanpa edit kode langsung tampil.</DialogDescription></DialogHeader>
           <div className="grid gap-3">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div><label className="text-xs font-bold">Slug *</label><Input value={form.slug} onChange={e=> setForm({...form, slug:e.target.value.toLowerCase()})} placeholder="home" disabled={!!editing?.is_system} /></div>
               <div><label className="text-xs font-bold">Urutan</label><Input type="number" value={form.sort_order} onChange={e=> setForm({...form, sort_order:e.target.value})} /></div>
             </div>
             <div><label className="text-xs font-bold">Judul Halaman *</label><Input value={form.title} onChange={e=> setForm({...form, title:e.target.value})} placeholder="Beranda" /></div>
             <div><label className="text-xs font-bold">Deskripsi (opsional)</label><Input value={form.description} onChange={e=> setForm({...form, description:e.target.value})} placeholder="Kegunaan halaman ini" /></div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div><label className="text-xs font-bold">SEO Title</label><Input value={form.seo_title} onChange={e=> setForm({...form, seo_title:e.target.value})} placeholder="LKBB — ..." /></div>
               <div><label className="text-xs font-bold">Publish?</label><Select value={form.is_published ? "true":"false"} onValueChange={v=> setForm({...form, is_published: v==="true"})} options={[{value:"true",label:"Ya, publish"},{value:"false",label:"Draft"}]} /></div>
             </div>

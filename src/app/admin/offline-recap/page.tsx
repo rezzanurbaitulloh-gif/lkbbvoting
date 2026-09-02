@@ -41,7 +41,7 @@ export default function OfflineRecap(){
   }
 
   return (
-    <div className="p-3 sm:p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <h1 className="text-[18px] font-black">Offline Recap — Auditable</h1>
       <p className="text-xs text-muted-foreground">Tambah ballot offline per tim. Setiap penyesuaian tercatat di supports (source=offline) + audit_logs, tidak overwrite history.</p>
       <div className="rounded-[16px] border border-border bg-card p-4 grid gap-3 max-w-xl">

@@ -117,7 +117,7 @@ export default function AdminPeleton(){
   }
 
   return (
-    <div className="p-3 sm:p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black">Kelola Tim Peserta</h1>
@@ -206,13 +206,13 @@ export default function AdminPeleton(){
             <DialogDescription>Tim akan langsung tampil di website.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-3">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div><label className="text-xs font-bold">Nomor Peserta *</label><Input value={form.number} onChange={e=> setForm({...form, number:e.target.value})} placeholder="01" /></div>
               <div><label className="text-xs font-bold">Kelompok *</label><Select value={form.category} onValueChange={v=> setForm({...form, category:v})} options={[{value:"SMP",label:"SMP / Sederajat"},{value:"SMA",label:"SMA / Sederajat"}]} /></div>
             </div>
             <div><label className="text-xs font-bold">Nama Tim *</label><Input value={form.name} onChange={e=> setForm({...form, name:e.target.value})} placeholder="SMKN 1 KERTOSONO" /></div>
             <div><label className="text-xs font-bold">Nama Sekolah *</label><Input value={form.school} onChange={e=> setForm({...form, school:e.target.value})} placeholder="SMK Negeri 1 Kertosono" /></div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div><label className="text-xs font-bold">Kota</label><Input value={form.city} onChange={e=> setForm({...form, city:e.target.value})} /></div>
               <div><label className="text-xs font-bold">Provinsi</label><Input value={form.province} onChange={e=> setForm({...form, province:e.target.value})} /></div>
             </div>
@@ -242,7 +242,7 @@ export default function AdminPeleton(){
                 <p className="text-[11px] text-muted-foreground mt-1">Unggah logo, potong bebas.</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div><label className="text-xs font-bold">Urutan Tampil</label><Input type="number" value={form.display_order} onChange={e=> setForm({...form, display_order: parseInt(e.target.value)||1})} /></div>
               <div><label className="text-xs font-bold">Tampilkan di Website?</label><Select value={form.active ? "true":"false"} onValueChange={v=> setForm({...form, active: v==="true"})} options={[{value:"true",label:"Ya, tampilkan"},{value:"false",label:"Sembunyikan"}]} /></div>
             </div>

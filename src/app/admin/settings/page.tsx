@@ -100,7 +100,7 @@ export default function SettingsPage(){
       </div>
 
       {tab==="general" && (
-        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4">
+        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4 sm:space-y-5">
           <h3 className="text-sm font-black">Umum — Identitas Website</h3>
           <div><label className="text-xs font-bold">Nama Kompetisi</label><Input id="site_name" defaultValue={getVal("site.name","LKBB JAVASOMA")} /></div>
           <div><label className="text-xs font-bold">Sub-judul</label><Input id="site_subtitle" defaultValue={getVal("site.subtitle","The Impression")} /></div>
@@ -122,7 +122,7 @@ export default function SettingsPage(){
       )}
 
       {tab==="branding" && (
-        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4">
+        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4 sm:space-y-5">
           <h3 className="text-sm font-black flex items-center gap-2"><ImgIcon className="h-4 w-4"/> Branding — Logo & Poster</h3>
           {[
             { key:"branding.logo", label:"Logo Utama", id:"logo" },
@@ -153,11 +153,11 @@ export default function SettingsPage(){
       )}
 
       {tab==="contact" && (
-        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4">
+        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4 sm:space-y-5">
           <h3 className="text-sm font-black">Kontak</h3>
           <div><label className="text-xs font-bold">Email</label><Input id="c_email" defaultValue={getVal("contact.email")} /></div>
           <div><label className="text-xs font-bold">WhatsApp Umum</label><Input id="c_wa" defaultValue={getVal("contact.whatsapp")} placeholder="628xxx" /></div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <div><label className="text-xs font-bold">WA SMP</label><Input id="c_smp" defaultValue={getVal("contact.whatsapp_smp")} /></div>
             <div><label className="text-xs font-bold">WA SMA</label><Input id="c_sma" defaultValue={getVal("contact.whatsapp_sma")} /></div>
           </div>
@@ -177,7 +177,7 @@ export default function SettingsPage(){
       )}
 
       {tab==="social" && (
-        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4">
+        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4 sm:space-y-5">
           <h3 className="text-sm font-black">Sosial Media</h3>
           <div><label className="text-xs font-bold">Instagram</label><Input id="s_ig" defaultValue={getVal("social.instagram")} placeholder="https://instagram.com/..." /></div>
           <div><label className="text-xs font-bold">YouTube</label><Input id="s_yt" defaultValue={getVal("social.youtube")} /></div>
@@ -194,7 +194,7 @@ export default function SettingsPage(){
       )}
 
       {tab==="appearance" && (
-        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4">
+        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4 sm:space-y-5">
           <h3 className="text-sm font-black">Tampilan — Warna & Tema</h3>
           <div><label className="text-xs font-bold">Warna Primer (hex)</label><Input id="a_color" defaultValue={getVal("appearance.primary_color","#C9A86A")} placeholder="#C9A86A" /></div>
           <div><label className="text-xs font-bold">Tema Default</label><Select value={getVal("appearance.theme","dark")} onValueChange={(v)=> { (document.getElementById("a_theme") as HTMLInputElement).value=v }} options={[{value:"dark",label:"Dark"},{value:"light",label:"Light"}]} /><Input id="a_theme" type="hidden" defaultValue={getVal("appearance.theme","dark")} /></div>
@@ -210,7 +210,7 @@ export default function SettingsPage(){
       )}
 
       {tab==="seo" && (
-        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4">
+        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4 sm:space-y-5">
           <h3 className="text-sm font-black">SEO</h3>
           <div><label className="text-xs font-bold">SEO Title Default</label><Input id="seo_title" defaultValue={getVal("seo.title")} /></div>
           <div><label className="text-xs font-bold">SEO Description Default</label><textarea id="seo_desc" defaultValue={getVal("seo.description")} className="w-full min-h-[70px] rounded-xl border border-input px-3 py-2 text-sm" /></div>
@@ -226,8 +226,8 @@ export default function SettingsPage(){
       )}
 
       {tab==="event" && (
-        <div className="space-y-4">
-          <div className="rounded-[16px] border border-border bg-card p-5 space-y-4">
+        <div className="space-y-4 sm:space-y-5">
+          <div className="rounded-[16px] border border-border bg-card p-5 space-y-4 sm:space-y-5">
             <h3 className="text-sm font-black">Event & Voting</h3>
             <div><label className="text-xs font-bold">Nama Kompetisi (competitions.name)</label><Input defaultValue={event.name} id="name" /></div>
             <div><label className="text-xs font-bold">Sub-judul</label><Input defaultValue={event.subtitle} id="subtitle" /></div>

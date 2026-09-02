@@ -13,7 +13,7 @@ export default function Peserta(){
   const toggleAll = ()=>{ if(selected.size===list.length) setSelected(new Set()); else setSelected(new Set(list.map((p:any)=>p.id))) }
   const handleBulkDelete = async ()=>{ if(selected.size===0) return; for(const id of selected){ await fetch(`/api/admin/crud?table=profiles&id=${id}`, { method:"DELETE" }) } toast({ title:`${selected.size} peserta dihapus`, variant:"success"}); setSelected(new Set()); load() }
   return (
-    <div className="p-3 sm:p-4 md:p-6 space-y-4">
+    <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex items-center justify-between"><div><h1 className="text-[18px] font-black">Daftar Peserta</h1><p className="text-xs text-muted-foreground">{list.length} peserta — hanya User Biasa</p></div>{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}</div>
       <div className="rounded-[16px] border border-border bg-card overflow-hidden">
         {/* Desktop */}
