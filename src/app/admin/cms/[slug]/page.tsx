@@ -277,7 +277,7 @@ export default function CmsSectionBuilder(){
                 })}
                 {Object.keys(s.content||{}).length===0 && <span className="text-xs text-muted-foreground">Belum ada konten — klik Edit untuk isi.</span>}
               </div>
-              {s.settings && Object.keys(s.settings).length>0 && <div className="text-[11px] text-muted-foreground">⚙️ settings: {JSON.stringify(s.settings).slice(0,120)}</div>}
+              {s.settings && Object.keys(s.settings).length>0 && <div className="text-[11px] text-muted-foreground">⚙️ Pengaturan: {Object.keys(s.settings).length} properti</div>}
             </div>
           </div>
         ))}

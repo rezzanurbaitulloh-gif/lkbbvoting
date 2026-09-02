@@ -41,12 +41,12 @@ export function AdminNav({ children }: { children: React.ReactNode }){
             <div className="text-[11px] tracking-widest text-muted-foreground text-center">JAVASOMA 2026</div>
           </div>
         </div>
-        <nav className="flex-1 overflow-y-auto p-3 space-y-1 flex flex-col items-center">
+        <nav className="flex-1 overflow-y-auto p-2 space-y-1 flex flex-col items-center">
           <div className="px-2 py-1 text-[10px] font-bold tracking-widest text-muted-foreground w-full text-center">CMS DINAMIS</div>
           {nav.slice(0,3).map(item=> {
             const active = isActive(item.href)
             return (
-              <Link key={item.href} href={item.href} className={`flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors text-center ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
+              <Link key={item.href} href={item.href} className={`flex w-[190px] max-w-[85%] mx-auto items-center justify-start gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium transition-colors text-left ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
                 <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
               </Link>
             )
@@ -56,7 +56,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           {nav.slice(3,10).map(item=> {
             const active = isActive(item.href)
             return (
-              <Link key={item.href} href={item.href} className={`flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors text-center ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
+              <Link key={item.href} href={item.href} className={`flex w-[190px] max-w-[85%] mx-auto items-center justify-start gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium transition-colors text-left ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
                 <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
               </Link>
             )
@@ -66,14 +66,14 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           {nav.slice(10).map(item=> {
             const active = isActive(item.href)
             return (
-              <Link key={item.href} href={item.href} className={`flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors text-center ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
+              <Link key={item.href} href={item.href} className={`flex w-[190px] max-w-[85%] mx-auto items-center justify-start gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium transition-colors text-left ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
                 <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
               </Link>
             )
           })}
         </nav>
-        <div className="p-3 border-t border-border flex flex-col items-center">
-          <Link href="/" className="flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-2 rounded-xl border border-border bg-muted px-3 py-2.5 text-center text-xs font-bold">← Kembali ke Website</Link>
+        <div className="p-2 border-t border-border flex flex-col items-center">
+          <Link href="/" className="flex w-[190px] max-w-[85%] mx-auto items-center justify-start gap-2 rounded-xl border border-border bg-muted px-2.5 py-2 text-left text-xs font-bold">← Kembali ke Website</Link>
         </div>
       </aside>
       <div className="flex-1 flex flex-col min-w-0">
@@ -93,18 +93,18 @@ export function AdminNav({ children }: { children: React.ReactNode }){
                     </div>
                   </div>
                 </SheetHeader>
-                <nav className="flex-1 overflow-y-auto p-3 space-y-1 flex flex-col items-center">
+                <nav className="flex-1 overflow-y-auto p-2 space-y-1 flex flex-col items-center">
                   {nav.map(item=> {
                     const active = isActive(item.href)
                     return (
-                      <Link key={item.href} href={item.href} onClick={()=> setOpen(false)} className={`flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-center ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
+                      <Link key={item.href} href={item.href} onClick={()=> setOpen(false)} className={`flex w-[190px] max-w-[85%] mx-auto items-center justify-start gap-2 rounded-xl px-2.5 py-1.5 text-sm font-medium transition-colors text-left ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
                         <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
                       </Link>
                     )
                   })}
                 </nav>
-                <div className="p-3 border-t flex flex-col items-center">
-                  <Link href="/" onClick={()=> setOpen(false)} className="flex w-[190px] max-w-[85%] mx-auto items-center justify-center gap-2 rounded-xl border border-border bg-muted px-3 py-2.5 text-center text-xs font-bold">← Kembali ke Website</Link>
+                <div className="p-2 border-t flex flex-col items-center">
+                  <Link href="/" onClick={()=> setOpen(false)} className="flex w-[190px] max-w-[85%] mx-auto items-center justify-start gap-2 rounded-xl border border-border bg-muted px-2.5 py-2 text-left text-xs font-bold">← Kembali ke Website</Link>
                 </div>
               </SheetContent>
             </Sheet>

@@ -272,17 +272,20 @@ export default function SettingsPage(){
 
       <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs">Semua perubahan tercatat di audit_logs & cms_revisions. Frontend (Navbar, Footer, Hero) otomatis membaca dari site_settings / cms_sections.</div>
 
-      {/* List raw settings for debug / advanced */}
+      {/* List settings — tanpa bahasa pemrograman, hanya nilai bersih */}
       <details className="rounded-[12px] border border-border bg-card">
-        <summary className="p-3 text-xs font-bold cursor-pointer">Lihat semua site_settings (advanced) — {settingsRows.length} keys</summary>
+        <summary className="p-3 text-xs font-bold cursor-pointer">Lihat semua pengaturan — {settingsRows.length} kunci</summary>
         <div className="p-3 border-t border-border max-h-[320px] overflow-y-auto space-y-1">
-          {settingsRows.map((r:any)=> (
-            <div key={r.key} className="flex justify-between gap-2 text-xs font-mono border-b border-border/50 py-1">
-              <span className="font-bold">{r.key}</span>
-              <span className="truncate max-w-[50%] text-muted-foreground">{JSON.stringify(r.value).slice(0,80)}</span>
-              <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[10px]">{r.category}</span>
-            </div>
-          ))}
+          {settingsRows.map((r:any)=> {
+            const val = typeof r.value === 'string' ? r.value : typeof r.value === 'object' && r.value !== null ? (Array.isArray(r.value) ? r.value.join(', ') : Object.values(r.value).join(', ')).slice(0,60) : String(r.value)
+            return (
+              <div key={r.key} className="flex justify-between gap-2 text-xs border-b border-border/50 py-1.5">
+                <span className="font-bold">{r.key}</span>
+                <span className="truncate max-w-[50%] text-muted-foreground">{val.slice(0,60)}</span>
+                <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[10px]">{r.category}</span>
+              </div>
+            )
+          })}
         </div>
       </details>
     </div>

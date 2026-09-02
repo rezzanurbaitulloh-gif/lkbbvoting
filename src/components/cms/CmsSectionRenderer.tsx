@@ -99,13 +99,20 @@ export function CmsSectionRenderer({ section }: { section: Section }){
           </div>
         </section>
       )
+    case "podium":
+    case "sponsors":
+    case "featured":
+    case "countdown":
+      // These are handled by dedicated components (PodiumSection, Featured, Hero countdown) — do not render raw JSON on public web
+      return null
     default:
-      // fallback: render raw content as key-value
+      // Generic fallback — never show raw JSON / programming language on public web
       return (
         <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6">
-          <div className="rounded-xl border border-dashed border-border p-4">
-            <div className="text-xs font-bold">{section.title} — {section.type}</div>
-            <pre className="mt-2 text-xs bg-muted p-3 rounded-xl overflow-auto">{JSON.stringify(c, null, 2)}</pre>
+          <div className="rounded-xl border border-border bg-card p-4">
+            <div className="text-sm font-black">{section.title}</div>
+            {c.description && <p className="mt-1 text-sm text-muted-foreground">{c.description}</p>}
+            {c.heading && <p className="mt-1 text-sm text-muted-foreground">{c.heading}</p>}
           </div>
         </section>
       )
