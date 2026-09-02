@@ -3,12 +3,23 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts"
+import { Podium } from "@/components/competition/Podium"
+import { createBrowserSupabase } from "@/lib/supabase"
 
 export default function AdminOverview(){
   const [stats, setStats] = useState<any>({})
   const [ranking, setRanking] = useState<any[]>([])
   const [recentTx, setRecentTx] = useState<any[]>([])
   const [auditLogs, setAuditLogs] = useState<any[]>([])
+  const [podiumSmp, setPodiumSmp] = useState<any[]>([])
+  const [podiumSma, setPodiumSma] = useState<any[]>([])
+  const fetchPodium = async ()=>{
+    const supabase = createBrowserSupabase()
+    const { data: smp } = await supabase.from("team_ranking").select("*").eq("category","SMP").order("total_ballots",{ascending:false}).limit(3)
+    const { data: sma } = await supabase.from("team_ranking").select("*").eq("category","SMA").order("total_ballots",{ascending:false}).limit(3)
+    if(smp) setPodiumSmp(smp)
+    if(sma) setPodiumSma(sma)
+  }
   useEffect(()=>{
     fetch("/api/admin/stats").then(r=> r.json()).then(data=>{
       if(data.error) return
@@ -30,6 +41,12 @@ export default function AdminOverview(){
       setRecentTx(data.recentTransactions || [])
       setAuditLogs(data.auditLogs || [])
     }).catch(()=>{})
+    fetchPodium()
+    const interval = setInterval(fetchPodium, 4000)
+    // Realtime via supports
+    const supabase = createBrowserSupabase()
+    const channel = supabase.channel("admin-podium").on("postgres_changes", { event:"*", schema:"public", table:"supports" }, ()=> fetchPodium()).subscribe()
+    return ()=>{ clearInterval(interval); supabase.removeChannel(channel) }
   },[])
   return (
     <div className="min-h-screen bg-[#0B0C0F] text-white p-4 md:p-6 space-y-4">
@@ -74,6 +91,36 @@ export default function AdminOverview(){
           </div>
         ))}
       </div>
+      {/* Podium juara realtime — 2 kategori */}
+      <div className="grid lg:grid-cols-2 gap-4">
+        <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMP <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
+            <span className="text-[10px] text-white/40">Realtime</span>
+          </div>
+          <div className="mt-3">
+            {podiumSmp.length===0 ? <div className="h-[180px] grid place-items-center text-xs text-white/30">Belum ada data</div> : (
+              <div className="scale-[0.85] origin-top -mx-2">
+                <Podium teams={podiumSmp} />
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMA <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
+            <span className="text-[10px] text-white/40">Realtime</span>
+          </div>
+          <div className="mt-3">
+            {podiumSma.length===0 ? <div className="h-[180px] grid place-items-center text-xs text-white/30">Belum ada data</div> : (
+              <div className="scale-[0.85] origin-top -mx-2">
+                <Podium teams={podiumSma} />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       <div className="grid lg:grid-cols-[1.4fr_1fr_0.9fr] gap-4">
         <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-4">
           <div className="flex items-center justify-between">
