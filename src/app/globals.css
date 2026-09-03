@@ -361,13 +361,22 @@ html:not(.dark) { --background: #09090b; --foreground: #F4F4F1; --surface: #1113
   /* Hanya perkecil padding agar muat: sudah ditangani via p-2.5 & text clamp */
 }
 
-/* Primary color live-sync: only gold-related utilities follow --primary */
+/* Hardcode main background — jangan pakai primary */
+@layer base {
+  html, body, main, #__next, [class*="min-h-screen"] { background-color: #09090b !important; }
+  body.bg-\[\#09090b\], main.bg-\[\#09090b\], .bg-\[\#09090b\].min-h-screen, .bg-zinc-950 { background-color: #09090b !important; }
+}
+/* Primary isolasi: hanya tombol/badge/border/text highlight — jangan sentuh body/main */
 @layer utilities {
-  [class*="bg-[#C9A86A"] { background-color: var(--primary) !important; }
-  [class*="bg-[#D4B77A"] { background-color: var(--primary) !important; }
-  [class*="text-[#C9A86A"] { color: var(--primary) !important; }
-  [class*="text-[#D4B77A"] { color: var(--primary) !important; }
-  [class*="border-[#C9A86A"] { border-color: var(--primary) !important; }
+  /* Gold backgrounds — hanya token bg-[#C9A86A] standalone, bukan selection:bg- */
+  [class^="bg-[#C9A86A"], [class*=" bg-[#C9A86A"] { background-color: var(--primary) !important; }
+  [class^="bg-[#D4B77A"], [class*=" bg-[#D4B77A"] { background-color: var(--primary) !important; }
+  [class^="text-[#C9A86A"], [class*=" text-[#C9A86A"] { color: var(--primary) !important; }
+  [class^="text-[#D4B77A"], [class*=" text-[#D4B77A"] { color: var(--primary) !important; }
+  [class^="border-[#C9A86A"], [class*=" border-[#C9A86A"] { border-color: var(--primary) !important; }
+  /* selection variant tetap pakai primary tapi jangan override body background */
+  .selection\:bg-\[\#C9A86A\]\/20::selection,
+  .selection\:bg-\[\#C9A86A\]\/20 *::selection { background-color: color-mix(in oklab, var(--primary) 20%, transparent) !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
