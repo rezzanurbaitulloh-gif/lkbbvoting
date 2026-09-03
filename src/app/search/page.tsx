@@ -30,7 +30,7 @@ function SearchInner(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-border bg-[#08090B] text-white">
+        <div className="border-b border-border bg-[#09090b] text-white">
           <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6">
             <h1 className="text-[22px] font-black tracking-tight">PENCARIAN</h1>
             <div className="mt-4 relative max-w-xl">

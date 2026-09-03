@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   }
 }
 export const viewport: Viewport = {
-  themeColor: "#08090B",
+  themeColor: "#09090b",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -55,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{__html: `(function(){try{document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';localStorage.setItem('lkbb-theme','dark')}catch(e){document.documentElement.classList.add('dark')}})()`}} />
       </head>
-      <body className="min-h-full flex flex-col bg-[#08090B] text-foreground selection:bg-[#C9A86A]/20">
+      <body className="min-h-full flex flex-col bg-[#09090b] text-foreground selection:bg-[#C9A86A]/20">
         <ToastProvider>
           <AppProvider>
             <AppearanceProvider />

@@ -91,9 +91,9 @@ export default async function TimPage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-border bg-[#08090B] text-white relative overflow-hidden">
+        <div className="border-b border-border bg-[#09090b] text-white relative overflow-hidden">
           <div className="absolute inset-0 opacity-20"><img src={bgImage} alt="" className="h-full w-full object-cover" /></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#08090B] via-[#08090B]/85 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#09090b] via-[#09090b]/85 to-transparent" />
           <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className={`inline-flex rounded-full px-3 py-1 text-xs font-black tracking-wide ${headerBadge.color}`}>{headerBadge.label}</div>
             <h1 className="mt-3 text-[28px] md:text-[36px] font-black tracking-[-0.03em] leading-none">{isPublished ? "TANGGA JUARA" : isVotingClosed ? "PERINGKAT SEMENTARA" : "DAFTAR TIM"}</h1>

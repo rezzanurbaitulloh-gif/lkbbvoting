@@ -15,7 +15,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
   const sma = sorted.filter((p:any)=> p.category==="SMA")
   const hasBadge = showSementara || showFinal
   return (
-    <section className="relative bg-[#08090B] border-y border-[#C9A86A]/10 overflow-hidden">
+    <section className="relative bg-[#09090b] border-y border-[#C9A86A]/10 overflow-hidden">
       {/* premium subtle gold glow behind */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(800px_400px_at_20%_0%,rgba(201,168,106,0.07),transparent_60%)]" />
       <div className="pointer-events-none absolute top-0 inset-x-0 h-px gold-hairline-premium opacity-60" />
@@ -42,7 +42,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
         {/* SMP */}
         <div className="mt-10">
           <div className="flex flex-wrap items-center gap-3 mb-5">
-            <span className="inline-flex rounded-full bg-white text-[#08090B] px-4 py-1.5 text-xs font-black tracking-wide">SMP / SEDERAJAT</span>
+            <span className="inline-flex rounded-full bg-white text-[#09090b] px-4 py-1.5 text-xs font-black tracking-wide">SMP / SEDERAJAT</span>
             <span className="text-xs font-medium text-white/50 bg-white/5 px-2.5 py-1 rounded-full">{smp.length} tim</span>
           </div>
           {smp.length===0 ? <p className="text-sm text-white/40 py-6 text-center border border-dashed border-white/10 rounded-xl">Belum ada peleton SMP.</p> : (
@@ -55,7 +55,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
         {/* SMA */}
         <div className="mt-10">
           <div className="flex flex-wrap items-center gap-3 mb-5">
-            <span className="inline-flex rounded-full bg-white text-[#08090B] px-4 py-1.5 text-xs font-black tracking-wide">SMA / SEDERAJAT</span>
+            <span className="inline-flex rounded-full bg-white text-[#09090b] px-4 py-1.5 text-xs font-black tracking-wide">SMA / SEDERAJAT</span>
             <span className="text-xs font-medium text-white/50 bg-white/5 px-2.5 py-1 rounded-full">{sma.length} tim</span>
           </div>
           {sma.length===0 ? <p className="text-sm text-white/40 py-6 text-center border border-dashed border-white/10 rounded-xl">Belum ada peleton SMA.</p> : (

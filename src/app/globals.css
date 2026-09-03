@@ -41,13 +41,13 @@
 
 /* ——— LKBB DESIGN TOKENS ———
    Dark-first, premium championship, inspired by referensi.png
-   Palette: deep charcoal #08090B, graphite, warm white, gold #C9A86A, crimson #A51D2D
+   Palette: deep charcoal #09090b, graphite, warm white, gold #C9A86A, crimson #A51D2D
    Audit fix: standardize font scale, grid gaps, spacing, avoid generic look
 */
 
 :root {
   /* FORCE DARK ONLY — background hitam permanen, jangan ikut primary */
-  --background: #08090B;
+  --background: #09090b;
   --foreground: #F4F4F1;
   --surface: #111318;
   --surface-elevated: #17191F;
@@ -109,7 +109,7 @@
 }
 
 .dark {
-  --background: #08090B;
+  --background: #09090b;
   --foreground: #F4F4F1;
   --surface: #111318;
   --surface-elevated: #17191F;
@@ -149,8 +149,8 @@
   --shadow-elevated: 0 16px 40px rgb(0 0 0 / 0.55), 0 4px 12px rgb(0 0 0 / 0.4);
 }
 /* paksa html tanpa .dark tetap hitam — dark only */
-html { background: #08090B; }
-html:not(.dark) { --background: #08090B; --foreground: #F4F4F1; --surface: #111318; --card: #111318; --popover: #17191F; --border: #23262F; --input: #23262F; }
+html { background: #09090b; }
+html:not(.dark) { --background: #09090b; --foreground: #F4F4F1; --surface: #111318; --card: #111318; --popover: #17191F; --border: #23262F; --input: #23262F; }
 
 @layer base {
   * { @apply border-border outline-ring/50; }

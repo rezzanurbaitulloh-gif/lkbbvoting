@@ -254,7 +254,7 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
 
   if (!isPublished) return null
   return (
-    <section className="relative overflow-hidden bg-[#08090B] border-y border-[#C9A86A]/15 py-8 sm:py-10 md:py-14">
+    <section className="relative overflow-hidden bg-[#09090b] border-y border-[#C9A86A]/15 py-8 sm:py-10 md:py-14">
       {/* festive background — subtle radial gold glow + confetti */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(600px_320px_at_50%_0%,rgba(201,168,106,0.18),transparent_70%)]" />

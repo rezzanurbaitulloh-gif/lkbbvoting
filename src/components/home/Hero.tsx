@@ -55,11 +55,11 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
   // if cms explicitly hidden, don't render (caller should handle)
   if (cms && cms.is_visible === false) return null
   return (
-    <section className="relative overflow-hidden bg-[#08090B] text-white">
+    <section className="relative overflow-hidden bg-[#09090b] text-white">
       <div className="absolute inset-0">
         <img src={bgImage} alt="" className="h-full w-full object-cover" style={{ opacity: overlayOpacity }} />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#08090B]/30 via-[#08090B]/55 to-[#08090B]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#08090B] via-[#08090B]/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/30 via-[#09090b]/55 to-[#09090b]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#09090b] via-[#09090b]/80 to-transparent" />
       </div>
       {/* subtle grid */}
       <div className="absolute inset-0 opacity-[0.04]" style={{backgroundImage: `linear-gradient(#C9A86A 1px, transparent 1px), linear-gradient(90deg, #C9A86A 1px, transparent 1px)`, backgroundSize: '60px 60px'}} />

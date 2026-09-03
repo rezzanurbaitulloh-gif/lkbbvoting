@@ -20,7 +20,7 @@ export function CmsSectionRenderer({ section }: { section: Section }){
     case "hero":
       // hero is handled separately by Hero component; this fallback text_block
       return (
-        <section className="bg-[#08090B] text-white py-10 px-4">
+        <section className="bg-[#09090b] text-white py-10 px-4">
           <div className="mx-auto max-w-[1280px]">
             <div className="text-[11px] tracking-[0.18em] text-[#C9A86A] font-bold">{c.eyebrow || ""}</div>
             <h2 className="text-3xl font-black text-[#C9A86A]">{c.headingLine1 || ""} {c.headingLine2 || ""}</h2>
@@ -49,7 +49,7 @@ export function CmsSectionRenderer({ section }: { section: Section }){
       )
     case "cta":
       return (
-        <section className={`mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 ${s.variant==="dark" ? "bg-[#08090B] text-white rounded-2xl my-6" : ""}`}>
+        <section className={`mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 ${s.variant==="dark" ? "bg-[#09090b] text-white rounded-2xl my-6" : ""}`}>
           <div className="text-center">
             <h3 className="text-lg md:text-xl font-black">{c.heading || "CTA"}</h3>
             {c.description && <p className="text-sm opacity-70 mt-1 max-w-[560px] mx-auto">{c.description}</p>}

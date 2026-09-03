@@ -18,7 +18,7 @@ export default function KontakPage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-border bg-[#08090B] text-white">
+        <div className="border-b border-border bg-[#09090b] text-white">
           <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Hubungi Kami</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">KONTAK</h1>

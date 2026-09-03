@@ -497,9 +497,9 @@ export default function SettingsPage(){
               </div>
 
               {/* Hero preview */}
-              <div className="rounded-xl overflow-hidden border border-border bg-[#08090B] relative h-[220px] sm:h-[260px] grid place-items-center text-center">
-                {heroBg ? <img src={heroBg} alt="hero bg preview" className="absolute inset-0 h-full w-full object-cover" style={{opacity: heroOverlay/100}} onError={e=> (e.currentTarget.style.display='none')} /> : <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#08090B]" />}
-                <div className="absolute inset-0 bg-gradient-to-b from-[#08090B]/20 via-[#08090B]/50 to-[#08090B]" />
+              <div className="rounded-xl overflow-hidden border border-border bg-[#09090b] relative h-[220px] sm:h-[260px] grid place-items-center text-center">
+                {heroBg ? <img src={heroBg} alt="hero bg preview" className="absolute inset-0 h-full w-full object-cover" style={{opacity: heroOverlay/100}} onError={e=> (e.currentTarget.style.display='none')} /> : <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#09090b]" />}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/20 via-[#09090b]/50 to-[#09090b]" />
                 {heroLogo && <img src={heroLogo} alt="" className="absolute inset-0 m-auto h-[140px] w-[140px] object-contain opacity-10 pointer-events-none" />}
                 <div className="relative px-4">
                   <div className="text-[10px] font-bold tracking-[0.18em] text-[#C9A86A]">LKBB • JAVASOMA THE IMPRESSION</div>
@@ -546,9 +546,9 @@ export default function SettingsPage(){
                   <div className="flex justify-between text-[11px] text-muted-foreground"><span>Transparan</span><span>Pekat</span></div>
                 </div>
               </div>
-              <div className="rounded-xl overflow-hidden border border-border bg-[#08090B] relative h-[200px] grid place-items-center text-center">
-                {(timBg || heroBg) ? <img src={timBg || heroBg} alt="tim bg preview" className="absolute inset-0 h-full w-full object-cover" style={{opacity: (timBg ? timOverlay : heroOverlay)/100}} onError={e=> (e.currentTarget.style.display='none')} /> : <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#08090B]" />}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#08090B] via-[#08090B]/85 to-transparent" />
+              <div className="rounded-xl overflow-hidden border border-border bg-[#09090b] relative h-[200px] grid place-items-center text-center">
+                {(timBg || heroBg) ? <img src={timBg || heroBg} alt="tim bg preview" className="absolute inset-0 h-full w-full object-cover" style={{opacity: (timBg ? timOverlay : heroOverlay)/100}} onError={e=> (e.currentTarget.style.display='none')} /> : <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#09090b]" />}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#09090b] via-[#09090b]/85 to-transparent" />
                 <div className="relative px-4">
                   <div className="inline-flex rounded-full bg-emerald-500 px-3 py-1 text-xs font-black text-white">Aktif — Dukungan Dibuka</div>
                   <div className="mt-2 text-[22px] font-black leading-none text-white">DAFTAR TIM</div>

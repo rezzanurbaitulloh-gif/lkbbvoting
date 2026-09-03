@@ -53,9 +53,9 @@ export default function InvoicePage(){
 
   if(!currentUser){
     return (
-      <div className="min-h-screen flex flex-col bg-[#08090B] text-white">
+      <div className="min-h-screen flex flex-col bg-[#09090b] text-white">
         <Navbar />
-        <main className="flex-1 grid place-items-center p-8 bg-[#08090B]">
+        <main className="flex-1 grid place-items-center p-8 bg-[#09090b]">
           <div className="text-center rounded-2xl border border-white/10 bg-[#111318] p-8">
             <div className="text-sm font-black">Belum Masuk</div>
             <p className="text-sm text-white/60">Masuk untuk melihat invoice.</p>
@@ -68,9 +68,9 @@ export default function InvoicePage(){
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#08090B] text-white">
+    <div className="min-h-screen flex flex-col bg-[#09090b] text-white">
       <Navbar />
-      <main className="flex-1 pb-[72px] md:pb-0 bg-[#08090B]">
+      <main className="flex-1 pb-[72px] md:pb-0 bg-[#09090b]">
         <div className="mx-auto max-w-[720px] px-3 sm:px-4 md:px-6 py-6">
           <Link href="/profile/dukungan" className="text-xs font-semibold text-white/60 hover:text-white">← Kembali ke Riwayat</Link>
           <h1 className="mt-2 text-[22px] font-black tracking-tight">INVOICE TRANSAKSI</h1>
