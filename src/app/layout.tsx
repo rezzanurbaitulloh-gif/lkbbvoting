@@ -51,11 +51,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={cn("h-full", "antialiased", inter.variable, "font-sans")} suppressHydrationWarning>
+    <html lang="id" className={cn("h-full dark", "antialiased", inter.variable, "font-sans")} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{__html: `(function(){try{var t=localStorage.getItem('lkbb-theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';var v=t&&t!=='system'?t:(t==='system'?m:'dark');if(v==='dark')document.documentElement.classList.add('dark');}catch(e){document.documentElement.classList.add('dark')}})()`}} />
+        <script dangerouslySetInnerHTML={{__html: `(function(){try{document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';localStorage.setItem('lkbb-theme','dark')}catch(e){document.documentElement.classList.add('dark')}})()`}} />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-[#C9A86A]/20">
+      <body className="min-h-full flex flex-col bg-[#08090B] text-foreground selection:bg-[#C9A86A]/20">
         <ToastProvider>
           <AppProvider>
             <AppearanceProvider />

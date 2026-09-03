@@ -46,40 +46,41 @@
 */
 
 :root {
-  --background: #FDFCF9;
-  --foreground: #141518;
-  --surface: #FFFFFF;
-  --surface-elevated: #F7F6F3;
-  --card: #FFFFFF;
-  --card-foreground: #141518;
-  --popover: #FFFFFF;
-  --popover-foreground: #141518;
+  /* FORCE DARK ONLY — background hitam permanen, jangan ikut primary */
+  --background: #08090B;
+  --foreground: #F4F4F1;
+  --surface: #111318;
+  --surface-elevated: #17191F;
+  --card: #111318;
+  --card-foreground: #F4F4F1;
+  --popover: #17191F;
+  --popover-foreground: #F4F4F1;
 
   --primary: #C9A86A;
-  --primary-foreground: #14120E;
-  --secondary: #EFEDE9;
-  --secondary-foreground: #1A1C1E;
-  --muted: #EFEDE9;
-  --muted-foreground: #6F737A;
+  --primary-foreground: #0C0A06;
+  --secondary: #1E2026;
+  --secondary-foreground: #F4F4F1;
+  --muted: #1A1D24;
+  --muted-foreground: #9AA0A9;
   --accent: #A51D2D;
   --accent-foreground: #FFFFFF;
-  --gold: #C9A86A;
-  --gold-foreground: #1A1208;
-  --gold-muted: #C9A86A14;
+  --gold: #D4B77A;
+  --gold-foreground: #0C0A06;
+  --gold-muted: #D4B77A14;
 
-  --destructive: #C53030;
+  --destructive: #E53E3E;
   --destructive-foreground: #FFFFFF;
 
-  --border: #E8E6E1;
-  --border-strong: #D8D5CF;
-  --input: #E8E6E1;
-  --ring: #C9A86A;
+  --border: #23262F;
+  --border-strong: #2E333E;
+  --input: #23262F;
+  --ring: #D4B77A;
 
-  --chart-1: #C9A86A;
+  --chart-1: #D4B77A;
   --chart-2: #A51D2D;
-  --chart-3: #2A2E36;
-  --chart-4: #6F737A;
-  --chart-5: #A5A7AC;
+  --chart-3: #2E333E;
+  --chart-4: #9AA0A9;
+  --chart-5: #6F737A;
 
   --radius: 0.875rem;
 
@@ -147,6 +148,9 @@
   --shadow-soft: 0 4px 16px rgb(0 0 0 / 0.45), 0 1px 4px rgb(0 0 0 / 0.3);
   --shadow-elevated: 0 16px 40px rgb(0 0 0 / 0.55), 0 4px 12px rgb(0 0 0 / 0.4);
 }
+/* paksa html tanpa .dark tetap hitam — dark only */
+html { background: #08090B; }
+html:not(.dark) { --background: #08090B; --foreground: #F4F4F1; --surface: #111318; --card: #111318; --popover: #17191F; --border: #23262F; --input: #23262F; }
 
 @layer base {
   * { @apply border-border outline-ring/50; }

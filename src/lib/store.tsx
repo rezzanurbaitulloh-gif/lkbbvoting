@@ -53,10 +53,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(()=>{
-    const saved = localStorage.getItem("lkbb-theme") as Theme | null
+    // FORCE DARK ONLY — jangan baca theme light dari localStorage
+    localStorage.setItem("lkbb-theme", "dark")
+    setThemeState("dark")
+    document.documentElement.classList.add("dark")
+    document.documentElement.style.colorScheme = "dark"
     const fav = localStorage.getItem("lkbb-fav")
     const hist = localStorage.getItem("lkbb-history")
-    if(saved) setThemeState(saved)
     if(fav) try{ setFavorites(JSON.parse(fav)) } catch{}
     if(hist) try{ setHistory(JSON.parse(hist)) } catch{}
     refreshUser()
@@ -65,14 +68,19 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   },[])
 
   useEffect(()=>{
+    // DARK ONLY — paksa hitam, primary tidak boleh ubah background
     const root = document.documentElement
-    const actual = theme==="system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark":"light") : theme
-    if(actual==="dark") root.classList.add("dark")
-    else root.classList.remove("dark")
-    localStorage.setItem("lkbb-theme", theme)
+    root.classList.add("dark")
+    root.style.colorScheme = "dark"
+    localStorage.setItem("lkbb-theme", "dark")
   },[theme])
 
-  const setTheme = (t:Theme)=> setThemeState(t)
+  const setTheme = (_t:Theme)=> {
+    // DARK ONLY — ignore light/system
+    setThemeState("dark")
+    document.documentElement.classList.add("dark")
+    localStorage.setItem("lkbb-theme", "dark")
+  }
   const toggleFavorite = (id:string)=> {
     setFavorites(prev=> {
       const next = prev.includes(id) ? prev.filter(x=>x!==id) : [...prev, id]

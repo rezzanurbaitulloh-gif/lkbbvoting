@@ -103,7 +103,7 @@ export default function SettingsPage(){
       if(normalized && !normalized.startsWith("#")) normalized = "#"+normalized
       if(/^#[0-9A-Fa-f]{3,8}$/.test(normalized)) setPrimaryColor(normalized)
       else setPrimaryColor("#C9A86A")
-      setThemeVal(th==="light" ? "light" : "dark")
+      setThemeVal("dark")
       setHeroBg(hb)
       if(hl) setHeroLogo(hl)
       if(tb) setTimBg(tb)
@@ -406,8 +406,9 @@ export default function SettingsPage(){
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-bold">Tema Default</label>
-                  <Select value={themeVal} onValueChange={setThemeVal} options={[{value:"dark",label:"Dark — gelap premium"},{value:"light",label:"Light — terang bersih"}]} />
+                  <label className="text-xs font-bold">Tema (Dark Only)</label>
+                  <div className="h-10 rounded-xl border border-border bg-muted px-3 flex items-center text-sm font-bold">Dark — hitam permanen (light dimatikan)</div>
+                  <p className="text-[11px] text-muted-foreground mt-1">Background web selalu hitam, tidak ikut warna primer. Tema light di-disable sesuai permintaan.</p>
                 </div>
               </div>
 
