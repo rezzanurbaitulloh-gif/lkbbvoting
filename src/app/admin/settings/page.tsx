@@ -413,11 +413,6 @@ export default function SettingsPage(){
                     ))}
                   </div>
                 </div>
-                <div>
-                  <label className="text-xs font-bold">Tema (Dark Only)</label>
-                  <div className="h-10 rounded-xl border border-border bg-muted px-3 flex items-center text-sm font-bold">Dark — hitam permanen (light dimatikan)</div>
-                  <p className="text-[11px] text-muted-foreground mt-1">Background web selalu hitam, tidak ikut warna primer. Tema light di-disable sesuai permintaan.</p>
-                </div>
               </div>
 
               {/* Preview */}
