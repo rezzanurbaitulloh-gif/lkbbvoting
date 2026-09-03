@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server"
 import { createServiceSupabase, createServerSupabase } from "@/lib/supabase"
+import { getPaymentProvider } from "@/lib/payment"
 
-// POST /api/transactions — server calculates price, enforces event closure, creates transaction + Xendit QRIS
+// POST /api/transactions — server calculates price, enforces event closure, creates transaction + DOKU QRIS
 export async function POST(req: Request) {
   try {
     const body = await req.json()
@@ -48,8 +49,8 @@ export async function POST(req: Request) {
     const onlinePrice = event.settings?.online_price ?? 3000
     const amount = quantity * onlinePrice
 
-    // 4. Create transaction as PENDING with user_id
-    const providerRef = `xnd_${Date.now()}_${peletonId.slice(0,8)}`
+    // 4. Create transaction as PENDING with user_id — provider DOKU, never trust client amount
+    const initialRef = `doku_${Date.now()}_${peletonId.slice(0,8)}`
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString()
 
     const { data: trx, error } = await service.from("transactions").insert({
@@ -59,84 +60,64 @@ export async function POST(req: Request) {
       supports: quantity,
       method: "QRIS",
       status: "Pending",
-      provider: "XENDIT",
-      provider_ref: providerRef,
+      provider: "DOKU",
+      provider_ref: initialRef,
       source: "online",
       expires_at: expiresAt,
     }).select().single()
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    // 5. Create Xendit Invoice (real QRIS) — if keys present, call Xendit; else fallback to mock checkout
-    const xenditKey = process.env.XENDIT_SECRET_KEY
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://lkbbvoting.my.id"
+    // 5. Create DOKU QRIS via provider (server-side only, never expose secrets to browser)
+    // Frontend must never call DOKU directly — we are the only caller
     let paymentUrl = `/checkout?id=${trx.id}&peleton=${slug}&qty=${quantity}&total=${amount}`
-    let xenditInvoiceId: string | null = null
-    let xenditQrString: string | null = null
+    let dokuReferenceNo: string | null = null
+    let dokuQrContent: string | null = null
+    let dokuQrUrl: string | null = null
 
-    if (xenditKey) {
-      try {
-        const externalId = `lkbb-${trx.id}`
-        const xenditRes = await fetch("https://api.xendit.co/v2/invoices", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Basic ${Buffer.from(xenditKey + ":").toString("base64")}`,
-          },
-          body: JSON.stringify({
-            external_id: externalId,
-            amount,
-            payer_email: user.email || "supporter@lkbb.local",
-            description: `Dukungan ${quantity} ballot untuk ${peleton.slug} (#${peleton.slug})`,
-            currency: "IDR",
-            payment_methods: ["QRIS"],
-            success_redirect_url: `${appUrl}/checkout?id=${trx.id}&status=success`,
-            failure_redirect_url: `${appUrl}/checkout?id=${trx.id}&status=failed`,
-            customer: {
-              given_names: user.email?.split("@")[0] || "Supporter",
-              email: user.email || "supporter@lkbb.local",
-            },
-            items: [
-              {
-                name: `Ballot ${peleton.slug}`,
-                quantity,
-                price: onlinePrice,
-                category: "Ballot",
-                url: `${appUrl}/peleton/${slug}`,
-              },
-            ],
-            should_send_email: false,
-            invoice_duration: 900, // 15 minutes
-          }),
-        })
-        if (xenditRes.ok) {
-          const xData: any = await xenditRes.json()
-          xenditInvoiceId = xData.id
-          paymentUrl = xData.invoice_url || paymentUrl
-          // Xendit Invoice may contain qr_code string in actions or payment_methods
-          // For QRIS, the QR is shown on invoice_url; we also store id for webhook matching
-          if (xenditInvoiceId) {
-            await service.from("transactions").update({ provider_ref: xenditInvoiceId }).eq("id", trx.id)
-          }
-        } else {
-          const errText = await xenditRes.text()
-          console.error("Xendit invoice failed", xenditRes.status, errText)
-          // fallback to mock checkout — keep providerRef as generated
-        }
-      } catch (xErr) {
-        console.error("Xendit error", xErr)
-      }
+    try {
+      const provider = getPaymentProvider()
+      const dokuRes = await provider.createPayment({
+        transactionId: trx.id,
+        peletonId,
+        peletonSlug: slug || peleton.slug,
+        userId: user.id,
+        quantity,
+        amount,
+        email: user.email || undefined,
+      })
+
+      dokuReferenceNo = dokuRes.referenceNo || dokuRes.providerReference || null
+      dokuQrContent = dokuRes.qrContent
+      dokuQrUrl = dokuRes.qrUrl || null
+
+      // Persist DOKU references for webhook & status lookup
+      // provider_ref will be DOKU referenceNo (for lookup by DOKU), doku_reference_no mirrors it, qr_content stored
+      await service.from("transactions").update({
+        provider_ref: dokuReferenceNo || initialRef,
+        doku_reference_no: dokuReferenceNo,
+        qr_content: dokuQrContent,
+        doku_qr_url: dokuQrUrl,
+        // metadata: { doku: dokuRes.rawResponse }
+      } as any).eq("id", trx.id)
+    } catch (dokuErr: any) {
+      console.error("[doku] createPayment failed, fallback to internal checkout", dokuErr)
+      // Keep transaction but without QR — frontend will show pending with internal URL
+      // Do not expose raw DOKU error details to client (sanitize)
     }
 
     return NextResponse.json({
       transactionId: trx.id,
-      providerRef: xenditInvoiceId || providerRef,
-      xenditInvoiceId,
+      provider: "DOKU",
+      providerRef: dokuReferenceNo || initialRef,
+      dokuReferenceNo,
       amount,
       quantity,
       expiresAt,
       paymentUrl,
-      qrString: xenditQrString,
+      qrContent: dokuQrContent,
+      qrString: dokuQrContent,
+      qrUrl: dokuQrUrl,
     })
   } catch (e: any) {
     return NextResponse.json({ error: e.message || "Server error" }, { status: 500 })

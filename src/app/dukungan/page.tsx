@@ -95,8 +95,8 @@ function DukunganInner(){
         setLoading(false)
         return
       }
-      // Do NOT add ballot here — only after webhook PAID
-      // Redirect to checkout with transaction id — will show real Xendit QRIS
+      // Do NOT add ballot here — only after DOKU webhook PAID (verified)
+      // Redirect to checkout with transaction id — will show DOKU QRIS (sandbox)
       if(data.paymentUrl && data.paymentUrl.startsWith("http")){
         window.location.href = data.paymentUrl
       } else {

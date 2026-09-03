@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { createServiceSupabase, createServerSupabase } from "@/lib/supabase"
 
+// GET /api/payment/status/[id] — safe status check, never auto-marks PAID (webhook is authoritative)
+// Polling is for UX only
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
@@ -19,74 +21,16 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    // If already Success, return immediately
-    if (trx.status === "Success") {
-      return NextResponse.json({ status: "Success", transaction: trx })
-    }
+    // Return DB status directly — webhook is ONLY authoritative for PAID
+    // We intentionally do NOT query DOKU and auto-update to Success here
+    // Optionally, we could query DOKU for display status without mutating, but we keep it simple for security
+    // If you need live DOKU status for UX, uncomment below to query without mutation (read-only)
+    // const { queryDokuQris } = await import("@/lib/payment/doku/qris")
+    // if (trx.provider === "DOKU" && trx.status === "Pending" && trx.doku_reference_no) {
+    //   const q = await queryDokuQris(trx.id, trx.doku_reference_no as any)
+    //   // do not update DB, just return q.status for display
+    // }
 
-    // If Pending and has Xendit provider_ref (invoice id), query Xendit directly
-    const xenditKey = process.env.XENDIT_SECRET_KEY
-    if (trx.provider_ref && trx.provider_ref.startsWith("xnd_") === false && xenditKey && trx.status === "Pending") {
-      // provider_ref is Xendit invoice id (not our mock xnd_...)
-      try {
-        const res = await fetch(`https://api.xendit.co/v2/invoices/${trx.provider_ref}`, {
-          headers: {
-            Authorization: `Basic ${Buffer.from(xenditKey + ":").toString("base64")}`,
-          },
-        })
-        if (res.ok) {
-          const inv: any = await res.json()
-          // Xendit status: PENDING, PAID, EXPIRED, etc.
-          if (inv.status === "PAID" || inv.status === "SETTLED") {
-            // Update transaction to Success
-            await service.from("transactions").update({ status: "Success" }).eq("id", trx.id)
-            // Idempotency: check ledger
-            const { data: existing } = await service.from("supports").select("id").eq("transaction_id", trx.id).single()
-            if (!existing) {
-              await service.from("supports").insert({
-                peleton_id: trx.peleton_id,
-                user_id: trx.user_id,
-                transaction_id: trx.id,
-                amount: trx.amount,
-                supports: trx.supports,
-                source: "online",
-              })
-              // Dual notifications for realtime
-              const { data: peletonN } = await service.from("peletons").select("id, slug, name, school, category, number").eq("id", trx.peleton_id).single()
-              const { data: profileN } = await service.from("profiles").select("public_name, email").eq("id", trx.user_id).single()
-              const supporterNameN = profileN?.public_name || profileN?.email?.split("@")[0] || "Seseorang"
-              const peletonNameN = peletonN?.name || peletonN?.school || "peleton"
-              try {
-                await service.from("notifications").insert([
-                  { user_id: null, title: "Dukungan Baru!", body: `Selamat!! ${supporterNameN} telah mendukung ${peletonNameN}`, peleton_id: trx.peleton_id, peleton_name: peletonNameN, peleton_slug: peletonN?.slug||"", supporter_name: supporterNameN, data: { is_private:false, is_public:true, peleton_category: peletonN?.category, peleton_number: peletonN?.number } },
-                  { user_id: trx.user_id, title: "Dukungan Berhasil!", body: `Selamat!! Kamu telah mendukung ${peletonNameN} — ${trx.supports} ballot`, peleton_id: trx.peleton_id, peleton_name: peletonNameN, peleton_slug: peletonN?.slug||"", supporter_name: supporterNameN, data: { is_private:true, ballot_quantity: trx.supports, peleton_category: peletonN?.category, peleton_number: peletonN?.number } },
-                ])
-              } catch {}
-              await service.from("audit_logs").insert({
-                action: "transaction_paid_via_status_check",
-                target: trx.id,
-                details: { provider_ref: trx.provider_ref, amount: trx.amount, via: "status_check" },
-              })
-            }
-            return NextResponse.json({ status: "Success", transaction: { ...trx, status: "Success" }, xendit: inv })
-          } else if (inv.status === "EXPIRED") {
-            await service.from("transactions").update({ status: "Expired" }).eq("id", trx.id)
-            return NextResponse.json({ status: "Expired", transaction: { ...trx, status: "Expired" }, xendit: inv })
-          } else {
-            // Still pending
-            return NextResponse.json({ status: inv.status, transaction: trx, xendit: inv })
-          }
-        } else {
-          // Xendit not found or error, fallback to DB status
-          const txt = await res.text()
-          console.error("Xendit status check failed", res.status, txt)
-        }
-      } catch (e) {
-        console.error("Xendit status error", e)
-      }
-    }
-
-    // Fallback: return DB status
     return NextResponse.json({ status: trx.status, transaction: trx })
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 })

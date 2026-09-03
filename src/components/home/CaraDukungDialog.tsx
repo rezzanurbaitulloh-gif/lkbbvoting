@@ -6,7 +6,7 @@ const steps = [
   { icon: Search, title: "Pilih Tim yang Ingin Didukung", desc: "Buka halaman Tim, cari peleton favoritmu berdasarkan nama sekolah atau nomor peserta. Lihat foto dan profil tim." },
   { icon: MousePointer, title: "Tekan Tombol Dukung", desc: "Klik tombol DUKUNG pada kartu tim. Kamu akan diarahkan ke halaman dukungan resmi." },
   { icon: Layers, title: "Pilih Paket Ballot", desc: "Tentukan jumlah dukungan: 10, 50, 100, atau 300 ballot — atau atur manual. Harga resmi Rp3.000 / ballot (online)." },
-  { icon: QrCode, title: "Lakukan Pembayaran via QRIS", desc: "Klik Lanjutkan ke Pembayaran dan scan QRIS Xendit. Selesaikan dalam 15 menit sebelum kedaluwarsa." },
+  { icon: QrCode, title: "Lakukan Pembayaran via QRIS", desc: "Klik Lanjutkan ke Pembayaran dan scan QRIS DOKU Sandbox. Selesaikan dalam 15 menit sebelum kedaluwarsa." },
   { icon: BadgeCheck, title: "Pembayaran Selesai — Dukungan Masuk!", desc: "Setelah pembayaran terverifikasi, dukunganmu langsung tercatat untuk tim pilihan. Kamu bisa cek riwayat dukungan di profil." },
 ]
 

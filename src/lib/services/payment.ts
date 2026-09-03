@@ -1,5 +1,5 @@
 /**
- * Payment abstraction — ready for Xendit / Midtrans / any provider.
+ * Payment abstraction — DOKU Sandbox QRIS (Xendit deprecated).
  * Secrets must remain server-side. UI components should never couple to provider directly.
  *
  * Conceptual service per spec:
@@ -8,7 +8,7 @@
  *   handlePaymentCallback()
  *   recordSuccessfulSupport()
  *
- * Critically: support count is ONLY incremented after VALID SUCCESSFUL TRANSACTION.
+ * Critically: support count is ONLY incremented after VALID SUCCESSFUL TRANSACTION via DOKU webhook.
  * Never on checkout open, quantity select, pending, or transaction create.
  */
 
