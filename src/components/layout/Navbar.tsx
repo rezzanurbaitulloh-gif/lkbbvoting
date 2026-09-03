@@ -5,7 +5,6 @@ import { Search, Menu, Heart, User, Trophy, Home, Users, Calendar, Info, LogOut,
 import { useState, useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "./ThemeToggle"
 import { SoundControl } from "./SoundControl"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { useApp } from "@/lib/store"
@@ -99,10 +98,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
           <Link href="/search" className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:bg-muted transition-colors">
             <Search className="h-4 w-4 text-muted-foreground" />
           </Link>
-          <div className="max-[320px]:scale-90 origin-center flex items-center gap-1 sm:gap-1.5">
           <SoundControl />
-          <ThemeToggle />
-          </div>
           {currentUser ? (
             <div className="hidden md:flex relative" ref={profileRef}>
               <button
