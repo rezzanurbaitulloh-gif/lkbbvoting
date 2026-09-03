@@ -16,23 +16,18 @@ export async function getDokuB2BToken(): Promise<string> {
   const endpoint = "/authorization/v1/access-token/b2b"
   const url = `${cfg.baseUrl}${endpoint}`
 
-  // Generate asymmetric signature if privateKey available, else fallback to mock
+  // Generate asymmetric signature — requires private key
   let signature: string
   if (cfg.privateKey && cfg.privateKey.includes("BEGIN")) {
     try {
       signature = generateAsymmetricSignature(cfg.privateKey, cfg.clientId, timestamp)
     } catch (e) {
-      console.warn("[doku] asymmetric signature failed, fallback to mock token", (e as Error).message)
-      return getMockToken()
+      console.error("[doku] asymmetric signature failed", (e as Error).message)
+      throw new Error(`DOKU private key invalid: ${(e as Error).message}. Pastikan DOKU_PRIVATE_KEY adalah PKCS#8 unencrypted dan public key sudah di-upload ke DOKU Dashboard.`)
     }
   } else {
-    // No private key — for sandbox we can attempt fallback mock
-    // Do not throw, instead try to call DOKU and if it fails fallback
-    console.warn("[doku] DOKU_PRIVATE_KEY not set — attempting mock token for sandbox")
-    // Try to still call with empty signature? DOKU will reject, so directly return mock
-    // But we can try to call anyway with dummy signature to see if sandbox is lenient
-    // For now return mock
-    return getMockToken()
+    console.error("[doku] DOKU_PRIVATE_KEY not set — cannot get real B2B token")
+    throw new Error("DOKU_PRIVATE_KEY belum di-set di server (.env & Vercel). Generate RSA 2048 + upload public.pem ke DOKU Dashboard Sandbox.")
   }
 
   try {
@@ -47,11 +42,15 @@ export async function getDokuB2BToken(): Promise<string> {
       body: JSON.stringify({ grantType: "client_credentials" }),
     })
 
-    const data = await res.json().catch(() => ({}))
+    const data = await res.json().catch(async () => ({ text: await res.text() }))
 
     if (!res.ok || !data.accessToken) {
       console.error("[doku] B2B token failed", res.status, data)
-      // Fallback to mock for sandbox testing so flow doesn't break
+      // Jangan fallback ke mock jika private key ada — beri pesan jelas agar user upload public key
+      if (cfg.privateKey) {
+        const msg = data.responseMessage || data.error || JSON.stringify(data).slice(0,300)
+        throw new Error(`DOKU B2B token gagal ${res.status}: ${msg}. Pastikan public.pem hasil 'openssl rsa -in private.key -pubout' sudah di-upload ke DOKU Dashboard Sandbox untuk client ${cfg.clientId} dan private key di server sinkron.`)
+      }
       return getMockToken()
     }
 
@@ -64,6 +63,7 @@ export async function getDokuB2BToken(): Promise<string> {
     return token
   } catch (e) {
     console.error("[doku] B2B token error", e)
+    if (cfg.privateKey) throw e
     return getMockToken()
   }
 }

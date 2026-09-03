@@ -26,8 +26,11 @@ export async function generateDokuQris(params: DokuQrisGenerateParams): Promise<
   const token = await getDokuB2BToken()
   const isMockToken = token.startsWith("mock-")
 
-  // If mock token, generate mock QR without calling DOKU (sandbox fallback)
+  // If mock token but we have a private key, it means B2B failed due to wrong public key upload — do not silently mock, throw so user sees real error
   if (isMockToken) {
+    if (cfg.privateKey && cfg.privateKey.includes("BEGIN")) {
+      throw new Error("DOKU B2B token masih mock — private key ada tapi B2B gagal. Cek log server: pastikan public.pem sudah di-upload ke DOKU Dashboard Sandbox untuk client " + cfg.clientId)
+    }
     return generateMockQris(params)
   }
 
@@ -80,9 +83,12 @@ export async function generateDokuQris(params: DokuQrisGenerateParams): Promise<
 
     if (!res.ok) {
       console.error("[doku] qris generate failed", res.status, data)
-      // Fallback to mock if sandbox credentials incorrect (so payment flow not blocked)
+      // Jika sudah pakai private key real, jangan fallback ke mock — biar error terlihat dan tidak jadi QR amount 0 / 5101
+      if (cfg.privateKey && cfg.privateKey.includes("BEGIN")) {
+        throw new Error(`DOKU QRIS generate gagal ${res.status}: ${JSON.stringify(data).slice(0,500)}. Cek merchantId/terminalId & public key di DOKU Dashboard.`)
+      }
       if (cfg.env === "sandbox") {
-        console.warn("[doku] fallback to mock QR due to API error")
+        console.warn("[doku] fallback to mock QR due to API error (no private key)")
         return generateMockQris(params)
       }
       throw new Error(`DOKU QRIS generate failed: ${res.status} ${JSON.stringify(data)}`)
@@ -91,6 +97,9 @@ export async function generateDokuQris(params: DokuQrisGenerateParams): Promise<
     // Success codes: 2004700 etc, but also check responseCode
     if (data.responseCode && !String(data.responseCode).startsWith("200")) {
       console.error("[doku] qris business error", data)
+      if (cfg.privateKey && cfg.privateKey.includes("BEGIN")) {
+        throw new Error(`DOKU QRIS error ${data.responseCode}: ${data.responseMessage} — cek saldo/konfig sandbox.`)
+      }
       if (cfg.env === "sandbox") {
         return generateMockQris(params)
       }
@@ -109,6 +118,7 @@ export async function generateDokuQris(params: DokuQrisGenerateParams): Promise<
     }
   } catch (e) {
     console.error("[doku] qris generate exception", e)
+    if (cfg.privateKey && cfg.privateKey.includes("BEGIN")) throw e
     if (cfg.env === "sandbox") {
       return generateMockQris(params)
     }

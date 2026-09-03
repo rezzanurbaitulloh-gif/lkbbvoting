@@ -91,19 +91,24 @@ export async function POST(req: Request) {
       dokuQrContent = dokuRes.qrContent
       dokuQrUrl = dokuRes.qrUrl || null
 
+      if (!dokuQrContent) throw new Error("DOKU tidak mengembalikan qrContent — cek merchantId/terminalId di Dashboard")
+
       // Persist DOKU references for webhook & status lookup
-      // provider_ref will be DOKU referenceNo (for lookup by DOKU), doku_reference_no mirrors it, qr_content stored
       await service.from("transactions").update({
         provider_ref: dokuReferenceNo || initialRef,
         doku_reference_no: dokuReferenceNo,
         qr_content: dokuQrContent,
         doku_qr_url: dokuQrUrl,
-        // metadata: { doku: dokuRes.rawResponse }
       } as any).eq("id", trx.id)
     } catch (dokuErr: any) {
-      console.error("[doku] createPayment failed, fallback to internal checkout", dokuErr)
-      // Keep transaction but without QR — frontend will show pending with internal URL
-      // Do not expose raw DOKU error details to client (sanitize)
+      console.error("[doku] createPayment failed", dokuErr)
+      // Hapus transaksi pending yang gagal generate QR agar tidak jadi transaksi amount 0 / QR palsu yang bikin simulator 5101
+      await service.from("transactions").delete().eq("id", trx.id)
+      const msg = dokuErr?.message || "Gagal generate QRIS DOKU"
+      // Sanitize: jangan expose secret, tapi beri hint upload public key
+      const isAuthError = /B2B token gagal|public\.pem|merchantId|401|500/i.test(msg)
+      const hint = isAuthError ? " — Pastikan public.pem (dari private-pkcs8.key) sudah di-upload ke DOKU Dashboard Sandbox untuk client " + (process.env.DOKU_CLIENT_ID || "BRN-0272-1788400874210") + " dan DOKU_MERCHANT_ID/TERMINAL_ID benar." : ""
+      return NextResponse.json({ error: msg + hint }, { status: 502 })
     }
 
     return NextResponse.json({
