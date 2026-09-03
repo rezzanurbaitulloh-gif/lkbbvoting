@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   try {
     const { user, role } = await getUserAndRole()
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    if (role !== "ADMIN" && role !== "SUPER_ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    if (role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 })
 
     const body = await req.json()
     const { peleton_id, supports, note } = body
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
 export async function GET() {
   const { user, role } = await getUserAndRole()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  if (role !== "ADMIN" && role !== "SUPER_ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+  if (role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   const service = createServiceSupabase()
   const { data, error } = await service.from("supports").select("*, peletons(number,name)").eq("source", "offline").order("created_at", { ascending: false }).limit(20)
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })

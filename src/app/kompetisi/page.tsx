@@ -12,6 +12,22 @@ export const revalidate = 0
 export default async function KompetisiPage(){
   const supabase = await createServerSupabase()
   const { data: judges } = await supabase.from("judges").select("name,role,photo_url").eq("active", true).order("sort_order")
+  // sponsor toggle
+  let sponsors: any[] = []
+  let sponsorsEnabled = true
+  try{
+    const { data: setting } = await supabase.from("site_settings").select("value").eq("key","sponsors.enabled").single()
+    const raw = (setting as any)?.value
+    const str = typeof raw === "string" ? raw : (raw!=null ? String(raw) : "")
+    const clean = str.replace(/^"|"$/g,"").toLowerCase()
+    if(clean==="false" || clean==="0") sponsorsEnabled = false
+  } catch {}
+  if(sponsorsEnabled){
+    try{
+      const { data: sp } = await supabase.from("sponsors").select("*").eq("active", true).order("display_order", {ascending:true})
+      sponsors = sp || []
+    } catch {}
+  }
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -122,6 +138,31 @@ export default async function KompetisiPage(){
             </div>
           </section>
         </div>
+        {/* Sponsor — paling bawah halaman kompetisi, toggle via admin */}
+        {sponsorsEnabled && sponsors.length>0 && (
+          <section className="border-t border-border bg-card mt-2">
+            <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 sm:py-10">
+              <div className="text-center">
+                <div className="text-[11px] font-bold tracking-[0.18em] text-muted-foreground">DIDUKUNG OLEH</div>
+                <h3 className="mt-1 text-[18px] sm:text-[22px] font-black tracking-[-0.02em]">SPONSOR & MITRA</h3>
+                <p className="mt-1 text-xs text-muted-foreground">Terima kasih kepada mitra yang mendukung LKBB Javasoma 2026.</p>
+              </div>
+              <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+                {sponsors.map((s:any)=> (
+                  <div key={s.id} className="group rounded-[16px] border border-border bg-muted/20 hover:bg-card hover:border-[#C9A86A]/30 hover:shadow-soft p-4 flex flex-col items-center justify-center text-center transition-all min-h-[110px]">
+                    {s.logo_url ? (
+                      <img src={s.logo_url} alt={s.name} className="h-12 w-full object-contain mb-2" />
+                    ) : (
+                      <div className="h-12 w-full grid place-items-center rounded-lg bg-card border text-xs font-black mb-2">{s.name.slice(0,12)}</div>
+                    )}
+                    <div className="text-xs font-bold leading-tight line-clamp-2">{s.name}</div>
+                    <div className="text-[10px] tracking-widest font-bold text-muted-foreground mt-0.5">{s.tier}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
       </main>
       <Footer />
       <BottomNav />

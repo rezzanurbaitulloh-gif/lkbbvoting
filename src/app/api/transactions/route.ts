@@ -152,7 +152,7 @@ export async function GET(req: Request) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json([], { status: 401 })
   const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single()
-  const isAdmin = profile?.role === "ADMIN" || profile?.role === "SUPER_ADMIN"
+  const isAdmin = profile?.role === "ADMIN"
   if (id) {
     let q = supabase.from("transactions").select("*").eq("id", id).single()
     // RLS will enforce; but also check ownership if not admin

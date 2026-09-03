@@ -14,7 +14,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
     // Check ownership unless admin
     const { data: profile } = await service.from("profiles").select("role").eq("id", user.id).single()
-    const isAdmin = profile?.role === "ADMIN" || profile?.role === "SUPER_ADMIN"
+    const isAdmin = profile?.role === "ADMIN"
     if (!isAdmin && trx.user_id !== user.id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }

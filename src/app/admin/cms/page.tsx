@@ -69,7 +69,6 @@ export default function CmsPages(){
           <p className="text-xs text-muted-foreground">Kelola semua halaman tanpa edit kode. Tambah halaman baru, atur urutan, dan kelola section di dalamnya. {pages.length} halaman</p>
         </div>
         <div className="flex gap-2">
-          <Link href="/admin/media"><Button variant="outline" size="sm" className="rounded-full gap-1.5"><ImgIcon className="h-4 w-4"/> Media</Button></Link>
           <Link href="/admin/settings"><Button variant="outline" size="sm" className="rounded-full gap-1.5"><Settings className="h-4 w-4"/> Pengaturan</Button></Link>
           <Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Halaman</Button>
         </div>

@@ -14,36 +14,19 @@ export const ALL_PERMISSIONS = [
 export type PermissionKey = typeof ALL_PERMISSIONS[number]
 
 export const ROLE_DEFAULTS: Record<string, PermissionKey[]> = {
-  SUPER_ADMIN: [...ALL_PERMISSIONS],
-  ADMIN: [
-    "cms.pages.read","cms.pages.write","cms.sections.read","cms.sections.write","cms.sections.publish",
-    "media.read","media.upload","media.delete",
-    "settings.read","settings.write",
-    "users.read","users.manage",
-    "peletons.read","peletons.write",
-    "transactions.read","transactions.manage",
-    "system.audit",
-  ],
-  EDITOR: [
-    "cms.pages.read","cms.pages.write","cms.sections.read","cms.sections.write","cms.sections.publish",
-    "media.read","media.upload",
-    "settings.read",
-    "peletons.read","peletons.write",
-    "transactions.read",
-  ],
+  ADMIN: [...ALL_PERMISSIONS],
   USER: [],
-  PARTICIPANT: [],
 }
 
 export function hasPermission(role: string | null | undefined, key: PermissionKey): boolean {
   if (!role) return false
-  if (role === "SUPER_ADMIN") return true
+  if (role === "ADMIN") return true
   const perms = ROLE_DEFAULTS[role]
   return perms ? perms.includes(key) : false
 }
 
 export function canAccessAdmin(role: string | null | undefined): boolean {
-  return role === "ADMIN" || role === "SUPER_ADMIN" || role === "EDITOR"
+  return role === "ADMIN"
 }
 
 // Server-side: fetch role_permissions override from DB (optional)
@@ -54,7 +37,7 @@ export async function checkPermissionDB(
   role: string,
   required: PermissionKey
 ): Promise<boolean> {
-  if (role === "SUPER_ADMIN") return true
+  if (role === "ADMIN") return true
   // check user override first
   try {
     const { data: userPerm } = await supabase.from("user_permissions").select("granted").eq("user_id", userId).eq("permission_key", required).single()
@@ -70,11 +53,10 @@ export async function checkPermissionDB(
 }
 
 // Middleware helper — list routes that require specific permission
+// media & access dihapus; hanya admin & user (admin=full)
 export const ROUTE_PERMISSIONS: Record<string, PermissionKey> = {
   "/admin/cms": "cms.pages.read",
-  "/admin/media": "media.read",
   "/admin/settings": "settings.read",
-  "/admin/access": "users.permissions",
   "/admin/users": "users.read",
   "/admin/roles": "users.read",
 }

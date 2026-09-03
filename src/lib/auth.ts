@@ -21,7 +21,7 @@ export async function getServerUser(): Promise<{ user: AuthUser | null; supabase
 export async function requireAdmin() {
   const { user, supabase } = await getServerUser()
   if (!user) return { authorized: false as const, status: 401, error: "Unauthorized", supabase, user: null }
-  if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN" && user.role !== "EDITOR") {
+  if (user.role !== "ADMIN") {
     return { authorized: false as const, status: 403, error: "Forbidden — admin required", supabase, user }
   }
   return { authorized: true as const, supabase, user }
@@ -30,7 +30,7 @@ export async function requireAdmin() {
 export async function requirePermission(permission: string) {
   const { user, supabase } = await getServerUser()
   if (!user) return { authorized: false as const, status: 401 as const, error: "Unauthorized", supabase, user: null }
-  if (user.role === "SUPER_ADMIN") return { authorized: true as const, supabase, user }
+  if (user.role === "ADMIN") return { authorized: true as const, supabase, user }
   // check role_permissions override, fallback to defaults via RBAC
   const { hasPermission } = await import("./rbac")
   // try DB override

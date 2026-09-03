@@ -4,6 +4,7 @@ import "./globals.css"
 import { AppProvider } from "@/lib/store"
 import { RealtimeSupportNotification } from "@/components/realtime/RealtimeSupportNotification"
 import { ToastProvider } from "@/components/ui/toast"
+import { AppearanceProvider } from "@/components/layout/AppearanceProvider"
 import { cn } from "@/lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -66,6 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-[#C9A86A]/20">
         <ToastProvider>
           <AppProvider>
+            <AppearanceProvider />
             {children}
             <RealtimeSupportNotification />
           </AppProvider>

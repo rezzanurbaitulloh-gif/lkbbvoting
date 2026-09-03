@@ -108,7 +108,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                   <div className="px-4 py-3 border-b border-border bg-muted/30">
                     <div className="text-sm font-bold leading-tight truncate">{currentUser.name}</div>
                     <div className="text-xs text-muted-foreground truncate">{currentUser.email}</div>
-                    {isAdmin && <div className="mt-1 inline-flex rounded-full bg-gold px-2 py-0.5 text-[10px] font-black tracking-widest text-gold-foreground">ADMIN</div>}
+                    {isAdmin && <div className="mt-1 inline-flex rounded-full bg-gold px-2 py-0.5 text-[10px] font-black tracking-widest text-gold-foreground">admin</div>}
                   </div>
                   <div className="p-1.5 flex flex-col gap-2">
                     <Link href="/profile" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "hover:bg-muted text-muted-foreground hover:text-foreground")}>
@@ -142,9 +142,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
               </Button>
             </Link>
           )}
-          <Link href="/tim" className="hidden md:inline-flex">
-            <Button size="sm" className="rounded-full px-5">Dukung</Button>
-          </Link>
+
           <Sheet open={open} onOpenChange={setOpen}>
             <Button variant="ghost" size="icon" className="lg:hidden h-8 w-8 sm:h-9 sm:w-9 rounded-full border border-border shrink-0" onClick={()=> setOpen(true)}>
               <Menu className="h-4 w-4" />
@@ -180,7 +178,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                         <div className="text-sm font-bold truncate">{currentUser.name}</div>
                         <div className="text-xs text-muted-foreground truncate">{currentUser.email}</div>
                       </div>
-                      {isAdmin && <span className="ml-auto rounded-full bg-gold px-2 py-0.5 text-[10px] font-black text-gold-foreground">ADMIN</span>}
+                      {isAdmin && <span className="ml-auto rounded-full bg-gold px-2 py-0.5 text-[10px] font-black text-gold-foreground">admin</span>}
                     </div>
                     <Link href="/profile" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground")}><User className="h-4 w-4 shrink-0"/> <span>Profile</span></Link>
                     <Link href="/profile/edit" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground")}><Settings className="h-4 w-4 shrink-0"/> <span>Pengaturan</span></Link>

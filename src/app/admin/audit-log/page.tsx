@@ -77,7 +77,7 @@ function humanDetail(log:any){
     return `${jml}${catatan}`
   }
   if(a?.includes("profiles")){
-    if(d.role) return `Peran diubah menjadi ${d.role==="SUPER_ADMIN"?"Super Admin":"User Biasa"}`
+    if(d.role) return `Peran diubah menjadi ${d.role==="ADMIN"?"admin":"user"}`
     return "Data pengguna diperbarui"
   }
   if(a?.includes("peletons")){

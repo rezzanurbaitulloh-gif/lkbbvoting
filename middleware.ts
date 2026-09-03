@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
     // Check role server-side via profiles
     const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single()
     const role = profile?.role
-    if (role !== "ADMIN" && role !== "SUPER_ADMIN" && role !== "EDITOR") {
+    if (role !== "ADMIN") {
       const url = request.nextUrl.clone()
       url.pathname = "/"
       url.searchParams.set("error", "unauthorized")
@@ -43,14 +43,14 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Protect /api/admin/* — require admin (EDITOR allowed for cms/media read/write, but granular check inside route)
+  // Protect /api/admin/* — hanya admin
   if (pathname.startsWith("/api/admin")) {
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
     const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single()
     const role = profile?.role
-    if (role !== "ADMIN" && role !== "SUPER_ADMIN" && role !== "EDITOR") {
+    if (role !== "ADMIN") {
       return NextResponse.json({ error: "Forbidden — admin required" }, { status: 403 })
     }
   }

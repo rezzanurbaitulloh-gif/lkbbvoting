@@ -2,27 +2,31 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
-import { LayoutDashboard, Users, CreditCard, Trophy, Megaphone, Calendar, Star, Handshake, Settings, ScrollText, UserCog, Menu, FileText, Image as ImageIcon, Shield, Layers } from "lucide-react"
+import { LayoutDashboard, Users, CreditCard, Trophy, Megaphone, Calendar, Star, Handshake, Settings, ScrollText, UserCog, Menu, FileText, Shield, Layers } from "lucide-react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 
 const nav = [
   { href:"/admin", label:"Dashboard", icon: LayoutDashboard },
-  // Dynamic CMS — baru
+  // Dynamic CMS — baru (media manager dihapus sesuai permintaan)
   { href:"/admin/cms", label:"Konten Dinamis", icon: Layers },
-  { href:"/admin/media", label:"Media Manager", icon: ImageIcon },
   { href:"/admin/peleton", label:"Peleton", icon: Users },
   { href:"/admin/transaksi", label:"Transaksi", icon: CreditCard },
   { href:"/admin/klasemen", label:"Klasemen", icon: Trophy },
+  { href:"/admin/offline-recap", label:"Rekap Offline", icon: FileText },
   { href:"/admin/pengumuman", label:"Pengumuman", icon: Megaphone },
   { href:"/admin/timeline", label:"Jadwal", icon: Calendar },
   { href:"/admin/juri", label:"Juri", icon: Star },
   { href:"/admin/sponsor", label:"Sponsor", icon: Handshake },
   { href:"/admin/users", label:"Pengguna", icon: UserCog },
-  { href:"/admin/access", label:"Hak Akses", icon: Shield },
   { href:"/admin/settings", label:"Pengaturan", icon: Settings },
   { href:"/admin/audit-log", label:"Riwayat", icon: ScrollText },
 ]
+
+// Grouping for sidebar (tanpa media manager, tanpa SEO, tanpa hak akses terpisah karena hanya 2 role: admin & user)
+const navCms = nav.slice(0,2) // Dashboard, CMS
+const navKompetisi = nav.slice(2,8) // peleton, transaksi, klasemen, pengumuman, timeline, juri, sponsor
+const navSistem = nav.slice(8) // users, settings, audit-log
 
 export function AdminNav({ children }: { children: React.ReactNode }){
   const path = usePathname()
@@ -43,7 +47,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
         </div>
         <nav className="flex-1 overflow-y-auto px-4 sm:px-6 py-3 space-y-1">
           <div className="px-2 py-1 text-[10px] font-bold tracking-widest text-muted-foreground">CMS DINAMIS</div>
-          {nav.slice(0,3).map(item=> {
+          {navCms.map(item=> {
             const active = isActive(item.href)
             return (
               <Link key={item.href} href={item.href} className={`flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
@@ -53,7 +57,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           })}
           <div className="mt-3 h-px bg-border" />
           <div className="px-2 pt-3 pb-1 text-[10px] font-bold tracking-widest text-muted-foreground">KOMPETISI</div>
-          {nav.slice(3,10).map(item=> {
+          {navKompetisi.map(item=> {
             const active = isActive(item.href)
             return (
               <Link key={item.href} href={item.href} className={`flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>
@@ -63,7 +67,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           })}
           <div className="mt-3 h-px bg-border" />
           <div className="px-2 pt-3 pb-1 text-[10px] font-bold tracking-widest text-muted-foreground">SISTEM</div>
-          {nav.slice(10).map(item=> {
+          {navSistem.map(item=> {
             const active = isActive(item.href)
             return (
               <Link key={item.href} href={item.href} className={`flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left ${active ? "bg-foreground text-background" : "hover:bg-muted text-muted-foreground hover:text-foreground"}`}>

@@ -21,7 +21,7 @@ export default function Users(){
   const toggleSelect = (id:string)=>{ const n=new Set(selected); if(n.has(id)) n.delete(id); else n.add(id); setSelected(n) }
   const toggleAll = ()=>{ if(selected.size===users.length) setSelected(new Set()); else setSelected(new Set(users.map((u:any)=>u.id))) }
   const handleBulkDelete = async ()=>{ if(selected.size===0) return; for(const id of selected){ await fetch(`/api/admin/crud?table=profiles&id=${id}`, { method:"DELETE" }) } ; toast({ title: `${selected.size} pengguna dihapus`, variant:"success"}); setSelected(new Set()); load() }
-  const openEdit = (u:any)=>{ setEditing(u); setRole(u.role==="SUPER_ADMIN" ? "SUPER_ADMIN" : "USER"); setNewPassword(""); setShowPass(false); setOpen(true) }
+  const openEdit = (u:any)=>{ setEditing(u); setRole(u.role==="ADMIN" ? "ADMIN" : "USER"); setNewPassword(""); setShowPass(false); setOpen(true) }
   const handleSave = async ()=>{ if(saving) return; setSaving(true);
     if(!editing) return
     // update role via crud
@@ -52,7 +52,7 @@ export default function Users(){
               <div><input type="checkbox" checked={selected.has(u.id)} onChange={()=> toggleSelect(u.id)} /></div>
               <div className="font-bold truncate">{u.public_name || "-"}</div>
               <div className="text-muted-foreground text-xs truncate">{u.email}</div>
-              <div><span className="rounded-full bg-secondary px-2 py-1 text-xs font-bold">{u.role==="SUPER_ADMIN" ? "Super Admin" : "User Biasa"}</span></div>
+              <div><span className={`rounded-full px-2 py-1 text-xs font-bold ${u.role==="ADMIN" ? "bg-amber-500 text-white" : "bg-secondary"}`}>{u.role==="ADMIN" ? "admin" : "user"}</span></div>
               <div><Button variant="outline" size="sm" className="rounded-full h-7 text-xs" onClick={()=> openEdit(u)}>Kelola</Button></div>
             </div>
           ))}
@@ -66,7 +66,7 @@ export default function Users(){
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-bold truncate">{u.public_name || "-"}</div>
                 <div className="text-xs text-muted-foreground truncate">{u.email}</div>
-                <div className="mt-1 flex gap-1.5"><span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-bold">{u.role==="SUPER_ADMIN" ? "Super Admin" : "User Biasa"}</span><span className="rounded-full bg-emerald-500 text-white px-2 py-0.5 text-[11px] font-bold">Aktif</span></div>
+                <div className="mt-1 flex gap-1.5"><span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${u.role==="ADMIN" ? "bg-amber-500 text-white" : "bg-secondary"}`}>{u.role==="ADMIN" ? "admin" : "user"}</span><span className="rounded-full bg-emerald-500 text-white px-2 py-0.5 text-[11px] font-bold">Aktif</span></div>
               </div>
               <Button variant="outline" size="sm" className="rounded-full h-7 text-xs shrink-0" onClick={()=> openEdit(u)}>Kelola</Button>
             </div>
@@ -84,7 +84,7 @@ export default function Users(){
         <DialogContent className="sm:max-w-[420px]">
           <DialogHeader><DialogTitle>Kelola Pengguna</DialogTitle><DialogDescription>{editing?.public_name} — {editing?.email}</DialogDescription></DialogHeader>
           <div className="grid gap-3">
-            <div><label className="text-xs font-bold">Peran Pengguna</label><Select value={role} onValueChange={setRole} options={[{value:"USER",label:"User Biasa"},{value:"SUPER_ADMIN",label:"Super Admin — akses penuh"}]} /></div>
+            <div><label className="text-xs font-bold">Peran Pengguna</label><Select value={role} onValueChange={setRole} options={[{value:"USER",label:"user — User Biasa"},{value:"ADMIN",label:"admin — Akses penuh"}]} /></div>
             <div>
               <label className="text-xs font-bold">Kata Sandi Baru (opsional)</label>
               <div className="flex gap-2">

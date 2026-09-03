@@ -8,11 +8,8 @@ import { Shield, Users, Lock, Crown, Edit3 } from "lucide-react"
 import { createBrowserSupabase } from "@/lib/supabase"
 
 const ROLE_LABEL: Record<string, string> = {
-  SUPER_ADMIN: "Super Admin — akses penuh",
-  ADMIN: "Admin — kelola semua kecuali hak akses granular",
-  EDITOR: "Editor — hanya CMS, media, peleton",
-  USER: "User Biasa — tanpa akses admin",
-  PARTICIPANT: "Participant — tanpa akses admin",
+  ADMIN: "Admin — akses penuh",
+  USER: "User — tanpa akses admin",
 }
 
 export default function AccessControl(){
@@ -57,7 +54,7 @@ export default function AccessControl(){
   const handleSaveUserRole = async ()=>{
     if(!editingUser) return
     const supabase = createBrowserSupabase()
-    // Use crud endpoint for profiles role update (only SUPER_ADMIN allowed via RLS/service — use service via API)
+    // Use crud endpoint for profiles role update (only admin allowed via RLS/service — use service via API)
     const res = await fetch("/api/admin/crud",{ method:"PATCH", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ table:"profiles", id: editingUser.id, data: { role: newRole } }) })
     const j = await res.json()
     if(!res.ok){ toast({ title:"Gagal", description:j.error, variant:"error" }); return }
@@ -79,19 +76,19 @@ export default function AccessControl(){
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black flex items-center gap-2"><Shield className="h-5 w-5"/> Hak Akses & Kontrol Admin</h1>
-          <p className="text-xs text-muted-foreground">Kelola peran dan permission granular. Hanya SUPER_ADMIN yang boleh ubah matrix. Perubahan langsung berlaku di middleware & API.</p>
+          <p className="text-xs text-muted-foreground">Kelola peran dan permission granular. Hanya admin yang boleh ubah matrix. Perubahan langsung berlaku di middleware & API.</p>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground">Lihat matrix:</span>
-          <Select value={selectedRole} onValueChange={setSelectedRole} options={[{value:"SUPER_ADMIN",label:"SUPER_ADMIN"},{value:"ADMIN",label:"ADMIN"},{value:"EDITOR",label:"EDITOR"},{value:"USER",label:"USER"}]} />
+          <Select value={selectedRole} onValueChange={setSelectedRole} options={[{value:"ADMIN",label:"admin"},{value:"USER",label:"USER"}]} />
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-3">
-        {Object.entries(ROLE_LABEL).slice(0,3).map(([role,label])=> (
-          <div key={role} className={`rounded-[16px] border p-4 ${role==="SUPER_ADMIN" ? "bg-foreground text-background border-foreground" : role==="ADMIN" ? "bg-card border-border" : "bg-muted/20 border-border"}`}>
+      <div className="grid md:grid-cols-2 gap-3">
+        {Object.entries(ROLE_LABEL).map(([role,label])=> (
+          <div key={role} className={`rounded-[16px] border p-4 ${role==="ADMIN" ? "bg-foreground text-background border-foreground" : "bg-muted/20 border-border"}`}>
             <div className="flex items-center gap-2">
-              {role==="SUPER_ADMIN" ? <Crown className="h-4 w-4 text-amber-500"/> : role==="ADMIN" ? <Shield className="h-4 w-4"/> : <Edit3 className="h-4 w-4"/>}
+              {role==="ADMIN" ? <Crown className="h-4 w-4 text-amber-500"/> : <Shield className="h-4 w-4"/>}
               <span className="text-sm font-black">{role}</span>
             </div>
             <div className="text-xs mt-1 opacity-70">{label}</div>
@@ -141,7 +138,7 @@ export default function AccessControl(){
             <div key={u.id} className="flex flex-col md:grid md:grid-cols-[1.4fr_1.2fr_140px_100px] gap-2 px-4 py-3 items-center border-b border-border/50 text-sm">
               <div className="font-bold truncate w-full md:w-auto">{u.public_name||"-"}</div>
               <div className="text-xs text-muted-foreground truncate w-full md:w-auto">{u.email}</div>
-              <div className="w-full md:w-auto"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${u.role==="SUPER_ADMIN" ? "bg-amber-500 text-white" : u.role==="ADMIN" ? "bg-foreground text-background" : u.role==="EDITOR" ? "bg-blue-600 text-white" : "bg-secondary"}`}>{u.role}</span></div>
+              <div className="w-full md:w-auto"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${u.role==="ADMIN" ? "bg-amber-500 text-white" : "bg-secondary"}`}>{u.role==="ADMIN" ? "admin" : "user"}</span></div>
               <div className="w-full md:w-auto"><Button variant="outline" size="sm" className="rounded-full h-7 text-xs w-full md:w-auto" onClick={()=> openEditUser(u)}>Kelola</Button></div>
             </div>
           ))}
@@ -152,13 +149,13 @@ export default function AccessControl(){
         <DialogContent className="sm:max-w-[420px]">
           <DialogHeader><DialogTitle>Kelola Peran Pengguna</DialogTitle><DialogDescription>{editingUser?.public_name} — {editingUser?.email}</DialogDescription></DialogHeader>
           <div className="grid gap-3">
-            <div><label className="text-xs font-bold">Peran Baru</label><Select value={newRole} onValueChange={setNewRole} options={[{value:"USER",label:"USER — User Biasa"},{value:"EDITOR",label:"EDITOR — Konten & Media"},{value:"ADMIN",label:"ADMIN — Hampir penuh"},{value:"SUPER_ADMIN",label:"SUPER_ADMIN — Penuh"}]} /></div>
+            <div><label className="text-xs font-bold">Peran Baru</label><Select value={newRole} onValueChange={setNewRole} options={[{value:"USER",label:"USER — User Biasa"},{value:"ADMIN",label:"admin — Akses penuh"}]} /></div>
           </div>
           <DialogFooter><Button variant="outline" onClick={()=> setEditingUser(null)}>Batal</Button><Button onClick={handleSaveUserRole}>Simpan</Button></DialogFooter>
         </DialogContent>
       </Dialog>
 
-      <div className="rounded-xl border border-border bg-muted/20 p-3 text-xs flex items-center gap-2"><Lock className="h-4 w-4"/> Semua perubahan hak akses tercatat di audit_logs dan langsung diberlakukan di middleware (ADMIN/EDITOR/SUPER_ADMIN).</div>
+      <div className="rounded-xl border border-border bg-muted/20 p-3 text-xs flex items-center gap-2"><Lock className="h-4 w-4"/> Sistem disederhanakan: hanya admin & user. Semua perubahan hak akses tercatat di audit_logs dan langsung diberlakukan di middleware (ADMIN).</div>
     </div>
   )
 }

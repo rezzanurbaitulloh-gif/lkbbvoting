@@ -4,7 +4,7 @@ export type PeletonCategory = "SMP" | "SMA"
 export type PeletonStatus = "Draft" | "Pending" | "Verified" | "Rejected" | "Suspended"
 export type MemberRole = "Danton" | "Danru" | "Anggota"
 export type TransactionStatus = "Success" | "Pending" | "Failed" | "Expired"
-export type UserRole = "PUBLIC" | "USER" | "PARTICIPANT" | "ADMIN" | "SUPER_ADMIN"
+export type UserRole = "USER" | "ADMIN" // hanya admin (full akses) & user
 
 export interface PeletonMember {
   id: string

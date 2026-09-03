@@ -60,11 +60,27 @@ export default async function HomePage(){
   const showFeatured = !cmsSections.find((s:any)=> s.key==="featured") || cmsSections.find((s:any)=> s.key==="featured")?.is_visible !== false
   const showPodiumViaCms = !cmsSections.find((s:any)=> s.key==="podium") || cmsSections.find((s:any)=> s.key==="podium")?.is_visible !== false
 
+  // Sponsor — tampil di beranda paling bawah jika toggle sponsors.enabled = true (default true)
+  let sponsors: any[] = []
+  let sponsorsEnabled = true
+  try{
+    const raw = siteSettings["sponsors.enabled"]
+    const rawStr = typeof raw === "string" ? raw : (raw != null ? String(raw) : "")
+    const clean = rawStr.replace(/^"|"$/g,"").toLowerCase()
+    if(clean === "false" || clean === "0") sponsorsEnabled = false
+  } catch {}
+  if(sponsorsEnabled){
+    try{
+      const { data: sp } = await supabase.from("sponsors").select("*").eq("active", true).order("display_order", {ascending:true})
+      sponsors = sp || []
+    } catch {}
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar siteSettings={siteSettings} />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <Hero event={ev} cms={heroSection || null} />
+        <Hero event={ev} cms={heroSection || null} siteSettings={siteSettings} />
         {/* Extra CMS sections after hero (banner, stats, etc.) — order controlled by sort_order */}
         {extraSections.filter((s:any)=> s.sort_order < (cmsSections.find((x:any)=> x.key==="featured")?.sort_order ?? 999)).map((s:any)=> (
           <CmsSections key={s.id} sections={[s]} />
@@ -85,6 +101,31 @@ export default async function HomePage(){
               <p className="text-xs font-bold text-[#0B0C0F]">Voting ditutup — peringkat sementara online saja. Admin sedang merekap offline.</p>
             </div>
           </div>
+        )}
+        {/* Sponsor — di paling bawah beranda (kompetisi) */}
+        {sponsorsEnabled && sponsors.length>0 && (
+          <section className="border-t border-border bg-card">
+            <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 sm:py-10">
+              <div className="text-center">
+                <div className="text-[11px] font-bold tracking-[0.18em] text-muted-foreground">DIDUKUNG OLEH</div>
+                <h3 className="mt-1 text-[18px] sm:text-[22px] font-black tracking-[-0.02em]">SPONSOR & MITRA</h3>
+                <p className="mt-1 text-xs text-muted-foreground">Terima kasih kepada mitra yang mendukung LKBB Javasoma 2026.</p>
+              </div>
+              <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+                {sponsors.map((s:any)=> (
+                  <div key={s.id} className="group rounded-[16px] border border-border bg-muted/20 hover:bg-card hover:border-[#C9A86A]/30 hover:shadow-soft p-4 flex flex-col items-center justify-center text-center transition-all min-h-[110px]">
+                    {s.logo_url ? (
+                      <img src={s.logo_url} alt={s.name} className="h-12 w-full object-contain mb-2" />
+                    ) : (
+                      <div className="h-12 w-full grid place-items-center rounded-lg bg-card border text-xs font-black mb-2">{s.name.slice(0,12)}</div>
+                    )}
+                    <div className="text-xs font-bold leading-tight line-clamp-2">{s.name}</div>
+                    <div className="text-[10px] tracking-widest font-bold text-muted-foreground mt-0.5">{s.tier}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
         )}
       </main>
       <Footer siteSettings={siteSettings} />

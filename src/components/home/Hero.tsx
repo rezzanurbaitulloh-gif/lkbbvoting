@@ -24,15 +24,19 @@ function useCountdown(target: string){
   return diff
 }
 
-export function Hero({ event, cms }: { event: any; cms?: any }){
+export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; siteSettings?: Record<string, any> }){
+  // siteSettings dari pengaturan admin (hero.background_image, hero.overlay_opacity) prioritas tertinggi agar admin bisa edit background judul web langsung dari Pengaturan Tampilan
+  const siteBg = siteSettings?.["hero.background_image"] || siteSettings?.["hero.backgroundImage"]
+  const siteOverlay = siteSettings?.["hero.overlay_opacity"] || siteSettings?.["hero.overlayOpacity"]
+  const siteLogo = siteSettings?.["hero.logo_image"] || siteSettings?.["hero.logoImage"]
   // cms: content dari cms_sections key=hero (dynamic). Fallback ke event/ hardcode jika tidak ada
   const cmsContent = cms?.content || {}
   const cmsSettings = cms?.settings || {}
   const votingEnd = event?.voting_end || cmsContent.fallbackDate || "2026-10-24T23:59:59+07:00"
   const cd = useCountdown(votingEnd)
   const [caraOpen, setCaraOpen] = useState(false)
-  const bgImage = cmsContent.backgroundImage || "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=1600&auto=format&fit=crop&q=70"
-  const logoImage = cmsContent.logoImage || "/assets/brand/lkbb-logo.jpg"
+  const bgImage = (typeof siteBg === "string" && siteBg.trim() ? siteBg.replace(/^"|"$/g,"") : null) || cmsContent.backgroundImage || "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=1600&auto=format&fit=crop&q=70"
+  const logoImage = (typeof siteLogo === "string" && siteLogo.trim() ? siteLogo.replace(/^"|"$/g,"") : null) || cmsContent.logoImage || "/assets/brand/lkbb-logo.jpg"
   const eyebrow = cmsContent.eyebrow || "LKBB • JAVASOMA THE IMPRESSION"
   const heading1 = cmsContent.headingLine1 || "PELETON"
   const heading2 = cmsContent.headingLine2 || "TERFAVORIT"
@@ -43,7 +47,7 @@ export function Hero({ event, cms }: { event: any; cms?: any }){
   const ctaPrimaryLabel = cmsContent.ctaPrimaryLabel || "LIHAT PESERTA"
   const ctaPrimaryLink = cmsContent.ctaPrimaryLink || "/tim"
   const ctaSecondaryLabel = cmsContent.ctaSecondaryLabel || "CARA DUKUNG"
-  const overlayOpacity = cmsSettings.overlayOpacity ?? cmsContent.overlayOpacity ?? 0.32
+  const overlayOpacity = (siteOverlay !== undefined && siteOverlay !== null && String(siteOverlay).trim() !== "" ? parseFloat(String(siteOverlay).replace(/"/g,"")) : null) ?? cmsSettings.overlayOpacity ?? cmsContent.overlayOpacity ?? 0.32
   const showLogo = (cmsSettings.showLogo !== false) && (cmsContent.showLogo !== false)
   const logoOpacity = cmsSettings.logoOpacity ?? cmsContent.logoOpacity ?? 0.08
   const bgPosition = cmsSettings.bgPosition || "center"
