@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Share2, Trophy } from "lucide-react"
+import { Trophy } from "lucide-react"
 import { createServerSupabase, createStaticSupabase } from "@/lib/supabase"
 import { ShareButtons } from "@/components/tim/ShareButtons"
 
@@ -78,9 +78,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                 <p className="mt-4 text-sm leading-relaxed text-white/60 text-pretty max-w-2xl">{peleton.description}</p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link href={supportUrl}><Button size="lg" className="rounded-full px-8 h-[46px] font-black">DUKUNG PELETON INI</Button></Link>
-                  <Link href={profileUrl}><Button variant="outline" size="lg" className="rounded-full bg-white/10 border-white/15 text-white hover:bg-white/15 hover:text-white gap-2"><Share2 className="h-4 w-4"/> Bagikan Profil</Button></Link>
                   {showRank && <span className="inline-flex items-center rounded-full bg-[#C9A86A] px-3 py-1 text-xs font-black text-white">RANK #{rank}</span>}
-                  <Link href={supportUrl}><Button variant="ghost" size="lg" className="rounded-full bg-white/5 text-white hover:bg-white/10 hover:text-white gap-2"> Bagikan Dukungan</Button></Link>
                 </div>
                 <div className="mt-6 flex gap-3 max-w-lg">
                   <div className="flex-1 rounded-xl border border-white/10 bg-white/5 backdrop-blur p-3 text-center">
