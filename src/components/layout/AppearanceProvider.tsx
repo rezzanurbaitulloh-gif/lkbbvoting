@@ -23,12 +23,12 @@ export function AppearanceProvider(){
           // also set --chart-1
           document.documentElement.style.setProperty("--chart-1", c)
         }
-        // theme
+        // theme — default dark premium (jangan jadi putih). Hanya light yang explicit remove dark
         let theme = map["appearance.theme"]
         if(typeof theme==="object" && theme!==null && (theme as any).value) theme = (theme as any).value
         if(typeof theme==="string") theme = theme.replace(/^"|"$/g,"")
         if(theme==="light") document.documentElement.classList.remove("dark")
-        else if(theme==="dark") document.documentElement.classList.add("dark")
+        else document.documentElement.classList.add("dark")
       } catch {}
     }
     apply()

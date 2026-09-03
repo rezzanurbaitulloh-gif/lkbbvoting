@@ -357,27 +357,14 @@
   /* Hanya perkecil padding agar muat: sudah ditangani via p-2.5 & text clamp */
 }
 
-/* Primary color consistency overrides — when admin changes --primary/--gold, all hardcoded gold usages must follow */
-[class*="bg-[#C9A86A"] { background-color: var(--primary) !important; }
-[class*="bg-[#D4B77A"] { background-color: var(--primary) !important; }
-[class*="text-[#C9A86A"] { color: var(--primary) !important; }
-[class*="text-[#D4B77A"] { color: var(--primary) !important; }
-[class*="border-[#C9A86A"] { border-color: var(--primary) !important; }
-[class*="from-[#C9A86A"] { --tw-gradient-from: var(--primary) !important; }
-[class*="via-[#C9A86A"] { --tw-gradient-via: var(--primary) !important; }
-[class*="to-[#C9A86A"] { --tw-gradient-to: var(--primary) !important; }
-[class*="ring-[#C9A86A"] { --tw-ring-color: var(--primary) !important; }
-[class*="accent-[#C9A86A"] { accent-color: var(--primary) !important; }
-/* translucent variants — override with color-mix to preserve translucency */
-[class*="bg-[#C9A86A]/10"], [class*="bg-[#C9A86A0A"] { background-color: color-mix(in srgb, var(--primary) 8%, transparent) !important; }
-[class*="bg-[#C9A86A]/20"], [class*="bg-[#C9A86A20"], [class*="bg-[#C9A86A14"] { background-color: color-mix(in srgb, var(--primary) 12%, transparent) !important; }
-[class*="bg-[#C9A86A]/30"], [class*="bg-[#C9A86A30"] { background-color: color-mix(in srgb, var(--primary) 18%, transparent) !important; }
-[class*="bg-[#C9A86A]/40"] { background-color: color-mix(in srgb, var(--primary) 30%, transparent) !important; }
-[class*="bg-[#C9A86A]/50"] { background-color: color-mix(in srgb, var(--primary) 40%, transparent) !important; }
-[class*="border-[#C9A86A]/20"], [class*="border-[#C9A86A20"] { border-color: color-mix(in srgb, var(--primary) 20%, transparent) !important; }
-[class*="border-[#C9A86A]/30"], [class*="border-[#C9A86A30"] { border-color: color-mix(in srgb, var(--primary) 30%, transparent) !important; }
-[class*="border-[#C9A86A]/40"], [class*="border-[#C9A86A14"] { border-color: color-mix(in srgb, var(--primary) 30%, transparent) !important; }
-[class*="text-[#C9A86A]/80"] { color: color-mix(in srgb, var(--primary) 80%, transparent) !important; }
+/* Primary color live-sync: only gold-related utilities follow --primary */
+@layer utilities {
+  [class*="bg-[#C9A86A"] { background-color: var(--primary) !important; }
+  [class*="bg-[#D4B77A"] { background-color: var(--primary) !important; }
+  [class*="text-[#C9A86A"] { color: var(--primary) !important; }
+  [class*="text-[#D4B77A"] { color: var(--primary) !important; }
+  [class*="border-[#C9A86A"] { border-color: var(--primary) !important; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
