@@ -40,7 +40,7 @@ export default function ParticipantProfile(){
             <div><label className="text-xs font-bold">Deskripsi</label><Textarea defaultValue={p.description} rows={3} /></div>
             <div className="grid sm:grid-cols-2 gap-3">
               <div><label className="text-xs font-bold">Team Photo (1)</label><div className="mt-1 flex gap-2 items-center"><img src={p.image_url} alt="" className="h-12 w-12 rounded-lg object-cover border"/><Button variant="outline" size="sm" className="rounded-full">Ganti Foto</Button></div></div>
-              <div><label className="text-xs font-bold">Team Logo (1)</label><div className="mt-1 flex gap-2 items-center"><img src={p.image_url} alt="" className="h-12 w-12 rounded-lg object-cover border"/><Button variant="outline" size="sm" className="rounded-full">Ganti Logo</Button></div></div>
+              <div><label className="text-xs font-bold">Team Logo (1)</label><div className="mt-1 flex gap-2 items-center"><img src={(p as any).logo_url || p.image_url} alt="" className="h-12 w-12 object-contain bg-transparent"/><Button variant="outline" size="sm" className="rounded-full">Ganti Logo</Button></div></div>
             </div>
             <Button className="rounded-full w-full h-11">Simpan Perubahan</Button>
           </div>

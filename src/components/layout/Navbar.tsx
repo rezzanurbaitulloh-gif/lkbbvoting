@@ -55,8 +55,8 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
       <div className="mx-auto flex h-[56px] sm:h-[60px] lg:h-[64px] max-w-[1280px] items-center justify-between px-3 sm:px-4 md:px-6 gap-2">
         {/* Logo — dynamic from site_settings */}
         <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="relative h-8 w-8 sm:h-9 sm:w-9 max-[320px]:h-7 max-[320px]:w-7 overflow-hidden rounded-xl border border-[#C9A86A30] bg-[#0B0C0F] flex items-center justify-center shrink-0">
-            <img src={logoUrl} alt={siteName} className="h-full w-full object-cover" />
+          <div className="relative h-8 w-8 sm:h-9 sm:w-9 max-[320px]:h-7 max-[320px]:w-7 bg-transparent flex items-center justify-center shrink-0">
+            <img src={logoUrl} alt={siteName} className="h-full w-full object-contain bg-transparent" />
           </div>
           <div className="hidden sm:block min-w-0">
             <div className="flex items-baseline gap-1.5">

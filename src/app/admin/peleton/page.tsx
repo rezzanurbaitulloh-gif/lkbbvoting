@@ -232,8 +232,8 @@ export default function AdminPeleton(){
             <div>
               <label className="text-xs font-bold">Logo Sekolah (full, tidak terpotong; bisa PNG transparan)</label>
               {form.logo_url ? (
-                <div className="mt-2 h-24 w-24 rounded-xl border bg-white p-2 grid place-items-center overflow-hidden">
-                  <img src={form.logo_url} alt="Preview Logo" className="h-full w-full object-contain" />
+                <div className="mt-2 h-24 w-24 bg-transparent grid place-items-center">
+                  <img src={form.logo_url} alt="Preview Logo" className="h-full w-full object-contain bg-transparent" />
                 </div>
               ) : (
                 <div className="mt-2 h-24 w-24 grid place-items-center rounded-xl border border-dashed bg-muted text-xs text-muted-foreground text-center">Belum ada logo</div>

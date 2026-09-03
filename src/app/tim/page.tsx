@@ -55,7 +55,7 @@ export default async function TimPage(){
   }
 
   const renderGrid = (teams: any[]) => {
-    // List baris: #[nomor] [nama]   o<-logo  full logo no crop
+    // List baris: #[nomor] [nama]   logo asli transparent tanpa circle
     return (
       <div className="flex flex-col gap-2">
         {teams.map((p:any)=> {
@@ -67,8 +67,8 @@ export default async function TimPage(){
                 <span className="shrink-0 rounded-full bg-gold px-2.5 py-1 text-[11px] font-black tracking-widest text-gold-foreground">#{number}</span>
                 <span className="text-sm sm:text-[15px] font-black tracking-tight truncate">{p.name}</span>
               </div>
-              <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-xl overflow-hidden border border-border bg-white shrink-0 p-1.5 grid place-items-center">
-                <img src={logo} alt={p.name} className="h-full w-full object-contain" />
+              <div className="h-10 w-10 sm:h-11 sm:w-11 bg-transparent shrink-0 grid place-items-center">
+                <img src={logo} alt={p.name} className="h-full w-full object-contain bg-transparent" style={{ filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.5))" }} />
               </div>
             </Link>
           )

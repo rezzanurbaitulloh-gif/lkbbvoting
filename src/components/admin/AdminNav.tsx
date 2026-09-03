@@ -39,7 +39,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
     <div className="min-h-screen bg-muted/20 flex">
       <aside className="hidden lg:flex w-[260px] shrink-0 flex-col border-r border-border bg-card">
         <div className="h-[64px] flex items-center justify-center gap-3 px-5 border-b border-border text-center">
-          <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="h-8 w-8 rounded-lg object-cover border border-border" />
+          <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="h-8 w-8 object-contain bg-transparent" />
           <div className="text-center">
             <div className="text-sm font-black leading-none text-center">LKBB ADMIN</div>
             <div className="text-[11px] tracking-widest text-muted-foreground text-center">JAVASOMA 2026</div>
@@ -90,7 +90,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
               <SheetContent side="left" className="w-full max-w-[280px] sm:max-w-[300px] left-0 p-0 overflow-hidden">
                 <SheetHeader className="p-5 border-b">
                   <div className="flex items-center justify-center gap-3 text-center">
-                    <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="h-8 w-8 rounded-lg object-cover border" />
+                    <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="h-8 w-8 object-contain bg-transparent" />
                     <div className="text-center">
                       <SheetTitle className="text-sm font-black leading-none text-center">LKBB ADMIN</SheetTitle>
                       <div className="text-[11px] tracking-widest text-muted-foreground text-center">JAVASOMA 2026</div>
@@ -112,7 +112,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
                 </div>
               </SheetContent>
             </Sheet>
-            <img src="/assets/brand/lkbb-logo.jpg" alt="" className="h-7 w-7 rounded-lg object-cover" />
+            <img src="/assets/brand/lkbb-logo.jpg" alt="" className="h-7 w-7 object-contain bg-transparent" />
             <span className="text-sm font-black">ADMIN LKBB</span>
           </div>
           <Link href="/" className="text-xs font-bold border border-border rounded-full px-3 py-1">Website →</Link>

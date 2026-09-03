@@ -257,7 +257,7 @@ export default function SettingsPage(){
                 <Input id={item.id} defaultValue={getVal(item.key, "")} placeholder="/assets/brand/... atau https://..." className="flex-1 font-mono text-sm" />
                 <Button type="button" variant="outline" size="sm" className="rounded-full gap-1.5 shrink-0" onClick={()=> setPickerFor(item.id)}><ImgIcon className="h-3.5 w-3.5"/> Pilih Media</Button>
               </div>
-              {getVal(item.key) && <img src={getVal(item.key)} alt="" className="h-16 w-16 rounded-xl object-cover border bg-muted" onError={e=> (e.currentTarget.style.display='none')} />}
+              {getVal(item.key) && <img src={getVal(item.key)} alt="" className="h-16 w-16 object-contain bg-transparent" onError={e=> (e.currentTarget.style.display='none')} />}
             </div>
           ))}
           <Button disabled={saving} className="rounded-full" onClick={()=>{
@@ -501,7 +501,7 @@ export default function SettingsPage(){
                     <Input value={heroLogo} onChange={e=> setHeroLogo(e.target.value)} placeholder="/assets/brand/lkbb-logo.jpg atau https://..." className="flex-1 font-mono text-sm" />
                     <Button type="button" variant="outline" size="sm" className="rounded-full shrink-0" onClick={()=> setPickerFor("heroLogo")}><ImgIcon className="h-3.5 w-3.5"/> Pilih</Button>
                   </div>
-                  {heroLogo && <img src={heroLogo} alt="logo preview" className="mt-2 h-12 w-12 rounded-xl object-cover border bg-muted" onError={e=> (e.currentTarget.style.display='none')} />}
+                  {heroLogo && <img src={heroLogo} alt="logo preview" className="mt-2 h-12 w-12 object-contain bg-transparent" onError={e=> (e.currentTarget.style.display='none')} />}
                 </div>
               </div>
 

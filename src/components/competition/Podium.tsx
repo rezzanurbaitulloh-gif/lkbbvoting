@@ -129,21 +129,20 @@ function PodiumCard({ team, rank, height }: { team: Team; rank: number; height: 
 
   return (
     <div className={`flex flex-col items-center flex-1 max-w-[180px] min-w-0 ${isFirst ? "z-10" : "z-0"}`}>
-      {/* Logo with crown ON TOP (luxury) for juara 1, necklace medal for 2 & 3 */}
+      {/* Logo with crown ON TOP (luxury) for juara 1, necklace medal for 2 & 3 — transparent, original shield shape */}
       <div className="flex flex-col items-center relative pt-5">
         {isFirst && <LuxuryCrown />}
-        <div className={`relative h-20 w-20 md:h-[88px] md:w-[88px] rounded-[18px] overflow-hidden bg-white shrink-0 p-1.5 grid place-items-center ${isFirst ? "shadow-[0_8px_24px_rgba(201,168,106,0.35),0_0_0_3px_rgba(201,168,106,0.5)] ring-2 ring-[var(--primary)]/30" : isSecond ? "shadow-[0_6px_16px_rgba(0,0,0,0.15)] ring-1 ring-black/5" : "shadow-[0_6px_16px_rgba(0,0,0,0.15)] ring-1 ring-black/5"} ${borderColor} border-[3px] ${isFirst ? "animate-[float_3.2s_ease-in-out_infinite]" : ""}`}>
+        <div className={`relative h-20 w-20 md:h-[88px] md:w-[88px] bg-transparent shrink-0 grid place-items-center drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] ${isFirst ? "animate-[float_3.2s_ease-in-out_infinite]" : ""}`}>
           <img
             src={team.logo_url || team.image_url || "/assets/brand/lkbb-logo.jpg"}
             alt={team.name}
-            className="h-full w-full object-contain"
+            className="h-full w-full object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
+            style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.4))" }}
           />
-          {/* rank badge top-right — small */}
-          <div className={`absolute -top-1.5 -right-1.5 h-6 w-6 rounded-full grid place-items-center text-[11px] font-black shadow border border-white ${isFirst ? "bg-[#0B0C0F] text-[var(--primary)]" : "bg-white text-[#0B0C0F]"}`}>
+          {/* rank badge top-right — small, keep but no white border clipping logo */}
+          <div className={`absolute -top-1.5 -right-1.5 h-6 w-6 rounded-full grid place-items-center text-[11px] font-black shadow border border-white/20 ${isFirst ? "bg-[#0B0C0F] text-[var(--primary)]" : "bg-white text-[#0B0C0F]"}`}>
             {rank}
           </div>
-          {/* subtle inner highlight */}
-          <div className="pointer-events-none absolute inset-0 rounded-[15px] shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]" />
         </div>
         {!isFirst && <MedalNecklace />}
         {/* rank label below necklace/crown */}

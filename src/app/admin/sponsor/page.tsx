@@ -106,7 +106,7 @@ export default function Page(){
             <div>
               <label className="text-xs font-bold">Logo Sponsor</label>
               {form.logo_url ? (
-                <img src={form.logo_url} alt="Preview" className="mt-2 h-32 w-full object-contain rounded-xl border bg-white" />
+                <img src={form.logo_url} alt="Preview" className="mt-2 h-32 w-full object-contain bg-transparent" />
               ) : (
                 <div className="mt-2 h-32 grid place-items-center rounded-xl border border-dashed bg-muted text-xs text-muted-foreground">Belum ada logo</div>
               )}
