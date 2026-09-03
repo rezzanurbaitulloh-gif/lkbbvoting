@@ -21,15 +21,56 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    // Return DB status directly — webhook is ONLY authoritative for PAID
-    // We intentionally do NOT query DOKU and auto-update to Success here
-    // Optionally, we could query DOKU for display status without mutating, but we keep it simple for security
-    // If you need live DOKU status for UX, uncomment below to query without mutation (read-only)
-    // const { queryDokuQris } = await import("@/lib/payment/doku/qris")
-    // if (trx.provider === "DOKU" && trx.status === "Pending" && trx.doku_reference_no) {
-    //   const q = await queryDokuQris(trx.id, trx.doku_reference_no as any)
-    //   // do not update DB, just return q.status for display
-    // }
+    // If already Success, return immediately
+    if (trx.status === "Success") {
+      return NextResponse.json({ status: "Success", transaction: trx })
+    }
+
+    // For DOKU Pending, try to query DOKU directly as fallback (in case webhook missed)
+    // Webhook remains primary, but this ensures sandbox simulator payment still updates even if notification URL not yet configured
+    if (trx.provider === "DOKU" && trx.status === "Pending") {
+      try {
+        const { queryDokuQris } = await import("@/lib/payment/doku/qris")
+        const q = await queryDokuQris(trx.id, (trx as any).doku_reference_no || trx.provider_ref)
+        if (q.status === "PAID") {
+          // Update transaction and create ledger (same idempotency as webhook)
+          await service.from("transactions").update({ status: "Success" }).eq("id", trx.id)
+          const { data: existing } = await service.from("supports").select("id").eq("transaction_id", trx.id).maybeSingle()
+          if (!existing) {
+            await service.from("supports").insert({
+              peleton_id: trx.peleton_id,
+              user_id: trx.user_id,
+              transaction_id: trx.id,
+              amount: trx.amount,
+              supports: trx.supports,
+              source: "online",
+            })
+            // Dual notifications
+            const { data: peleton } = await service.from("peletons").select("id, slug, name, school, category, number").eq("id", trx.peleton_id).maybeSingle()
+            const { data: profile2 } = await service.from("profiles").select("public_name, email").eq("id", trx.user_id).maybeSingle()
+            const supporterName = profile2?.public_name || profile2?.email?.split("@")[0] || "Seseorang"
+            const peletonName = peleton?.name || peleton?.school || "peleton"
+            try {
+              await service.from("notifications").insert([
+                { user_id: null, title: "Dukungan Baru!", body: `Selamat!! ${supporterName} telah mendukung ${peletonName}`, peleton_id: trx.peleton_id, peleton_name: peletonName, peleton_slug: peleton?.slug||"", supporter_name: supporterName, data: { is_private:false, is_public:true, peleton_category: peleton?.category, peleton_number: peleton?.number } },
+                { user_id: trx.user_id, title: "Dukungan Berhasil!", body: `Selamat!! Kamu telah mendukung ${peletonName} — ${trx.supports} ballot`, peleton_id: trx.peleton_id, peleton_name: peletonName, peleton_slug: peleton?.slug||"", supporter_name: supporterName, data: { is_private:true, ballot_quantity: trx.supports, peleton_category: peleton?.category, peleton_number: peleton?.number } },
+              ])
+            } catch {}
+            await service.from("audit_logs").insert({ action: "transaction_paid_via_status_check", target: trx.id, details: { provider: "DOKU", via: "status_query", amount: trx.amount } })
+          }
+          return NextResponse.json({ status: "Success", transaction: { ...trx, status: "Success" }, doku: q.raw })
+        } else if (q.status === "failed" || q.status === "EXPIRED") {
+          await service.from("transactions").update({ status: "Expired" }).eq("id", trx.id)
+          return NextResponse.json({ status: "Expired", transaction: { ...trx, status: "Expired" }, doku: q.raw })
+        } else {
+          // still pending, return pending with doku info for UX
+          return NextResponse.json({ status: trx.status, transaction: trx, doku: q.raw })
+        }
+      } catch (e) {
+        console.error("[status] DOKU query failed", e)
+        // fall through to return DB status
+      }
+    }
 
     return NextResponse.json({ status: trx.status, transaction: trx })
   } catch (e: any) {
