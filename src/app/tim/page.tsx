@@ -3,7 +3,6 @@ import { createServerSupabase } from "@/lib/supabase"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
-import { Trophy } from "lucide-react"
 import { PodiumSection } from "@/components/competition/Podium"
 
 export const revalidate = 0
@@ -11,6 +10,20 @@ export const revalidate = 0
 export default async function TimPage(){
   const supabase = await createServerSupabase()
   const { data: event } = await supabase.from("competitions").select("state, show_provisional_result, show_final_result").order("created_at", { ascending: false }).limit(1).single()
+  // Fetch background: tim-specific, fallback to hero background (beranda)
+  let timBg: string | null = null
+  let heroBg: string | null = null
+  try {
+    const { data: rows } = await supabase.from("site_settings").select("key,value").in("key", ["tim.background_image","hero.background_image"])
+    for(const r of (rows as any)||[]){
+      let v = (r as any).value
+      if(typeof v === "string") v = v.replace(/^"|"$/g,"")
+      else if(typeof v === "object" && v?.value) v = String(v.value).replace(/^"|"$/g,"")
+      else v = String(v).replace(/^"|"$/g,"")
+      if(r.key === "tim.background_image" && v) timBg = v
+      if(r.key === "hero.background_image" && v) heroBg = v
+    }
+  } catch {}
   const state = (event?.state as string) || "NOT_STARTED"
   const isNotStarted = state === "NOT_STARTED"
   const isActive = state === "ACTIVE" || state === "VOTING_OPEN"
@@ -42,20 +55,20 @@ export default async function TimPage(){
   }
 
   const renderGrid = (teams: any[]) => {
-    // List baris: #[nomor] [nama]   o<-logo  (sesuai permintaan: bukan per card grid kocak)
+    // List baris: #[nomor] [nama]   o<-logo  full logo no crop
     return (
       <div className="flex flex-col gap-2">
         {teams.map((p:any)=> {
           const logo = p.logo_url || p.image_url || "/assets/brand/lkbb-logo.jpg"
           const number = String(p.number || "").padStart(2,"0")
           return (
-            <Link key={p.id} href={`/tim/${p.slug}`} className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-3 sm:px-4 py-3 hover:border-[#C9A86A]/30 hover:bg-muted/20 transition-colors">
+            <Link key={p.id} href={`/tim/${p.slug}`} className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-3 sm:px-4 py-3 hover:border-[var(--primary)]/30 hover:bg-muted/20 transition-colors">
               <div className="flex items-center gap-3 min-w-0">
                 <span className="shrink-0 rounded-full bg-gold px-2.5 py-1 text-[11px] font-black tracking-widest text-gold-foreground">#{number}</span>
                 <span className="text-sm sm:text-[15px] font-black tracking-tight truncate">{p.name}</span>
               </div>
-              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-full overflow-hidden border border-border bg-muted shrink-0">
-                <img src={logo} alt={p.name} className="h-full w-full object-cover" />
+              <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-xl overflow-hidden border border-border bg-white shrink-0 p-1.5 grid place-items-center">
+                <img src={logo} alt={p.name} className="h-full w-full object-contain" />
               </div>
             </Link>
           )
@@ -73,16 +86,16 @@ export default async function TimPage(){
   }
   const headerBadge = getHeaderBadge()
 
+  const bgImage = timBg || heroBg || "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=1600&auto=format&fit=crop&q=60"
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="border-b border-border bg-[#08090B] text-white relative overflow-hidden">
-          <div className="absolute inset-0 opacity-20"><img src="https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=1600&auto=format&fit=crop&q=60" alt="" className="h-full w-full object-cover" /></div>
+          <div className="absolute inset-0 opacity-20"><img src={bgImage} alt="" className="h-full w-full object-cover" /></div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#08090B] via-[#08090B]/85 to-transparent" />
           <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className={`inline-flex rounded-full px-3 py-1 text-xs font-black tracking-wide ${headerBadge.color}`}>{headerBadge.label}</div>
-            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#C9A86A30] bg-[#C9A86A14] px-3 py-1 text-[11px] font-bold tracking-[0.14em] text-[#D4B77A]"><Trophy className="h-3.5 w-3.5"/> {isPublished ? "HASIL AKHIR" : isVotingClosed ? "HASIL SEMENTARA — ONLINE SAJA" : isActive ? "DAFTAR TIM" : "BELUM DIMULAI"}</div>
             <h1 className="mt-3 text-[28px] md:text-[36px] font-black tracking-[-0.03em] leading-none">{isPublished ? "TANGGA JUARA" : isVotingClosed ? "PERINGKAT SEMENTARA" : "DAFTAR TIM"}</h1>
             <p className="mt-2 max-w-xl text-sm text-white/60">
               {isNotStarted && "Pendaftaran dan voting belum dibuka. Daftar tim diurutkan berdasar poin tertinggi."}
@@ -117,19 +130,6 @@ export default async function TimPage(){
             <span className="text-xs text-muted-foreground">{sma.length} tim</span>
           </div>
           {sma.length===0 ? <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Belum ada peleton SMA.</div> : renderGrid(sma)}
-          {isActive || isNotStarted ? (
-            <div className="mt-8 rounded-xl border border-[#C9A86A20] bg-[#C9A86A0A] p-4 text-center">
-              <p className="text-xs leading-relaxed text-muted-foreground">Urutan berdasar poin tertinggi — tim dengan ballot terbanyak di paling atas. Dukungan dihitung realtime.</p>
-            </div>
-          ) : isVotingClosed ? (
-            <div className="mt-8 rounded-xl border border-[#FACC15]/30 bg-[#FACC15]/10 p-4 text-center">
-              <p className="text-xs leading-relaxed text-[#0B0C0F]">Peringkat sementara — hanya hitungan online, urutan tetap poin tertinggi. Admin sedang merekap offline.</p>
-            </div>
-          ) : (
-            <div className="mt-8 rounded-xl border border-[#C9A86A20] bg-[#C9A86A0A] p-4 text-center">
-              <p className="text-xs leading-relaxed text-muted-foreground">Peringkat akhir berdasar total poin (online + offline) — urutan poin tertinggi di atas.</p>
-            </div>
-          )}
         </div>
       </main>
       <Footer />

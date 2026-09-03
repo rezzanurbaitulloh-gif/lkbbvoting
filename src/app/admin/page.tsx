@@ -158,13 +158,13 @@ export default function AdminOverview(){
               className="mt-3 h-[160px] w-full"
             >
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={stats.chartData} barCategoryGap="30%" barGap={4} margin={{ left: 4, right: 4, top: 4, bottom: 0 }}>
+                <BarChart data={stats.chartData} barCategoryGap="42%" barGap={6} margin={{ left: 4, right: 4, top: 4, bottom: 0 }}>
                   <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.08)" />
                   <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "rgba(255,255,255,0.6)" }} />
                   <YAxis hide domain={[0, (dataMax: number) => Math.max(10, dataMax + 5)]} />
                   <ChartTooltip content={<ChartTooltipContent />} cursor={{ fill: "rgba(255,255,255,0.04)" }} />
-                  <Bar dataKey="online" fill="#C9A86A" radius={[6,6,0,0]} barSize={18} />
-                  <Bar dataKey="offline" fill="#9CA3AF" radius={[6,6,0,0]} barSize={18} />
+                  <Bar dataKey="online" fill="var(--primary, #C9A86A)" radius={[3,3,0,0]} barSize={14} maxBarSize={16} />
+                  <Bar dataKey="offline" fill="#9CA3AF" radius={[3,3,0,0]} barSize={14} maxBarSize={16} />
                 </BarChart>
               </ResponsiveContainer>
             </ChartContainer>

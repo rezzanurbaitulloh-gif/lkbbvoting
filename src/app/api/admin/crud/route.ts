@@ -31,11 +31,24 @@ export async function POST(req: Request){
   const { table, data } = body
   if(!ALLOWED_TABLES.includes(table)) return NextResponse.json({ error:"Table not allowed" }, { status:400 })
   const service = createServiceSupabase()
-  // For peletons, force verified
+  // For peletons, force verified + duplicate prevention (except offline is separate route)
   if(table==="peletons"){
     data.verified = true
     data.status = "Verified"
     if(!data.active) data.active = true
+    // Duplicate check: number or name already exists (case-insensitive)
+    if(data.number || data.name){
+      const { data: existing } = await service.from("peletons").select("id, number, name").or(`number.eq.${data.number},name.ilike.${data.name}`)
+      if(existing && existing.length>0){
+        const dup = existing.find(e=> String(e.number).toLowerCase()===String(data.number).toLowerCase() || String(e.name).toLowerCase()===String(data.name).toLowerCase())
+        if(dup) return NextResponse.json({ error: `Data tim sudah ada: #${dup.number} ${dup.name}. Tidak boleh duplikat.` }, { status:409 })
+      }
+    }
+  }
+  // Generic duplicate prevention for other important tables: name unique where applicable
+  if(["sponsors","judges","news"].includes(table) && data.name){
+    const { data: dup } = await service.from(table).select("id").ilike("name", data.name).limit(1)
+    if(dup && dup.length>0) return NextResponse.json({ error: `Data ${table} dengan nama "${data.name}" sudah ada` }, { status:409 })
   }
   const { data: inserted, error } = await service.from(table).insert(data).select().single()
   if(error) return NextResponse.json({ error: error.message }, { status:500 })
@@ -50,6 +63,14 @@ export async function PATCH(req: Request){
   const { table, id, data } = body
   if(!ALLOWED_TABLES.includes(table) || !id) return NextResponse.json({ error:"Invalid" }, { status:400 })
   const service = createServiceSupabase()
+  // Duplicate prevention on update for peletons
+  if(table==="peletons" && (data.number || data.name)){
+    const { data: existing } = await service.from("peletons").select("id, number, name")
+    if(existing){
+      const dup = existing.find(e=> e.id!==id && (String(e.number).toLowerCase()===String(data.number||"").toLowerCase() || String(e.name).toLowerCase()===String(data.name||"").toLowerCase()))
+      if(dup) return NextResponse.json({ error: `Data tim sudah ada: #${dup.number} ${dup.name}. Tidak boleh duplikat.` }, { status:409 })
+    }
+  }
   const { data: updated, error } = await service.from(table).update(data).eq("id", id).select().single()
   if(error) return NextResponse.json({ error: error.message }, { status:500 })
   await service.from("audit_logs").insert({ user_id: auth.user.id, action: `${table}_update`, target: id, details: data })

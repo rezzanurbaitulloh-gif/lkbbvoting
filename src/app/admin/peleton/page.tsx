@@ -230,16 +230,18 @@ export default function AdminPeleton(){
               </div>
             </div>
             <div>
-              <label className="text-xs font-bold">Logo Sekolah</label>
+              <label className="text-xs font-bold">Logo Sekolah (full, tidak terpotong; bisa PNG transparan)</label>
               {form.logo_url ? (
-                <img src={form.logo_url} alt="Preview Logo" className="mt-2 h-24 w-24 object-cover rounded-xl border" />
+                <div className="mt-2 h-24 w-24 rounded-xl border bg-white p-2 grid place-items-center overflow-hidden">
+                  <img src={form.logo_url} alt="Preview Logo" className="h-full w-full object-contain" />
+                </div>
               ) : (
                 <div className="mt-2 h-24 w-24 grid place-items-center rounded-xl border border-dashed bg-muted text-xs text-muted-foreground text-center">Belum ada logo</div>
               )}
               <div className="mt-2">
                 <Input type="file" accept="image/*" onChange={e=> handleFileSelect(e, "logo_url")} />
                 {uploading==="logo_url" && <span className="text-xs py-1 text-muted-foreground">Mengunggah...</span>}
-                <p className="text-[11px] text-muted-foreground mt-1">Unggah logo, potong bebas.</p>
+                <p className="text-[11px] text-muted-foreground mt-1">Unggah logo — akan tampil penuh (object-contain) di semua tampilan, tidak terpotong lingkaran. Bisa background putih atau transparan.</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:gap-4">

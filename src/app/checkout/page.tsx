@@ -176,7 +176,7 @@ function CheckoutInner(){
             <div className="tabular-nums text-[24px] font-black text-amber-600">Menunggu</div>
             <div className="mx-auto mt-3 h-[220px] w-[220px] rounded-xl border border-border bg-white grid place-items-center p-2 overflow-hidden">
               {qrDataUrl ? (
-                <img src={qrDataUrl} alt="QRIS DOKU" className="h-full w-full object-contain" />
+                <img id="qris-image" src={qrDataUrl} alt="QRIS DOKU" className="h-full w-full object-contain" />
               ) : trx?.qr_content ? (
                 <div className="text-[11px] leading-tight text-center text-muted-foreground break-all p-2">
                   QRIS DOKU<br/><span className="font-mono text-[10px] break-all">{String(trx.qr_content).slice(0,60)}...</span><br/>
@@ -189,6 +189,23 @@ function CheckoutInner(){
                 </div>
               )}
             </div>
+            {qrDataUrl && (
+              <Button
+                variant="outline"
+                className="mt-3 w-full rounded-full gap-2"
+                onClick={()=>{
+                  if(!qrDataUrl) return
+                  const a = document.createElement('a')
+                  a.href = qrDataUrl
+                  a.download = `qris-${id || 'lkbb'}.png`
+                  document.body.appendChild(a)
+                  a.click()
+                  document.body.removeChild(a)
+                }}
+              >
+                ⬇ Download QR
+              </Button>
+            )}
             {trx?.doku_reference_no && <div className="mt-2 text-[11px] font-mono text-muted-foreground">Ref: {trx.doku_reference_no.slice(0,16)}...</div>}
             <p className="mt-2 text-xs text-muted-foreground">Ballot <b>tidak</b> langsung bertambah. Menunggu webhook DOKU <b>PAID</b> terverifikasi. Gunakan <a href="https://sandbox.doku.com/qris-simulator/" target="_blank" className="underline font-bold">DOKU Simulator</a> untuk simulasi bayar.</p>
             <p className="mt-1 text-[11px] text-muted-foreground">Jika sudah simulasi bayar di DOKU Sandbox, klik Cek Status. Polling tiap 3 detik (hanya UX).</p>

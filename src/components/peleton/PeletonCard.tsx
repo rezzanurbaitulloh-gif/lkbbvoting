@@ -67,7 +67,7 @@ export function PeletonCard({ peleton }: { peleton: any }){
               <h3 className="text-[13px] sm:text-[15px] font-black leading-tight tracking-tight text-foreground line-clamp-2 text-balance break-words">{name}</h3>
               <p className="text-[11px] sm:text-[12px] font-medium text-muted-foreground line-clamp-1 break-words">{peleton.school || ""}</p>
             </div>
-            <img src={logo} alt="logo" className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl object-cover border border-border bg-muted shrink-0" />
+            <img src={logo} alt="logo" className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl object-contain border border-border bg-white p-1 shrink-0" />
           </div>
         </div>
       </Link>
@@ -94,8 +94,8 @@ export function PeletonCardCompact({ peleton, showPoints }: { peleton: any, show
   const logo = peleton.logo_url || peleton.image_url || peleton.image
   return (
     <Link href={`/dukungan?peleton=${peleton.slug}`} className="flex items-center gap-3 rounded-[16px] border border-border bg-card p-4 hover:bg-muted/50 transition-colors min-w-0">
-      <div className="h-11 w-11 rounded-xl overflow-hidden border border-border bg-muted shrink-0">
-        <img src={logo} alt={peleton.name} className="h-full w-full object-cover" />
+      <div className="h-11 w-11 rounded-xl overflow-hidden border border-border bg-white p-1 grid place-items-center shrink-0">
+        <img src={logo} alt={peleton.name} className="h-full w-full object-contain" />
       </div>
       <div className="flex-1 min-w-0 overflow-hidden">
         <div className="text-[11px] font-bold tracking-[0.12em] text-gold truncate">#{peleton.number}</div>

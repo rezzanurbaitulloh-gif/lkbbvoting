@@ -46,9 +46,13 @@ export default function ProfilePage(){
             <div className="h-24 bg-gradient-to-r from-[#08090B] to-[#1A1E27]" />
             <div className="px-6 pb-6">
               <div className="flex gap-4 -mt-8 items-end">
-                <div className="h-20 w-20 rounded-2xl bg-foreground text-background grid place-items-center text-xl font-black border-4 border-card">
-                  {currentUser.name.slice(0,2).toUpperCase()}
-                </div>
+                {(currentUser as any).avatar_url ? (
+                  <img src={(currentUser as any).avatar_url} alt={currentUser.name} className="h-20 w-20 rounded-2xl object-cover border-4 border-card bg-white" />
+                ) : (
+                  <div className="h-20 w-20 rounded-2xl bg-foreground text-background grid place-items-center text-xl font-black border-4 border-card">
+                    {currentUser.name.slice(0,2).toUpperCase()}
+                  </div>
+                )}
                 <div className="pb-2">
                   <div className="text-[18px] font-black">{currentUser.name}</div>
                   <div className="text-sm text-muted-foreground">{currentUser.email}</div>

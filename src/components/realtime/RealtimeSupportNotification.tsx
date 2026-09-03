@@ -9,6 +9,7 @@ import Link from "next/link"
 type QueueItem = {
   id: string
   supporterName: string
+  supporterAvatar?: string | null
   peletonName: string
   peletonSlug: string
   isPrivate: boolean
@@ -47,9 +48,13 @@ function SupportPopup({ item, onClose }: { item: QueueItem; onClose: () => void 
         </div>
       )}
       <div className="relative p-6 flex gap-4">
-        <div className={`h-12 w-12 rounded-full grid place-items-center shrink-0 ${item.isPrivate ? "bg-emerald-500" : "bg-[#C9A86A]"} text-white`}>
-          <PartyPopper className="h-6 w-6" />
-        </div>
+        {item.supporterAvatar ? (
+          <img src={item.supporterAvatar} alt={item.supporterName} className="h-12 w-12 rounded-full object-cover border-2 border-white/20 shrink-0" />
+        ) : (
+          <div className={`h-12 w-12 rounded-full grid place-items-center shrink-0 ${item.isPrivate ? "bg-emerald-500" : "bg-[#C9A86A]"} text-white`}>
+            <PartyPopper className="h-6 w-6" />
+          </div>
+        )}
         <div className="min-w-0 flex-1">
           <div className="text-[11px] font-bold tracking-[0.14em] text-[#C9A86A] flex items-center gap-1">
             <Sparkles className="h-3 w-3" /> DUKUNGAN BARU!
@@ -145,12 +150,14 @@ export function RealtimeSupportNotification(){
         const row: any = payload.new
         // Public: tanpa ballot
         const supporterName = row.supporter_name || "Seseorang"
+        const supporterAvatar = row.supporter_avatar || row.data?.supporter_avatar || null
         const peletonName = row.peleton_name || "peleton"
         const displayText = row.body || `Selamat!! ${supporterName} telah mendukung ${peletonName}`
         const ttsText = displayText // same, without amount
         enqueue({
           id: row.id,
           supporterName,
+          supporterAvatar,
           peletonName,
           peletonSlug: row.peleton_slug || "",
           isPrivate: false,
@@ -168,6 +175,7 @@ export function RealtimeSupportNotification(){
         .on("postgres_changes", { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${currentUser.id}` }, (payload)=>{
           const row: any = payload.new
           const supporterName = row.supporter_name || currentUser.name || "Kamu"
+          const supporterAvatar = row.supporter_avatar || row.data?.supporter_avatar || (currentUser as any)?.avatar_url || null
           const peletonName = row.peleton_name || "peleton"
           const qty = row.data?.ballot_quantity
           const displayText = row.body || `Selamat!! Kamu telah mendukung ${peletonName}${qty ? ` — ${qty} ballot` : ""}`
@@ -175,6 +183,7 @@ export function RealtimeSupportNotification(){
           enqueue({
             id: row.id,
             supporterName,
+            supporterAvatar,
             peletonName,
             peletonSlug: row.peleton_slug || "",
             isPrivate: true,

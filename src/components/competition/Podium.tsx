@@ -64,54 +64,94 @@ function PodiumCard({ team, rank, height }: { team: Team; rank: number; height: 
   const borderColor = isFirst ? "border-[#C9A86A]" : isSecond ? "border-[#C9A86A]/30" : "border-[#CD7F32]/40"
   const rankLabel = rank === 1 ? "JUARA 1" : rank === 2 ? "JUARA 2" : "JUARA 3"
 
-  // Crown / Medal BELOW logo — premium SVG, not emoji
-  const CrownIcon = () => (
-    <svg width="28" height="20" viewBox="0 0 28 20" fill="none" className="drop-shadow-[0_2px_8px_rgba(201,168,106,0.6)]">
-      <path d="M2 14 L6 6 L14 10 L22 6 L26 14 Z" fill={isFirst ? "#FFD700" : isSecond ? "#C0C0C0" : "#CD7F32"} stroke="white" strokeWidth="0.8" />
-      <circle cx="6" cy="6" r="1.6" fill="white" />
-      <circle cx="14" cy="10" r="1.8" fill="white" />
-      <circle cx="22" cy="6" r="1.6" fill="white" />
-      <path d="M2 14 H26 V16 H2 Z" fill={isFirst ? "#B89A5A" : isSecond ? "#9A9A9A" : "#8A5A1F"} />
-    </svg>
-  )
-  const MedalIcon = isFirst ? <CrownIcon /> : (
-    <div className={`h-7 w-7 rounded-full grid place-items-center text-[11px] font-black shadow -mt-1 ${isSecond ? "bg-gradient-to-br from-[#E5E7EB] to-[#9CA3AF] text-white" : "bg-gradient-to-br from-[#FDBA74] to-[#9C4A16] text-white"}`}>
-      {rank}
+  // Luxury crown on TOP of logo (like worn), and necklace medals for 2nd/3rd
+  const LuxuryCrown = () => (
+    <div className="absolute -top-[18px] left-1/2 -translate-x-1/2 z-20 pointer-events-none drop-shadow-[0_4px_10px_rgba(201,168,106,0.7)] animate-[crownBounce_2.8s_ease-in-out_infinite]">
+      <svg width="56" height="32" viewBox="0 0 56 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id={`crownGrad-${rank}`} x1="0" y1="0" x2="0" y2="32" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#FFE9A8" />
+            <stop offset="35%" stopColor="#FFD700" />
+            <stop offset="65%" stopColor="#C9A86A" />
+            <stop offset="100%" stopColor="#8C6A2A" />
+          </linearGradient>
+          <radialGradient id={`gem-${rank}`} cx="50%" cy="40%" r="50%">
+            <stop offset="0%" stopColor="#fff" />
+            <stop offset="100%" stopColor="#C9A86A" />
+          </radialGradient>
+        </defs>
+        {/* base band */}
+        <path d="M10 22 L16 9 L28 17 L40 9 L46 22 Z" fill={`url(#crownGrad-${rank})`} stroke="white" strokeWidth="1" strokeLinejoin="round" />
+        {/* jewels on tips */}
+        <circle cx="16" cy="9" r="3.2" fill="white" stroke="#C9A86A" strokeWidth="0.7" />
+        <circle cx="28" cy="17" r="3.6" fill="white" stroke="#8C6A2A" strokeWidth="0.7" />
+        <circle cx="40" cy="9" r="3.2" fill="white" stroke="#C9A86A" strokeWidth="0.7" />
+        {/* center gem red */}
+        <circle cx="28" cy="13.5" r="1.8" fill="#A51D2D" stroke="white" strokeWidth="0.5" />
+        <circle cx="16" cy="9" r="1.1" fill="#2DD4BF" />
+        <circle cx="40" cy="9" r="1.1" fill="#2DD4BF" />
+        {/* band bottom with pearls */}
+        <rect x="10" y="22" width="36" height="5.5" rx="2.2" fill="#8C6A2A" stroke="white" strokeWidth="0.6" />
+        <circle cx="15" cy="24.8" r="1" fill="white" opacity="0.95" />
+        <circle cx="22" cy="24.8" r="1" fill="white" opacity="0.95" />
+        <circle cx="28" cy="24.8" r="1.1" fill="white" />
+        <circle cx="34" cy="24.8" r="1" fill="white" opacity="0.95" />
+        <circle cx="41" cy="24.8" r="1" fill="white" opacity="0.95" />
+        {/* inner highlight */}
+        <path d="M14 20.5 L28 15 L42 20.5" stroke="white" strokeWidth="0.6" opacity="0.35" fill="none" strokeLinecap="round" />
+      </svg>
     </div>
   )
+  const MedalNecklace = () => {
+    const isSilver = isSecond
+    const medalGradient = isSilver ? "from-[#E5E7EB] via-[#C0C0C0] to-[#8E8E93]" : "from-[#FDBA74] via-[#CD7F32] to-[#7C4A1E]"
+    const chainColor = isSilver ? "#C0C0C0" : "#CD7F32"
+    return (
+      <div className="absolute -bottom-[14px] left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
+        {/* chain */}
+        <svg width="44" height="18" viewBox="0 0 44 18" fill="none" className="overflow-visible">
+          <path d="M 10 0 L 18 10 M 34 0 L 26 10" stroke={chainColor} strokeWidth="1.6" strokeLinecap="round" opacity="0.95" />
+          <path d="M 10 0 L 12 4 L 14 7 L 16 10 M 34 0 L 32 4 L 30 7 L 28 10" stroke="white" strokeWidth="0.5" opacity="0.4" fill="none" />
+          {/* small chain links */}
+          <circle cx="12" cy="4" r="1.1" fill={chainColor} stroke="white" strokeWidth="0.4" />
+          <circle cx="15" cy="7" r="1.1" fill={chainColor} stroke="white" strokeWidth="0.4" />
+          <circle cx="32" cy="4" r="1.1" fill={chainColor} stroke="white" strokeWidth="0.4" />
+          <circle cx="29" cy="7" r="1.1" fill={chainColor} stroke="white" strokeWidth="0.4" />
+        </svg>
+        {/* medal pendant */}
+        <div className={`-mt-1 h-8 w-8 rounded-full bg-gradient-to-br ${medalGradient} grid place-items-center text-[11px] font-black text-white shadow-[0_3px_10px_rgba(0,0,0,0.35)] border-2 border-white ring-1 ring-black/10`}>
+          <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">{rank}</span>
+        </div>
+        <div className={`h-1 w-6 rounded-full -mt-0.5 opacity-30 blur-[1px] ${isSilver ? "bg-black" : "bg-[#7C4A1E]"}`} />
+      </div>
+    )
+  }
 
   return (
     <div className={`flex flex-col items-center flex-1 max-w-[180px] min-w-0 ${isFirst ? "z-10" : "z-0"}`}>
-      {/* Logo + Crown/Medal BELOW logo — as requested */}
-      <div className="flex flex-col items-center">
-        <div className={`relative h-20 w-20 md:h-[88px] md:w-[88px] rounded-[18px] overflow-hidden bg-white shrink-0 ${isFirst ? "shadow-[0_8px_24px_rgba(201,168,106,0.35),0_0_0_3px_rgba(201,168,106,0.5)] ring-2 ring-[#C9A86A]/30" : isSecond ? "shadow-[0_6px_16px_rgba(0,0,0,0.15)] ring-1 ring-black/5" : "shadow-[0_6px_16px_rgba(0,0,0,0.15)] ring-1 ring-black/5"} ${borderColor} border-[3px] ${isFirst ? "animate-[float_3.2s_ease-in-out_infinite]" : ""}`}>
+      {/* Logo with crown ON TOP (luxury) for juara 1, necklace medal for 2 & 3 */}
+      <div className="flex flex-col items-center relative pt-5">
+        {isFirst && <LuxuryCrown />}
+        <div className={`relative h-20 w-20 md:h-[88px] md:w-[88px] rounded-[18px] overflow-hidden bg-white shrink-0 p-1.5 grid place-items-center ${isFirst ? "shadow-[0_8px_24px_rgba(201,168,106,0.35),0_0_0_3px_rgba(201,168,106,0.5)] ring-2 ring-[var(--primary)]/30" : isSecond ? "shadow-[0_6px_16px_rgba(0,0,0,0.15)] ring-1 ring-black/5" : "shadow-[0_6px_16px_rgba(0,0,0,0.15)] ring-1 ring-black/5"} ${borderColor} border-[3px] ${isFirst ? "animate-[float_3.2s_ease-in-out_infinite]" : ""}`}>
           <img
             src={team.logo_url || team.image_url || "/assets/brand/lkbb-logo.jpg"}
             alt={team.name}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain"
           />
-          {/* rank badge top-right — not crown, just number */}
-          <div className={`absolute -top-1.5 -right-1.5 h-6 w-6 rounded-full grid place-items-center text-[11px] font-black shadow border border-white ${isFirst ? "bg-[#0B0C0F] text-[#C9A86A]" : "bg-white text-[#0B0C0F]"}`}>
+          {/* rank badge top-right — small */}
+          <div className={`absolute -top-1.5 -right-1.5 h-6 w-6 rounded-full grid place-items-center text-[11px] font-black shadow border border-white ${isFirst ? "bg-[#0B0C0F] text-[var(--primary)]" : "bg-white text-[#0B0C0F]"}`}>
             {rank}
           </div>
           {/* subtle inner highlight */}
           <div className="pointer-events-none absolute inset-0 rounded-[15px] shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]" />
         </div>
-
-        {/* Crown / Medal BELOW logo — premium, not generic emoji */}
-        <div className={`-mt-3 relative z-10 flex flex-col items-center ${isFirst ? "animate-[crownBounce_2.8s_ease-in-out_infinite]" : ""}`}>
-          <div className={`rounded-full px-2.5 py-1 shadow-lg border border-white/20 backdrop-blur flex items-center justify-center ${isFirst ? "bg-gradient-to-r from-[#FFD700] via-[#C9A86A] to-[#8C6A2A] text-white" : isSecond ? "bg-white text-[#6B7280] border-[#E5E7EB]" : "bg-white text-[#92400E] border-[#FED7AA]"}`}>
-            {isFirst ? (
-              <span className="flex items-center gap-1.5">
-                <CrownIcon />
-                <span className="hidden md:inline text-[10px] font-black tracking-widest">JUARA 1</span>
-              </span>
-            ) : (
-              MedalIcon
-            )}
-          </div>
-          {!isFirst && (
-            <div className="mt-1 text-[9px] font-black tracking-[0.14em] text-muted-foreground">{rankLabel}</div>
+        {!isFirst && <MedalNecklace />}
+        {/* rank label below necklace/crown */}
+        <div className={`relative z-10 flex flex-col items-center ${isFirst ? "mt-2" : "mt-6"}`}>
+          {isFirst ? (
+            <span className="inline-flex rounded-full bg-gradient-to-r from-[#FFD700] via-[#C9A86A] to-[#8C6A2A] px-2.5 py-1 text-[10px] font-black tracking-widest text-white shadow border border-white/20">JUARA 1</span>
+          ) : (
+            <span className="text-[9px] font-black tracking-[0.14em] text-muted-foreground">{rankLabel}</span>
           )}
         </div>
 
@@ -264,7 +304,7 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
         </div>
 
         <div className="mt-8 flex flex-col items-center gap-2 text-center">
-          <p className="text-[11px] text-white/30">Mahkota & medali berada di bawah logo tim juara — tap logo untuk profil</p>
+          <p className="text-[11px] text-white/30">Mahkota mewah di atas logo juara 1 — kalung medali untuk juara 2 & 3</p>
           <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         </div>
       </div>

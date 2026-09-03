@@ -25,6 +25,49 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
   const ig = (dynamic["social.instagram"] as string) || "#"
   const yt = (dynamic["social.youtube"] as string) || "#"
   const tt = (dynamic["social.tiktok"] as string) || "#"
+  // parse social.list
+  let socialList: {platform:string, url:string, visible:boolean}[] = []
+  const rawList = dynamic["social.list"] as any
+  if(rawList){
+    try{
+      let parsed: any = rawList
+      if(typeof rawList==="string"){
+        // may be JSON string with quotes
+        const cleaned = rawList.replace(/^"|"$/g,"").replace(/\\"/g,'"')
+        parsed = JSON.parse(cleaned)
+      } else if(typeof rawList==="object" && (rawList as any).value){
+        const v = (rawList as any).value
+        if(typeof v==="string") parsed = JSON.parse(v.replace(/^"|"$/g,"").replace(/\\"/g,'"'))
+        else parsed = v
+      }
+      if(Array.isArray(parsed)) socialList = parsed.filter((it:any)=> it.url && it.platform).map((it:any)=> ({platform: String(it.platform).toLowerCase(), url: String(it.url), visible: it.visible!==false}))
+    }catch{}
+  }
+  if(socialList.length===0){
+    // fallback to 3 individual keys
+    if(ig && ig!=="#") socialList.push({platform:"instagram", url: ig, visible:true})
+    if(yt && yt!=="#") socialList.push({platform:"youtube", url: yt, visible:true})
+    if(tt && tt!=="#") socialList.push({platform:"tiktok", url: tt, visible:true})
+    const fb = dynamic["social.facebook"] as string
+    const tw = dynamic["social.twitter"] as string
+    const li = dynamic["social.linkedin"] as string
+    if(fb) socialList.push({platform:"facebook", url: fb, visible:true})
+    if(tw) socialList.push({platform:"twitter", url: tw, visible:true})
+    if(li) socialList.push({platform:"linkedin", url: li, visible:true})
+  }
+  socialList = socialList.filter(s=> s.visible)
+  const platformIcon = (p:string)=>{
+    const plat = p.toLowerCase()
+    if(plat==="instagram") return <span className="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white h-full w-full grid place-items-center text-[10px] font-black rounded-full">IG</span>
+    if(plat==="tiktok") return <span className="bg-black text-white h-full w-full grid place-items-center rounded-full text-[10px]">♪</span>
+    if(plat==="youtube") return <span className="bg-red-600 text-white h-full w-full grid place-items-center rounded-full text-[10px] font-bold">YT</span>
+    if(plat==="facebook") return <span className="bg-[#1877F2] text-white h-full w-full grid place-items-center rounded-full text-[10px] font-black">f</span>
+    if(plat==="twitter" || plat==="x") return <span className="bg-black text-white h-full w-full grid place-items-center rounded-full text-[10px]">𝕏</span>
+    if(plat==="linkedin") return <span className="bg-[#0A66C2] text-white h-full w-full grid place-items-center rounded-full text-[10px] font-bold">in</span>
+    if(plat==="whatsapp") return <span className="bg-[#25D366] text-white h-full w-full grid place-items-center rounded-full text-[10px]">WA</span>
+    if(plat==="telegram") return <span className="bg-[#26A5E4] text-white h-full w-full grid place-items-center rounded-full text-[10px]">TG</span>
+    return <span className="bg-muted text-foreground h-full w-full grid place-items-center rounded-full text-[10px]">{plat.slice(0,2).toUpperCase()}</span>
+  }
   return (
     <footer className="mt-auto border-t border-[#C9A86A]/10 bg-surface overflow-hidden relative">
       <div className="pointer-events-none absolute top-0 inset-x-0 h-px gold-hairline-premium opacity-70" />
@@ -72,11 +115,16 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
             <div className="grid gap-2 text-sm text-muted-foreground">
               <div>Email: <a href={`mailto:${email}`} className="text-foreground">{email}</a></div>
               <div>WhatsApp: <span className="text-foreground">{whatsapp}</span></div>
-              <div>Instagram: <a href={ig} target="_blank" className="text-foreground">@lkbb_event</a></div>
-              <div className="pt-2 flex gap-2">
-                <a href={ig} target="_blank" className="h-8 w-8 grid place-items-center rounded-full border border-border hover:bg-muted text-xs">IG</a>
-                <a href={yt} target="_blank" className="h-8 w-8 grid place-items-center rounded-full border border-border hover:bg-muted text-xs">YT</a>
-                <a href={tt} target="_blank" className="h-8 w-8 grid place-items-center rounded-full border border-border hover:bg-muted text-xs">TT</a>
+              {socialList.filter(s=> s.platform==="instagram").slice(0,1).map(s=> (
+                <div key={s.url}>Instagram: <a href={s.url} target="_blank" className="text-foreground">{s.url.replace("https://","").replace("http://","")}</a></div>
+              ))}
+              <div className="pt-2 flex gap-2 flex-wrap">
+                {socialList.map(s=> (
+                  <a key={s.platform+"-"+s.url} href={s.url} target="_blank" title={s.platform} className="h-8 w-8 rounded-full border border-border overflow-hidden hover:scale-105 transition-transform grid place-items-center">
+                    {platformIcon(s.platform)}
+                  </a>
+                ))}
+                {socialList.length===0 && <span className="text-xs">—</span>}
               </div>
             </div>
           </div>

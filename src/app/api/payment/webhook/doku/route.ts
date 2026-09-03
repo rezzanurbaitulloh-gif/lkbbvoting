@@ -190,13 +190,14 @@ export async function POST(req: Request) {
 
     // Fetch peleton + supporter for notifications (preserve existing logic)
     const { data: peleton } = await service.from("peletons").select("id, slug, name, school, category, number").eq("id", trx.peleton_id).maybeSingle()
-    const { data: profile } = await service.from("profiles").select("public_name, email").eq("id", trx.user_id).maybeSingle()
+    const { data: profile } = await service.from("profiles").select("public_name, email, avatar_url").eq("id", trx.user_id).maybeSingle()
     const supporterName = profile?.public_name || profile?.email?.split("@")[0] || "Seseorang"
+    const supporterAvatar = (profile as any)?.avatar_url || null
     const peletonName = peleton?.name || peleton?.school || "peleton"
     const peletonSlug = peleton?.slug || ""
     const peletonCategory = peleton?.category || ""
 
-    // Dual notifications: public (everyone) without quantity, private (supporter) with quantity
+    // Dual notifications: public (everyone) without quantity, private (supporter) with quantity — include avatar
     try {
       await service.from("notifications").insert([
         {
@@ -207,7 +208,8 @@ export async function POST(req: Request) {
           peleton_name: peletonName,
           peleton_slug: peletonSlug,
           supporter_name: supporterName,
-          data: { is_private: false, is_public: true, peleton_category: peletonCategory, peleton_number: peleton?.number },
+          supporter_avatar: supporterAvatar,
+          data: { is_private: false, is_public: true, peleton_category: peletonCategory, peleton_number: peleton?.number, supporter_avatar: supporterAvatar, ballot_quantity: supportsQty },
         },
         {
           user_id: trx.user_id,
@@ -217,7 +219,8 @@ export async function POST(req: Request) {
           peleton_name: peletonName,
           peleton_slug: peletonSlug,
           supporter_name: supporterName,
-          data: { is_private: true, ballot_quantity: supportsQty, peleton_category: peletonCategory, peleton_number: peleton?.number },
+          supporter_avatar: supporterAvatar,
+          data: { is_private: true, ballot_quantity: supportsQty, peleton_category: peletonCategory, peleton_number: peleton?.number, supporter_avatar: supporterAvatar },
         },
       ])
     } catch (notifErr) {

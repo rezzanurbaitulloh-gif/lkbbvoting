@@ -5,7 +5,7 @@ import { createBrowserSupabase } from "./supabase"
 
 type Theme = "light" | "dark" | "system"
 
-type AuthUser = { id: string; name: string; email: string; role: string | null }
+type AuthUser = { id: string; name: string; email: string; role: string | null; avatar_url?: string | null }
 
 interface AppState {
   theme: Theme
@@ -41,13 +41,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const refreshUser = async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { setUser(null); setLoadingAuth(false); return }
-    const { data: profile } = await supabase.from("profiles").select("role, public_name").eq("id", user.id).single()
+    const { data: profile } = await supabase.from("profiles").select("role, public_name, avatar_url").eq("id", user.id).single()
     setUser({
       id: user.id,
       email: user.email || "",
       name: profile?.public_name || user.email?.split("@")[0] || "User",
       role: profile?.role || "USER",
-    })
+      avatar_url: (profile as any)?.avatar_url || null,
+    } as any)
     setLoadingAuth(false)
   }
 

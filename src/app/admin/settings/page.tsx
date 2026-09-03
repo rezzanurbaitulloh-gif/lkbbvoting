@@ -15,7 +15,7 @@ const STATE_OPTIONS = [
   { value:"RESULT_PUBLISHED", label:"Hasil Dipublikasikan — tampil peringkat akhir + podium juara" },
 ]
 
-type Tab = "general"|"branding"|"contact"|"social"|"appearance"|"event"
+type Tab = "general"|"branding"|"contact"|"social"|"appearance"|"event"|"sound"
 
 export default function SettingsPage(){
   const { toast } = useToast()
@@ -34,7 +34,18 @@ export default function SettingsPage(){
   const [heroBg, setHeroBg]=useState("")
   const [heroOverlay, setHeroOverlay]=useState(32)
   const [heroLogo, setHeroLogo]=useState("")
+  const [timBg, setTimBg]=useState("")
+  const [timOverlay, setTimOverlay]=useState(20)
   const [sponsorEnabled, setSponsorEnabled]=useState(true)
+  // sound
+  const [soundEnabled, setSoundEnabled]=useState(true)
+  const [soundVolume, setSoundVolume]=useState(85)
+  const [soundExplosion, setSoundExplosion]=useState("/sounds/duar.mp3")
+  const [soundTtsMode, setSoundTtsMode]=useState("random")
+  // social list
+  const [socialList, setSocialList]=useState<{id:string, platform:string, url:string, visible:boolean}[]>([])
+  const [newSocialPlatform, setNewSocialPlatform]=useState("instagram")
+  const [newSocialUrl, setNewSocialUrl]=useState("")
 
   const loadEvent = async ()=>{
     const s=createBrowserSupabase()
@@ -66,7 +77,27 @@ export default function SettingsPage(){
       const hb = get("hero.background_image","").replace(/"/g,"")
       const ho = get("hero.overlay_opacity","0.32").replace(/"/g,"")
       const hl = get("hero.logo_image","").replace(/"/g,"")
+      const tb = get("tim.background_image","").replace(/"/g,"")
+      const to = get("tim.overlay_opacity","0.20").replace(/"/g,"")
       const sp = get("sponsors.enabled","true").replace(/"/g,"")
+      const sndEn = get("sound.enabled","true").replace(/"/g,"")
+      const sndVol = get("sound.volume","0.85").replace(/"/g,"")
+      const sndExp = get("sound.explosion_url","/sounds/duar.mp3").replace(/"/g,"")
+      const sndMode = get("sound.tts_mode","random").replace(/"/g,"")
+      const sListRaw = map["social.list"]
+      let sList: any = null
+      if(sListRaw !== undefined && sListRaw !== null){
+        try{
+          if(typeof sListRaw === "string"){
+            const parsed = JSON.parse(sListRaw.replace(/^"|"$/g,"").replace(/\\"/g,'"'))
+            sList = Array.isArray(parsed) ? parsed : null
+          } else if(Array.isArray(sListRaw)) sList = sListRaw
+          else if(typeof sListRaw==="object" && Array.isArray((sListRaw as any).value)) sList = (sListRaw as any).value
+          else if(typeof sListRaw==="object" && typeof (sListRaw as any).value==="string"){
+            try{ const p=JSON.parse(String((sListRaw as any).value)); if(Array.isArray(p)) sList=p }catch{}
+          }
+        }catch{}
+      }
       // normalize color: ensure # prefix
       let normalized = pc.trim()
       if(normalized && !normalized.startsWith("#")) normalized = "#"+normalized
@@ -75,10 +106,48 @@ export default function SettingsPage(){
       setThemeVal(th==="light" ? "light" : "dark")
       setHeroBg(hb)
       if(hl) setHeroLogo(hl)
+      if(tb) setTimBg(tb)
       const op = parseFloat(ho)
       if(!isNaN(op)) setHeroOverlay(Math.round(op>1? op : op*100))
       else setHeroOverlay(32)
+      const op2 = parseFloat(to)
+      if(!isNaN(op2)) setTimOverlay(Math.round(op2>1? op2 : op2*100))
+      else setTimOverlay(20)
       setSponsorEnabled(sp!=="false" && sp!=="0")
+      setSoundEnabled(sndEn!=="false" && sndEn!=="0")
+      const vol = parseFloat(sndVol)
+      if(!isNaN(vol)) setSoundVolume(Math.round(vol>1 ? vol : vol*100))
+      else setSoundVolume(85)
+      setSoundExplosion(sndExp || "/sounds/duar.mp3")
+      setSoundTtsMode(["random","male","female"].includes(sndMode) ? sndMode : "random")
+      if(sList && Array.isArray(sList) && sList.length>0){
+        setSocialList(sList.map((it:any, i:number)=> ({id: it.id || String(i)+"-"+it.platform, platform: it.platform, url: it.url, visible: it.visible!==false })))
+      } else {
+        // fallback from individual keys
+        const ig = get("social.instagram","").replace(/"/g,"")
+        const yt = get("social.youtube","").replace(/"/g,"")
+        const tt = get("social.tiktok","").replace(/"/g,"")
+        const fb = get("social.facebook","").replace(/"/g,"")
+        const tw = get("social.twitter","").replace(/"/g,"")
+        const li = get("social.linkedin","").replace(/"/g,"")
+        const wa = get("social.whatsapp","").replace(/"/g,"")
+        const tg = get("social.telegram","").replace(/"/g,"")
+        const fallback: any[] = []
+        if(ig) fallback.push({id:"ig", platform:"instagram", url: ig, visible:true})
+        if(yt) fallback.push({id:"yt", platform:"youtube", url: yt, visible:true})
+        if(tt) fallback.push({id:"tt", platform:"tiktok", url: tt, visible:true})
+        if(fb) fallback.push({id:"fb", platform:"facebook", url: fb, visible:true})
+        if(tw) fallback.push({id:"tw", platform:"twitter", url: tw, visible:true})
+        if(li) fallback.push({id:"li", platform:"linkedin", url: li, visible:true})
+        if(wa) fallback.push({id:"wa", platform:"whatsapp", url: wa, visible:true})
+        if(tg) fallback.push({id:"tg", platform:"telegram", url: tg, visible:true})
+        if(fallback.length>0) setSocialList(fallback)
+        else setSocialList([
+          {id:"ig1", platform:"instagram", url:"https://instagram.com/lkbb_event", visible:true},
+          {id:"yt1", platform:"youtube", url:"https://youtube.com/@lkbb", visible:true},
+          {id:"tt1", platform:"tiktok", url:"https://tiktok.com/@lkbb_event", visible:true},
+        ])
+      }
     }
   }
   useEffect(()=>{ loadEvent(); loadSettings() },[])
@@ -129,6 +198,7 @@ export default function SettingsPage(){
     {id:"branding", label:"Branding", icon: Palette},
     {id:"contact", label:"Kontak", icon: Phone},
     {id:"social", label:"Sosial", icon: Share2},
+    {id:"sound", label:"Sound", icon: Sparkles},
     {id:"event", label:"Event & Voting", icon: Trophy},
   ]
 
@@ -226,19 +296,83 @@ export default function SettingsPage(){
       )}
 
       {tab==="social" && (
-        <div className="rounded-[16px] border border-border bg-card p-5 space-y-4 sm:space-y-5">
-          <h3 className="text-sm font-black">Sosial Media</h3>
-          <div><label className="text-xs font-bold">Instagram</label><Input id="s_ig" defaultValue={getVal("social.instagram")} placeholder="https://instagram.com/..." /></div>
-          <div><label className="text-xs font-bold">YouTube</label><Input id="s_yt" defaultValue={getVal("social.youtube")} /></div>
-          <div><label className="text-xs font-bold">TikTok</label><Input id="s_tt" defaultValue={getVal("social.tiktok")} /></div>
-          <Button disabled={saving} className="rounded-full" onClick={()=>{
-            const updates = [
-              { key:"social.instagram", value: (document.getElementById("s_ig") as HTMLInputElement).value, category:"social" },
-              { key:"social.youtube", value: (document.getElementById("s_yt") as HTMLInputElement).value, category:"social" },
-              { key:"social.tiktok", value: (document.getElementById("s_tt") as HTMLInputElement).value, category:"social" },
-            ]
-            handleSaveSettings(updates)
-          }}>Simpan Sosial</Button>
+        <div className="space-y-4">
+          <div className="rounded-[16px] border border-border bg-card p-5 space-y-5">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-xl bg-[#0B0C0F] grid place-items-center text-[var(--primary)] border"><Share2 className="h-4 w-4"/></div>
+              <div>
+                <h3 className="text-sm font-black">Sosial Media — CRUD dengan Logo & Toggle Tampil</h3>
+                <p className="text-xs text-muted-foreground">Tambah banyak platform, setiap platform otomatis pakai logonya. Toggle untuk sembunyikan/tampilkan di footer tanpa menghapus.</p>
+              </div>
+            </div>
+            <div className="space-y-3">
+              {socialList.map((item, idx)=> (
+                <div key={item.id} className="rounded-xl border border-border p-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center bg-muted/10">
+                  <div className="flex items-center gap-2 flex-1 min-w-0 w-full">
+                    <div className="h-9 w-9 rounded-xl bg-white border grid place-items-center shrink-0 text-[11px] font-black overflow-hidden">
+                      {item.platform==="instagram" && <span className="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white h-full w-full grid place-items-center text-[10px]">IG</span>}
+                      {item.platform==="tiktok" && <span className="bg-black text-white h-full w-full grid place-items-center">♪</span>}
+                      {item.platform==="youtube" && <span className="bg-red-600 text-white h-full w-full grid place-items-center text-[10px]">YT</span>}
+                      {item.platform==="facebook" && <span className="bg-[#1877F2] text-white h-full w-full grid place-items-center text-[10px]">f</span>}
+                      {item.platform==="twitter" && <span className="bg-black text-white h-full w-full grid place-items-center text-[10px]">𝕏</span>}
+                      {item.platform==="linkedin" && <span className="bg-[#0A66C2] text-white h-full w-full grid place-items-center text-[10px]">in</span>}
+                      {item.platform==="whatsapp" && <span className="bg-[#25D366] text-white h-full w-full grid place-items-center text-[10px]">WA</span>}
+                      {item.platform==="telegram" && <span className="bg-[#26A5E4] text-white h-full w-full grid place-items-center text-[10px]">TG</span>}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <Select value={item.platform} onValueChange={v=> {
+                          const next=[...socialList]; next[idx]={...next[idx], platform:v}; setSocialList(next)
+                        }} options={[{value:"instagram",label:"Instagram"},{value:"tiktok",label:"TikTok"},{value:"youtube",label:"YouTube"},{value:"facebook",label:"Facebook"},{value:"twitter",label:"X (Twitter)"},{value:"linkedin",label:"LinkedIn"},{value:"whatsapp",label:"WhatsApp"},{value:"telegram",label:"Telegram"}]} />
+                        <label className="flex items-center gap-1.5 text-xs font-bold shrink-0 cursor-pointer">
+                          <input type="checkbox" checked={item.visible} onChange={e=> { const n=[...socialList]; n[idx]={...n[idx], visible:e.target.checked}; setSocialList(n)}} className="h-4 w-4 accent-emerald-500" />
+                          Tampil
+                        </label>
+                      </div>
+                      <Input value={item.url} onChange={e=> { const n=[...socialList]; n[idx]={...n[idx], url:e.target.value}; setSocialList(n)}} placeholder="https://..." className="mt-1.5 font-mono text-sm" />
+                    </div>
+                  </div>
+                  <div className="flex gap-1.5 shrink-0 self-end sm:self-center">
+                    <Button variant="ghost" size="sm" className="rounded-full text-red-600 border border-red-200 h-7" onClick={()=>{
+                      setSocialList(prev=> prev.filter((_,i)=> i!==idx))
+                    }}>Hapus</Button>
+                  </div>
+                </div>
+              ))}
+              {socialList.length===0 && <div className="text-xs text-muted-foreground text-center py-4">Belum ada sosial. Tambah di bawah.</div>}
+            </div>
+            <div className="rounded-xl border border-dashed border-border p-3 space-y-3 bg-muted/20">
+              <div className="text-xs font-black">Tambah Platform Baru</div>
+              <div className="grid sm:grid-cols-[180px_1fr_auto] gap-2">
+                <Select value={newSocialPlatform} onValueChange={setNewSocialPlatform} options={[{value:"instagram",label:"Instagram"},{value:"tiktok",label:"TikTok"},{value:"youtube",label:"YouTube"},{value:"facebook",label:"Facebook"},{value:"twitter",label:"X (Twitter)"},{value:"linkedin",label:"LinkedIn"},{value:"whatsapp",label:"WhatsApp"},{value:"telegram",label:"Telegram"}]} />
+                <Input value={newSocialUrl} onChange={e=> setNewSocialUrl(e.target.value)} placeholder="https://..." className="font-mono text-sm" />
+                <Button size="sm" className="rounded-full" onClick={()=>{
+                  if(!newSocialUrl.trim()){ toast({title:"Isi URL", variant:"error"}); return }
+                  setSocialList(prev=> [...prev, {id: String(Date.now()), platform:newSocialPlatform, url:newSocialUrl.trim(), visible:true}])
+                  setNewSocialUrl("")
+                }}>Tambah</Button>
+              </div>
+              <p className="text-[11px] text-muted-foreground">Pilih platform → otomatis logo sesuai platform. Bisa tambah banyak.</p>
+            </div>
+            <div className="flex gap-2">
+              <Button disabled={saving} className="rounded-full" onClick={()=>{
+                const listJson = JSON.stringify(socialList)
+                const updates: any[] = [{ key:"social.list", value: listJson, category:"social" }]
+                // also sync individual keys for backward compat
+                const getByPlat = (p:string)=> socialList.find(s=> s.platform===p && s.visible)?.url || ""
+                updates.push({key:"social.instagram", value: getByPlat("instagram") || socialList.find(s=> s.platform==="instagram")?.url || "", category:"social"})
+                updates.push({key:"social.youtube", value: getByPlat("youtube") || socialList.find(s=> s.platform==="youtube")?.url || "", category:"social"})
+                updates.push({key:"social.tiktok", value: getByPlat("tiktok") || socialList.find(s=> s.platform==="tiktok")?.url || "", category:"social"})
+                updates.push({key:"social.facebook", value: getByPlat("facebook") || socialList.find(s=> s.platform==="facebook")?.url || "", category:"social"})
+                updates.push({key:"social.twitter", value: getByPlat("twitter") || socialList.find(s=> s.platform==="twitter")?.url || "", category:"social"})
+                updates.push({key:"social.linkedin", value: getByPlat("linkedin") || socialList.find(s=> s.platform==="linkedin")?.url || "", category:"social"})
+                updates.push({key:"social.whatsapp", value: getByPlat("whatsapp") || socialList.find(s=> s.platform==="whatsapp")?.url || "", category:"social"})
+                updates.push({key:"social.telegram", value: getByPlat("telegram") || socialList.find(s=> s.platform==="telegram")?.url || "", category:"social"})
+                handleSaveSettings(updates)
+              }}>Simpan Sosial</Button>
+              <span className="text-xs text-muted-foreground self-center">Footer akan otomatis pakai list ini dengan logo & toggle tampil.</span>
+            </div>
+          </div>
         </div>
       )}
 
@@ -395,6 +529,67 @@ export default function SettingsPage(){
             <p className="text-xs text-muted-foreground">Background ini tampil di beranda paling atas (Hero). Jika kosong, akan pakai background default dari CMS. Perubahan langsung tampil di beranda setelah disimpan.</p>
           </div>
 
+          {/* Tim background — sama seperti hero tapi CRUD terpisah */}
+          <div className="rounded-[16px] border border-border bg-card p-5 space-y-5">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-xl bg-[#0B0C0F] grid place-items-center text-[#D4B77A] border"><ImgIcon className="h-4 w-4"/></div>
+              <div>
+                <h3 className="text-sm font-black">Background Halaman Tim (Header Tim)</h3>
+                <p className="text-xs text-muted-foreground">Gambar latar di halaman /tim paling atas. Default mengikuti Hero Beranda, tapi bisa diubah terpisah. Preview realtime.</p>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-5">
+              <div className="space-y-4">
+                <div>
+                  <label className="text-xs font-bold">URL Gambar Background Tim</label>
+                  <div className="flex gap-2 mt-1.5">
+                    <Input value={timBg} onChange={e=> setTimBg(e.target.value)} placeholder={heroBg ? `Kosong = ikut Hero (${heroBg.slice(0,32)}...)` : "https://... atau /assets/..."} className="flex-1 font-mono text-sm" />
+                    <Button type="button" variant="outline" size="sm" className="rounded-full shrink-0" onClick={()=> setPickerFor("timBg")}><ImgIcon className="h-3.5 w-3.5"/> Pilih</Button>
+                  </div>
+                  <div className="mt-2 flex gap-2">
+                    <label className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs font-bold cursor-pointer hover:bg-muted">
+                      <input type="file" accept="image/*" className="hidden" onChange={async e=>{
+                        const file=e.target.files?.[0]; if(!file) return
+                        const sup=createBrowserSupabase()
+                        const path=`branding/tim-${Date.now()}-${file.name}`
+                        const { error } = await sup.storage.from("media").upload(path, file)
+                        if(error){ toast({title:"Gagal upload", description:error.message, variant:"error"}); return }
+                        const { data } = sup.storage.from("media").getPublicUrl(path)
+                        setTimBg(data.publicUrl)
+                        toast({title:"Gambar diunggah", variant:"success"})
+                      }} />
+                      Upload Gambar
+                    </label>
+                    {timBg && <Button variant="ghost" size="sm" className="rounded-full text-xs" onClick={()=> setTimBg("")}>Kosongkan (ikut Hero)</Button>}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground mt-1">Jika dikosongkan, halaman Tim akan otomatis memakai gambar Hero Beranda.</p>
+                </div>
+                <div>
+                  <label className="text-xs font-bold">Opasitas Overlay Tim ({timOverlay}%)</label>
+                  <input type="range" min={0} max={90} value={timOverlay} onChange={e=> setTimOverlay(parseInt(e.target.value))} className="w-full mt-1 accent-[var(--primary)]" />
+                  <div className="flex justify-between text-[11px] text-muted-foreground"><span>Transparan</span><span>Pekat</span></div>
+                </div>
+              </div>
+              <div className="rounded-xl overflow-hidden border border-border bg-[#08090B] relative h-[200px] grid place-items-center text-center">
+                {(timBg || heroBg) ? <img src={timBg || heroBg} alt="tim bg preview" className="absolute inset-0 h-full w-full object-cover" style={{opacity: (timBg ? timOverlay : heroOverlay)/100}} onError={e=> (e.currentTarget.style.display='none')} /> : <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#08090B]" />}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#08090B] via-[#08090B]/85 to-transparent" />
+                <div className="relative px-4">
+                  <div className="inline-flex rounded-full bg-emerald-500 px-3 py-1 text-xs font-black text-white">Aktif — Dukungan Dibuka</div>
+                  <div className="mt-2 text-[22px] font-black leading-none text-white">DAFTAR TIM</div>
+                  <div className="mt-1 text-[11px] text-white/60">Preview header halaman Tim</div>
+                </div>
+              </div>
+            </div>
+            <Button disabled={saving} className="rounded-full" onClick={()=>{
+              const updates = [
+                { key:"tim.background_image", value: timBg, category:"appearance" },
+                { key:"tim.overlay_opacity", value: String(timOverlay/100), category:"appearance" },
+              ]
+              handleSaveSettings(updates)
+            }}>Simpan Background Tim</Button>
+            <p className="text-xs text-muted-foreground">Jika kosong, background Tim akan sinkron dengan Hero Beranda secara otomatis.</p>
+          </div>
+
           {/* Sponsor toggle */}
           <div className="rounded-[16px] border border-border bg-card p-5 space-y-4">
             <div className="flex items-center gap-2">
@@ -473,6 +668,108 @@ export default function SettingsPage(){
         </div>
       )}
 
+      {tab==="sound" && (
+        <div className="space-y-4">
+          <div className="rounded-[16px] border border-border bg-card p-5 space-y-5">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-xl bg-[#0B0C0F] grid place-items-center text-[var(--primary)] border"><Sparkles className="h-4 w-4"/></div>
+              <div>
+                <h3 className="text-sm font-black">Sound — Notifikasi & TTS</h3>
+                <p className="text-xs text-muted-foreground">Atur suara ledakan (duar) dan suara pembaca teks. TTS mode random akan acak male/female setiap notifikasi.</p>
+              </div>
+            </div>
+            <label className="flex items-center justify-between rounded-xl border border-border p-4 cursor-pointer hover:bg-muted/30 transition-colors">
+              <div>
+                <div className="text-sm font-bold">Aktifkan Sound</div>
+                <div className="text-xs text-muted-foreground">Jika dimatikan, tidak ada duar maupun TTS di semua user (tetap bisa di-toggle user di device).</div>
+              </div>
+              <input type="checkbox" checked={soundEnabled} onChange={e=> setSoundEnabled(e.target.checked)} className="h-5 w-10 appearance-none rounded-full bg-zinc-300 relative transition-colors checked:bg-emerald-500 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:h-4 before:w-4 before:rounded-full before:bg-white before:transition-transform checked:before:translate-x-5 cursor-pointer" />
+            </label>
+            <div>
+              <label className="text-xs font-bold">URL Suara Ledakan (duar)</label>
+              <div className="flex gap-2 mt-1.5">
+                <Input value={soundExplosion} onChange={e=> setSoundExplosion(e.target.value)} placeholder="/sounds/duar.mp3" className="flex-1 font-mono text-sm" />
+                <Button type="button" variant="outline" size="sm" className="rounded-full shrink-0" onClick={()=> setPickerFor("soundExp")}><ImgIcon className="h-3.5 w-3.5"/> Pilih</Button>
+              </div>
+              <div className="mt-2 flex gap-2">
+                <label className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs font-bold cursor-pointer hover:bg-muted">
+                  <input type="file" accept="audio/*" className="hidden" onChange={async e=>{
+                    const file=e.target.files?.[0]; if(!file) return
+                    const sup=createBrowserSupabase()
+                    const path=`sounds/${Date.now()}-${file.name}`
+                    const { error } = await sup.storage.from("media").upload(path, file)
+                    if(error){ toast({title:"Gagal upload", description:error.message, variant:"error"}); return }
+                    const { data } = sup.storage.from("media").getPublicUrl(path)
+                    setSoundExplosion(data.publicUrl)
+                    toast({title:"Audio diunggah", variant:"success"})
+                  }} />
+                  Upload Audio
+                </label>
+                <Button variant="ghost" size="sm" className="rounded-full text-xs" onClick={async ()=>{
+                  try{
+                    const a = new Audio(soundExplosion)
+                    a.volume = soundVolume/100
+                    await a.play()
+                    toast({title:"Memutar preview...", variant:"success"})
+                    setTimeout(()=> a.pause(), 2000)
+                  }catch{ toast({title:"Gagal preview", variant:"error"}) }
+                }}>Preview</Button>
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-bold">Volume ({soundVolume}%)</label>
+              <input type="range" min={0} max={100} value={soundVolume} onChange={e=> setSoundVolume(parseInt(e.target.value))} className="w-full mt-1 accent-[var(--primary)]" />
+            </div>
+            <div>
+              <label className="text-xs font-bold">Mode Suara TTS</label>
+              <Select value={soundTtsMode} onValueChange={setSoundTtsMode} options={[{value:"random",label:"Random — acak male/female setiap notifikasi (recommended)"},{value:"male",label:"Male — selalu suara laki-laki"},{value:"female",label:"Female — selalu suara perempuan"}]} />
+              <p className="text-[11px] text-muted-foreground mt-1">Random akan memilih voice male atau female secara acak setiap kali notifikasi muncul, dengan pitch yang disesuaikan.</p>
+              <div className="mt-2 flex gap-2">
+                <Button variant="outline" size="sm" className="rounded-full" onClick={async ()=>{
+                  try{
+                    const msg = new SpeechSynthesisUtterance("Halo, ini preview suara notifikasi LKBB Javasoma. Dukung peleton terbaik pilihanmu.")
+                    msg.lang="id-ID"
+                    msg.rate=0.92
+                    const voices = window.speechSynthesis.getVoices()
+                    let cands = voices.filter(v=> v.lang.toLowerCase().startsWith("id"))
+                    if(cands.length===0) cands = voices
+                    if(cands.length>0){
+                      if(soundTtsMode==="random"){
+                        const isMale = Math.random()>0.5
+                        msg.pitch = isMale ? 0.85 : 1.25
+                        // try to pick male vs female by name hint if available
+                        const maleHint = cands.find(v=> /male|pria|david|adi/i.test(v.name))
+                        const femaleHint = cands.find(v=> /female|wanita|google.*indonesia/i.test(v.name))
+                        if(isMale && maleHint) msg.voice = maleHint
+                        else if(!isMale && femaleHint) msg.voice = femaleHint
+                        else msg.voice = cands[Math.floor(Math.random()*cands.length)] || null
+                      } else if(soundTtsMode==="male"){
+                        msg.pitch = 0.85
+                      } else {
+                        msg.pitch = 1.25
+                      }
+                    }
+                    window.speechSynthesis.cancel()
+                    window.speechSynthesis.speak(msg)
+                    toast({title:"Preview TTS diputar", variant:"success"})
+                  }catch{}
+                }}>Preview TTS</Button>
+              </div>
+            </div>
+            <Button disabled={saving} className="rounded-full" onClick={()=>{
+              const updates = [
+                { key:"sound.enabled", value: soundEnabled ? "true" : "false", category:"general" },
+                { key:"sound.volume", value: String(soundVolume/100), category:"general" },
+                { key:"sound.explosion_url", value: soundExplosion, category:"general" },
+                { key:"sound.tts_mode", value: soundTtsMode, category:"general" },
+              ]
+              handleSaveSettings(updates)
+            }}>Simpan Sound</Button>
+            <p className="text-xs text-muted-foreground">Perubahan akan terpakai setelah user refresh atau buka tab baru (settings di-fetch realtime).</p>
+          </div>
+        </div>
+      )}
+
 
       {/* List settings — tanpa bahasa pemrograman, hanya nilai bersih */}
       <details className="rounded-[12px] border border-border bg-card">
@@ -493,6 +790,8 @@ export default function SettingsPage(){
       {pickerFor && <MediaPicker open={!!pickerFor} onOpenChange={(o)=> !o && setPickerFor(null)} onSelect={(url)=> { 
         if(pickerFor==="heroBg") setHeroBg(url)
         else if(pickerFor==="heroLogo") setHeroLogo(url)
+        else if(pickerFor==="timBg") setTimBg(url)
+        else if(pickerFor==="soundExp") setSoundExplosion(url)
         else { const el=document.getElementById(pickerFor) as HTMLInputElement; if(el) el.value=url }
       }} folder="branding" />}
     </div>

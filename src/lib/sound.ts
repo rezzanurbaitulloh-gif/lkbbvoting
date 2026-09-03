@@ -8,6 +8,9 @@ let lastPlayTs = 0
 const COOLDOWN_MS = 8000
 let duarAudio: HTMLAudioElement | null = null
 let prefersReducedMotion = false
+// admin-managed sound settings (fetched lazily)
+let cachedSoundSettings: { enabled: boolean; volume: number; explosionUrl: string; ttsMode: string } | null = null
+let soundSettingsFetchedAt = 0
 
 if (typeof window !== "undefined") {
   prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -22,9 +25,41 @@ export function isReducedMotion() {
 
 export function getSoundEnabled(): boolean {
   if (typeof window === "undefined") return true
+  // admin global toggle
+  if (cachedSoundSettings && !cachedSoundSettings.enabled) return false
   const v = localStorage.getItem("lkbb-sound-enabled")
   if (v === null) return true
   return v === "true"
+}
+
+async function fetchSoundSettings(): Promise<void> {
+  if (typeof window === "undefined") return
+  const now = Date.now()
+  if (now - soundSettingsFetchedAt < 30000 && cachedSoundSettings) return
+  try {
+    const res = await fetch("/api/cms/settings")
+    if (!res.ok) return
+    const j = await res.json()
+    const map = j.settings || j.map || {}
+    const get = (k:string, fb:string)=>{
+      const v = map[k]
+      if(v===undefined || v===null) return fb
+      if(typeof v==="string") return v.replace(/^"|"$/g,"")
+      if(typeof v==="object" && v.value!==undefined) return String(v.value).replace(/^"|"$/g,"")
+      return String(v).replace(/^"|"$/g,"")
+    }
+    const enabledStr = get("sound.enabled","true")
+    const volStr = get("sound.volume","0.85")
+    const exp = get("sound.explosion_url","/sounds/duar.mp3")
+    const mode = get("sound.tts_mode","random")
+    cachedSoundSettings = {
+      enabled: enabledStr!=="false" && enabledStr!=="0",
+      volume: (()=>{ const n=parseFloat(volStr); if(isNaN(n)) return 0.85; return n>1? n/100 : n })(),
+      explosionUrl: exp || "/sounds/duar.mp3",
+      ttsMode: ["random","male","female"].includes(mode) ? mode : "random",
+    }
+    soundSettingsFetchedAt = now
+  } catch {}
 }
 
 export function setSoundEnabled(enabled: boolean) {
@@ -36,9 +71,13 @@ export function setSoundEnabled(enabled: boolean) {
 export function unlockAudio() {
   if (audioUnlocked) return
   try {
-    duarAudio = new Audio("/sounds/duar.mp3")
+    // fetch settings non-blocking
+    fetchSoundSettings().catch(()=>{})
+    const url = cachedSoundSettings?.explosionUrl || "/sounds/duar.mp3"
+    const vol = cachedSoundSettings?.volume ?? 0.85
+    duarAudio = new Audio(url)
     duarAudio.preload = "auto"
-    duarAudio.volume = 0.85
+    duarAudio.volume = vol
     // Do not autoplay; just prepare. Actual play needs user gesture but we unlock here
     duarAudio.load()
     audioUnlocked = true
@@ -63,18 +102,23 @@ export function markPlayed() {
 
 export async function playExplosion(): Promise<void> {
   if (!getSoundEnabled()) return
+  await fetchSoundSettings()
+  const url = cachedSoundSettings?.explosionUrl || "/sounds/duar.mp3"
+  const vol = cachedSoundSettings?.volume ?? 0.85
   try {
-    if (!duarAudio) {
-      duarAudio = new Audio("/sounds/duar.mp3")
-      duarAudio.volume = 0.85
+    if (!duarAudio || duarAudio.src !== url) {
+      duarAudio = new Audio(url)
+      duarAudio.volume = vol
+    } else {
+      duarAudio.volume = vol
     }
     duarAudio.currentTime = 0
     await duarAudio.play()
   } catch (e) {
     // Fallback: create new audio
     try {
-      const a = new Audio("/sounds/duar.mp3")
-      a.volume = 0.85
+      const a = new Audio(url)
+      a.volume = vol
       await a.play()
     } catch {}
   }
@@ -90,6 +134,15 @@ export function getRandomIndonesianVoice(): SpeechSynthesisVoice | null {
     candidates = voices
   }
   if (candidates.length === 0) return null
+  // If ttsMode is male/female, try to hint
+  const mode = cachedSoundSettings?.ttsMode || "random"
+  if (mode === "male") {
+    const male = candidates.find(v=> /male|pria|laki|david|adi/i.test(v.name))
+    if(male) return male
+  } else if (mode === "female") {
+    const female = candidates.find(v=> /female|wanita|perempuan|google.*indonesia/i.test(v.name))
+    if(female) return female
+  }
   // Random pick to alternate female/male (if available, voices are mixed; random handles acak)
   const idx = Math.floor(Math.random() * candidates.length)
   return candidates[idx] || null
@@ -105,6 +158,8 @@ export function speakRandom(text: string): Promise<void> {
       resolve()
       return
     }
+    // Ensure settings loaded
+    fetchSoundSettings().catch(()=>{})
     try {
       // Ensure synthesis is resumed (browsers may pause)
       try { window.speechSynthesis.resume() } catch {}
@@ -113,7 +168,18 @@ export function speakRandom(text: string): Promise<void> {
       const utter = new SpeechSynthesisUtterance(text.trim())
       utter.lang = "id-ID"
       utter.rate = 0.92
-      utter.pitch = 1.0
+      // Random male/female via pitch if mode random: male deeper (0.85), female higher (1.25)
+      const mode = cachedSoundSettings?.ttsMode || "random"
+      if(mode==="random"){
+        const isMale = Math.random() > 0.5
+        utter.pitch = isMale ? 0.85 : 1.25
+      } else if(mode==="male"){
+        utter.pitch = 0.85
+      } else if(mode==="female"){
+        utter.pitch = 1.25
+      } else {
+        utter.pitch = 1.0
+      }
       utter.volume = 1.0
 
       // Try to get voices — if empty, wait for onvoiceschanged

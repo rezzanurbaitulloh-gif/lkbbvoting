@@ -67,7 +67,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                   <Badge className="bg-emerald-500 text-white border-emerald-500">Terverifikasi</Badge>
                 </div>
                 <div className="mt-3 flex gap-3 items-center">
-                  <img src={logo} alt="logo" className="h-14 w-14 rounded-xl object-cover border border-white/15 bg-white hidden md:block" />
+                  <img src={logo} alt="logo" className="h-14 w-14 rounded-xl object-contain border border-white/15 bg-white p-1 hidden md:block" />
                   <div>
                     <h1 className="text-[28px] md:text-[36px] font-black tracking-[-0.03em] leading-none text-balance">{peleton.name}</h1>
                     <p className="mt-1 text-sm font-medium text-white/70">{peleton.school}</p>
