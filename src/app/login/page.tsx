@@ -57,10 +57,10 @@ export default function LoginPage(){
             </div>
           </form>
           <div className="hairline my-6" />
-          <div className="text-center text-xs text-muted-foreground">Admin: SACENGMIN / Saceng1! — User baru daftar dengan Nama unik + Password.</div>
+          <div className="text-center text-xs text-muted-foreground">Admin: SACENGMIN / Saceng1! — Demo: jap / 121212 — User baru daftar dengan Nama unik + Password.</div>
           <div className="mt-3 grid grid-cols-2 gap-2">
             <Button variant="outline" className="rounded-full" type="button" onClick={()=>{setName("SACENGMIN"); setPassword("Saceng1!")}}>Isi Admin</Button>
-            <Button variant="outline" className="rounded-full" type="button" onClick={()=>{setName("demo"); setPassword("demo123")}}>Isi Demo</Button>
+            <Button variant="outline" className="rounded-full" type="button" onClick={()=>{setName("jap"); setPassword("121212")}}>Isi Demo</Button>
           </div>
         </div>
       </main>
