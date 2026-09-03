@@ -37,19 +37,21 @@ export default async function TimPage(){
   }
 
   const renderGrid = (teams: any[]) => {
-    // Minimal: hanya nomor urut, nama, foto logo tim (real DB, no hardcode)
+    // List baris: #[nomor] [nama]   o<-logo  (sesuai permintaan: bukan per card grid kocak)
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="flex flex-col gap-2">
         {teams.map((p:any)=> {
           const logo = p.logo_url || p.image_url || "/assets/brand/lkbb-logo.jpg"
           const number = String(p.number || "").padStart(2,"0")
           return (
-            <Link key={p.id} href={`/tim/${p.slug}`} className="group rounded-[16px] border border-border bg-card overflow-hidden hover:border-[#C9A86A]/30 hover:shadow-soft transition-all flex flex-col items-center p-4 sm:p-5 text-center">
-              <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl overflow-hidden border border-border bg-muted shrink-0">
-                <img src={logo} alt={p.name} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform" />
+            <Link key={p.id} href={`/tim/${p.slug}`} className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-3 sm:px-4 py-3 hover:border-[#C9A86A]/30 hover:bg-muted/20 transition-colors">
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="shrink-0 rounded-full bg-gold px-2.5 py-1 text-[11px] font-black tracking-widest text-gold-foreground">#{number}</span>
+                <span className="text-sm sm:text-[15px] font-black tracking-tight truncate">{p.name}</span>
               </div>
-              <div className="mt-3 text-[11px] font-black tracking-[0.14em] text-gold">#{number}</div>
-              <div className="mt-1 text-[13px] sm:text-sm font-black leading-tight line-clamp-2 break-words">{p.name}</div>
+              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-full overflow-hidden border border-border bg-muted shrink-0">
+                <img src={logo} alt={p.name} className="h-full w-full object-cover" />
+              </div>
             </Link>
           )
         })}
