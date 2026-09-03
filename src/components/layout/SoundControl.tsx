@@ -28,7 +28,7 @@ export function SoundControl(){
       onClick={toggle}
       aria-label={enabled ? "Matikan suara notifikasi" : "Nyalakan suara notifikasi"}
       title={enabled ? "Suara aktif — klik untuk mute" : "Suara dimatikan — klik untuk nyalakan"}
-      className={`h-9 w-9 grid place-items-center rounded-full border transition-colors ${enabled ? "border-[#C9A86A40] bg-[#C9A86A14] hover:bg-[#C9A86A20] text-[#C9A86A]" : "border-border bg-muted text-muted-foreground hover:bg-muted"}`}
+      className={`h-9 w-9 grid place-items-center rounded-full border border-border bg-transparent hover:bg-muted transition-colors ${enabled ? "text-foreground" : "text-muted-foreground opacity-60"}`}
     >
       {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
     </button>
