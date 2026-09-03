@@ -45,18 +45,20 @@ export function Story({ sponsors, event }: { sponsors?: any[] | null; event?: an
         </div>
       </div>
 
-      {/* Sponsors row within story — DB-driven */}
-      <div className="mt-10 rounded-[16px] border border-border bg-card p-4 md:p-5 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
-        <div>
-          <div className="label-ceremonial">Didukung Oleh</div>
-          <div className="mt-1 flex flex-wrap gap-2 text-xs font-bold">
-            {(sponsors && sponsors.length > 0 ? sponsors.slice(0,6) : [{name:"ASTRA"},{name:"BRI"},{name:"Telkomsel"},{name:"Indosat"},{name:"Wardah"},{name:"Le Minerale"}]).map((s:any)=> (
-              <span key={s.name} className="rounded-full bg-secondary px-3 py-1.5">{s.name}</span>
-            ))}
+      {/* Sponsors row within story — DB-driven, no hardcode */}
+      {sponsors && sponsors.length>0 && (
+        <div className="mt-10 rounded-[16px] border border-border bg-card p-4 md:p-5 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+          <div>
+            <div className="label-ceremonial">Didukung Oleh</div>
+            <div className="mt-1 flex flex-wrap gap-2 text-xs font-bold">
+              {sponsors.slice(0,6).map((s:any)=> (
+                <span key={s.id || s.name} className="rounded-full bg-secondary px-3 py-1.5">{s.name}</span>
+              ))}
+            </div>
           </div>
+          <Link href="/sponsor" className="text-sm font-semibold text-gold hover:underline">Lihat semua sponsor →</Link>
         </div>
-        <Link href="/sponsor" className="text-sm font-semibold text-gold hover:underline">Lihat semua sponsor →</Link>
-      </div>
+      )}
     </section>
   )
 }

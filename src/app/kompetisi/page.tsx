@@ -75,17 +75,19 @@ export default async function KompetisiPage(){
 
               <div className="rounded-[16px] border border-border bg-card p-6">
                 <h3 className="text-sm font-black">Dewan Juri</h3>
-                <p className="text-xs text-muted-foreground">Penilai kompeten dan independen</p>
+                <p className="text-xs text-muted-foreground">Penilai kompeten dan independen — data real dari database</p>
                 <div className="mt-3 grid sm:grid-cols-2 gap-3">
-                  {(judges && judges.length>0 ? judges : [{name:"Akan diumumkan",role:"Juri LKBB"}, {name:"Akan diumumkan",role:"Juri LKBB"}, {name:"Akan diumumkan",role:"Juri LKBB"}]).map((j:any)=> (
-                    <div key={j.name} className="flex items-center gap-3 rounded-xl border border-border p-3">
+                  {judges && judges.length>0 ? judges.map((j:any)=> (
+                    <div key={j.id || j.name} className="flex items-center gap-3 rounded-xl border border-border p-3">
                       <img src={j.photo_url || "/assets/brand/lkbb-logo.jpg"} alt={j.name} className="h-10 w-10 rounded-full object-cover border bg-muted" />
                       <div className="min-w-0">
                         <div className="text-sm font-bold truncate">{j.name}</div>
                         <div className="text-xs text-muted-foreground truncate">{j.role}</div>
                       </div>
                     </div>
-                  ))}
+                  )) : (
+                    <div className="col-span-2 rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">Belum ada juri terdaftar — data real, menunggu admin menambah.</div>
+                  )}
                 </div>
                 <Link href="/juri" className="mt-3 inline-flex text-xs font-bold text-gold hover:underline">Lihat profil juri lengkap →</Link>
               </div>

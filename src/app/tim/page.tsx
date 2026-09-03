@@ -1,8 +1,8 @@
+import Link from "next/link"
 import { createServerSupabase } from "@/lib/supabase"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
-import { PeletonCard, PeletonCardCompact } from "@/components/peleton/PeletonCard"
 import { Trophy } from "lucide-react"
 import { PodiumSection } from "@/components/competition/Podium"
 
@@ -37,23 +37,22 @@ export default async function TimPage(){
   }
 
   const renderGrid = (teams: any[]) => {
-    // Saat aktif/belum dimulai: tampil full card atau compact tanpa poin
-    // Saat voting ditutup/published: tampil compact dengan poin
-    const showPoints = isVotingClosed || isPublished
-    if (isNotStarted || isActive) {
-      return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {teams.map((p:any)=> (
-            <PeletonCard key={p.id} peleton={p} />
-          ))}
-        </div>
-      )
-    }
+    // Minimal: hanya nomor urut, nama, foto logo tim (real DB, no hardcode)
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {teams.map((p:any)=> (
-          <PeletonCardCompact key={p.id} peleton={p} showPoints={showPoints} />
-        ))}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+        {teams.map((p:any)=> {
+          const logo = p.logo_url || p.image_url || "/assets/brand/lkbb-logo.jpg"
+          const number = String(p.number || "").padStart(2,"0")
+          return (
+            <Link key={p.id} href={`/tim/${p.slug}`} className="group rounded-[16px] border border-border bg-card overflow-hidden hover:border-[#C9A86A]/30 hover:shadow-soft transition-all flex flex-col items-center p-4 sm:p-5 text-center">
+              <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl overflow-hidden border border-border bg-muted shrink-0">
+                <img src={logo} alt={p.name} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform" />
+              </div>
+              <div className="mt-3 text-[11px] font-black tracking-[0.14em] text-gold">#{number}</div>
+              <div className="mt-1 text-[13px] sm:text-sm font-black leading-tight line-clamp-2 break-words">{p.name}</div>
+            </Link>
+          )
+        })}
       </div>
     )
   }
