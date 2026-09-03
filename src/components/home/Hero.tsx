@@ -48,10 +48,11 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
   const ctaPrimaryLink = cmsContent.ctaPrimaryLink || "/tim"
   const ctaSecondaryLabel = cmsContent.ctaSecondaryLabel || "CARA DUKUNG"
   const overlayOpacity = (siteOverlay !== undefined && siteOverlay !== null && String(siteOverlay).trim() !== "" ? parseFloat(String(siteOverlay).replace(/"/g,"")) : null) ?? cmsSettings.overlayOpacity ?? cmsContent.overlayOpacity ?? 0.32
-  const showLogo = (cmsSettings.showLogo !== false) && (cmsContent.showLogo !== false)
-  const logoOpacity = cmsSettings.logoOpacity ?? cmsContent.logoOpacity ?? 0.08
+  // FIX: logo watermark jangan menetap — default hilang (false) supaya tidak duplikat dengan logo header. Hanya tampil jika admin eksplisit set true
+  const showLogo = cmsSettings.showLogo === true || cmsContent.showLogo === true
+  const logoOpacity = cmsSettings.logoOpacity ?? cmsContent.logoOpacity ?? 0
   const bgPosition = cmsSettings.bgPosition || "center"
-  const logoAsBackground = cmsSettings.logoAsBackground ?? true
+  const logoAsBackground = cmsSettings.logoAsBackground === true
   // if cms explicitly hidden, don't render (caller should handle)
   if (cms && cms.is_visible === false) return null
   return (

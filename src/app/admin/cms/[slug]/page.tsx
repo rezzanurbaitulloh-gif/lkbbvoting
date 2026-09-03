@@ -43,7 +43,7 @@ const CONTENT_PRESETS: Record<string, Record<string, any>> = {
   image: { src:"", alt:"", caption:"" },
 }
 
-const HERO_SETTINGS_PRESET = { variant:"dark", showLogo:true, overlayOpacity:0.32, logoOpacity:0.08, logoAsBackground:true, bgPosition:"center" }
+const HERO_SETTINGS_PRESET = { variant:"dark", showLogo:false, overlayOpacity:0.32, logoOpacity:0, logoAsBackground:false, bgPosition:"center" }
 
 function SectionContentEditor({ content, onChange, type }: { content: Record<string, any>; onChange: (c: Record<string, any>)=>void; type: string }){
   const keys = Object.keys(content||{})

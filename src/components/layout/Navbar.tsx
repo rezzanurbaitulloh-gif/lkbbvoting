@@ -26,6 +26,20 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
   const [mobileSearch, setMobileSearch] = useState("")
   const { currentUser, isAdmin, logout } = useApp()
   const profileRef = useRef<HTMLDivElement>(null)
+  const [hidden, setHidden] = useState(false)
+  const lastScroll = useRef(0)
+  useEffect(()=>{
+    const onScroll = ()=>{
+      const cur = window.scrollY
+      if (cur < 16) { setHidden(false); lastScroll.current = cur; return }
+      // scroll down -> hide, scroll up dikit ( >5px ) -> show
+      if (cur > lastScroll.current + 5) setHidden(true)
+      else if (cur < lastScroll.current - 5) setHidden(false)
+      lastScroll.current = cur
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return ()=> window.removeEventListener("scroll", onScroll)
+  },[])
   const [dynamicSettings, setDynamicSettings] = useState<Record<string, any>>(siteSettings || {})
   useEffect(()=>{
     if(siteSettings && Object.keys(siteSettings).length>0) { setDynamicSettings(siteSettings); return }
@@ -51,7 +65,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
     setOpen(false)
   }
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+    <header className={`sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 transform transition-transform duration-300 will-change-transform ${hidden ? "-translate-y-full" : "translate-y-0"}`}>
       <div className="mx-auto flex h-[56px] sm:h-[60px] lg:h-[64px] max-w-[1280px] items-center justify-between px-3 sm:px-4 md:px-6 gap-2">
         {/* Logo — dynamic from site_settings */}
         <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
