@@ -97,12 +97,6 @@ export default async function TimPage(){
           <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className={`inline-flex rounded-full px-3 py-1 text-xs font-black tracking-wide ${headerBadge.color}`}>{headerBadge.label}</div>
             <h1 className="mt-3 text-[28px] md:text-[36px] font-black tracking-[-0.03em] leading-none">{isPublished ? "TANGGA JUARA" : isVotingClosed ? "PERINGKAT SEMENTARA" : "DAFTAR TIM"}</h1>
-            <p className="mt-2 max-w-xl text-sm text-white/60">
-              {isNotStarted && "Pendaftaran dan voting belum dibuka. Daftar tim diurutkan berdasar poin tertinggi."}
-              {isActive && "Masa dukungan dibuka — dukung tim favoritmu. Urutan berdasar poin tertinggi. Dukungan dihitung realtime."}
-              {isVotingClosed && "Voting ditutup — transaksi dihentikan. Menampilkan peringkat sementara berdasar poin online saja. Admin sedang merekap offline."}
-              {isPublished && "Hasil akhir dipublikasikan — peringkat akhir berdasar total poin (online + offline)."}
-            </p>
           </div>
         </div>
 

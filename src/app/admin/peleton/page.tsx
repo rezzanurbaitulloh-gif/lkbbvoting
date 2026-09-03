@@ -94,7 +94,6 @@ export default function AdminPeleton(){
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black">Kelola Tim Peserta</h1>
-          <p className="text-xs text-muted-foreground">Tim yang ditambahkan langsung tampil — tidak perlu persetujuan lagi. {teams.length} tim total</p>
         </div>
         <div className="flex gap-2">
           {selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}

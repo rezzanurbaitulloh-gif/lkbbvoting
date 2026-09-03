@@ -49,7 +49,7 @@ export default function ResultsControl(){
       <div className="grid md:grid-cols-2 gap-4">
         <div className="rounded-[16px] border border-border bg-card p-4">
           <h3 className="text-sm font-black">Hasil Sementara</h3>
-          <p className="text-xs text-muted-foreground">Hasil sementara — belum termasuk rekap offline. Berdasarkan data online.</p>
+          
           <div className="mt-3 space-y-1">
             {provisional.map((p:any,i:number)=> <div key={p.id} className="flex justify-between rounded-xl border border-border p-2 text-xs"><span>{i+1}st #{p.number} {p.name}</span><span>{p.online_ballots} online</span></div>)}
           </div>
@@ -57,7 +57,7 @@ export default function ResultsControl(){
         </div>
         <div className="rounded-[16px] border border-[#C9A86A30] bg-[#C9A86A0A] p-4">
           <h3 className="text-sm font-black">Hasil Akhir</h3>
-          <p className="text-xs text-muted-foreground">ONLINE + OFFLINE = FINAL. Dari view team_ranking.</p>
+          
           <div className="mt-3 space-y-1">
             {final.map((p:any,i:number)=> <div key={p.id} className="flex justify-between rounded-xl border border-border bg-white p-2 text-xs"><span>{i+1}st #{p.number} {p.name}</span><span className="font-black">{p.total_ballots} total</span></div>)}
           </div>

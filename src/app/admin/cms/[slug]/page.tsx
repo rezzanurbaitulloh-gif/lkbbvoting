@@ -224,7 +224,6 @@ export default function CmsSectionBuilder(){
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black">Kelola Konten — {page.title}</h1>
-          <p className="text-xs text-muted-foreground">Ubah semua teks, gambar, banner, struktur halaman tanpa edit kode manual. Drag/atur urutan, ubah visibilitas, upload ganti media. {sections.length} section</p>
         </div>
         <div className="flex gap-2">
           <Link href={page.slug==="home" ? "/" : `/${page.slug}`} target="_blank"><Button variant="outline" size="sm" className="rounded-full">Pratinjau Halaman</Button></Link>

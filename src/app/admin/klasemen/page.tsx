@@ -16,7 +16,7 @@ export default function AdminKlasemen(){
   const Section = ({title, list}:{title:string, list:any[]})=> (
     <div className="rounded-[16px] border border-border bg-card p-4">
       <h3 className="text-sm font-black">{title}</h3>
-      <p className="text-xs text-muted-foreground mb-2">Diurut total ballot tertinggi • Nomor peserta tetap — poin tidak diubah manual</p>
+      
       <div className="mt-3 space-y-1">
         {list.length===0 ? <div className="p-6 text-center text-sm text-muted-foreground">Belum ada ranking.</div> :
           list.map((p,i)=> (
@@ -35,7 +35,6 @@ export default function AdminKlasemen(){
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-[18px] font-black">Klasemen — Admin</h1>
-          <p className="text-sm text-muted-foreground">Papan peringkat real-time — podium berganti otomatis saat dukungan masuk.</p>
         </div>
         <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-600"><span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> Live</span>
       </div>

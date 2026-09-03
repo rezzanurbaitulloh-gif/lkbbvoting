@@ -76,7 +76,7 @@ export default function AccessControl(){
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black flex items-center gap-2"><Shield className="h-5 w-5"/> Hak Akses & Kontrol Admin</h1>
-          <p className="text-xs text-muted-foreground">Kelola peran dan permission granular. Hanya admin yang boleh ubah matrix. Perubahan langsung berlaku di middleware & API.</p>
+          
         </div>
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground">Lihat matrix:</span>

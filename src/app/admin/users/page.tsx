@@ -39,7 +39,7 @@ export default function Users(){
   }
   return (
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
-      <div className="flex items-center justify-between"><h1 className="text-[18px] font-black">Kelola Pengguna</h1><div className="flex items-center gap-2"><span className="text-xs text-muted-foreground">{users.length} orang</span>{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}</div></div>
+      <div className="flex items-center justify-between"><h1 className="text-[18px] font-black">Kelola Pengguna</h1><div className="flex items-center gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}</div></div>
       <div className="rounded-[16px] border border-border bg-card overflow-hidden">
         {/* Desktop */}
         <div className="hidden md:block overflow-x-auto">

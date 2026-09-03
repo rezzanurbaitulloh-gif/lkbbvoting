@@ -13,7 +13,7 @@ export default function Transaksi(){
   const handleBulkDelete = async ()=>{ if(selected.size===0) return; for(const id of selected){ await fetch(`/api/admin/crud?table=transactions&id=${id}`, { method:"DELETE" }) } toast({ title:`${selected.size} transaksi dihapus`, variant:"success"}); setSelected(new Set()); load() }
   return (
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Riwayat Transaksi</h1><p className="text-xs text-muted-foreground">{txs.length} transaksi — tercatat otomatis setelah pembayaran</p></div>{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}</div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Riwayat Transaksi</h1></div>{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}</div>
       <div className="rounded-[16px] border border-border bg-card overflow-hidden">
         {/* Desktop table — DOKU aware */}
         <div className="hidden md:block overflow-x-auto">

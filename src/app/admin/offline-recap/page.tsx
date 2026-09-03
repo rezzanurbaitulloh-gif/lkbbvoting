@@ -166,7 +166,7 @@ export default function OfflineRecap(){
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black">Offline Recap — Auditable</h1>
-          <p className="text-xs text-muted-foreground">Tambah ballot offline per tim via popup multi-row. Tercatat di supports (source=offline) + audit_logs.</p>
+          
         </div>
         <Button onClick={resetAndOpen} className="rounded-full gap-2 shrink-0">
           <Plus className="h-4 w-4"/> Rekap Ballot

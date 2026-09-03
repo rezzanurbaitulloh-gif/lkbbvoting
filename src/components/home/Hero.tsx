@@ -99,9 +99,6 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
               <div className="text-[10px] sm:text-[12px] font-semibold tracking-[0.10em] sm:tracking-[0.12em] text-white/80 break-words">{subtitle2}</div>
               <div className="text-[10px] sm:text-[11px] tracking-[0.12em] sm:tracking-[0.14em] text-[#C9A86A] font-bold break-words">{tagline}</div>
             </div>
-            <p className="mt-4 max-w-[520px] text-[12px] sm:text-[13px] leading-relaxed text-white/65 text-center px-2 sm:px-0">
-              {description}
-            </p>
             <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-3 justify-center w-full sm:w-auto px-2 sm:px-0">
               <Link href={ctaPrimaryLink} className="w-full sm:w-auto">
                 <Button size="lg" className="w-full sm:w-auto rounded-full px-6 h-[42px] sm:h-[42px] max-[320px]:h-[40px] max-[320px]:text-[13px] bg-[#C9A86A] text-[#0B0C0F] hover:bg-[#C4A06A] font-black tracking-wide">{ctaPrimaryLabel}</Button>

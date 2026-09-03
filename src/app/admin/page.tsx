@@ -58,7 +58,6 @@ export default function AdminOverview(){
             <span className="text-[10px] font-black tracking-[0.18em] text-[#C9A86A]">ADMIN • CONTROL CENTER</span>
           </div>
           <h1 className="mt-1 text-[18px] sm:text-[20px] font-black tracking-[-0.02em] text-white">DASHBOARD</h1>
-          <p className="text-xs text-white/50">Kontrol penuh LKBB JAVASOMA THE IMPRESSION — premium</p>
         </div>
         <div className="flex items-center gap-2 self-start sm:self-auto">
           <span className="rounded-full bg-gradient-to-r from-[#C9A86A] to-[#8C6A2A] px-3 py-1 text-xs font-black tracking-wide text-white shadow">{stats.state || "ACTIVE"}</span>

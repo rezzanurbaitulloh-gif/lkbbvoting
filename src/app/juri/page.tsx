@@ -16,7 +16,6 @@ export default function JuriPage(){
           <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Dewan Juri</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">JURI KOMPETEN</h1>
-            <p className="mt-2 text-sm text-white/60">Penilaian objektif, profesional, dan independen oleh praktisi terbaik.</p>
           </div>
         </div>
         <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">

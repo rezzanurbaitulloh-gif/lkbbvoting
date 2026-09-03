@@ -38,7 +38,6 @@ export default async function KompetisiPage(){
           <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-10">
             <Badge className="bg-[#C9A86A] text-[#0C0A06] border-[#C9A86A]">TENTANG KOMPETISI</Badge>
             <h1 className="mt-3 text-[30px] md:text-[44px] font-black tracking-[-0.03em] leading-none">LKBB JAVASOMA<br/><span className="text-[#C9A86A]">THE IMPRESSION</span></h1>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/60">Astra Dharma Hayuning Budaya — Kompetisi baris-berbaris paling prestisius se-Jawa Timur. Diselenggarakan oleh Paskibra SMKN 1 Kertosono.</p>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link href="/tim"><Button className="rounded-full">Lihat Peserta</Button></Link>
               <Link href="/timeline"><Button variant="outline" className="rounded-full bg-white/10 border-white/15 text-white hover:bg-white/15">Lihat Timeline</Button></Link>

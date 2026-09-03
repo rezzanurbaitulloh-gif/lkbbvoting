@@ -66,7 +66,7 @@ export default function CmsPages(){
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black flex items-center gap-2"><Layers className="h-5 w-5" /> Konten Dinamis — Halaman</h1>
-          <p className="text-xs text-muted-foreground">Kelola semua halaman tanpa edit kode. Tambah halaman baru, atur urutan, dan kelola section di dalamnya. {pages.length} halaman</p>
+          
         </div>
         <div className="flex gap-2">
           <Link href="/admin/settings"><Button variant="outline" size="sm" className="rounded-full gap-1.5"><Settings className="h-4 w-4"/> Pengaturan</Button></Link>

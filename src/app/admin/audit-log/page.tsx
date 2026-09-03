@@ -134,7 +134,7 @@ export default function AuditLog(){
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-[18px] font-black">Riwayat Aktivitas</h1>
-          <p className="text-xs text-muted-foreground">Semua perubahan penting tercatat otomatis untuk transparansi. Centang untuk hapus.</p>
+          
         </div>
         <div className="flex gap-2">
           {selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={()=> setDelTarget("bulk")}>Hapus {selected.size} dipilih</Button>}
