@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next"
-import { Plus_Jakarta_Sans, Geist, Cormorant_Garamond } from "next/font/google"
+import { Inter } from "next/font/google"
 import "./globals.css"
 import { AppProvider } from "@/lib/store"
 import { RealtimeSupportNotification } from "@/components/realtime/RealtimeSupportNotification"
@@ -7,21 +7,12 @@ import { ToastProvider } from "@/components/ui/toast"
 import { AppearanceProvider } from "@/components/layout/AppearanceProvider"
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
-const jakarta = Plus_Jakarta_Sans({
+// Font standart tegas — Inter, satu keluarga untuk semua teks (body & heading) agar tegas dan konsisten
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-inter",
   display: "swap",
-  weight: ["300","400","500","600","700","800"],
-})
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  variable: "--font-cormorant",
-  display: "swap",
-  weight: ["300","400","500","600","700"],
-  style: ["normal","italic"],
+  weight: ["400","500","600","700","800","900"],
 })
 
 export const metadata: Metadata = {
@@ -60,7 +51,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={cn("h-full", "antialiased", jakarta.variable, cormorant.variable, "font-sans", geist.variable)} suppressHydrationWarning>
+    <html lang="id" className={cn("h-full", "antialiased", inter.variable, "font-sans")} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{__html: `(function(){try{var t=localStorage.getItem('lkbb-theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';var v=t&&t!=='system'?t:(t==='system'?m:'dark');if(v==='dark')document.documentElement.classList.add('dark');}catch(e){document.documentElement.classList.add('dark')}})()`}} />
       </head>

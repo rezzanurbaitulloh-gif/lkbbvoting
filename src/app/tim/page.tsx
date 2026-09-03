@@ -19,21 +19,26 @@ export default async function TimPage(){
   const showRanking = isVotingClosed || isPublished
   const showPodium = isPublished
 
-  // Ambil data sesuai status
+  // Ambil data — urutan berdasar poin tertinggi (bukan nomor urut)
+  // Selalu pakai team_ranking order by total_ballots desc (atau online_ballots saat voting closed)
   let smp: any[] = []
   let sma: any[] = []
-  if (isNotStarted || isActive) {
-    const { data } = await supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("number", { ascending: true })
-    smp = (data||[]).filter(p=>p.category==='SMP')
-    sma = (data||[]).filter(p=>p.category==='SMA')
-  } else if (isVotingClosed) {
+  if (isVotingClosed) {
     const { data } = await supabase.from("team_ranking").select("*").order("online_ballots", { ascending: false })
     smp = (data||[]).filter(p=>p.category==='SMP')
     sma = (data||[]).filter(p=>p.category==='SMA')
-  } else if (isPublished) {
+  } else {
+    // Untuk semua state lain (NOT_STARTED, ACTIVE, PUBLISHED) pakai total_ballots tertinggi di atas
     const { data } = await supabase.from("team_ranking").select("*").order("total_ballots", { ascending: false })
-    smp = (data||[]).filter(p=>p.category==='SMP')
-    sma = (data||[]).filter(p=>p.category==='SMA')
+    if (data && data.length > 0) {
+      smp = data.filter(p=>p.category==='SMP')
+      sma = data.filter(p=>p.category==='SMA')
+    } else {
+      // Fallback jika team_ranking kosong (belum ada support) — ambil peletons lalu urutkan by support 0 (tetap pakai number sebagai secondary)
+      const { data: fallback } = await supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("number", { ascending: true })
+      smp = (fallback||[]).filter(p=>p.category==='SMP')
+      sma = (fallback||[]).filter(p=>p.category==='SMA')
+    }
   }
 
   const renderGrid = (teams: any[]) => {
@@ -80,10 +85,10 @@ export default async function TimPage(){
             <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#C9A86A30] bg-[#C9A86A14] px-3 py-1 text-[11px] font-bold tracking-[0.14em] text-[#D4B77A]"><Trophy className="h-3.5 w-3.5"/> {isPublished ? "HASIL AKHIR" : isVotingClosed ? "HASIL SEMENTARA — ONLINE SAJA" : isActive ? "DAFTAR TIM" : "BELUM DIMULAI"}</div>
             <h1 className="mt-3 text-[28px] md:text-[36px] font-black tracking-[-0.03em] leading-none">{isPublished ? "TANGGA JUARA" : isVotingClosed ? "PERINGKAT SEMENTARA" : "DAFTAR TIM"}</h1>
             <p className="mt-2 max-w-xl text-sm text-white/60">
-              {isNotStarted && "Pendaftaran dan voting belum dibuka. Daftar tim ditampilkan urut nomor peserta."}
-              {isActive && "Masa dukungan dibuka — dukung tim favoritmu. Urutan berdasar nomor peserta. Dukungan dihitung realtime."}
-              {isVotingClosed && "Voting ditutup — transaksi dihentikan. Menampilkan peringkat sementara berdasarkan dukungan online saja. Admin sedang merekap offline."}
-              {isPublished && "Hasil akhir dipublikasikan — peringkat akhir online + offline + podium juara ditampilkan."}
+              {isNotStarted && "Pendaftaran dan voting belum dibuka. Daftar tim diurutkan berdasar poin tertinggi."}
+              {isActive && "Masa dukungan dibuka — dukung tim favoritmu. Urutan berdasar poin tertinggi. Dukungan dihitung realtime."}
+              {isVotingClosed && "Voting ditutup — transaksi dihentikan. Menampilkan peringkat sementara berdasar poin online saja. Admin sedang merekap offline."}
+              {isPublished && "Hasil akhir dipublikasikan — peringkat akhir berdasar total poin (online + offline)."}
             </p>
           </div>
         </div>
@@ -114,15 +119,15 @@ export default async function TimPage(){
           {sma.length===0 ? <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Belum ada peleton SMA.</div> : renderGrid(sma)}
           {isActive || isNotStarted ? (
             <div className="mt-8 rounded-xl border border-[#C9A86A20] bg-[#C9A86A0A] p-4 text-center">
-              <p className="text-xs leading-relaxed text-muted-foreground">Urutan berdasar nomor peserta (<code>#03</code>). Dukungan dihitung realtime saat aktif.</p>
+              <p className="text-xs leading-relaxed text-muted-foreground">Urutan berdasar poin tertinggi — tim dengan ballot terbanyak di paling atas. Dukungan dihitung realtime.</p>
             </div>
           ) : isVotingClosed ? (
             <div className="mt-8 rounded-xl border border-[#FACC15]/30 bg-[#FACC15]/10 p-4 text-center">
-              <p className="text-xs leading-relaxed text-[#0B0C0F]">Peringkat sementara — hanya hitungan online. Admin sedang merekap offline. Hasil akhir akan diumumkan saat dipublikasikan.</p>
+              <p className="text-xs leading-relaxed text-[#0B0C0F]">Peringkat sementara — hanya hitungan online, urutan tetap poin tertinggi. Admin sedang merekap offline.</p>
             </div>
           ) : (
             <div className="mt-8 rounded-xl border border-[#C9A86A20] bg-[#C9A86A0A] p-4 text-center">
-              <p className="text-xs leading-relaxed text-muted-foreground">Peringkat akhir online + offline. Podium juara di atas menampilkan 3 teratas tiap kategori.</p>
+              <p className="text-xs leading-relaxed text-muted-foreground">Peringkat akhir berdasar total poin (online + offline) — urutan poin tertinggi di atas.</p>
             </div>
           )}
         </div>
