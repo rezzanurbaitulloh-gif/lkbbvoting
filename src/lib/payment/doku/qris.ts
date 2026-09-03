@@ -41,8 +41,13 @@ export async function generateDokuQris(params: DokuQrisGenerateParams): Promise<
   const merchantId = params.merchantId || cfg.merchantId
   const terminalId = params.terminalId || cfg.terminalId
 
-  // Validity: default 15 minutes from now, ISO8601 +07:00
-  const validityPeriod = params.validityPeriod || new Date(Date.now() + 15 * 60 * 1000).toISOString().replace("Z", "+07:00")
+  // Validity: default 15 minutes from now, ISO8601 +07:00 without milliseconds (DOKU requires YYYY-MM-DDTHH:mm:ss+07:00)
+  const validityPeriod = params.validityPeriod || (() => {
+    const d = new Date(Date.now() + 15 * 60 * 1000 + 7*60*60*1000); // shift to WIB
+    const pad = (n:number) => String(n).padStart(2,"0");
+    const y = d.getUTCFullYear(), m = pad(d.getUTCMonth()+1), day = pad(d.getUTCDate()), h = pad(d.getUTCHours()), min = pad(d.getUTCMinutes()), s = pad(d.getUTCSeconds());
+    return `${y}-${m}-${day}T${h}:${min}:${s}+07:00`;
+  })()
 
   // Amount must be formatted as "12345.00" (2 decimals)
   const amountValue = Number(params.amount).toFixed(2)
