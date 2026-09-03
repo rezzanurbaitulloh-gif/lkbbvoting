@@ -284,6 +284,7 @@ export default function SettingsPage(){
           <h3 className="text-sm font-black">Kontak</h3>
           <div><label className="text-xs font-bold">Email</label><Input id="c_email" defaultValue={getVal("contact.email")} /></div>
           <div><label className="text-xs font-bold">WhatsApp Umum</label><Input id="c_wa" defaultValue={getVal("contact.whatsapp")} placeholder="628xxx" /></div>
+          <div><label className="text-xs font-bold">WhatsApp Floating Beranda <span className="font-normal text-muted-foreground">(drag & snap ke pinggir)</span></label><Input id="c_wa_float" defaultValue={getVal("contact.whatsapp_floating") || getVal("floating.whatsapp")} placeholder="628123456789 — nomor WA mengambang di beranda" /></div>
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <div><label className="text-xs font-bold">WA SMP</label><Input id="c_smp" defaultValue={getVal("contact.whatsapp_smp")} /></div>
             <div><label className="text-xs font-bold">WA SMA</label><Input id="c_sma" defaultValue={getVal("contact.whatsapp_sma")} /></div>
@@ -293,6 +294,8 @@ export default function SettingsPage(){
             const updates = [
               { key:"contact.email", value: (document.getElementById("c_email") as HTMLInputElement).value, category:"contact" },
               { key:"contact.whatsapp", value: (document.getElementById("c_wa") as HTMLInputElement).value, category:"contact" },
+              { key:"contact.whatsapp_floating", value: (document.getElementById("c_wa_float") as HTMLInputElement).value, category:"contact" },
+              { key:"floating.whatsapp", value: (document.getElementById("c_wa_float") as HTMLInputElement).value, category:"contact" },
               { key:"contact.whatsapp_smp", value: (document.getElementById("c_smp") as HTMLInputElement).value, category:"contact" },
               { key:"contact.whatsapp_sma", value: (document.getElementById("c_sma") as HTMLInputElement).value, category:"contact" },
               { key:"contact.address", value: (document.getElementById("c_addr") as HTMLInputElement).value, category:"contact" },

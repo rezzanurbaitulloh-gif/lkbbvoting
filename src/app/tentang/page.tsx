@@ -24,8 +24,8 @@ export default function TentangPage(){
               </div>
             </div>
             <div className="flex gap-3 justify-center">
-              <img src="/assets/brand/paskibra-logo.jpg" alt="Paskibra" className="h-28 w-28 object-contain bg-transparent" />
-              <img src="/assets/brand/school-logo.jpg" alt="SMK" className="h-28 w-28 object-contain bg-transparent" />
+              <img src="/assets/brand/paskibra-logo.jpg" alt="Paskibra" className="h-36 w-36 sm:h-40 sm:w-40 object-contain bg-transparent" />
+              <img src="/assets/brand/school-logo.jpg" alt="SMK" className="h-36 w-36 sm:h-40 sm:w-40 object-contain bg-transparent" />
             </div>
           </div>
 

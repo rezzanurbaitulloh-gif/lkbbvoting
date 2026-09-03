@@ -5,6 +5,7 @@ import { Hero } from "@/components/home/Hero"
 import { Featured } from "@/components/home/Featured"
 import { PodiumSection } from "@/components/competition/Podium"
 import { CmsSections } from "@/components/cms/CmsSectionRenderer"
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp"
 import { createServerSupabase } from "@/lib/supabase"
 
 export const revalidate = 0
@@ -89,6 +90,7 @@ export default async function HomePage(){
           </div>
         )}
       </main>
+      <FloatingWhatsApp siteSettings={siteSettings as any} />
       <Footer siteSettings={siteSettings} />
       <BottomNav />
     </div>

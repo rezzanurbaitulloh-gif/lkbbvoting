@@ -34,7 +34,7 @@ export default function LoginPage(){
       <main className="flex-1 pb-[72px] md:pb-0 grid place-items-center p-4 bg-muted/20">
         <div className="w-full max-w-[420px] rounded-[20px] border border-border bg-card p-6 md:p-8 shadow-soft">
           <div className="text-center">
-            <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="mx-auto h-12 w-12 object-contain bg-transparent" />
+            <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="mx-auto h-16 w-16 sm:h-20 sm:w-20 object-contain bg-transparent" />
             <h1 className="mt-3 text-[20px] font-black tracking-tight">Masuk ke Akun</h1>
             <p className="text-sm text-muted-foreground">Lanjutkan perjalanan dukunganmu</p>
           </div>

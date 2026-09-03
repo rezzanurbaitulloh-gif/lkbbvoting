@@ -86,7 +86,7 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
         <div className="grid gap-6 sm:gap-8 grid-cols-1 min-[360px]:grid-cols-1 sm:grid-cols-2 md:grid-cols-[1.4fr_0.9fr_0.9fr_1fr]">
           <div className="min-w-0">
             <div className="flex items-center gap-2.5 sm:gap-3">
-              <img src={logoMain} alt={siteName} className="h-9 w-9 sm:h-10 sm:w-10 object-contain bg-transparent shrink-0" />
+              <img src={logoMain} alt={siteName} className="h-12 w-12 sm:h-14 sm:w-14 object-contain bg-transparent shrink-0" />
               <div className="min-w-0">
                 <div className="text-[13px] sm:text-sm font-extrabold tracking-tight break-words leading-tight">{siteName}</div>
                 <div className="text-[10px] sm:text-[11px] tracking-[0.12em] text-gold font-bold">{siteSubtitle}</div>
@@ -96,8 +96,8 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
               {siteDesc}
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-2">
-              <img src={logoPaskibra} alt="Paskibra" className="h-7 w-7 sm:h-8 sm:w-8 object-contain bg-transparent shrink-0" />
-              <img src={logoSchool} alt="SMK" className="h-7 w-7 sm:h-8 sm:w-8 object-contain bg-transparent shrink-0" />
+              <img src={logoPaskibra} alt="Paskibra" className="h-10 w-10 sm:h-12 sm:w-12 object-contain bg-transparent shrink-0" />
+              <img src={logoSchool} alt="SMK" className="h-10 w-10 sm:h-12 sm:w-12 object-contain bg-transparent shrink-0" />
               <span className="text-[11px] sm:text-xs text-muted-foreground break-words">Penyelenggara: <b className="text-foreground">{organizer}</b></span>
             </div>
           </div>
@@ -124,10 +124,6 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
             <div className="label-ceremonial mb-3">Kontak</div>
             <div className="grid gap-2 text-sm text-muted-foreground">
               <div>Email: <a href={`mailto:${email}`} className="text-foreground">{email}</a></div>
-              <div>WhatsApp: <span className="text-foreground">{whatsapp}</span></div>
-              {socialList.filter(s=> s.platform==="instagram").slice(0,1).map(s=> (
-                <div key={s.url}>Instagram: <a href={s.url} target="_blank" className="text-foreground">{s.url.replace("https://","").replace("http://","")}</a></div>
-              ))}
               <div className="pt-2 flex gap-2 flex-wrap">
                 {socialList.map(s=> (
                   <a key={s.platform+"-"+s.url} href={s.url} target="_blank" title={s.platform} className="h-8 w-8 rounded-full border border-border overflow-hidden hover:scale-105 transition-transform grid place-items-center">

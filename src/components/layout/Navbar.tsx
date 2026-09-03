@@ -68,7 +68,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
       <div className="mx-auto flex h-[56px] sm:h-[60px] lg:h-[64px] max-w-[1280px] items-center justify-between px-3 sm:px-4 md:px-6 gap-2">
         {/* Logo — dynamic from site_settings */}
         <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="relative h-8 w-8 sm:h-9 sm:w-9 max-[320px]:h-7 max-[320px]:w-7 bg-transparent flex items-center justify-center shrink-0">
+          <div className="relative h-11 w-11 sm:h-12 sm:w-12 max-[320px]:h-9 max-[320px]:w-9 bg-transparent flex items-center justify-center shrink-0">
             <img src={logoUrl} alt={siteName} className="h-full w-full object-contain bg-transparent" />
           </div>
           <div className="hidden sm:block min-w-0">
@@ -160,7 +160,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
             <SheetContent side="right" className="w-[88vw] max-w-[320px] sm:w-[320px] p-0 overflow-hidden">
               <SheetHeader className="p-5 border-b text-left">
                 <div className="flex items-center gap-3">
-                  <img src={logoUrl} alt={siteName} className="h-8 w-8 rounded-xl object-cover border" />
+                  <img src={logoUrl} alt={siteName} className="h-11 w-11 object-contain bg-transparent" />
                   <div>
                     <SheetTitle className="text-sm font-black">{siteName} {siteSubtitle}</SheetTitle>
                     <div className="text-[11px] tracking-widest text-muted-foreground">{siteTagline}</div>
