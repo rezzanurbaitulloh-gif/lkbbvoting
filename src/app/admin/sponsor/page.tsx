@@ -7,7 +7,7 @@ import { Select } from "@/components/ui/select"
 import { AlertDialog } from "@/components/ui/alert-dialog"
 import { createBrowserSupabase } from "@/lib/supabase"
 import { useToast } from "@/components/ui/toast"
-import { ImageCropDialog } from "@/components/ui/image-crop-dialog"
+import { ImageUploadGrid } from "@/components/ui/image-upload-grid"
 
 export default function Page(){
   const { toast } = useToast()
@@ -18,30 +18,7 @@ export default function Page(){
   const [selected,setSelected]=useState<Set<string>>(new Set())
   const [saving,setSaving]=useState(false)
   const [form,setForm]=useState<any>({ name:"", tier:"Mitra Resmi", logo_url:"", url:"", display_order:1, active:"true" })
-  const [uploading,setUploading]=useState<string|null>(null)
-  const [cropSrc,setCropSrc]=useState("")
-  const [cropOpen,setCropOpen]=useState(false)
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>)=>{
-    const file = e.target.files?.[0]
-    if(!file) return
-    setCropSrc(URL.createObjectURL(file))
-    setCropOpen(true)
-    e.target.value=""
-  }
-  const handleCropped = async (blob: Blob)=>{
-    setUploading("logo_url")
-    try{
-      const supabase = createBrowserSupabase()
-      const path = `sponsor/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`
-      const { error } = await supabase.storage.from("media").upload(path, blob)
-      if(error) throw error
-      const { data } = supabase.storage.from("media").getPublicUrl(path)
-      setForm((prev:any)=> ({ ...prev, logo_url: data.publicUrl }))
-      toast({ title:"Logo berhasil diunggah", variant:"success"})
-    } catch(e:any){
-      toast({ title:"Gagal unggah", description:e.message, variant:"error"})
-    } finally{ setUploading(null); setCropSrc("") }
-  }
+  // grid upload handles everything
   const load = ()=>{ const s=createBrowserSupabase(); s.from("sponsors").select("*").order("display_order").then(({data})=> setList(data||[])) }
   useEffect(()=>{ load() },[])
   const toggleSelect = (id:string)=>{ const n=new Set(selected); if(n.has(id)) n.delete(id); else n.add(id); setSelected(n) }
@@ -103,19 +80,14 @@ export default function Page(){
           <div className="grid gap-3">
             <div><label className="text-xs font-bold">Nama Sponsor *</label><Input value={form.name} onChange={e=> setForm({...form, name:e.target.value})} placeholder="Tulis nama sponsor" /></div>
             <div><label className="text-xs font-bold">Tingkatan Sponsor</label><Select value={String(form.tier)} onValueChange={v=> setForm({...form, tier:v})} options={[{value:"Main Sponsor",label:"Sponsor Utama"},{value:"Official Partner",label:"Mitra Resmi"},{value:"Supporting Partner",label:"Mitra Pendukung"},{value:"Media Partner",label:"Mitra Media"}]} /></div>
-            <div>
-              <label className="text-xs font-bold">Logo Sponsor</label>
-              {form.logo_url ? (
-                <img src={form.logo_url} alt="Preview" className="mt-2 h-32 w-full object-contain bg-transparent" />
-              ) : (
-                <div className="mt-2 h-32 grid place-items-center rounded-xl border border-dashed bg-muted text-xs text-muted-foreground">Belum ada logo</div>
-              )}
-              <div className="mt-2">
-                <Input type="file" accept="image/*" onChange={handleFileSelect} />
-                {uploading==="logo_url" && <span className="text-xs py-1 text-muted-foreground">Mengunggah...</span>}
-                <p className="text-[11px] text-muted-foreground mt-1">Pilih logo, lalu sesuaikan potongan rasio bebas. Pratinjau langsung tampil.</p>
-              </div>
-            </div>
+            <ImageUploadGrid
+              label="Logo Sponsor"
+              value={form.logo_url || null}
+              onChange={(url)=> setForm((p:any)=> ({...p, logo_url: url || ""}))}
+              folder="sponsors"
+              logoMode
+              description="Logo sponsor — pilih dengan/tanpa latar belakang"
+            />
             <div><label className="text-xs font-bold">Alamat Website</label><Input value={form.url} onChange={e=> setForm({...form, url:e.target.value})} placeholder="https://..." /></div>
             <div><label className="text-xs font-bold">Urutan Tampil</label><Input type="number" value={form.display_order} onChange={e=> setForm({...form, display_order: parseInt(e.target.value)||0})} placeholder="1" /></div>
             <div><label className="text-xs font-bold">Tampilkan di Website?</label><Select value={String(form.active)} onValueChange={v=> setForm({...form, active:v})} options={[{value:"true",label:"Ya, tampilkan"},{value:"false",label:"Sembunyikan"}]} /></div>
@@ -124,7 +96,6 @@ export default function Page(){
         </DialogContent>
       </Dialog>
       <AlertDialog open={!!delTarget} onOpenChange={(o:any)=> !o && setDelTarget(null)} title="Hapus data?" description={`Yakin hapus ${delTarget?.title || delTarget?.name || ""}?`} onConfirm={handleDelete} />
-      <ImageCropDialog open={cropOpen} onOpenChange={setCropOpen} src={cropSrc} onCropped={handleCropped} />
     </div>
   )
 }

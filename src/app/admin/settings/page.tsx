@@ -7,6 +7,7 @@ import { createBrowserSupabase } from "@/lib/supabase"
 import { useToast } from "@/components/ui/toast"
 import { MediaPicker } from "@/components/admin/MediaPicker"
 import { Settings, Palette, Phone, Share2, Trophy, Image as ImgIcon, Eye, Sparkles } from "lucide-react"
+import { ImageUploadGrid } from "@/components/ui/image-upload-grid"
 
 const STATE_OPTIONS = [
   { value:"NOT_STARTED", label:"Belum Dimulai — belum bisa dukung" },
@@ -16,6 +17,25 @@ const STATE_OPTIONS = [
 ]
 
 type Tab = "general"|"branding"|"contact"|"social"|"appearance"|"event"|"sound"
+
+function BrandingGrid({ itemKey, label, logoMode, getVal, handleSaveSettings, saving }: { itemKey: string, label: string, logoMode: boolean, getVal: any, handleSaveSettings: any, saving: boolean }){
+  const val = getVal(itemKey, "")
+  const clean = val ? String(val).replace(/^"|"$/g,"") : ""
+  return (
+    <div className="space-y-2">
+      <ImageUploadGrid
+        label={label}
+        value={clean || null}
+        onChange={(url)=>{
+          handleSaveSettings([{ key: itemKey, value: url || "", category: "branding" }])
+        }}
+        folder="branding"
+        logoMode={logoMode}
+        description={logoMode ? "Drag & drop atau klik grid — pilih dengan/tanpa latar belakang" : "Drag & drop atau klik grid"}
+      />
+    </div>
+  )
+}
 
 export default function SettingsPage(){
   const { toast } = useToast()
@@ -245,29 +265,17 @@ export default function SettingsPage(){
       {tab==="branding" && (
         <div className="rounded-[16px] border border-border bg-card p-5 space-y-4 sm:space-y-5">
           <h3 className="text-sm font-black flex items-center gap-2"><ImgIcon className="h-4 w-4"/> Branding — Logo & Poster</h3>
+          <p className="text-xs text-muted-foreground">Upload via grid drag & drop — klik grid atau drag gambar. Tanpa field URL.</p>
           {[
-            { key:"branding.logo", label:"Logo Utama", id:"logo" },
-            { key:"branding.logo_paskibra", label:"Logo Paskibra", id:"logo_paskibra" },
-            { key:"branding.logo_school", label:"Logo Sekolah", id:"logo_school" },
-            { key:"branding.poster", label:"Poster Resmi", id:"poster" },
+            { key:"branding.logo", label:"Logo Utama", id:"logo", logoMode: true },
+            { key:"branding.logo_paskibra", label:"Logo Paskibra", id:"logo_paskibra", logoMode: true },
+            { key:"branding.logo_school", label:"Logo Sekolah", id:"logo_school", logoMode: true },
+            { key:"branding.poster", label:"Poster Resmi", id:"poster", logoMode: false },
           ].map(item=> (
             <div key={item.key} className="space-y-2">
-              <label className="text-xs font-bold">{item.label}</label>
-              <div className="flex gap-2">
-                <Input id={item.id} defaultValue={getVal(item.key, "")} placeholder="/assets/brand/... atau https://..." className="flex-1 font-mono text-sm" />
-                <Button type="button" variant="outline" size="sm" className="rounded-full gap-1.5 shrink-0" onClick={()=> setPickerFor(item.id)}><ImgIcon className="h-3.5 w-3.5"/> Pilih Media</Button>
-              </div>
-              {getVal(item.key) && <img src={getVal(item.key)} alt="" className="h-16 w-16 object-contain bg-transparent" onError={e=> (e.currentTarget.style.display='none')} />}
+              <BrandingGrid key={item.key} itemKey={item.key} label={item.label} logoMode={item.logoMode} getVal={getVal} handleSaveSettings={handleSaveSettings} saving={saving} />
             </div>
           ))}
-          <Button disabled={saving} className="rounded-full" onClick={()=>{
-            const updates = ["branding.logo","branding.logo_paskibra","branding.logo_school","branding.poster"].map(k=> {
-              const elId = k==="branding.logo" ? "logo" : k==="branding.logo_paskibra" ? "logo_paskibra" : k==="branding.logo_school" ? "logo_school" : "poster"
-              return { key:k, value: (document.getElementById(elId) as HTMLInputElement).value, category:"branding" }
-            })
-            handleSaveSettings(updates)
-          }}>Simpan Branding</Button>
-          {pickerFor && <MediaPicker open={!!pickerFor} onOpenChange={(o)=> !o && setPickerFor(null)} onSelect={(url)=> { const el=document.getElementById(pickerFor) as HTMLInputElement; if(el) el.value=url }} folder="branding" />}
         </div>
       )}
 
@@ -464,30 +472,13 @@ export default function SettingsPage(){
 
             <div className="grid md:grid-cols-2 gap-5">
               <div className="space-y-4">
-                <div>
-                  <label className="text-xs font-bold">URL Gambar Background</label>
-                  <div className="flex gap-2 mt-1.5">
-                    <Input value={heroBg} onChange={e=> setHeroBg(e.target.value)} placeholder="https://... atau /assets/..." className="flex-1 font-mono text-sm" />
-                    <Button type="button" variant="outline" size="sm" className="rounded-full shrink-0" onClick={()=> setPickerFor("heroBg")}><ImgIcon className="h-3.5 w-3.5"/> Pilih</Button>
-                  </div>
-                  <div className="mt-2 flex gap-2">
-                    <label className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs font-bold cursor-pointer hover:bg-muted">
-                      <input type="file" accept="image/*" className="hidden" onChange={async e=>{
-                        const file=e.target.files?.[0]; if(!file) return
-                        const sup=createBrowserSupabase()
-                        const path=`branding/hero-${Date.now()}-${file.name}`
-                        const { error } = await sup.storage.from("media").upload(path, file)
-                        if(error){ toast({title:"Gagal upload", description:error.message, variant:"error"}); return }
-                        const { data } = sup.storage.from("media").getPublicUrl(path)
-                        setHeroBg(data.publicUrl)
-                        toast({title:"Gambar diunggah", variant:"success"})
-                      }} />
-                      Upload Gambar
-                    </label>
-                    {heroBg && <Button variant="ghost" size="sm" className="rounded-full text-xs" onClick={()=> setHeroBg("")}>Hapus</Button>}
-                  </div>
-                  <p className="text-[11px] text-muted-foreground mt-1">Gunakan foto baris-berbaris / upacara beresolusi tinggi. Rasio 16:9 terbaik.</p>
-                </div>
+                <ImageUploadGrid
+                  label="Background Hero"
+                  value={heroBg || null}
+                  onChange={(url)=> setHeroBg(url || "")}
+                  folder="branding"
+                  description="Drag & drop atau klik grid — foto baris-berbaris 16:9 terbaik"
+                />
 
                 <div>
                   <label className="text-xs font-bold">Opasitas Overlay ({heroOverlay}%)</label>
@@ -495,14 +486,14 @@ export default function SettingsPage(){
                   <div className="flex justify-between text-[11px] text-muted-foreground"><span>Transparan</span><span>Pekat</span></div>
                 </div>
 
-                <div>
-                  <label className="text-xs font-bold">Logo Watermark (opsional)</label>
-                  <div className="flex gap-2 mt-1.5">
-                    <Input value={heroLogo} onChange={e=> setHeroLogo(e.target.value)} placeholder="/assets/brand/lkbb-logo.jpg atau https://..." className="flex-1 font-mono text-sm" />
-                    <Button type="button" variant="outline" size="sm" className="rounded-full shrink-0" onClick={()=> setPickerFor("heroLogo")}><ImgIcon className="h-3.5 w-3.5"/> Pilih</Button>
-                  </div>
-                  {heroLogo && <img src={heroLogo} alt="logo preview" className="mt-2 h-12 w-12 object-contain bg-transparent" onError={e=> (e.currentTarget.style.display='none')} />}
-                </div>
+                <ImageUploadGrid
+                  label="Logo Watermark (opsional)"
+                  value={heroLogo || null}
+                  onChange={(url)=> setHeroLogo(url || "")}
+                  folder="branding"
+                  logoMode
+                  description="Logo asli tanpa crop lingkaran — pilih dengan/tanpa latar"
+                />
               </div>
 
               {/* Hero preview */}
@@ -541,30 +532,14 @@ export default function SettingsPage(){
             </div>
             <div className="grid md:grid-cols-2 gap-5">
               <div className="space-y-4">
-                <div>
-                  <label className="text-xs font-bold">URL Gambar Background Tim</label>
-                  <div className="flex gap-2 mt-1.5">
-                    <Input value={timBg} onChange={e=> setTimBg(e.target.value)} placeholder={heroBg ? `Kosong = ikut Hero (${heroBg.slice(0,32)}...)` : "https://... atau /assets/..."} className="flex-1 font-mono text-sm" />
-                    <Button type="button" variant="outline" size="sm" className="rounded-full shrink-0" onClick={()=> setPickerFor("timBg")}><ImgIcon className="h-3.5 w-3.5"/> Pilih</Button>
-                  </div>
-                  <div className="mt-2 flex gap-2">
-                    <label className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs font-bold cursor-pointer hover:bg-muted">
-                      <input type="file" accept="image/*" className="hidden" onChange={async e=>{
-                        const file=e.target.files?.[0]; if(!file) return
-                        const sup=createBrowserSupabase()
-                        const path=`branding/tim-${Date.now()}-${file.name}`
-                        const { error } = await sup.storage.from("media").upload(path, file)
-                        if(error){ toast({title:"Gagal upload", description:error.message, variant:"error"}); return }
-                        const { data } = sup.storage.from("media").getPublicUrl(path)
-                        setTimBg(data.publicUrl)
-                        toast({title:"Gambar diunggah", variant:"success"})
-                      }} />
-                      Upload Gambar
-                    </label>
-                    {timBg && <Button variant="ghost" size="sm" className="rounded-full text-xs" onClick={()=> setTimBg("")}>Kosongkan (ikut Hero)</Button>}
-                  </div>
-                  <p className="text-[11px] text-muted-foreground mt-1">Jika dikosongkan, halaman Tim akan otomatis memakai gambar Hero Beranda.</p>
-                </div>
+                <ImageUploadGrid
+                  label="Background Tim"
+                  value={timBg || null}
+                  onChange={(url)=> setTimBg(url || "")}
+                  folder="branding"
+                  description="Drag & drop atau klik grid — kosong = ikut Hero Beranda"
+                />
+                {timBg && <Button variant="ghost" size="sm" className="rounded-full text-xs" onClick={()=> setTimBg("")}>Kosongkan (ikut Hero)</Button>}
                 <div>
                   <label className="text-xs font-bold">Opasitas Overlay Tim ({timOverlay}%)</label>
                   <input type="range" min={0} max={90} value={timOverlay} onChange={e=> setTimOverlay(parseInt(e.target.value))} className="w-full mt-1 accent-[var(--primary)]" />

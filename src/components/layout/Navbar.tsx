@@ -158,16 +158,6 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                 </div>
               </SheetHeader>
               <nav className="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
-                {nav.map(item=> {
-                  const Icon = item.icon
-                  const active = pathname===item.href || (item.href!=="/" && pathname.startsWith(item.href + "/"))
-                  return (
-                    <Link key={item.href} href={item.href} onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", active ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground")}>
-                      <Icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
-                    </Link>
-                  )
-                })}
-                <div className="h-px bg-border my-1" />
                 {currentUser ? (
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-3 rounded-xl bg-muted p-3 w-full">
@@ -186,16 +176,12 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                     <button onClick={async ()=>{ setOpen(false); await logout(); router.push("/"); router.refresh() }} className="flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors text-left"><LogOut className="h-4 w-4 shrink-0"/> <span>Logout</span></button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="flex flex-col gap-2">
+                    <Link href="/profile" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground")}><User className="h-4 w-4 shrink-0"/> <span>Profile</span></Link>
+                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground")}><Settings className="h-4 w-4 shrink-0"/> <span>Pengaturan</span></Link>
                     <Link href="/login" onClick={()=>setOpen(false)}><Button variant="outline" className="w-full rounded-full">Masuk</Button></Link>
-                    <Link href="/tim" onClick={()=>setOpen(false)}><Button className="w-full rounded-full">Dukung Sekarang</Button></Link>
                   </div>
                 )}
-                <div className="flex gap-4 pt-2 text-xs text-muted-foreground">
-                  <Link href="/tentang">Tentang</Link>
-                  <Link href="/kontak">Kontak</Link>
-                  <Link href="/pengumuman">Info</Link>
-                </div>
               </nav>
             </SheetContent>
           </Sheet>

@@ -9,7 +9,7 @@ import { Select } from "@/components/ui/select"
 import { AlertDialog } from "@/components/ui/alert-dialog"
 import { createBrowserSupabase } from "@/lib/supabase"
 import { useToast } from "@/components/ui/toast"
-import { ImageCropDialog } from "@/components/ui/image-crop-dialog"
+import { ImageUploadGrid } from "@/components/ui/image-upload-grid"
 
 export default function AdminPeleton(){
   const { toast } = useToast()
@@ -19,11 +19,7 @@ export default function AdminPeleton(){
   const [editing, setEditing] = useState<any|null>(null)
   const [delTarget, setDelTarget] = useState<any|null>(null)
   const [selected, setSelected] = useState<Set<string>>(new Set())
-  const [uploading, setUploading] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
-  const [cropSrc, setCropSrc] = useState<string>("")
-  const [cropField, setCropField] = useState<"image_url"|"logo_url"|null>(null)
-  const [cropOpen, setCropOpen] = useState(false)
   const [form, setForm] = useState<any>({ number:"", name:"", school:"", city:"Kertosono", province:"Jawa Timur", category:"SMA", image_url:"", logo_url:"", display_order:1, active:true })
 
   const load = ()=>{
@@ -53,30 +49,7 @@ export default function AdminPeleton(){
     load()
   }
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, field: "image_url"|"logo_url")=>{
-    const file = e.target.files?.[0]
-    if(!file) return
-    const url = URL.createObjectURL(file)
-    setCropSrc(url)
-    setCropField(field)
-    setCropOpen(true)
-    e.target.value = ""
-  }
-  const handleCropped = async (blob: Blob)=>{
-    if(!cropField) return
-    setUploading(cropField)
-    try{
-      const supabase = createBrowserSupabase()
-      const path = `peleton/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`
-      const { error } = await supabase.storage.from("media").upload(path, blob)
-      if(error) throw error
-      const { data } = supabase.storage.from("media").getPublicUrl(path)
-      setForm((prev:any)=> ({ ...prev, [cropField]: data.publicUrl }))
-      toast({ title:"Gambar berhasil diunggah", variant:"success"})
-    } catch(e:any){
-      toast({ title:"Gagal unggah", description:e.message, variant:"error"})
-    } finally{ setUploading(null); setCropSrc(""); setCropField(null) }
-  }
+  // upload via grid — no url input, drag & drop
 
   const openAdd = ()=>{
     setEditing(null)
@@ -217,32 +190,23 @@ export default function AdminPeleton(){
               <div><label className="text-xs font-bold">Provinsi</label><Input value={form.province} onChange={e=> setForm({...form, province:e.target.value})} /></div>
             </div>
             <div>
-              <label className="text-xs font-bold">Foto Tim</label>
-              {form.image_url ? (
-                <img src={form.image_url} alt="Preview Foto Tim" className="mt-2 h-40 w-full object-cover rounded-xl border" />
-              ) : (
-                <div className="mt-2 h-32 grid place-items-center rounded-xl border border-dashed bg-muted text-xs text-muted-foreground">Belum ada foto — unggah di bawah</div>
-              )}
-              <div className="mt-2">
-                <Input type="file" accept="image/*" onChange={e=> handleFileSelect(e, "image_url")} />
-                {uploading==="image_url" && <span className="text-xs py-1 text-muted-foreground">Mengunggah...</span>}
-                <p className="text-[11px] text-muted-foreground mt-1">Pilih gambar, lalu sesuaikan potongan dengan rasio bebas. Pratinjau langsung tampil.</p>
-              </div>
+              <ImageUploadGrid
+                label="Foto Tim"
+                value={form.image_url || null}
+                onChange={(url)=> setForm((prev:any)=> ({...prev, image_url: url || ""}))}
+                folder="peleton"
+                description="Foto tim asli, tidak di-crop lingkaran"
+              />
             </div>
             <div>
-              <label className="text-xs font-bold">Logo Sekolah (full, tidak terpotong; bisa PNG transparan)</label>
-              {form.logo_url ? (
-                <div className="mt-2 h-24 w-24 bg-transparent grid place-items-center">
-                  <img src={form.logo_url} alt="Preview Logo" className="h-full w-full object-contain bg-transparent" />
-                </div>
-              ) : (
-                <div className="mt-2 h-24 w-24 grid place-items-center rounded-xl border border-dashed bg-muted text-xs text-muted-foreground text-center">Belum ada logo</div>
-              )}
-              <div className="mt-2">
-                <Input type="file" accept="image/*" onChange={e=> handleFileSelect(e, "logo_url")} />
-                {uploading==="logo_url" && <span className="text-xs py-1 text-muted-foreground">Mengunggah...</span>}
-                <p className="text-[11px] text-muted-foreground mt-1">Unggah logo — akan tampil penuh (object-contain) di semua tampilan, tidak terpotong lingkaran. Bisa background putih atau transparan.</p>
-              </div>
+              <ImageUploadGrid
+                label="Logo Sekolah"
+                value={form.logo_url || null}
+                onChange={(url)=> setForm((prev:any)=> ({...prev, logo_url: url || ""}))}
+                folder="peleton"
+                logoMode
+                description="Pilih dengan/tanpa latar belakang — tanpa latar akan benar transparan"
+              />
             </div>
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div><label className="text-xs font-bold">Urutan Tampil</label><Input type="number" value={form.display_order} onChange={e=> setForm({...form, display_order: parseInt(e.target.value)||1})} /></div>
@@ -257,7 +221,6 @@ export default function AdminPeleton(){
       </Dialog>
 
       <AlertDialog open={!!delTarget} onOpenChange={(o)=> !o && setDelTarget(null)} title="Hapus tim?" description={`Yakin hapus ${delTarget?.name} (#${delTarget?.number})? Data tidak bisa dikembalikan.`} onConfirm={handleDelete} />
-      <ImageCropDialog open={cropOpen} onOpenChange={setCropOpen} src={cropSrc} onCropped={handleCropped} />
     </div>
   )
 }

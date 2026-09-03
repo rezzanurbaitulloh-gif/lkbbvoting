@@ -7,7 +7,7 @@ import { Select } from "@/components/ui/select"
 import { AlertDialog } from "@/components/ui/alert-dialog"
 import { createBrowserSupabase } from "@/lib/supabase"
 import { useToast } from "@/components/ui/toast"
-import { ImageCropDialog } from "@/components/ui/image-crop-dialog"
+import { ImageUploadGrid } from "@/components/ui/image-upload-grid"
 
 export default function Page(){
   const { toast } = useToast()
@@ -18,30 +18,7 @@ export default function Page(){
   const [selected,setSelected]=useState<Set<string>>(new Set())
   const [saving,setSaving]=useState(false)
   const [form,setForm]=useState<any>({ name:"", role:"Juri PBB", bio:"", photo_url:"", sort_order:1 })
-  const [uploading,setUploading]=useState<string|null>(null)
-  const [cropSrc,setCropSrc]=useState("")
-  const [cropOpen,setCropOpen]=useState(false)
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>)=>{
-    const file = e.target.files?.[0]
-    if(!file) return
-    setCropSrc(URL.createObjectURL(file))
-    setCropOpen(true)
-    e.target.value=""
-  }
-  const handleCropped = async (blob: Blob)=>{
-    setUploading("photo_url")
-    try{
-      const supabase = createBrowserSupabase()
-      const path = `juri/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`
-      const { error } = await supabase.storage.from("media").upload(path, blob)
-      if(error) throw error
-      const { data } = supabase.storage.from("media").getPublicUrl(path)
-      setForm((prev:any)=> ({ ...prev, photo_url: data.publicUrl }))
-      toast({ title:"Foto berhasil diunggah", variant:"success"})
-    } catch(e:any){
-      toast({ title:"Gagal unggah", description:e.message, variant:"error"})
-    } finally{ setUploading(null); setCropSrc("") }
-  }
+  // upload via grid
   const load = ()=>{ const s=createBrowserSupabase(); s.from("judges").select("*").order("sort_order").then(({data})=> setList(data||[])) }
   useEffect(()=>{ load() },[])
   const toggleSelect = (id:string)=>{ const n=new Set(selected); if(n.has(id)) n.delete(id); else n.add(id); setSelected(n) }
@@ -104,26 +81,19 @@ export default function Page(){
             <div><label className="text-xs font-bold">Nama Juri *</label><Input value={form.name} onChange={e=> setForm({...form, name:e.target.value})} placeholder="Tulis nama juri" /></div>
             <div><label className="text-xs font-bold">Jabatan</label><Input value={form.role} onChange={e=> setForm({...form, role:e.target.value})} placeholder="Contoh: Juri PBB" /></div>
             <div><label className="text-xs font-bold">Biodata Singkat</label><textarea value={form.bio} onChange={e=> setForm({...form, bio:e.target.value})} placeholder="Tulis latar belakang juri" className="w-full min-h-[80px] rounded-xl border border-input bg-background px-3 py-2 text-sm" /></div>
-            <div>
-              <label className="text-xs font-bold">Foto Juri</label>
-              {form.photo_url ? (
-                <img src={form.photo_url} alt="Preview" className="mt-2 h-40 w-full object-cover rounded-xl border" />
-              ) : (
-                <div className="mt-2 h-32 grid place-items-center rounded-xl border border-dashed bg-muted text-xs text-muted-foreground">Belum ada foto</div>
-              )}
-              <div className="mt-2">
-                <Input type="file" accept="image/*" onChange={handleFileSelect} />
-                {uploading==="photo_url" && <span className="text-xs py-1 text-muted-foreground">Mengunggah...</span>}
-                <p className="text-[11px] text-muted-foreground mt-1">Pilih foto, lalu sesuaikan potongan rasio bebas. Pratinjau langsung tampil.</p>
-              </div>
-            </div>
+            <ImageUploadGrid
+              label="Foto Juri"
+              value={form.photo_url || null}
+              onChange={(url)=> setForm((p:any)=> ({...p, photo_url: url || ""}))}
+              folder="juri"
+              description="Drag & drop atau klik grid untuk upload foto juri"
+            />
             <div><label className="text-xs font-bold">Urutan Tampil</label><Input type="number" value={form.sort_order} onChange={e=> setForm({...form, sort_order: parseInt(e.target.value)||0})} placeholder="1" /></div>
           </div>
           <DialogFooter><Button variant="outline" onClick={()=> setOpen(false)} disabled={saving}>Batal</Button><Button onClick={handleSave} disabled={saving}>{saving ? "Memproses..." : editing ? "Simpan" : "Tambah"}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
       <AlertDialog open={!!delTarget} onOpenChange={(o:any)=> !o && setDelTarget(null)} title="Hapus data?" description={`Yakin hapus ${delTarget?.title || delTarget?.name || ""}?`} onConfirm={handleDelete} />
-      <ImageCropDialog open={cropOpen} onOpenChange={setCropOpen} src={cropSrc} onCropped={handleCropped} />
     </div>
   )
 }

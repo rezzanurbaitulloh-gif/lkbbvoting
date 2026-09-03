@@ -8,7 +8,7 @@ import { Select } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { AlertDialog } from "@/components/ui/alert-dialog"
 import { useToast } from "@/components/ui/toast"
-import { MediaPicker } from "@/components/admin/MediaPicker"
+import { ImageUploadGrid } from "@/components/ui/image-upload-grid"
 import { ArrowLeft, Eye, EyeOff, Image as ImgIcon, Plus, Trash2, ChevronUp, ChevronDown, Settings2 } from "lucide-react"
 
 const TYPE_OPTIONS = [
@@ -46,7 +46,6 @@ const CONTENT_PRESETS: Record<string, Record<string, any>> = {
 const HERO_SETTINGS_PRESET = { variant:"dark", showLogo:true, overlayOpacity:0.32, logoOpacity:0.08, logoAsBackground:true, bgPosition:"center" }
 
 function SectionContentEditor({ content, onChange, type }: { content: Record<string, any>; onChange: (c: Record<string, any>)=>void; type: string }){
-  const [pickerFor, setPickerFor] = useState<string | null>(null)
   const keys = Object.keys(content||{})
   // if empty, show preset keys for that type
   const displayKeys = keys.length>0 ? keys : Object.keys(CONTENT_PRESETS[type]||{})
@@ -69,6 +68,8 @@ function SectionContentEditor({ content, onChange, type }: { content: Record<str
   const isImageField = (k:string, v:any)=>
     k.toLowerCase().includes("image") || k.toLowerCase().includes("logo") || k.toLowerCase().includes("poster") || k.toLowerCase().includes("src") || k.toLowerCase().includes("banner") || (typeof v==="string" && v.startsWith("http") && (v.includes(".jpg")||v.includes(".png")||v.includes(".webp")))
 
+  const isLogoField = (k:string)=> k.toLowerCase().includes("logo")
+
   return (
     <div className="space-y-3">
       {displayKeys.length===0 && <div className="text-xs text-muted-foreground">Belum ada field. Klik “Tambah Field”.</div>}
@@ -82,12 +83,14 @@ function SectionContentEditor({ content, onChange, type }: { content: Record<str
               <button type="button" onClick={()=> removeField(k)} className="text-[11px] text-red-600 hover:underline">hapus</button>
             </div>
             {isImg ? (
-              <div className="flex gap-2">
-                <Input value={typeof v==="string" ? v : JSON.stringify(v)} onChange={e=> updateField(k, e.target.value)} placeholder="https://... atau /assets/... " className="flex-1 font-mono text-sm" />
-                <Button type="button" variant="outline" size="sm" className="shrink-0 rounded-full gap-1.5" onClick={()=> setPickerFor(k)}>
-                  <ImgIcon className="h-3.5 w-3.5"/> Pilih
-                </Button>
-              </div>
+              <ImageUploadGrid
+                label={k}
+                value={typeof v==="string" ? v : ""}
+                onChange={(url)=> updateField(k, url || "")}
+                folder={type==="hero" ? "hero" : type==="banner" ? "banner" : "general"}
+                logoMode={isLogoField(k)}
+                description={isLogoField(k) ? "Logo asli tanpa crop — pilih dengan/tanpa latar belakang" : "Drag & drop atau klik grid"}
+              />
             ) : typeof v==="string" && v.length>80 ? (
               <textarea value={v} onChange={e=> updateField(k, e.target.value)} className="w-full min-h-[80px] rounded-xl border border-input px-3 py-2 text-sm" />
             ) : (
@@ -99,16 +102,10 @@ function SectionContentEditor({ content, onChange, type }: { content: Record<str
                 updateField(k, val)
               }} />
             )}
-            {isImg && typeof v==="string" && v && (
-              <img src={v} alt="" className="mt-1 h-24 w-full object-cover rounded-xl border bg-muted" onError={(e)=> (e.currentTarget.style.display='none')} />
-            )}
           </div>
         )
       })}
       <Button type="button" variant="outline" size="sm" className="rounded-full gap-1" onClick={addField}><Plus className="h-3.5 w-3.5"/> Tambah Field</Button>
-      {pickerFor && (
-        <MediaPicker open={!!pickerFor} onOpenChange={(o)=> !o && setPickerFor(null)} onSelect={(url)=> updateField(pickerFor, url)} folder={type==="hero" ? "hero" : type==="banner" ? "banner" : "general"} />
-      )}
       {/* raw JSON fallback */}
       <details className="rounded-xl border border-border bg-muted/20 p-3">
         <summary className="text-xs font-bold cursor-pointer">Lihat / Edit JSON mentah (advanced)</summary>
