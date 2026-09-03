@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 import { createBrowserSupabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Heart, LogOut, Settings, Trophy, Clock } from "lucide-react"
+import { Heart, LogOut, Settings, Clock } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 export default function ProfilePage(){
@@ -82,7 +82,6 @@ export default function ProfilePage(){
                 <Link href="/profile/dukungan"><Button variant="outline" className="rounded-full gap-2"><Clock className="h-4 w-4"/> Riwayat Dukungan</Button></Link>
                 <Link href="/profile/favorit"><Button variant="outline" className="rounded-full gap-2"><Heart className="h-4 w-4"/> Favorit</Button></Link>
                 <Link href="/profile/notifikasi"><Button variant="outline" className="rounded-full">Notifikasi</Button></Link>
-                <Link href="/participant"><Button className="rounded-full gap-2"><Trophy className="h-4 w-4"/> Area Peserta</Button></Link>
               </div>
             </div>
           </div>
@@ -121,13 +120,13 @@ export default function ProfilePage(){
               ) : (
                 <div className="mt-3 grid gap-2">
                   {transactions.slice(0,5).map((tx:any)=> (
-                    <div key={tx.id} className="flex items-center justify-between rounded-xl border border-border p-3">
+                    <Link key={tx.id} href={`/profile/dukungan/${tx.id}`} className="flex items-center justify-between rounded-xl border border-border p-3 hover:bg-muted/50 transition-colors">
                       <div>
                         <div className="text-sm font-bold">{tx.peletons?.name || tx.peletonName}</div>
                         <div className="text-xs text-muted-foreground">{new Date(tx.created_at || tx.date).toLocaleDateString("id-ID")} • {tx.supports} ballot • Rp{(tx.amount||0).toLocaleString("id-ID")}</div>
                       </div>
                       <Badge className="bg-emerald-500 text-white border-emerald-500">{tx.status}</Badge>
-                    </div>
+                    </Link>
                   ))}
                   <Link href="/profile/dukungan" className="text-center text-xs font-semibold text-gold hover:underline">Lihat semua →</Link>
                 </div>
