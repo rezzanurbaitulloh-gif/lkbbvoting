@@ -137,7 +137,7 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
         </div>
         <div className="hairline my-6 sm:my-8" />
         <div className="flex flex-col md:flex-row items-center md:justify-between gap-3 text-[11px] sm:text-xs text-muted-foreground text-center md:text-left">
-          <div className="leading-relaxed">© 2026 LKBB JAVASOMA THE IMPRESSION. All rights reserved. — Astra Dharma Hayuning Budaya</div>
+          <div className="leading-relaxed">© 2026 portoja. All rights reserved. — Astra Dharma Hayuning Budaya</div>
           <div className="flex gap-3 sm:gap-4 shrink-0">
             <Link href="/peraturan" className="hover:text-foreground whitespace-nowrap">Kebijakan Privasi</Link>
             <Link href="/peraturan" className="hover:text-foreground whitespace-nowrap">Syarat & Ketentuan</Link>
