@@ -62,8 +62,7 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
         <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/30 via-[#09090b]/55 to-[#09090b]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#09090b] via-[#09090b]/80 to-transparent" />
       </div>
-      {/* subtle grid */}
-      <div className="absolute inset-0 opacity-[0.04]" style={{backgroundImage: `linear-gradient(#C9A86A 1px, transparent 1px), linear-gradient(90deg, #C9A86A 1px, transparent 1px)`, backgroundSize: '60px 60px'}} />
+
       {/* Logo LKBB sebagai background watermark — bukan card, opasitas rendah, dapat diubah admin via CMS hero.logoImage + settings.logoOpacity */}
       {showLogo && logoAsBackground && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">

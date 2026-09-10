@@ -239,9 +239,7 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
         <div className="absolute inset-0 bg-[#09090b]" />
         <div className="absolute inset-0 bg-[radial-gradient(860px_380px_at_50%_-20px,rgba(201,168,106,0.07),transparent_68%)]" />
         <div className="absolute inset-0 opacity-[0.018]" style={{ backgroundImage: `linear-gradient(rgba(201,168,106,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,106,0.5) 1px, transparent 1px)`, backgroundSize: "56px 56px" }} />
-        {/* orbs sangat subtle agar tidak berat */}
-        <div className="absolute -top-12 -right-12 h-72 w-72 rounded-full bg-[#C9A86A]/[0.04] blur-3xl animate-[floatOrb_10s_ease-in-out_infinite]" />
-        <div className="absolute -bottom-16 -left-12 h-80 w-80 rounded-full bg-[#C9A86A]/[0.03] blur-3xl animate-[floatOrb_12s_ease-in-out_infinite_reverse]" />
+
         {/* wave 1px tipis menyatu */}
         <svg className="absolute bottom-0 inset-x-0 h-[70px] sm:h-[80px] w-full opacity-[0.08] sm:opacity-[0.10]" viewBox="0 0 1440 90" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 52 C 220 92 420 18 720 52 C 980 78 1120 28 1440 58" stroke="#C9A86A" strokeWidth="0.7" fill="none" />
@@ -249,27 +247,9 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
         </svg>
       </div>
 
-      {/* side ribbons — diperhalus 0.5px, warna menyatu */}
-      <div className="pointer-events-none hidden xl:block absolute left-0 top-0 bottom-0 w-[76px]">
-        <div className="absolute inset-0 bg-[#0A0E18]/60 border-r border-white/[0.06]" style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px))" }} />
-        <div className="absolute inset-0 grid place-items-center">
-          <div className="text-center leading-[1.7] text-[9px] font-bold tracking-[0.16em] text-white/30">
-            DISIPLIN<br/>LOYALITAS<br/>KEBERSAMAAN<br/>PRESTASI
-            <div className="mx-auto mt-3 h-4 w-4 rotate-45 border border-white/[0.08] bg-white/[0.03] grid place-items-center"><div className="h-1 w-1 bg-[#C9A86A]/40 rotate-45" /></div>
-          </div>
-        </div>
-      </div>
-      <div className="pointer-events-none hidden xl:block absolute right-0 top-0 bottom-0 w-[76px]">
-        <div className="absolute inset-0 bg-[#0A0E18]/60 border-l border-white/[0.06]" style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px))" }} />
-        <div className="absolute inset-0 grid place-items-center">
-          <div className="text-center leading-[1.7] text-[9px] font-bold tracking-[0.16em] text-white/30">
-            SATU<br/>LANGKAH<br/>SATU<br/>TUJUAN
-            <div className="mx-auto mt-3 h-4 w-4 rotate-45 border border-white/[0.08] bg-white/[0.03] grid place-items-center"><div className="h-1 w-1 bg-[#C9A86A]/40 rotate-45" /></div>
-          </div>
-        </div>
-      </div>
 
-      <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 lg:px-[96px] xl:px-[72px]">
+
+      <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6">
         {/* header — proporsional dengan Featured (22-30px), tidak serif berat */}
         <div className="text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2.5">
