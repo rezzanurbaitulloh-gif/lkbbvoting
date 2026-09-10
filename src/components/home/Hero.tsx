@@ -89,20 +89,20 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
               <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.14em] sm:tracking-[0.18em] text-[#C9A86A] break-words text-center">{eyebrow}</span>
               <span className="h-px w-6 sm:w-8 bg-[#C9A86A] shrink-0" />
             </div>
-            <h1 className="mt-3 text-balance font-black leading-[0.82] tracking-[-0.04em] text-center max-w-full break-words animate-[fadeIn_0.7s_ease-out]">
-              <span className="block text-[44px] md:text-[68px] lg:text-[76px] leading-[0.9] font-display gold-gradient-text text-gold-glow">{heading1}</span>
-              <span className="block text-[44px] md:text-[68px] lg:text-[76px] leading-[0.9] font-display gold-gradient-text">{heading2}</span>
+            <h1 className="mt-3 text-balance font-black leading-[0.84] tracking-[-0.03em] text-center max-w-full break-words animate-[fadeIn_0.7s_ease-out] px-1">
+              <span className="block text-[32px] xs:text-[36px] sm:text-[42px] md:text-[56px] lg:text-[68px] xl:text-[76px] leading-[0.88] font-display gold-gradient-text text-gold-glow">{heading1}</span>
+              <span className="block text-[32px] xs:text-[36px] sm:text-[42px] md:text-[56px] lg:text-[68px] xl:text-[76px] leading-[0.88] font-display gold-gradient-text">{heading2}</span>
             </h1>
             <div className="mt-3 text-center max-w-full">
               <div className="text-[11px] sm:text-[13px] font-bold tracking-[0.14em] sm:tracking-[0.18em] text-white break-words">{subtitle}</div>
               <div className="text-[10px] sm:text-[12px] font-semibold tracking-[0.10em] sm:tracking-[0.12em] text-white/80 break-words">{subtitle2}</div>
               <div className="text-[10px] sm:text-[11px] tracking-[0.12em] sm:tracking-[0.14em] text-[#C9A86A] font-bold break-words">{tagline}</div>
             </div>
-            <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-3 justify-center w-full sm:w-auto px-2 sm:px-0">
-              <Link href={ctaPrimaryLink} className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto rounded-full px-6 h-[42px] font-black tracking-wide">{ctaPrimaryLabel}</Button>
+            <div className="mt-5 xs:mt-6 flex flex-col xs:flex-row flex-wrap gap-2.5 sm:gap-3 justify-center w-full xs:w-auto px-1 xs:px-0">
+              <Link href={ctaPrimaryLink} className="w-full xs:w-auto">
+                <Button size="lg" className="w-full xs:w-auto rounded-full px-5 xs:px-6 h-[40px] xs:h-[42px] text-[13px] xs:text-sm font-black tracking-wide">{ctaPrimaryLabel}</Button>
               </Link>
-              <Button onClick={()=> setCaraOpen(true)} variant="outline" size="lg" className="w-full sm:w-auto rounded-full px-6 h-[42px] backdrop-blur">{ctaSecondaryLabel}</Button>
+              <Button onClick={()=> setCaraOpen(true)} variant="outline" size="lg" className="w-full xs:w-auto rounded-full px-5 xs:px-6 h-[40px] xs:h-[42px] text-[13px] xs:text-sm backdrop-blur">{ctaSecondaryLabel}</Button>
             </div>
             <CaraDukungDialog open={caraOpen} onOpenChange={setCaraOpen} />
           </div>
@@ -111,16 +111,16 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
         <div className="pb-6 sm:pb-8 md:pb-10">
           <div className="mx-auto max-w-[560px] text-center px-1">
             <div className="text-[9px] sm:text-[10px] font-bold tracking-[0.16em] sm:tracking-[0.18em] text-white/50">{cmsContent.title || "EVENT DIMULAI DALAM"}</div>
-            <div className="mt-3 grid grid-cols-4 gap-1.5 sm:gap-2 md:gap-3">
+            <div className="mt-3 grid grid-cols-4 gap-1 xs:gap-1.5 sm:gap-2 md:gap-3">
               {[
                 {v: cd.days, l:"HARI"},
                 {v: cd.hours, l:"JAM"},
                 {v: cd.minutes, l:"MENIT"},
                 {v: cd.seconds, l:"DETIK"},
               ].map(item=> (
-                <div key={item.l} className="rounded-[10px] sm:rounded-[12px] border border-white/10 bg-[#0B0C0F]/80 backdrop-blur py-2.5 sm:py-3 md:py-4 px-1">
-                  <div className="tabular-nums text-[28px] md:text-[32px] font-black leading-none text-white max-[360px]:text-[22px] max-[320px]:text-[20px]">{String(item.v).padStart(2,"0")}</div>
-                  <div className="mt-1 text-[9px] sm:text-[10px] font-bold tracking-[0.10em] sm:tracking-[0.14em] text-white/50">{item.l}</div>
+                <div key={item.l} className="rounded-[10px] sm:rounded-[12px] border border-white/10 bg-[#0B0C0F]/80 backdrop-blur py-2 xs:py-2.5 sm:py-3 md:py-4 px-0.5 xs:px-1">
+                  <div className="tabular-nums text-[22px] xs:text-[26px] sm:text-[28px] md:text-[32px] font-black leading-none text-white">{String(item.v).padStart(2,"0")}</div>
+                  <div className="mt-1 text-[8px] xs:text-[9px] sm:text-[10px] font-bold tracking-[0.10em] sm:tracking-[0.14em] text-white/50">{item.l}</div>
                 </div>
               ))}
             </div>

@@ -55,20 +55,19 @@ export default async function TimPage(){
   }
 
   const renderGrid = (teams: any[]) => {
-    // List baris: #[nomor] [nama]   logo asli transparent tanpa circle
     return (
       <div className="flex flex-col gap-2">
         {teams.map((p:any)=> {
           const logo = p.logo_url || p.image_url || "/assets/brand/lkbb-logo.jpg"
           const number = String(p.number || "").padStart(2,"0")
           return (
-            <Link key={p.id} href={`/tim/${p.slug}`} className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-3 sm:px-4 py-3 hover:border-[var(--primary)]/30 hover:bg-muted/20 transition-colors">
-              <div className="flex items-center gap-3 min-w-0">
-                <span className="shrink-0 rounded-full bg-gold px-2.5 py-1 text-[11px] font-black tracking-widest text-gold-foreground">#{number}</span>
-                <span className="text-sm sm:text-[15px] font-black tracking-tight truncate">{p.name}</span>
+            <Link key={p.id} href={`/tim/${p.slug}`} className="group flex items-center justify-between gap-2.5 xs:gap-3 rounded-[12px] xs:rounded-xl border border-white/[0.06] bg-card px-2.5 xs:px-3 sm:px-4 py-2.5 xs:py-3 hover:border-[#C9A86A]/20 hover:bg-muted/20 transition-colors min-w-0">
+              <div className="flex items-center gap-2 xs:gap-3 min-w-0 flex-1">
+                <span className="shrink-0 rounded-full bg-gold px-2 xs:px-2.5 py-1 text-[10px] xs:text-[11px] font-black tracking-widest text-gold-foreground">#{number}</span>
+                <span className="text-[13px] xs:text-sm sm:text-[15px] font-black tracking-tight truncate">{p.name}</span>
               </div>
-              <div className="h-10 w-10 sm:h-11 sm:w-11 bg-transparent shrink-0 grid place-items-center">
-                <img src={logo} alt={p.name} className="h-full w-full object-contain bg-transparent" style={{ filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.5))" }} />
+              <div className="h-8 w-8 xs:h-9 xs:w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 bg-transparent shrink-0 grid place-items-center">
+                <img src={logo} alt={p.name} className="h-full w-full object-contain bg-transparent" loading="lazy" style={{ filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.5))" }} />
               </div>
             </Link>
           )
@@ -91,12 +90,12 @@ export default async function TimPage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-border bg-[#09090b] text-white relative overflow-hidden">
-          <div className="absolute inset-0 opacity-20"><img src={bgImage} alt="" className="h-full w-full object-cover" /></div>
+        <div className="border-b border-white/[0.05] bg-[#09090b] text-white relative overflow-hidden">
+          <div className="absolute inset-0 opacity-[0.18]"><img src={bgImage} alt="" className="h-full w-full object-cover" /></div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#09090b] via-[#09090b]/85 to-transparent" />
-          <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
-            <div className={`inline-flex rounded-full px-3 py-1 text-xs font-black tracking-wide ${headerBadge.color}`}>{headerBadge.label}</div>
-            <h1 className="mt-3 text-[28px] md:text-[36px] font-black tracking-[-0.03em] leading-none">{isPublished ? "TANGGA JUARA" : isVotingClosed ? "PERINGKAT SEMENTARA" : "DAFTAR TIM"}</h1>
+          <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6 xs:py-7 sm:py-8">
+            <div className={`inline-flex rounded-full px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-black tracking-wide ${headerBadge.color}`}>{headerBadge.label}</div>
+            <h1 className="mt-2.5 xs:mt-3 text-[22px] xs:text-[26px] sm:text-[28px] md:text-[34px] lg:text-[36px] font-black tracking-[-0.03em] leading-[0.92] break-words">{isPublished ? "TANGGA JUARA" : isVotingClosed ? "PERINGKAT SEMENTARA" : "DAFTAR TIM"}</h1>
           </div>
         </div>
 
@@ -105,25 +104,25 @@ export default async function TimPage(){
         )}
 
         {/* SMP */}
-        <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="inline-flex rounded-full bg-foreground text-background px-3 py-1 text-xs font-black">SMP / SEDERAJAT</span>
-            {isVotingClosed && <span className="inline-flex rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">ONLINE SAJA</span>}
-            {isPublished && <span className="inline-flex rounded-full bg-[#C9A86A] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">FINAL</span>}
-            <span className="text-xs text-muted-foreground">{smp.length} tim</span>
+        <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6 xs:py-7 sm:py-8">
+          <div className="flex flex-wrap items-center gap-2 xs:gap-2.5 mb-3 xs:mb-4">
+            <span className="inline-flex rounded-full bg-foreground text-background px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-black">SMP / SEDERAJAT</span>
+            {isVotingClosed && <span className="inline-flex rounded-full bg-[#FACC15] text-[#0B0C0F] px-2 xs:px-2.5 py-1 text-[10px] font-black">ONLINE SAJA</span>}
+            {isPublished && <span className="inline-flex rounded-full bg-[#C9A86A] text-[#0B0C0F] px-2 xs:px-2.5 py-1 text-[10px] font-black">FINAL</span>}
+            <span className="text-[11px] xs:text-xs text-muted-foreground tabular-nums">{smp.length} tim</span>
           </div>
-          {smp.length===0 ? <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Belum ada peleton SMP.</div> : renderGrid(smp)}
+          {smp.length===0 ? <div className="rounded-xl border border-dashed border-white/10 p-6 xs:p-8 text-center text-[13px] xs:text-sm text-muted-foreground">Belum ada peleton SMP.</div> : renderGrid(smp)}
         </div>
 
         {/* SMA */}
-        <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 pb-10">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="inline-flex rounded-full bg-foreground text-background px-3 py-1 text-xs font-black">SMA / SEDERAJAT</span>
-            {isVotingClosed && <span className="inline-flex rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">ONLINE SAJA</span>}
-            {isPublished && <span className="inline-flex rounded-full bg-[#C9A86A] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">FINAL</span>}
-            <span className="text-xs text-muted-foreground">{sma.length} tim</span>
+        <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 pb-8 xs:pb-10">
+          <div className="flex flex-wrap items-center gap-2 xs:gap-2.5 mb-3 xs:mb-4">
+            <span className="inline-flex rounded-full bg-foreground text-background px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-black">SMA / SEDERAJAT</span>
+            {isVotingClosed && <span className="inline-flex rounded-full bg-[#FACC15] text-[#0B0C0F] px-2 xs:px-2.5 py-1 text-[10px] font-black">ONLINE SAJA</span>}
+            {isPublished && <span className="inline-flex rounded-full bg-[#C9A86A] text-[#0B0C0F] px-2 xs:px-2.5 py-1 text-[10px] font-black">FINAL</span>}
+            <span className="text-[11px] xs:text-xs text-muted-foreground tabular-nums">{sma.length} tim</span>
           </div>
-          {sma.length===0 ? <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Belum ada peleton SMA.</div> : renderGrid(sma)}
+          {sma.length===0 ? <div className="rounded-xl border border-dashed border-white/10 p-6 xs:p-8 text-center text-[13px] xs:text-sm text-muted-foreground">Belum ada peleton SMA.</div> : renderGrid(sma)}
         </div>
       </main>
       <Footer />

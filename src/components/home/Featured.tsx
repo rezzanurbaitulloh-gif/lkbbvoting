@@ -39,26 +39,26 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
         </div>
 
         {/* SMP */}
-        <div className="mt-10">
-          <div className="flex flex-wrap items-center gap-3 mb-5">
-            <span className="inline-flex rounded-full bg-white text-[#09090b] px-4 py-1.5 text-xs font-black tracking-wide">SMP / SEDERAJAT</span>
-            <span className="text-xs font-medium text-white/50 bg-white/5 px-2.5 py-1 rounded-full">{smp.length} tim</span>
+        <div className="mt-8 xs:mt-10">
+          <div className="flex flex-wrap items-center gap-3 mb-4 xs:mb-5">
+            <span className="inline-flex rounded-full bg-white text-[#09090b] px-3 xs:px-4 py-1 xs:py-1.5 text-[11px] xs:text-xs font-black tracking-wide">SMP / SEDERAJAT</span>
+            <span className="text-[11px] xs:text-xs font-medium text-white/50 bg-white/5 px-2.5 py-1 rounded-full">{smp.length} tim</span>
           </div>
           {smp.length===0 ? <p className="text-sm text-white/40 py-6 text-center border border-dashed border-white/10 rounded-xl">Belum ada peleton SMP.</p> : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-6">
             {smp.map((p:any)=> <PeletonCard key={p.id} peleton={{...p, image: p.image_url || p.image, cover: p.image_url || p.cover}} />)}
           </div>
           )}
         </div>
 
         {/* SMA */}
-        <div className="mt-10">
-          <div className="flex flex-wrap items-center gap-3 mb-5">
-            <span className="inline-flex rounded-full bg-white text-[#09090b] px-4 py-1.5 text-xs font-black tracking-wide">SMA / SEDERAJAT</span>
-            <span className="text-xs font-medium text-white/50 bg-white/5 px-2.5 py-1 rounded-full">{sma.length} tim</span>
+        <div className="mt-8 xs:mt-10">
+          <div className="flex flex-wrap items-center gap-3 mb-4 xs:mb-5">
+            <span className="inline-flex rounded-full bg-white text-[#09090b] px-3 xs:px-4 py-1 xs:py-1.5 text-[11px] xs:text-xs font-black tracking-wide">SMA / SEDERAJAT</span>
+            <span className="text-[11px] xs:text-xs font-medium text-white/50 bg-white/5 px-2.5 py-1 rounded-full">{sma.length} tim</span>
           </div>
           {sma.length===0 ? <p className="text-sm text-white/40 py-6 text-center border border-dashed border-white/10 rounded-xl">Belum ada peleton SMA.</p> : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-6">
             {sma.map((p:any)=> <PeletonCard key={p.id} peleton={{...p, image: p.image_url || p.image, cover: p.image_url || p.cover}} />)}
           </div>
           )}

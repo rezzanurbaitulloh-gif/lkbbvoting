@@ -109,52 +109,52 @@ function DukunganInner(){
   }
 
   return (
-    <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6 grid lg:grid-cols-[1.1fr_0.9fr] gap-6">
+    <div className="mx-auto max-w-[1080px] px-3 xs:px-4 sm:px-6 py-4 xs:py-6 grid lg:grid-cols-[1.1fr_0.9fr] gap-4 xs:gap-6">
       <div className="space-y-4">
-        <div className="rounded-[16px] border border-border bg-card overflow-hidden">
-          <div className="h-2 bg-gold" />
-          <div className="p-5 flex gap-4">
-            <img src={peleton.image_url} alt="" className="h-20 w-20 rounded-xl object-cover border border-border" />
-            <div className="min-w-0">
-              <div className="flex gap-2">
-                <Badge variant="gold">#{peleton.number}</Badge>
-                <Badge variant="outline">{peleton.category}</Badge>
+        <div className="rounded-[12px] xs:rounded-[16px] border border-white/[0.06] bg-card overflow-hidden">
+          <div className="h-1.5 xs:h-2 bg-gold" />
+          <div className="p-3 xs:p-4 sm:p-5 flex gap-3 xs:gap-4">
+            <img src={peleton.image_url} alt="" className="h-16 w-16 xs:h-20 xs:w-20 rounded-xl object-cover border border-white/[0.06] shrink-0" />
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap gap-1.5 xs:gap-2">
+                <Badge variant="gold" className="text-[11px] xs:text-xs">#{peleton.number}</Badge>
+                <Badge variant="outline" className="text-[11px] xs:text-xs">{peleton.category}</Badge>
               </div>
-              <div className="mt-1 text-[16px] font-black leading-tight">{peleton.name}</div>
-              <div className="text-sm text-muted-foreground line-clamp-1">{peleton.school} • {peleton.city}</div>
+              <div className="mt-1 text-[14px] xs:text-[15px] sm:text-[16px] font-black leading-tight break-words">{peleton.name}</div>
+              <div className="text-[11px] xs:text-xs sm:text-sm text-muted-foreground line-clamp-1 break-words">{peleton.school} • {peleton.city}</div>
             </div>
           </div>
-          <div className="px-5 pb-5">
-            <div className="rounded-xl bg-muted p-3 text-xs leading-relaxed text-muted-foreground">
+          <div className="px-3 xs:px-5 pb-3 xs:pb-5">
+            <div className="rounded-xl bg-muted/50 border border-white/[0.04] p-2.5 xs:p-3 text-[11px] xs:text-xs leading-relaxed text-muted-foreground">
               Dukungan untuk <b className="text-foreground">{peleton.name}</b> akan tercatat sebagai ballot resmi <b>hanya setelah pembayaran terverifikasi</b>. {isClosed && <span className="text-red-600 font-bold">{closedMessage}. Riwayat transaksi lama tetap diproses.</span>}
             </div>
-            {isClosed && <div className="mt-3 rounded-xl bg-amber-500/10 border border-amber-500/20 p-2.5 text-xs font-bold text-amber-700">{closedMessage}</div>}
+            {isClosed && <div className="mt-2.5 xs:mt-3 rounded-xl bg-amber-500/10 border border-amber-500/20 p-2.5 text-[11px] xs:text-xs font-bold text-amber-700 leading-relaxed">{closedMessage}</div>}
           </div>
         </div>
 
-        <div className="rounded-[16px] border border-border bg-card p-5">
-          <h3 className="text-sm font-black">Pilih Paket Dukungan</h3>
-          <p className="text-xs text-muted-foreground">Harga resmi (dari DB): Rp{onlinePrice.toLocaleString("id-ID")} / ballot (online)</p>
-          {isClosed && <p className="mt-2 text-xs font-bold text-red-600">Pilih Paket dinonaktifkan — transaksi dihentikan.</p>}
-          <div className={`mt-4 grid grid-cols-2 gap-3 ${isClosed ? "opacity-50 pointer-events-none" : ""}`}>
+        <div className="rounded-[12px] xs:rounded-[16px] border border-white/[0.06] bg-card p-3 xs:p-4 sm:p-5">
+          <h3 className="text-[13px] xs:text-sm font-black">Pilih Paket Dukungan</h3>
+          <p className="text-[11px] xs:text-xs text-muted-foreground">Harga resmi (dari DB): Rp{onlinePrice.toLocaleString("id-ID")} / ballot (online)</p>
+          {isClosed && <p className="mt-2 text-[11px] xs:text-xs font-bold text-red-600">Pilih Paket dinonaktifkan — transaksi dihentikan.</p>}
+          <div className={`mt-3 xs:mt-4 grid grid-cols-2 gap-2 xs:gap-3 ${isClosed ? "opacity-50 pointer-events-none" : ""}`}>
             {presets.map((n:number)=> {
               const price = n * onlinePrice
               const isPop = n===50
               return (
-                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border-2 p-4 text-left transition-colors ${qty===n ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card hover:border-primary/50"} ${isClosed ? "cursor-not-allowed" : ""}`}>
-                  {isPop && <span className="absolute -top-2 right-3 rounded-full bg-primary px-2 py-0.5 text-[10px] font-black text-primary-foreground">POPULER</span>}
-                  <div className={`text-xs font-bold tracking-widest ${qty===n ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{n} Dukungan</div>
-                  <div className="mt-1 text-[18px] font-black tabular-nums">Rp{price.toLocaleString("id-ID")}</div>
-                  <div className={`text-xs ${qty===n ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{n} ballot</div>
+                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border-2 p-2.5 xs:p-4 text-left transition-colors ${qty===n ? "border-primary bg-primary text-primary-foreground" : "border-white/[0.06] bg-card hover:border-primary/30"} ${isClosed ? "cursor-not-allowed" : ""}`}>
+                  {isPop && <span className="absolute -top-1.5 xs:-top-2 right-2 xs:right-3 rounded-full bg-primary px-1.5 xs:px-2 py-0.5 text-[9px] xs:text-[10px] font-black text-primary-foreground">POPULER</span>}
+                  <div className={`text-[10px] xs:text-xs font-bold tracking-widest ${qty===n ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{n} Dukungan</div>
+                  <div className="mt-1 text-[15px] xs:text-[17px] sm:text-[18px] font-black tabular-nums">Rp{price.toLocaleString("id-ID")}</div>
+                  <div className={`text-[11px] xs:text-xs ${qty===n ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{n} ballot</div>
                 </button>
               )
             })}
           </div>
-          <div className="mt-5">
-            <div className="label-ceremonial">Atur Jumlah Ballot</div>
-            <p className="mt-1 text-xs text-muted-foreground">Ketik langsung atau gunakan tombol plus/minus. Maks 10.000 per transaksi.</p>
-            <div className={`mt-2 flex items-center gap-3 ${isClosed ? "opacity-50 pointer-events-none" : ""}`}>
-              <button disabled={isClosed || loading} onClick={()=>setQty(q=>Math.max(1, (Number(q)||1)-1))} className="h-11 w-11 rounded-full border border-border grid place-items-center hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"><Minus className="h-4 w-4"/></button>
+          <div className="mt-4 xs:mt-5">
+            <div className="label-ceremonial text-[11px] xs:text-xs">Atur Jumlah Ballot</div>
+            <p className="mt-1 text-[11px] xs:text-xs text-muted-foreground leading-relaxed">Ketik langsung atau gunakan tombol plus/minus. Maks 10.000 per transaksi.</p>
+            <div className={`mt-2.5 xs:mt-2 flex items-center gap-2 xs:gap-3 ${isClosed ? "opacity-50 pointer-events-none" : ""}`}>
+              <button disabled={isClosed || loading} onClick={()=>setQty(q=>Math.max(1, (Number(q)||1)-1))} className="h-10 w-10 xs:h-11 xs:w-11 rounded-full border border-white/[0.06] bg-card grid place-items-center hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 shrink-0"><Minus className="h-3.5 w-3.5 xs:h-4 xs:w-4"/></button>
               <input
                 type="number"
                 inputMode="numeric"
@@ -170,29 +170,29 @@ function DukunganInner(){
                   }
                 }}
                 disabled={isClosed}
-                className="flex-1 rounded-full border border-border bg-muted h-11 text-center font-black tabular-nums focus:outline-none focus:ring-2 focus:ring-[#C9A86A] disabled:opacity-50"
+                className="flex-1 min-w-0 rounded-full border border-white/[0.06] bg-muted h-10 xs:h-11 text-center text-[15px] xs:text-base font-black tabular-nums focus:outline-none focus:ring-2 focus:ring-[#C9A86A] disabled:opacity-50 px-2"
               />
-              <button disabled={isClosed || loading} onClick={()=>setQty(q=> Math.min(10000, (Number(q)||1)+1))} className="h-11 w-11 rounded-full border border-border grid place-items-center hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"><Plus className="h-4 w-4"/></button>
+              <button disabled={isClosed || loading} onClick={()=>setQty(q=> Math.min(10000, (Number(q)||1)+1))} className="h-10 w-10 xs:h-11 xs:w-11 rounded-full border border-white/[0.06] bg-card grid place-items-center hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 shrink-0"><Plus className="h-3.5 w-3.5 xs:h-4 xs:w-4"/></button>
             </div>
           </div>
         </div>
       </div>
 
       <div className="lg:sticky lg:top-[76px] h-fit space-y-4">
-        <div className="rounded-[16px] border border-border bg-card p-5">
-          <h3 className="text-sm font-black">Ringkasan Dukungan</h3>
-          <div className="mt-4 space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-muted-foreground">Peleton</span><span className="font-bold">{peleton.name}</span></div>
+        <div className="rounded-[12px] xs:rounded-[16px] border border-white/[0.06] bg-card p-3 xs:p-4 sm:p-5">
+          <h3 className="text-[13px] xs:text-sm font-black">Ringkasan Dukungan</h3>
+          <div className="mt-3 xs:mt-4 space-y-2 text-[13px] xs:text-sm">
+            <div className="flex justify-between gap-2"><span className="text-muted-foreground">Peleton</span><span className="font-bold truncate text-right">{peleton.name}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Jumlah Ballot</span><span className="font-bold tabular-nums">{qty}</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Harga per ballot</span><span className="tabular-nums">Rp{onlinePrice.toLocaleString("id-ID")}</span></div>
-            <div className="hairline my-3" />
-            <div className="flex justify-between text-[16px]"><span className="font-bold">Total</span><span className="font-black tabular-nums">Rp{total.toLocaleString("id-ID")}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Harga per ballot</span><span className="tabular-nums text-xs xs:text-sm">Rp{onlinePrice.toLocaleString("id-ID")}</span></div>
+            <div className="hairline-thin my-3" />
+            <div className="flex justify-between text-[15px] xs:text-[16px]"><span className="font-bold">Total</span><span className="font-black tabular-nums">Rp{total.toLocaleString("id-ID")}</span></div>
           </div>
-           {error && <div className="mt-3 rounded-xl bg-red-500/10 border border-red-500/20 p-2.5 text-xs text-red-600">{error}</div>}
-           <Button onClick={handlePay} disabled={loading || isClosed} className={`mt-5 w-full rounded-full h-[46px] gap-2 ${isClosed ? "opacity-50 cursor-not-allowed" : ""}`} title={isClosed ? "Transaksi dihentikan — voting nonaktif" : ""}>{loading ? "Memproses..." : isClosed ? "DUKUNGAN DITUTUP" : "Lanjutkan ke Pembayaran"} <ArrowRight className="h-4 w-4"/></Button>
-           {isClosed && <p className="mt-2 text-center text-xs font-bold text-red-600">Transaksi baru dihentikan — voting nonaktif. Riwayat transaksi lama tetap diproses.</p>}
-           {!isClosed && <p className="mt-2 text-center text-xs text-muted-foreground">Server akan menghitung harga dan memverifikasi event state. Klik Bayar tidak langsung menambah ballot.</p>}
-          <div className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground"><ShieldCheck className="h-4 w-4"/> Pembayaran aman — webhook terverifikasi</div>
+           {error && <div className="mt-3 rounded-xl bg-red-500/10 border border-red-500/20 p-2.5 text-[11px] xs:text-xs text-red-600 leading-relaxed">{error}</div>}
+           <Button onClick={handlePay} disabled={loading || isClosed} className={`mt-4 xs:mt-5 w-full rounded-full h-[44px] xs:h-[46px] gap-2 text-[13px] xs:text-sm ${isClosed ? "opacity-50 cursor-not-allowed" : ""}`} title={isClosed ? "Transaksi dihentikan — voting nonaktif" : ""}>{loading ? "Memproses..." : isClosed ? "DUKUNGAN DITUTUP" : "Lanjutkan ke Pembayaran"} <ArrowRight className="h-3.5 w-3.5 xs:h-4 xs:w-4"/></Button>
+           {isClosed && <p className="mt-2 text-center text-[11px] xs:text-xs font-bold text-red-600 leading-relaxed">Transaksi baru dihentikan — voting nonaktif. Riwayat transaksi lama tetap diproses.</p>}
+           {!isClosed && <p className="mt-2 text-center text-[11px] xs:text-xs text-muted-foreground leading-relaxed">Server akan menghitung harga dan memverifikasi event state. Klik Bayar tidak langsung menambah ballot.</p>}
+          <div className="mt-3 xs:mt-4 flex items-center justify-center gap-1.5 xs:gap-2 text-[11px] xs:text-xs text-muted-foreground"><ShieldCheck className="h-3.5 w-3.5 xs:h-4 xs:w-4 shrink-0"/> Pembayaran aman — webhook terverifikasi</div>
         </div>
       </div>
     </div>
@@ -204,10 +204,10 @@ export default function DukunganPage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 bg-muted/20 pb-[72px] md:pb-0">
-        <div className="border-b border-border bg-card">
-          <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-4">
-            <div className="label-gold">Dukung Tim</div>
-            <h1 className="text-[20px] font-black tracking-tight">DUKUNG PELETON FAVORITMU</h1>
+        <div className="border-b border-white/[0.06] bg-card">
+          <div className="mx-auto max-w-[1080px] px-3 xs:px-4 sm:px-6 py-3.5 xs:py-4">
+            <div className="label-gold text-[11px] xs:text-xs">Dukung Tim</div>
+            <h1 className="text-[18px] xs:text-[20px] font-black tracking-tight leading-none">DUKUNG PELETON FAVORITMU</h1>
           </div>
         </div>
         <Suspense fallback={<div className="p-8 text-center text-sm text-muted-foreground">Memuat…</div>}>
