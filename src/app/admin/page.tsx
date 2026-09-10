@@ -15,8 +15,9 @@ export default function AdminOverview(){
   const [podiumSma, setPodiumSma] = useState<any[]>([])
   const fetchPodium = async ()=>{
     const supabase = createBrowserSupabase()
-    const { data: smp } = await supabase.from("team_ranking").select("*").eq("category","SMP").order("total_ballots",{ascending:false}).limit(3)
-    const { data: sma } = await supabase.from("team_ranking").select("*").eq("category","SMA").order("total_ballots",{ascending:false}).limit(3)
+    // podium preview hanya online (website)
+    const { data: smp } = await supabase.from("team_ranking").select("*").eq("category","SMP").order("online_ballots",{ascending:false}).order("total_ballots",{ascending:false}).limit(3)
+    const { data: sma } = await supabase.from("team_ranking").select("*").eq("category","SMA").order("online_ballots",{ascending:false}).order("total_ballots",{ascending:false}).limit(3)
     if(smp) setPodiumSmp(smp)
     if(sma) setPodiumSma(sma)
   }
@@ -95,33 +96,35 @@ export default function AdminOverview(){
           </div>
         ))}
       </div>
-      {/* Podium juara realtime — 2 kategori */}
+      {/* Podium juara realtime — preview online saja */}
       <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
         <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-3 sm:p-4">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMP <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
-            <span className="text-[10px] text-white/40">Realtime</span>
+            <span className="text-[10px] text-white/40">Online preview</span>
           </div>
           <div className="mt-3 overflow-hidden">
-            {podiumSmp.length===0 ? <div className="h-[180px] grid place-items-center text-xs text-white/30">Belum ada data</div> : (
+            {podiumSmp.length===0 ? <div className="h-[180px] grid place-items-center text-xs text-white/30">Belum ada data online (0)</div> : (
               <div className="scale-[0.68] min-[360px]:scale-[0.75] sm:scale-[0.85] origin-top -mx-2 sm:mx-0">
                 <Podium teams={podiumSmp} />
               </div>
             )}
           </div>
+          <div className="mt-2 text-[10px] text-white/30 text-center">Preview hanya online; total ada di list ranking & tabel bawah.</div>
         </div>
         <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-3 sm:p-4 overflow-hidden">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMA <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
-            <span className="text-[10px] text-white/40">Realtime</span>
+            <span className="text-[10px] text-white/40">Online preview</span>
           </div>
           <div className="mt-3 overflow-hidden">
-            {podiumSma.length===0 ? <div className="h-[180px] grid place-items-center text-xs text-white/30">Belum ada data</div> : (
+            {podiumSma.length===0 ? <div className="h-[180px] grid place-items-center text-xs text-white/30">Belum ada data online (0)</div> : (
               <div className="scale-[0.68] min-[360px]:scale-[0.75] sm:scale-[0.85] origin-top -mx-2 sm:mx-0">
                 <Podium teams={podiumSma} />
               </div>
             )}
           </div>
+          <div className="mt-2 text-[10px] text-white/30 text-center">Preview hanya online; total ada di list ranking & tabel bawah.</div>
         </div>
       </div>
 
@@ -135,11 +138,18 @@ export default function AdminOverview(){
             {ranking.map((r:any,i:number)=> (
               <div key={r.id} className="flex items-center gap-2 rounded-lg bg-[#0B0C0F] border border-white/5 px-3 py-2 text-xs">
                 <span className={`h-6 w-6 rounded-full grid place-items-center font-black text-[11px] ${i===0 ? "bg-[#C9A86A] text-[#0B0C0F]" : "bg-white/10 text-white"}`}>{i+1}</span>
-                <span className="font-bold truncate flex-1">#{r.number} {r.name}</span>
-                <span className="tabular-nums font-bold text-[#C9A86A]">{(r.total_ballots ?? 0).toLocaleString("id-ID")}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="font-bold truncate">#{r.number} {r.name}</div>
+                  <div className="text-[11px] text-white/40 tabular-nums">on {Number(r.online_ballots??0).toLocaleString("id-ID")} • off {Number(r.offline_ballots??0).toLocaleString("id-ID")} • tot {Number(r.total_ballots??0).toLocaleString("id-ID")}</div>
+                </div>
+                <div className="text-right">
+                  <div className="tabular-nums font-black text-[#C9A86A] text-xs">{Number(r.total_ballots??0).toLocaleString("id-ID")}</div>
+                  <div className="tabular-nums text-[10px] text-white/40">on {Number(r.online_ballots??0).toLocaleString("id-ID")}</div>
+                </div>
               </div>
             ))}
             {ranking.length===0 && <div className="text-xs text-white/40">Belum ada ranking.</div>}
+            {ranking.length>0 && <div className="text-[10px] text-white/30">Podium di atas preview online saja; list ini tampilkan offline+online+total.</div>}
           </div>
         </div>
         <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-3 sm:p-4">

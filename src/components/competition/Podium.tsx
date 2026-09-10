@@ -163,12 +163,11 @@ function PodiumCard({ team, rank, height }: { team: Team; rank: number; height: 
             <span className="h-1.5 w-1.5 rounded-full bg-[#C9A86A] animate-pulse" />
             #{team.number}
           </div>
-          {team.total_ballots !== undefined && (
-            <div className="mt-1 text-[11px] font-bold tabular-nums text-[#C9A86A]">{Number(team.total_ballots).toLocaleString("id-ID")} dukungan</div>
-          )}
-          {team.online_ballots !== undefined && team.total_ballots === undefined && (
-            <div className="mt-1 text-[11px] font-bold tabular-nums text-[#C9A86A]">{Number(team.online_ballots).toLocaleString("id-ID")} online</div>
-          )}
+          {/* podium hanya preview online (website) — bukan total/offline */}
+          <div className="mt-1 text-[11px] font-bold tabular-nums text-[#C9A86A]">{Number(team.online_ballots ?? 0).toLocaleString("id-ID")} online</div>
+          {(team.offline_ballots ?? 0) > 0 || (team.total_ballots ?? 0) > 0 ? (
+            <div className="text-[10px] text-white/40">offline {Number(team.offline_ballots ?? 0).toLocaleString("id-ID")} • total {Number(team.total_ballots ?? (team.online_ballots ?? 0)+(team.offline_ballots ?? 0)).toLocaleString("id-ID")}</div>
+          ) : null}
         </div>
       </div>
 
@@ -206,10 +205,16 @@ function PodiumCard({ team, rank, height }: { team: Team; rank: number; height: 
 export function Podium({ teams, category, showPoints = true }: { teams: Team[]; category?: string; showPoints?: boolean }) {
   if (!teams || teams.length === 0) return null
 
+  // podium preview = ranking online saja (website), bukan total offline
   const sorted = [...teams].sort((a, b) => {
-    const aTotal = a.total_ballots ?? a.online_ballots ?? 0
-    const bTotal = b.total_ballots ?? b.online_ballots ?? 0
-    return bTotal - aTotal
+    const aOn = a.online_ballots ?? 0
+    const bOn = b.online_ballots ?? 0
+    if (bOn !== aOn) return bOn - aOn
+    // tie-break total lalu nomor
+    const aTot = a.total_ballots ?? aOn
+    const bTot = b.total_ballots ?? bOn
+    if (bTot !== aTot) return bTot - aTot
+    return String(a.number).localeCompare(String(b.number))
   }).slice(0, 3)
 
   const orderedForDisplay = []
@@ -279,7 +284,7 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
             PODIUM <span className="text-[#C9A86A]">JUARA</span>
           </h2>
           <p className="mt-2 text-[12px] sm:text-sm text-white/55 leading-relaxed">
-            Peringkat akhir berdasarkan total dukungan online + offline. Selamat kepada para juara — meriah!
+            Preview podium berdasarkan <b className="text-white">online</b> (website) — dashboard & klasemen tampilkan online / offline / total lengkap.
           </p>
           {/* festive badge */}
           {festive && (
