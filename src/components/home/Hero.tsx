@@ -101,9 +101,9 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
             </div>
             <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-3 justify-center w-full sm:w-auto px-2 sm:px-0">
               <Link href={ctaPrimaryLink} className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto rounded-full px-6 h-[42px] sm:h-[42px] max-[320px]:h-[40px] max-[320px]:text-[13px] bg-[#C9A86A] text-[#0B0C0F] hover:bg-[#C4A06A] font-black tracking-wide">{ctaPrimaryLabel}</Button>
+                <Button size="lg" className="w-full sm:w-auto rounded-full px-6 h-[42px] font-black tracking-wide">{ctaPrimaryLabel}</Button>
               </Link>
-              <Button onClick={()=> setCaraOpen(true)} variant="outline" size="lg" className="w-full sm:w-auto rounded-full px-6 h-[42px] sm:h-[42px] max-[320px]:h-[40px] max-[320px]:text-[13px] bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white backdrop-blur">{ctaSecondaryLabel}</Button>
+              <Button onClick={()=> setCaraOpen(true)} variant="outline" size="lg" className="w-full sm:w-auto rounded-full px-6 h-[42px] backdrop-blur">{ctaSecondaryLabel}</Button>
             </div>
             <CaraDukungDialog open={caraOpen} onOpenChange={setCaraOpen} />
           </div>

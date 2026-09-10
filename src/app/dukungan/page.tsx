@@ -141,11 +141,11 @@ function DukunganInner(){
               const price = n * onlinePrice
               const isPop = n===50
               return (
-                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border p-4 text-left transition-colors ${qty===n ? "border-[#C9A86A] bg-[#C9A86A0A]" : "border-border bg-card hover:border-border-strong"} ${isClosed ? "cursor-not-allowed" : ""}`}>
-                  {isPop && <span className="absolute -top-2 right-3 rounded-full bg-gold px-2 py-0.5 text-[10px] font-black text-gold-foreground">POPULER</span>}
-                  <div className="text-xs font-bold tracking-widest text-muted-foreground">{n} Dukungan</div>
+                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border-2 p-4 text-left transition-colors ${qty===n ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card hover:border-primary/50"} ${isClosed ? "cursor-not-allowed" : ""}`}>
+                  {isPop && <span className="absolute -top-2 right-3 rounded-full bg-primary px-2 py-0.5 text-[10px] font-black text-primary-foreground">POPULER</span>}
+                  <div className={`text-xs font-bold tracking-widest ${qty===n ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{n} Dukungan</div>
                   <div className="mt-1 text-[18px] font-black tabular-nums">Rp{price.toLocaleString("id-ID")}</div>
-                  <div className="text-xs text-muted-foreground">{n} ballot</div>
+                  <div className={`text-xs ${qty===n ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{n} ballot</div>
                 </button>
               )
             })}

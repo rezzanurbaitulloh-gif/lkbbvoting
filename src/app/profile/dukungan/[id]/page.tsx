@@ -8,6 +8,7 @@ import { BottomNav } from "@/components/layout/BottomNav"
 import { Button } from "@/components/ui/button"
 import { useApp } from "@/lib/store"
 import { createBrowserSupabase } from "@/lib/supabase"
+import QRCode from "qrcode"
 
 export default function InvoicePage(){
   const params = useParams() as { id: string }
@@ -17,6 +18,8 @@ export default function InvoicePage(){
   const [peleton, setPeleton] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null)
+  const [polling, setPolling] = useState(false)
 
   useEffect(()=>{
     if(!id) return
@@ -50,6 +53,34 @@ export default function InvoicePage(){
     }
     fetchTx()
   },[id])
+
+  // Generate QR for pending - persist until status changes
+  useEffect(()=>{
+    const content = tx?.qr_content || tx?.qrContent
+    if(content && tx?.status === "Pending"){
+      QRCode.toDataURL(content, { width: 400, margin: 1, color: { dark: "#000000", light: "#FFFFFF" } }).then(url=> setQrDataUrl(url)).catch(()=> setQrDataUrl(null))
+    } else {
+      setQrDataUrl(null)
+    }
+  },[tx?.qr_content, tx?.qrContent, tx?.status])
+
+  // Poll status while pending - QR auto hilang saat success/failed
+  useEffect(()=>{
+    if(!tx || tx.status !== "Pending" || !id) return
+    const interval = setInterval(async ()=>{
+      try{
+        const res = await fetch(`/api/payment/status/${id}`)
+        if(res.ok){
+          const data = await res.json()
+          const newStatus = data.status || data.transaction?.status
+          if(newStatus && newStatus !== tx.status){
+            setTx((prev:any)=> ({...prev, status: newStatus, ...(data.transaction || {})}))
+          }
+        }
+      }catch{}
+    }, 3000)
+    return ()=> clearInterval(interval)
+  },[tx?.status, id])
 
   if(!currentUser){
     return (
@@ -89,7 +120,8 @@ export default function InvoicePage(){
                   <div className="flex flex-wrap justify-between gap-3">
                     <div>
                       <div className="text-[11px] font-bold tracking-[0.14em] text-[var(--primary)]">LKBB JAVASOMA — INVOICE</div>
-                      <div className="mt-1 font-mono text-xs text-white/60">ID: {tx.id}</div>
+                      <div className="mt-1 font-mono text-xs text-white">LKBB-{tx.id.slice(0,8).toUpperCase()}</div>
+                      <div className="font-mono text-[10px] text-white/40">ID: {tx.id.slice(0,12)}...</div>
                       <div className="font-mono text-xs text-white/60">Ref: {tx.provider_ref || tx.doku_reference_no || "-"}</div>
                     </div>
                     <div className="text-right">
@@ -136,17 +168,39 @@ export default function InvoicePage(){
                     </div>
                   </div>
 
-                  {tx.qr_content && (
-                    <div className="mt-4 rounded-xl border border-white/10 bg-white p-4 flex flex-col items-center">
-                      <div className="text-xs font-bold tracking-widest text-black/60">QRIS CONTENT</div>
-                      <div className="mt-2 font-mono text-[10px] break-all text-black/70 max-w-full">{tx.qr_content.slice(0,80)}...</div>
-                      <div className="text-[11px] text-black/50 mt-1">Simpan QR ini sebagai bukti</div>
+                  {tx.status === "Pending" && (
+                    <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+                      <div className="text-xs font-bold tracking-widest text-center">BAYAR VIA QRIS</div>
+                      <div className="tabular-nums text-[18px] font-black text-amber-600 text-center">Menunggu Pembayaran</div>
+                      <div className="mx-auto mt-3 h-[220px] w-[220px] rounded-xl border border-border bg-white grid place-items-center p-2 overflow-hidden">
+                        {qrDataUrl ? (
+                          <img src={qrDataUrl} alt="QRIS" className="h-full w-full object-contain" />
+                        ) : tx.qr_content ? (
+                          <div className="text-[10px] font-mono break-all text-black/60 p-2 text-center">{tx.qr_content.slice(0,60)}...</div>
+                        ) : (
+                          <div className="text-xs text-muted-foreground">Menyiapkan QR...</div>
+                        )}
+                      </div>
+                      {qrDataUrl && (
+                        <Button
+                          variant="outline"
+                          className="mt-3 w-full rounded-full"
+                          onClick={()=>{
+                            if(!qrDataUrl) return
+                            const a=document.createElement('a'); a.href=qrDataUrl; a.download=`qris-LKBB-${tx.id.slice(0,8)}.png`; document.body.appendChild(a); a.click(); document.body.removeChild(a)
+                          }}
+                        >
+                          ⬇ Download QR
+                        </Button>
+                      )}
+                      <p className="mt-2 text-xs text-muted-foreground text-center">QR tetap terlihat sampai status berubah. Akan otomatis hilang saat Success/Batal.</p>
+                      {polling && <p className="mt-1 text-[11px] text-muted-foreground text-center">Memeriksa status...</p>}
                     </div>
                   )}
 
                   <div className="mt-6 flex flex-wrap gap-2">
-                    <Button variant="outline" className="rounded-full bg-white text-black hover:bg-white/90" onClick={()=> window.print()}>Cetak Invoice</Button>
-                    <Link href="/profile/dukungan"><Button variant="ghost" className="rounded-full border border-white/15 text-white hover:bg-white/10">Kembali</Button></Link>
+                    <Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90" onClick={()=> window.print()}>Cetak Invoice</Button>
+                    <Link href="/profile/dukungan"><Button variant="outline" className="rounded-full">Kembali</Button></Link>
                   </div>
 
                   <div className="mt-4 text-[11px] text-white/30 text-center">Invoice ini sah sebagai bukti transaksi digital LKBB JAVASOMA THE IMPRESSION — Astra Dharma Hayuning Budaya</div>

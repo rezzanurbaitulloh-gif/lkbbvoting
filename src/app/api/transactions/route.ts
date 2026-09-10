@@ -111,8 +111,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: msg + hint }, { status: 502 })
     }
 
+    const invoiceId = `LKBB-${trx.id.slice(0,8).toUpperCase()}`
     return NextResponse.json({
       transactionId: trx.id,
+      invoiceId,
       provider: "DOKU",
       providerRef: dokuReferenceNo || initialRef,
       dokuReferenceNo,
