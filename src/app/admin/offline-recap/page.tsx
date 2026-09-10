@@ -99,7 +99,13 @@ export default function OfflineRecap(){
   const supabase = createBrowserSupabase()
 
   const loadTeams = ()=>{
-    supabase.from("peletons").select("id, number, name, category").eq("active", true).order("display_order").then(({data})=> setTeams(data||[]))
+    supabase.from("peletons").select("id, number, name, category").eq("active", true).order("category", {ascending:true}).order("number", {ascending:true}).then(({data})=>{
+      const sorted = (data||[]).sort((a:any,b:any)=>{
+        if(a.category!==b.category) return a.category.localeCompare(b.category)
+        return parseInt(String(a.number).replace(/^0+/, "")||"0") - parseInt(String(b.number).replace(/^0+/, "")||"0")
+      })
+      setTeams(sorted)
+    })
   }
   const loadRecent = ()=>{
     fetch("/api/admin/offline-recap").then(r=> r.json()).then(d=> { if(Array.isArray(d)) setRecent(d) }).catch(()=>{})

@@ -39,8 +39,11 @@ export default async function HomePage(){
   let smpPodium: any[] = []
   let smaPodium: any[] = []
   if (isNotStarted || isActive) {
-    const { data } = await supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("number", { ascending: true })
-    teams = (data||[]).sort((a:any,b:any)=> String(a.number).localeCompare(String(b.number)))
+    const { data } = await supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("category", { ascending: true }).order("number", { ascending: true })
+    teams = (data||[]).sort((a:any,b:any)=>{
+      if(a.category!==b.category) return String(a.category).localeCompare(String(b.category))
+      return parseInt(String(a.number).replace(/^0+/,"")||"0") - parseInt(String(b.number).replace(/^0+/,"")||"0")
+    })
   } else if (isVotingClosed) {
     const { data } = await supabase.from("team_ranking").select("*").order("online_ballots", { ascending: false })
     teams = data||[]

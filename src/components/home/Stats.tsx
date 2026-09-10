@@ -4,7 +4,8 @@ export function Stats({ peletons, event }: { peletons: any[]; event: any }){
   // For totalSupport, we should not expose ballot numbers during ACTIVE — but for demo we show from view
   // In production, hide totals if event.state === VOTING_OPEN and no provisional
   const hideTotals = event?.state === "VOTING_OPEN" && !event?.show_provisional_result && !event?.show_final_result
-  const leader = [...(peletons || [])].sort((a,b)=> (b.display_order - a.display_order))[0] // placeholder, real leader from ranking
+  // leader tidak relevan saat urut nomor; ambil nomor terkecil sebagai placeholder sampai ranking resmi
+  const leader = [...(peletons || [])].sort((a,b)=> parseInt(String(a.number).replace(/^0+/,"")||"0") - parseInt(String(b.number).replace(/^0+/,"")||"0"))[0]
   const stats = [
     { label: "Total Peleton", value: `${totalPeleton}`, sub: "Terverifikasi" },
     { label: "Kota", value: `${totalCity || 3}`, sub: "Jawa Timur" },

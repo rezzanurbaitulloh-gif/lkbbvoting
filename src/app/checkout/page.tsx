@@ -22,7 +22,7 @@ function CheckoutInner(){
   useEffect(()=>{
     const supabase = createBrowserSupabase()
     if(slug) supabase.from("peletons").select("*").eq("slug", slug).single().then(({data})=> setPeleton(data))
-    else supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("display_order").limit(1).single().then(({data})=> setPeleton(data))
+    else supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("category", {ascending:true}).order("number", {ascending:true}).limit(1).single().then(({data})=> setPeleton(data))
     if(id) {
       // Fetch transaction from DB (via anon but RLS will filter to own)
       supabase.from("transactions").select("*").eq("id", id).single().then(({data})=> setTrx(data))

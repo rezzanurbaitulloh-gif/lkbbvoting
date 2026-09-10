@@ -26,6 +26,18 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       return NextResponse.json({ status: "Success", transaction: trx })
     }
 
+    // Auto-expire check: if now > expires_at, mark Expired (15 menit batas)
+    if (trx.status === "Pending" && (trx as any).expires_at) {
+      const expires = new Date((trx as any).expires_at).getTime()
+      if (!isNaN(expires) && Date.now() > expires) {
+        await service.from("transactions").update({ status: "Expired" }).eq("id", trx.id).eq("status", "Pending")
+        try {
+          await service.from("audit_logs").insert({ action: "transaction_expired_check", target: trx.id, details: { reason: "15min timeout via status check", expires_at: (trx as any).expires_at } })
+        } catch {}
+        return NextResponse.json({ status: "Expired", transaction: { ...trx, status: "Expired" } })
+      }
+    }
+
     // For DOKU Pending, try to query DOKU directly as fallback (in case webhook missed)
     // Webhook remains primary, but this ensures sandbox simulator payment still updates even if notification URL not yet configured
     if (trx.provider === "DOKU" && trx.status === "Pending") {

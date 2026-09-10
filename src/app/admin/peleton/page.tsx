@@ -20,11 +20,19 @@ export default function AdminPeleton(){
   const [delTarget, setDelTarget] = useState<any|null>(null)
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [saving, setSaving] = useState(false)
-  const [form, setForm] = useState<any>({ number:"", name:"", school:"", city:"Kertosono", province:"Jawa Timur", category:"SMA", image_url:"", logo_url:"", display_order:1, active:true })
+  const [form, setForm] = useState<any>({ number:"", name:"", school:"", city:"Kertosono", province:"Jawa Timur", category:"SMA", image_url:"", logo_url:"", active:true })
 
   const load = ()=>{
     const supabase = createBrowserSupabase()
-    supabase.from("peletons").select("*").order("display_order", {ascending:true}).then(({data})=> setTeams(data||[]))
+    // nomor urut = urutan tampil, order per kategori lalu nomor (SMP 1.., SMK 1.. terpisah)
+    supabase.from("peletons").select("*").order("category", {ascending:true}).order("number", {ascending:true}).then(({data})=> {
+      // fallback sort by numeric number if string like "01"
+      const sorted = (data||[]).sort((a:any,b:any)=>{
+        if(a.category!==b.category) return a.category.localeCompare(b.category)
+        return parseInt(String(a.number).replace(/^0+/, "")||"0") - parseInt(String(b.number).replace(/^0+/, "")||"0")
+      })
+      setTeams(sorted)
+    })
   }
   useEffect(()=>{ load() },[])
 
@@ -53,20 +61,23 @@ export default function AdminPeleton(){
 
   const openAdd = ()=>{
     setEditing(null)
-    setForm({ number:"", name:"", school:"", city:"Kertosono", province:"Jawa Timur", category:"SMA", image_url:"", logo_url:"", display_order: teams.length+1, active:true })
+    setForm({ number:"", name:"", school:"", city:"Kertosono", province:"Jawa Timur", category:"SMA", image_url:"", logo_url:"", active:true })
     setOpen(true)
   }
   const openEdit = (p:any)=>{
     setEditing(p)
-    setForm({ number:p.number, name:p.name, school:p.school, city:p.city, province:p.province, category:p.category, image_url:p.image_url||"", logo_url:p.logo_url||"", display_order:p.display_order, active:p.active })
+    setForm({ number:p.number, name:p.name, school:p.school, city:p.city, province:p.province, category:p.category, image_url:p.image_url||"", logo_url:p.logo_url||"", active:p.active })
     setOpen(true)
   }
   const handleSave = async ()=>{ if(saving) return; setSaving(true);
     if(!form.number || !form.name || !form.school || !form.category){
       toast({ title:"Lengkapi data", description:"Nomor, nama, sekolah, kategori wajib diisi", variant:"error" })
+      setSaving(false)
       return
     }
-    const payload = { ...form, slug: form.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") + "-" + form.number }
+    // nomor urut = urutan tampil, set display_order = number (numeric)
+    const numForOrder = parseInt(String(form.number).replace(/^0+/, "") || "0") || 0
+    const payload = { ...form, display_order: numForOrder, slug: form.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") + "-" + form.number }
     try {
       let res
       if(editing){
@@ -108,13 +119,13 @@ export default function AdminPeleton(){
       </div>
 
       <div className="rounded-[16px] border border-border bg-card overflow-hidden">
-        {/* Desktop table */}
+        {/* Desktop table — URUTAN dihapus, nomor urut = urutan tampil per kategori */}
         <div className="hidden md:block overflow-x-auto">
-          <div className="grid grid-cols-[40px_60px_1fr_80px_60px_80px_140px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-border bg-muted/30">
-            <div><input type="checkbox" checked={filtered.length>0 && selected.size===filtered.length} onChange={toggleAll} /></div><div>NO</div><div>TIM</div><div>KELOMPOK</div><div>URUTAN</div><div>TAMPIL</div><div className="text-right">AKSI</div>
+          <div className="grid grid-cols-[40px_60px_1fr_80px_80px_140px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-border bg-muted/30">
+            <div><input type="checkbox" checked={filtered.length>0 && selected.size===filtered.length} onChange={toggleAll} /></div><div>NO</div><div>TIM</div><div>KELOMPOK</div><div>TAMPIL</div><div className="text-right">AKSI</div>
           </div>
           {filtered.map(p=> (
-            <div key={p.id} className="grid grid-cols-[40px_60px_1fr_80px_60px_80px_140px] gap-2 px-4 py-3 items-center border-b border-border/50 last:border-0">
+            <div key={p.id} className="grid grid-cols-[40px_60px_1fr_80px_80px_140px] gap-2 px-4 py-3 items-center border-b border-border/50 last:border-0">
               <div><input type="checkbox" checked={selected.has(p.id)} onChange={()=> toggleSelect(p.id)} /></div>
               <div className="font-mono text-sm">#{p.number}</div>
               <div className="flex gap-3 min-w-0">
@@ -125,7 +136,6 @@ export default function AdminPeleton(){
                 </div>
               </div>
               <div className="text-xs"><Badge variant="outline">{p.category}</Badge></div>
-              <div className="text-xs font-mono">#{p.display_order}</div>
               <div><span className={`inline-flex rounded-full px-2 py-1 text-[11px] font-bold ${p.active ? "bg-emerald-500 text-white" : "bg-zinc-500 text-white"}`}>{p.active ? "Tampil" : "Disembunyikan"}</span></div>
               <div className="flex justify-end gap-1.5">
                 <Link href={`/admin/peleton/${p.id}`}><Button variant="outline" size="sm" className="rounded-full h-7 text-xs">Lihat</Button></Link>
@@ -151,7 +161,6 @@ export default function AdminPeleton(){
                   </div>
                   <div className="text-sm font-bold truncate">{p.name}</div>
                   <div className="text-xs text-muted-foreground truncate">{p.school}</div>
-                  <div className="text-[11px] text-muted-foreground">Urutan #{p.display_order}</div>
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-1.5">
@@ -207,10 +216,7 @@ export default function AdminPeleton(){
                 description="Pilih dengan/tanpa latar belakang — tanpa latar akan benar transparan"
               />
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              <div><label className="text-xs font-bold">Urutan Tampil</label><Input type="number" value={form.display_order} onChange={e=> setForm({...form, display_order: parseInt(e.target.value)||1})} /></div>
-              <div><label className="text-xs font-bold">Tampilkan di Website?</label><Select value={form.active ? "true":"false"} onValueChange={v=> setForm({...form, active: v==="true"})} options={[{value:"true",label:"Ya, tampilkan"},{value:"false",label:"Sembunyikan"}]} /></div>
-            </div>
+            <div><label className="text-xs font-bold">Tampilkan di Website?</label><Select value={form.active ? "true":"false"} onValueChange={v=> setForm({...form, active: v==="true"})} options={[{value:"true",label:"Ya, tampilkan"},{value:"false",label:"Sembunyikan"}]} /></div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={()=> setOpen(false)} disabled={saving}>Batal</Button>

@@ -11,24 +11,34 @@ export async function GET(req: Request) {
   const isVotingClosed = state === "VOTING_CLOSED"
   const isPublished = state === "RESULT_PUBLISHED"
   const showRanking = isVotingClosed || isPublished
-  // BELUM DIMULAI & AKTIF: ranking tidak tampil — return display_order (urut nomor)
+  // BELUM DIMULAI & AKTIF: ranking tidak tampil — return urut nomor per kategori (nomor urut = urutan tampil)
   if (!showRanking) {
-    let q = supabase.from("peletons").select("id,slug,number,name,school,category,image_url,logo_url,display_order").eq("active", true).eq("verified", true).order("number", { ascending: true })
+    let q = supabase.from("peletons").select("id,slug,number,name,school,category,image_url,logo_url,display_order").eq("active", true).eq("verified", true).order("category", { ascending: true }).order("number", { ascending: true })
     if (category) q = q.eq("category", category)
     const { data, error } = await q
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    return NextResponse.json((data || []).map((row: any) => ({
+    const sorted = (data||[]).sort((a:any,b:any)=>{
+      if(a.category!==b.category) return String(a.category).localeCompare(String(b.category))
+      return parseInt(String(a.number).replace(/^0+/,"")||"0") - parseInt(String(b.number).replace(/^0+/,"")||"0")
+    })
+    return NextResponse.json(sorted.map((row: any) => ({
       rank: null,
       ...row,
     })))
   }
-  // VOTING_DITUTUP: ranking online saja, HASIL_DIPUBLIKASIKAN: ranking overall
+  // VOTING_DITUTUP: ranking online saja, HASIL_DIPUBLIKASIKAN: ranking overall — secondary sort nomor urut
   const orderField = isPublished ? "total_ballots" : "online_ballots"
-  let query = supabase.from("team_ranking").select("*").order(orderField as any, { ascending: false })
+  let query = supabase.from("team_ranking").select("*").order(orderField as any, { ascending: false }).order("number", { ascending: true })
   if (category) query = query.eq("category", category)
   const { data, error } = await query
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  const sanitized = data?.map((row: any, idx: number) => ({
+  // fallback numeric sort for text number
+  const ranked = (data||[]).sort((a:any,b:any)=>{
+    const av = (a as any)[orderField]||0, bv = (b as any)[orderField]||0
+    if(bv!==av) return bv-av
+    return parseInt(String(a.number).replace(/^0+/,"")||"0") - parseInt(String(b.number).replace(/^0+/,"")||"0")
+  })
+  const sanitized = ranked?.map((row: any, idx: number) => ({
     rank: idx + 1,
     id: row.id,
     slug: row.slug,

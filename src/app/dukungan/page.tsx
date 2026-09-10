@@ -31,7 +31,7 @@ function DukunganInner(){
         else setPeleton(data)
       })
     } else {
-      supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("display_order").limit(1).single().then(({data, error})=>{
+      supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("category", {ascending:true}).order("number", {ascending:true}).limit(1).single().then(({data, error})=>{
         if(error || !data) setLoadError("Belum ada peleton aktif.")
         else setPeleton(data)
       })

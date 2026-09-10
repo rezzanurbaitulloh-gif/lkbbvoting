@@ -4,12 +4,10 @@ import { ArrowRight } from "lucide-react"
 import { PeletonCard } from "@/components/peleton/PeletonCard"
 
 export function Featured({ peletons, showSementara, showFinal }: { peletons: any[]; showSementara?: boolean; showFinal?: boolean }){
-  // Beranda harus urut nomor peserta (01,02,03...) — bukan ranking
+  // Beranda harus urut nomor peserta per kategori (SMP 01,02.. terpisah SMA 01,02..) — nomor = urutan tampil
   const sorted = [...(peletons || [])].sort((a:any,b:any)=>{
-    const an = String(a.number||a.display_order||"").padStart(4,"0")
-    const bn = String(b.number||b.display_order||"").padStart(4,"0")
-    if(an!==bn) return an.localeCompare(bn)
-    return (a.display_order||0)-(b.display_order||0)
+    if(a.category!==b.category) return String(a.category).localeCompare(String(b.category))
+    return parseInt(String(a.number).replace(/^0+/,"")||"0") - parseInt(String(b.number).replace(/^0+/,"")||"0")
   })
   const smp = sorted.filter((p:any)=> p.category==="SMP")
   const sma = sorted.filter((p:any)=> p.category==="SMA")
