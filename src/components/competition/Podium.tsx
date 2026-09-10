@@ -61,7 +61,7 @@ function Laurel({ side, color, delay = 0 }: { side: "left" | "right"; color: str
 function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number; delay?: number }) {
   const isFirst = rank === 1
   const isSecond = rank === 2
-  // palettes — balanced dengan tema site: surface #111318, border 0.5px, shadow subtle
+  // palettes — balance mobile: proporsi tinggi juara1 jelas (+40px), tidak terlalu jangkung
   const cfg = isFirst
     ? {
         borderGrad: "from-[#C9A86A]/70 via-[#C9A86A] to-[#8C6A2A]/70",
@@ -75,9 +75,9 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         juaraBar: "from-[#8C6A2A] via-[#C9A86A] to-[#8C6A2A]",
         juaraText: "text-[#1A1400]",
         foot: "bg-[#0F1115] border-white/[0.06]",
-        height: "h-[212px] xs:h-[240px] sm:h-[286px] md:h-[318px] lg:h-[348px] xl:h-[392px]",
+        height: "h-[236px] xs:h-[264px] sm:h-[308px] md:h-[340px] lg:h-[368px] xl:h-[404px]",
         width: "w-full",
-        logoSize: "h-[42px] w-[42px] xs:h-[50px] xs:w-[50px] sm:h-[60px] sm:w-[60px] md:h-[66px] md:w-[66px] lg:h-[70px] lg:w-[70px] xl:h-[76px] xl:w-[76px]",
+        logoSize: "h-[46px] w-[46px] xs:h-[52px] xs:w-[52px] sm:h-[60px] sm:w-[60px] md:h-[66px] md:w-[66px] lg:h-[70px] lg:w-[70px] xl:h-[76px] xl:w-[76px]",
       }
     : isSecond
     ? {
@@ -92,7 +92,7 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         juaraBar: "from-[#1E242E] via-[#2E333E] to-[#1E242E]",
         juaraText: "text-white/90",
         foot: "bg-[#0F1115] border-white/[0.05]",
-        height: "h-[188px] xs:h-[212px] sm:h-[252px] md:h-[280px] lg:h-[306px] xl:h-[342px]",
+        height: "h-[192px] xs:h-[216px] sm:h-[260px] md:h-[288px] lg:h-[312px] xl:h-[348px]",
         width: "w-full",
         logoSize: "h-[40px] w-[40px] xs:h-[46px] xs:w-[46px] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px] lg:h-[64px] lg:w-[64px] xl:h-[68px] xl:w-[68px]",
       }
@@ -108,7 +108,7 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         juaraBar: "from-[#1E242E] via-[#3A2A1A] to-[#1E242E]",
         juaraText: "text-white/85",
         foot: "bg-[#0F1115] border-white/[0.05]",
-        height: "h-[182px] xs:h-[204px] sm:h-[244px] md:h-[272px] lg:h-[296px] xl:h-[330px]",
+        height: "h-[184px] xs:h-[208px] sm:h-[252px] md:h-[278px] lg:h-[302px] xl:h-[336px]",
         width: "w-full",
         logoSize: "h-[40px] w-[40px] xs:h-[46px] xs:w-[46px] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px] lg:h-[64px] lg:w-[64px] xl:h-[68px] xl:w-[68px]",
       }
@@ -279,19 +279,15 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
           </div>
         )}
 
-        {/* SMP & SMA — 2 kartu menyatu tema, gap proporsional */}
-        <div className={`mt-8 sm:mt-9 md:mt-11 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 ${festive ? "animate-[fadeIn_0.6s_ease-out]" : ""}`}>
+        {/* SMP & SMA — END USER: tanpa background card (sesuai request hapus), hanya gap proporsional balance */}
+        <div className={`mt-7 sm:mt-8 md:mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 lg:gap-6 xl:gap-8 ${festive ? "animate-[fadeIn_0.6s_ease-out]" : ""}`}>
           {sma.length > 0 && (
-            <div className="relative rounded-[16px] border border-white/[0.06] bg-[#111318] p-3 xs:p-4 sm:p-5 lg:p-5 pt-5 sm:pt-6 shadow-[0_8px_28px_rgba(0,0,0,0.35)] overflow-visible">
-              <div className="pointer-events-none absolute inset-0 rounded-[16px] bg-[radial-gradient(480px_180px_at_50%_0%,rgba(201,168,106,0.06),transparent_65%)] opacity-80" />
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+            <div className="relative overflow-visible">
               <Podium teams={sma} category="SMA / SEDERAJAT" />
             </div>
           )}
           {smp.length > 0 && (
-            <div className="relative rounded-[16px] border border-white/[0.06] bg-[#111318] p-3 xs:p-4 sm:p-5 lg:p-5 pt-5 sm:pt-6 shadow-[0_8px_28px_rgba(0,0,0,0.35)] overflow-visible">
-              <div className="pointer-events-none absolute inset-0 rounded-[16px] bg-[radial-gradient(480px_180px_at_50%_0%,rgba(201,168,106,0.06),transparent_65%)] opacity-80" />
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+            <div className="relative overflow-visible">
               <Podium teams={smp} category="SMP / SEDERAJAT" />
             </div>
           )}
