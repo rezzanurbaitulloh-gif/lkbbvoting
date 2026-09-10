@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Select } from "@/components/ui/select"
 import { createBrowserSupabase } from "@/lib/supabase"
 import { useToast } from "@/components/ui/toast"
+import { Pencil, Trash2 } from "lucide-react"
 
 export default function Users(){
   const { toast } = useToast()
@@ -39,7 +40,7 @@ export default function Users(){
   }
   return (
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
-      <div className="flex items-center justify-between"><h1 className="text-[18px] font-black">Kelola Pengguna</h1><div className="flex items-center gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}</div></div>
+      <div className="flex items-center justify-between"><h1 className="text-[18px] font-black">Kelola Pengguna</h1><div className="flex items-center gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600 gap-2" onClick={handleBulkDelete}><Trash2 className="h-3.5 w-3.5"/>Hapus {selected.size} dipilih</Button>}</div></div>
       <div className="rounded-[16px] border border-border bg-card overflow-hidden">
         {/* Desktop */}
         <div className="hidden md:block overflow-x-auto">
@@ -53,7 +54,7 @@ export default function Users(){
               <div className="font-bold truncate">{u.public_name || "-"}</div>
               <div className="text-muted-foreground text-xs truncate">{u.email}</div>
               <div><span className={`rounded-full px-2 py-1 text-xs font-bold ${u.role==="ADMIN" ? "bg-amber-500 text-white" : "bg-secondary"}`}>{u.role==="ADMIN" ? "admin" : "user"}</span></div>
-              <div><Button variant="outline" size="sm" className="rounded-full h-7 text-xs" onClick={()=> openEdit(u)}>Kelola</Button></div>
+              <div><Button variant="ghost" size="sm" className="rounded-full h-7 text-xs gap-1" onClick={()=> openEdit(u)}><Pencil className="h-3 w-3"/>Kelola</Button></div>
             </div>
           ))}
         </div>
@@ -68,7 +69,7 @@ export default function Users(){
                 <div className="text-xs text-muted-foreground truncate">{u.email}</div>
                 <div className="mt-1 flex gap-1.5"><span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${u.role==="ADMIN" ? "bg-amber-500 text-white" : "bg-secondary"}`}>{u.role==="ADMIN" ? "admin" : "user"}</span><span className="rounded-full bg-emerald-500 text-white px-2 py-0.5 text-[11px] font-bold">Aktif</span></div>
               </div>
-              <Button variant="outline" size="sm" className="rounded-full h-7 text-xs shrink-0" onClick={()=> openEdit(u)}>Kelola</Button>
+              <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs gap-1 shrink-0" onClick={()=> openEdit(u)}><Pencil className="h-3 w-3"/>Kelola</Button>
             </div>
           ))}
         </div>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { createBrowserSupabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/toast"
+import { Trash2 } from "lucide-react"
 export default function Peserta(){
   const { toast } = useToast()
   const [list,setList]=useState<any[]>([])
@@ -14,7 +15,7 @@ export default function Peserta(){
   const handleBulkDelete = async ()=>{ if(selected.size===0) return; for(const id of selected){ await fetch(`/api/admin/crud?table=profiles&id=${id}`, { method:"DELETE" }) } toast({ title:`${selected.size} peserta dihapus`, variant:"success"}); setSelected(new Set()); load() }
   return (
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
-      <div className="flex items-center justify-between"><div><h1 className="text-[18px] font-black">Daftar Peserta</h1></div>{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}</div>
+      <div className="flex items-center justify-between"><div><h1 className="text-[18px] font-black">Daftar Peserta</h1></div>{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600 gap-2" onClick={handleBulkDelete}><Trash2 className="h-3.5 w-3.5"/>Hapus {selected.size} dipilih</Button>}</div>
       <div className="rounded-[16px] border border-border bg-card overflow-hidden">
         {/* Desktop */}
         <div className="hidden md:block overflow-x-auto">
@@ -28,7 +29,7 @@ export default function Peserta(){
               <div className="font-bold truncate">{p.public_name || "-"}</div>
               <div className="text-xs text-muted-foreground truncate">{p.email}</div>
               <div><span className="rounded-full bg-secondary px-2 py-1 text-xs font-bold">User Biasa</span></div>
-              <div><Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600" onClick={async()=>{ await fetch(`/api/admin/crud?table=profiles&id=${p.id}`, {method:"DELETE"}); toast({title:"Dihapus", variant:"success"}); load() }}>Hapus</Button></div>
+              <div><Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600 gap-1" onClick={async()=>{ await fetch(`/api/admin/crud?table=profiles&id=${p.id}`, {method:"DELETE"}); toast({title:"Dihapus", variant:"success"}); load() }}><Trash2 className="h-3 w-3"/>Hapus</Button></div>
             </div>
           ))}
         </div>
@@ -43,7 +44,7 @@ export default function Peserta(){
                 <div className="text-xs text-muted-foreground truncate">{p.email}</div>
                 <div className="mt-1"><span className="rounded-full bg-secondary px-2 py-1 text-[11px] font-bold">User Biasa</span></div>
               </div>
-              <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600 shrink-0" onClick={async()=>{ await fetch(`/api/admin/crud?table=profiles&id=${p.id}`, {method:"DELETE"}); toast({title:"Dihapus", variant:"success"}); load() }}>Hapus</Button>
+              <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600 gap-1 shrink-0" onClick={async()=>{ await fetch(`/api/admin/crud?table=profiles&id=${p.id}`, {method:"DELETE"}); toast({title:"Dihapus", variant:"success"}); load() }}><Trash2 className="h-3 w-3"/>Hapus</Button>
             </div>
           ))}
         </div>

@@ -10,6 +10,7 @@ import { AlertDialog } from "@/components/ui/alert-dialog"
 import { createBrowserSupabase } from "@/lib/supabase"
 import { useToast } from "@/components/ui/toast"
 import { ImageUploadGrid } from "@/components/ui/image-upload-grid"
+import { Pencil, Trash2 } from "lucide-react"
 
 export default function AdminPeleton(){
   const { toast } = useToast()
@@ -107,7 +108,7 @@ export default function AdminPeleton(){
           <h1 className="text-[18px] font-black">Kelola Tim Peserta</h1>
         </div>
         <div className="flex gap-2">
-          {selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}
+          {selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600 gap-2" onClick={handleBulkDelete}><Trash2 className="h-3.5 w-3.5"/>Hapus {selected.size} dipilih</Button>}
           <Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Tim</Button>
         </div>
       </div>
@@ -139,8 +140,8 @@ export default function AdminPeleton(){
               <div><span className={`inline-flex rounded-full px-2 py-1 text-[11px] font-bold ${p.active ? "bg-emerald-500 text-white" : "bg-zinc-500 text-white"}`}>{p.active ? "Tampil" : "Disembunyikan"}</span></div>
               <div className="flex justify-end gap-1.5">
                 <Link href={`/admin/peleton/${p.id}`}><Button variant="outline" size="sm" className="rounded-full h-7 text-xs">Lihat</Button></Link>
-                <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs" onClick={()=> openEdit(p)}>Ubah</Button>
-                <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600" onClick={()=> setDelTarget(p)}>Hapus</Button>
+                <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs gap-1" onClick={()=> openEdit(p)}><Pencil className="h-3 w-3"/>Ubah</Button>
+                <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600 gap-1" onClick={()=> setDelTarget(p)}><Trash2 className="h-3 w-3"/>Hapus</Button>
               </div>
             </div>
           ))}
@@ -165,8 +166,8 @@ export default function AdminPeleton(){
               </div>
               <div className="grid grid-cols-3 gap-1.5">
                 <Link href={`/admin/peleton/${p.id}`}><Button variant="outline" size="sm" className="w-full rounded-full h-7 text-xs">Lihat</Button></Link>
-                <Button variant="ghost" size="sm" className="w-full rounded-full h-7 text-xs border" onClick={()=> openEdit(p)}>Ubah</Button>
-                <Button variant="ghost" size="sm" className="w-full rounded-full h-7 text-xs text-red-600 border border-red-200" onClick={()=> setDelTarget(p)}>Hapus</Button>
+                <Button variant="outline" size="sm" className="w-full rounded-full h-7 text-xs gap-1" onClick={()=> openEdit(p)}><Pencil className="h-3 w-3"/>Ubah</Button>
+                <Button variant="outline" size="sm" className="w-full rounded-full h-7 text-xs text-red-600 border-red-200 gap-1" onClick={()=> setDelTarget(p)}><Trash2 className="h-3 w-3"/>Hapus</Button>
               </div>
             </div>
           ))}

@@ -137,8 +137,8 @@ export default function AuditLog(){
           
         </div>
         <div className="flex gap-2">
-          {selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={()=> setDelTarget("bulk")}>Hapus {selected.size} dipilih</Button>}
-          {logs.length>0 && <Button variant="ghost" size="sm" className="rounded-full text-red-600" onClick={()=> setConfirmClear(true)}>Hapus Semua</Button>}
+          {selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600 gap-2" onClick={()=> setDelTarget("bulk")}><Trash2 className="h-3.5 w-3.5"/>Hapus {selected.size} dipilih</Button>}
+          {logs.length>0 && <Button variant="ghost" size="sm" className="rounded-full text-red-600 gap-1" onClick={()=> setConfirmClear(true)}><Trash2 className="h-3.5 w-3.5"/>Hapus Semua</Button>}
         </div>
       </div>
       <div className="rounded-[16px] border border-border bg-card overflow-hidden">
@@ -155,7 +155,7 @@ export default function AuditLog(){
               <div className="font-bold truncate">{l.user_id ? (users[l.user_id] || "Pengguna") : "Sistem"}</div>
               <div className="font-medium">{humanAksi(l.action)}</div>
               <div className="text-muted-foreground leading-relaxed line-clamp-2">{humanDetail(l)}</div>
-              <div><Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-red-600" onClick={()=> setDelTarget(l.id)}><Trash2 className="h-3.5 w-3.5" /></Button></div>
+              <div className="flex justify-center"><Button variant="ghost" size="sm" className="rounded-full h-6 w-6 p-0 text-red-600" onClick={()=> setDelTarget(l.id)}><Trash2 className="h-3.5 w-3.5" /></Button></div>
             </div>
           ))}
         </div>

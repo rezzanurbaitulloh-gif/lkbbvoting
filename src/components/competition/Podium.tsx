@@ -294,14 +294,15 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
           )}
         </div>
 
-        <div className={`mt-8 sm:mt-10 grid gap-8 sm:gap-10 ${festive ? "animate-[fadeIn_0.6s_ease-out]" : ""}`}>
+        {/* END-USER: SMP & SMA bersebelahan (side-by-side), bukan atas-bawah */}
+        <div className={`mt-8 sm:mt-10 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 ${festive ? "animate-[fadeIn_0.6s_ease-out]" : ""}`}>
           {sma.length > 0 && (
-            <div className="relative rounded-[20px] border border-white/[0.06] bg-white/[0.02] backdrop-blur p-4 sm:p-6">
+            <div className="relative rounded-[20px] border border-white/[0.06] bg-white/[0.02] backdrop-blur p-4 sm:p-6 flex flex-col">
               <Podium teams={sma} category="SMA / SEDERAJAT" />
             </div>
           )}
           {smp.length > 0 && (
-            <div className="relative rounded-[20px] border border-white/[0.06] bg-white/[0.02] backdrop-blur p-4 sm:p-6">
+            <div className="relative rounded-[20px] border border-white/[0.06] bg-white/[0.02] backdrop-blur p-4 sm:p-6 flex flex-col">
               <Podium teams={smp} category="SMP / SEDERAJAT" />
             </div>
           )}

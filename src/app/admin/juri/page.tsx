@@ -8,6 +8,7 @@ import { AlertDialog } from "@/components/ui/alert-dialog"
 import { createBrowserSupabase } from "@/lib/supabase"
 import { useToast } from "@/components/ui/toast"
 import { ImageUploadGrid } from "@/components/ui/image-upload-grid"
+import { Pencil, Trash2 } from "lucide-react"
 
 export default function Page(){
   const { toast } = useToast()
@@ -47,7 +48,7 @@ export default function Page(){
   }
   return (
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Dewan Juri</h1></div><div className="flex gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}<Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Baru</Button></div></div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Dewan Juri</h1></div><div className="flex gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600 gap-2" onClick={handleBulkDelete}><Trash2 className="h-3.5 w-3.5"/>Hapus {selected.size} dipilih</Button>}<Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Baru</Button></div></div>
       <div className="rounded-[16px] border border-border bg-card p-3 sm:p-4 overflow-hidden">
         <div className="grid gap-3">
           {list.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada data.</div> :
@@ -61,8 +62,8 @@ export default function Page(){
                 </div>
               </div>
               <div className="flex gap-1.5 shrink-0 self-end sm:self-auto">
-                <Button variant="outline" size="sm" className="rounded-full h-7 text-xs" onClick={()=> openEdit(item)}>Ubah</Button>
-                <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600" onClick={()=> setDelTarget(item)}>Hapus</Button>
+                <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs gap-1" onClick={()=> openEdit(item)}><Pencil className="h-3 w-3"/>Ubah</Button>
+                <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600 gap-1" onClick={()=> setDelTarget(item)}><Trash2 className="h-3 w-3"/>Hapus</Button>
               </div>
             </div>
           ))}

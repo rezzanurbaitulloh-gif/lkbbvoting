@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/toast"
+import { Trash2 } from "lucide-react"
 export default function Transaksi(){
   const { toast } = useToast()
   const [txs,setTxs]=useState<any[]>([])
@@ -13,7 +14,7 @@ export default function Transaksi(){
   const handleBulkDelete = async ()=>{ if(selected.size===0) return; for(const id of selected){ await fetch(`/api/admin/crud?table=transactions&id=${id}`, { method:"DELETE" }) } toast({ title:`${selected.size} transaksi dihapus`, variant:"success"}); setSelected(new Set()); load() }
   return (
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Riwayat Transaksi</h1></div>{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600" onClick={handleBulkDelete}>Hapus {selected.size} dipilih</Button>}</div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Riwayat Transaksi</h1></div>{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600 gap-2" onClick={handleBulkDelete}><Trash2 className="h-3.5 w-3.5"/>Hapus {selected.size} dipilih</Button>}</div>
       <div className="rounded-[16px] border border-border bg-card overflow-hidden">
         {/* Desktop table — DOKU aware */}
         <div className="hidden md:block overflow-x-auto">
