@@ -61,56 +61,56 @@ function Laurel({ side, color, delay = 0 }: { side: "left" | "right"; color: str
 function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number; delay?: number }) {
   const isFirst = rank === 1
   const isSecond = rank === 2
-  // palettes — responsive fit: w-full grid, heights fluid, no kepotong
+  // palettes — balanced dengan tema site: surface #111318, border 0.5px, shadow subtle
   const cfg = isFirst
     ? {
-        borderGrad: "from-[#FFE9A8] via-[#C9A86A] to-[#8C6A2A]",
-        bg: "from-[#0F172A] via-[#0B1220] to-[#020617]",
-        glow: "shadow-[0_18px_56px_rgba(201,168,106,0.38),0_0_42px_rgba(201,168,106,0.20)]",
-        glowHover: "hover:shadow-[0_22px_64px_rgba(201,168,106,0.45),0_0_52px_rgba(201,168,106,0.28)]",
+        borderGrad: "from-[#C9A86A]/70 via-[#C9A86A] to-[#8C6A2A]/70",
+        bg: "from-[#111318] via-[#0F1115] to-[#0A0C10]",
+        glow: "shadow-[0_10px_28px_rgba(0,0,0,0.38),0_0_18px_rgba(201,168,106,0.10)]",
+        glowHover: "hover:shadow-[0_14px_36px_rgba(0,0,0,0.42),0_0_22px_rgba(201,168,106,0.14)]",
         medalBg: "from-[#FFE9A8] via-[#FFD700] to-[#B45309]",
         medalText: "text-[#5B3A00]",
-        medalRing: "ring-[#C9A86A]",
+        medalRing: "ring-[#C9A86A]/60",
         laurel: "#C9A86A",
         juaraBar: "from-[#8C6A2A] via-[#C9A86A] to-[#8C6A2A]",
         juaraText: "text-[#1A1400]",
-        foot: "bg-[#0B1220] border-[#C9A86A]/30",
-        height: "h-[228px] xs:h-[262px] sm:h-[318px] md:h-[356px] lg:h-[388px] xl:h-[452px]",
+        foot: "bg-[#0F1115] border-white/[0.06]",
+        height: "h-[212px] xs:h-[240px] sm:h-[286px] md:h-[318px] lg:h-[348px] xl:h-[392px]",
         width: "w-full",
-        logoSize: "h-[44px] w-[44px] xs:h-[52px] xs:w-[52px] sm:h-[64px] sm:w-[64px] md:h-[72px] md:w-[72px] lg:h-[78px] lg:w-[78px] xl:h-[84px] xl:w-[84px]",
+        logoSize: "h-[42px] w-[42px] xs:h-[50px] xs:w-[50px] sm:h-[60px] sm:w-[60px] md:h-[66px] md:w-[66px] lg:h-[70px] lg:w-[70px] xl:h-[76px] xl:w-[76px]",
       }
     : isSecond
     ? {
-        borderGrad: "from-[#E5E7EB] via-[#94A3B8] to-[#475569]",
-        bg: "from-[#0F172A] via-[#0B1220] to-[#020617]",
-        glow: "shadow-[0_14px_36px_rgba(148,163,184,0.22)]",
-        glowHover: "hover:shadow-[0_18px_44px_rgba(148,163,184,0.30)]",
+        borderGrad: "from-white/[0.10] via-white/[0.14] to-white/[0.08]",
+        bg: "from-[#111318] via-[#0F1115] to-[#0A0C10]",
+        glow: "shadow-[0_8px_22px_rgba(0,0,0,0.32)]",
+        glowHover: "hover:shadow-[0_12px_28px_rgba(0,0,0,0.38)]",
         medalBg: "from-[#F8FAFC] via-[#CBD5E1] to-[#64748B]",
         medalText: "text-[#1E293B]",
-        medalRing: "ring-[#94A3B8]",
-        laurel: "#94A3B8",
-        juaraBar: "from-[#334155] via-[#94A3B8] to-[#334155]",
-        juaraText: "text-white",
-        foot: "bg-[#0B1220] border-[#475569]/30",
-        height: "h-[202px] xs:h-[232px] sm:h-[280px] md:h-[312px] lg:h-[342px] xl:h-[390px]",
+        medalRing: "ring-white/20",
+        laurel: "#9AA0A9",
+        juaraBar: "from-[#1E242E] via-[#2E333E] to-[#1E242E]",
+        juaraText: "text-white/90",
+        foot: "bg-[#0F1115] border-white/[0.05]",
+        height: "h-[188px] xs:h-[212px] sm:h-[252px] md:h-[280px] lg:h-[306px] xl:h-[342px]",
         width: "w-full",
-        logoSize: "h-[42px] w-[42px] xs:h-[48px] xs:w-[48px] sm:h-[58px] sm:w-[58px] md:h-[64px] md:w-[64px] lg:h-[70px] lg:w-[70px] xl:h-[74px] xl:w-[74px]",
+        logoSize: "h-[40px] w-[40px] xs:h-[46px] xs:w-[46px] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px] lg:h-[64px] lg:w-[64px] xl:h-[68px] xl:w-[68px]",
       }
     : {
-        borderGrad: "from-[#FDBA74] via-[#B45309] to-[#7C2D12]",
-        bg: "from-[#1A0F0A] via-[#0F172A] to-[#020617]",
-        glow: "shadow-[0_14px_36px_rgba(180,83,9,0.22)]",
-        glowHover: "hover:shadow-[0_18px_44px_rgba(180,83,9,0.30)]",
-        medalBg: "from-[#FDBA74] via-[#EA580C] to-[#7C2D12]",
+        borderGrad: "from-[#B45309]/40 via-[#B45309]/55 to-[#7C2D12]/40",
+        bg: "from-[#111318] via-[#0F1115] to-[#0A0C10]",
+        glow: "shadow-[0_8px_22px_rgba(0,0,0,0.32)]",
+        glowHover: "hover:shadow-[0_12px_28px_rgba(0,0,0,0.38)]",
+        medalBg: "from-[#FDBA74] via-[#C7772A] to-[#7C2D12]",
         medalText: "text-white",
-        medalRing: "ring-[#B45309]",
-        laurel: "#B45309",
-        juaraBar: "from-[#7C2D12] via-[#B45309] to-[#7C2D12]",
-        juaraText: "text-white",
-        foot: "bg-[#0F0A06] border-[#7C2D12]/30",
-        height: "h-[196px] xs:h-[224px] sm:h-[272px] md:h-[302px] lg:h-[330px] xl:h-[376px]",
+        medalRing: "ring-[#B45309]/40",
+        laurel: "#9AA0A9",
+        juaraBar: "from-[#1E242E] via-[#3A2A1A] to-[#1E242E]",
+        juaraText: "text-white/85",
+        foot: "bg-[#0F1115] border-white/[0.05]",
+        height: "h-[182px] xs:h-[204px] sm:h-[244px] md:h-[272px] lg:h-[296px] xl:h-[330px]",
         width: "w-full",
-        logoSize: "h-[42px] w-[42px] xs:h-[48px] xs:w-[48px] sm:h-[58px] sm:w-[58px] md:h-[64px] md:w-[64px] lg:h-[70px] lg:w-[70px] xl:h-[74px] xl:w-[74px]",
+        logoSize: "h-[40px] w-[40px] xs:h-[46px] xs:w-[46px] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px] lg:h-[64px] lg:w-[64px] xl:h-[68px] xl:w-[68px]",
       }
 
   const clip = "polygon(13px 0, calc(100% - 13px) 0, 100% 13px, 100% 100%, 0 100%, 0 13px)"
@@ -231,67 +231,65 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
 
   if (!isPublished) return null
   return (
-    <section className="relative overflow-hidden bg-[#09090b] border-y border-white/[0.06] py-9 sm:py-11 md:py-13 lg:py-14">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[0.5px] bg-gradient-to-r from-transparent via-[#C9A86A]/18 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/[0.05] to-transparent" />
-      {/* background ornaments — menyatu dengan tema #09090b */}
+    <section className="relative overflow-hidden bg-[#09090b] border-y border-white/[0.05] py-10 sm:py-12 md:py-14 lg:py-16">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
+      {/* background — menyatu penuh dengan site, tidak kontras */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[#09090b]" />
-        <div className="absolute inset-0 bg-[radial-gradient(900px_420px_at_50%_-40px,rgba(201,168,106,0.11),transparent_70%)]" />
-        <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: `linear-gradient(rgba(201,168,106,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,106,0.5) 1px, transparent 1px)`, backgroundSize: "56px 56px" }} />
-        {/* floating orbs behind — gentle drift */}
-        <div className="absolute -top-10 -right-10 h-64 w-64 rounded-full bg-[#C9A86A]/[0.07] blur-3xl animate-[floatOrb_9s_ease-in-out_infinite]" />
-        <div className="absolute -bottom-16 -left-12 h-72 w-72 rounded-full bg-[#C9A86A]/[0.05] blur-3xl animate-[floatOrb_11s_ease-in-out_infinite_reverse]" />
-        {/* soft wave lines bottom like screenshot */}
-        <svg className="absolute bottom-0 inset-x-0 h-[88px] sm:h-[90px] w-full opacity-[0.16] sm:opacity-[0.18]" viewBox="0 0 1440 90" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 52 C 220 92 420 18 720 52 C 980 78 1120 28 1440 58" stroke="#C9A86A" strokeWidth="1" fill="none" />
-          <path d="M0 66 C 240 98 440 32 720 66 C 1040 92 1200 42 1440 72" stroke="#C9A86A" strokeWidth="0.7" opacity="0.6" fill="none" />
+        <div className="absolute inset-0 bg-[radial-gradient(860px_380px_at_50%_-20px,rgba(201,168,106,0.07),transparent_68%)]" />
+        <div className="absolute inset-0 opacity-[0.018]" style={{ backgroundImage: `linear-gradient(rgba(201,168,106,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,106,0.5) 1px, transparent 1px)`, backgroundSize: "56px 56px" }} />
+        {/* orbs sangat subtle agar tidak berat */}
+        <div className="absolute -top-12 -right-12 h-72 w-72 rounded-full bg-[#C9A86A]/[0.04] blur-3xl animate-[floatOrb_10s_ease-in-out_infinite]" />
+        <div className="absolute -bottom-16 -left-12 h-80 w-80 rounded-full bg-[#C9A86A]/[0.03] blur-3xl animate-[floatOrb_12s_ease-in-out_infinite_reverse]" />
+        {/* wave 1px tipis menyatu */}
+        <svg className="absolute bottom-0 inset-x-0 h-[70px] sm:h-[80px] w-full opacity-[0.08] sm:opacity-[0.10]" viewBox="0 0 1440 90" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 52 C 220 92 420 18 720 52 C 980 78 1120 28 1440 58" stroke="#C9A86A" strokeWidth="0.7" fill="none" />
+          <path d="M0 66 C 240 98 440 32 720 66 C 1040 92 1200 42 1440 72" stroke="#C9A86A" strokeWidth="0.5" opacity="0.5" fill="none" />
         </svg>
       </div>
 
-      {/* side ribbons — desktop only like screenshot */}
-      <div className="pointer-events-none hidden lg:block absolute left-0 top-0 bottom-0 w-[84px]">
-        <div className="absolute inset-0 bg-[#060B16] border-r border-[#C9A86A]/20" style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 22px), 50% 100%, 0 calc(100% - 22px))" }} />
-        <div className="absolute inset-[1px] border border-[#C9A86A]/20" style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 22px), 50% 100%, 0 calc(100% - 22px))" }} />
+      {/* side ribbons — diperhalus 0.5px, warna menyatu */}
+      <div className="pointer-events-none hidden xl:block absolute left-0 top-0 bottom-0 w-[76px]">
+        <div className="absolute inset-0 bg-[#0A0E18]/60 border-r border-white/[0.06]" style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px))" }} />
         <div className="absolute inset-0 grid place-items-center">
-          <div className="text-center leading-[1.7] text-[10px] font-bold tracking-[0.16em] text-white/45">
+          <div className="text-center leading-[1.7] text-[9px] font-bold tracking-[0.16em] text-white/30">
             DISIPLIN<br/>LOYALITAS<br/>KEBERSAMAAN<br/>PRESTASI
-            <div className="mx-auto mt-4 h-5 w-5 rotate-45 border border-[#C9A86A]/30 bg-[#C9A86A]/10 grid place-items-center"><div className="h-1.5 w-1.5 bg-[#C9A86A]/50 rotate-45" /></div>
+            <div className="mx-auto mt-3 h-4 w-4 rotate-45 border border-white/[0.08] bg-white/[0.03] grid place-items-center"><div className="h-1 w-1 bg-[#C9A86A]/40 rotate-45" /></div>
           </div>
         </div>
       </div>
-      <div className="pointer-events-none hidden lg:block absolute right-0 top-0 bottom-0 w-[84px]">
-        <div className="absolute inset-0 bg-[#060B16] border-l border-[#C9A86A]/20" style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 22px), 50% 100%, 0 calc(100% - 22px))" }} />
-        <div className="absolute inset-[1px] border border-[#C9A86A]/20" style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 22px), 50% 100%, 0 calc(100% - 22px))" }} />
+      <div className="pointer-events-none hidden xl:block absolute right-0 top-0 bottom-0 w-[76px]">
+        <div className="absolute inset-0 bg-[#0A0E18]/60 border-l border-white/[0.06]" style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px))" }} />
         <div className="absolute inset-0 grid place-items-center">
-          <div className="text-center leading-[1.7] text-[10px] font-bold tracking-[0.16em] text-white/45">
+          <div className="text-center leading-[1.7] text-[9px] font-bold tracking-[0.16em] text-white/30">
             SATU<br/>LANGKAH<br/>SATU<br/>TUJUAN
-            <div className="mx-auto mt-4 h-5 w-5 rotate-45 border border-[#C9A86A]/30 bg-[#C9A86A]/10 grid place-items-center"><div className="h-1.5 w-1.5 bg-[#C9A86A]/50 rotate-45" /></div>
+            <div className="mx-auto mt-3 h-4 w-4 rotate-45 border border-white/[0.08] bg-white/[0.03] grid place-items-center"><div className="h-1 w-1 bg-[#C9A86A]/40 rotate-45" /></div>
           </div>
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 lg:px-[96px]">
-        {/* header like screenshot */}
-        <div className="text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-3">
-            <span className="hidden sm:block h-px w-10 bg-[#C9A86A]/40" />
-            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.24em] text-[#C9A86A]">HASIL SEMENTARA</span>
-            <span className="hidden sm:block h-px w-10 bg-[#C9A86A]/40" />
+      <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 lg:px-[96px] xl:px-[72px]">
+        {/* header — proporsional dengan Featured (22-30px), tidak serif berat */}
+        <div className="text-center max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-2.5">
+            <span className="hidden sm:block h-px w-8 bg-white/10" />
+            <span className="text-[11px] font-bold tracking-[0.18em] text-[#C9A86A]">HASIL SEMENTARA</span>
+            <span className="hidden sm:block h-px w-8 bg-white/10" />
           </div>
-          <div className="mt-2 flex items-center justify-center gap-3 sm:gap-4">
-            <span className="hidden sm:block h-px flex-1 max-w-[88px] bg-[#C9A86A]/30" />
-            <h2 className="text-[22px] sm:text-[28px] md:text-[34px] lg:text-[40px] font-black tracking-[-0.03em] text-white leading-none" style={{ fontFamily: "ui-serif, Georgia, serif" }}>
-              PODIUM PELETON TERFAVORIT
+          <div className="mt-3 flex items-center justify-center gap-3">
+            <span className="hidden sm:block h-px w-8 bg-gradient-to-r from-transparent to-[#C9A86A]/30" />
+            <h2 className="text-[20px] xs:text-[22px] sm:text-[26px] md:text-[30px] lg:text-[32px] font-black tracking-[-0.03em] text-white leading-[0.92] font-display">
+              PODIUM PELETON <span className="gold-gradient-text">TERFAVORIT</span>
             </h2>
-            <span className="hidden sm:block h-px flex-1 max-w-[88px] bg-[#C9A86A]/30" />
+            <span className="hidden sm:block h-px w-8 bg-gradient-to-l from-transparent to-[#C9A86A]/30" />
           </div>
-          <div className="mt-2 flex items-center justify-center gap-3">
-            <span className="h-px flex-1 max-w-[180px] bg-gradient-to-r from-transparent to-[#C9A86A]/40" />
-            <span className="text-[11px] sm:text-xs font-black tracking-[0.28em] text-white">LKBB 2025</span>
-            <span className="h-px flex-1 max-w-[180px] bg-gradient-to-l from-transparent to-[#C9A86A]/40" />
+          <div className="mt-2.5 flex items-center justify-center gap-2.5">
+            <span className="h-px flex-1 max-w-[140px] bg-gradient-to-r from-transparent to-white/10" />
+            <span className="text-[11px] font-bold tracking-[0.18em] text-white/70">LKBB 2025 • JAVASOMA</span>
+            <span className="h-px flex-1 max-w-[140px] bg-gradient-to-l from-transparent to-white/10" />
           </div>
-          <p className="mt-2 text-[11px] sm:text-xs md:text-sm text-white/60 leading-relaxed">Javasoma The Impression – Astra Dharma Hayuning Budaya</p>
+          <p className="mt-2 text-[12px] sm:text-[13px] text-white/50 leading-relaxed">Javasoma The Impression – Astra Dharma Hayuning Budaya</p>
         </div>
 
         {/* festive dot */}
@@ -301,27 +299,27 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
           </div>
         )}
 
-        {/* SMP & SMA — dipisah tapi bersebelahan, card overflow-visible biar mahkota tidak kepotong */}
-        <div className={`mt-8 sm:mt-10 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-6 xl:gap-7 ${festive ? "animate-[fadeIn_0.6s_ease-out]" : ""}`}>
+        {/* SMP & SMA — 2 kartu menyatu tema, gap proporsional */}
+        <div className={`mt-8 sm:mt-9 md:mt-11 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-5 xl:gap-6 ${festive ? "animate-[fadeIn_0.6s_ease-out]" : ""}`}>
           {sma.length > 0 && (
-            <div className="relative rounded-[20px] border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-3 xs:p-4 sm:p-5 md:p-5 lg:p-6 pt-6 sm:pt-7 shadow-[0_10px_40px_rgba(0,0,0,0.35),0_1px_0_rgba(255,255,255,0.06)_inset] overflow-visible">
-              <div className="pointer-events-none absolute inset-0 rounded-[20px] bg-[radial-gradient(520px_200px_at_50%_0%,rgba(201,168,106,0.07),transparent_65%)]" />
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-t-[20px]" />
+            <div className="relative rounded-[16px] border border-white/[0.06] bg-[#111318] p-3 xs:p-4 sm:p-5 lg:p-5 pt-5 sm:pt-6 shadow-[0_8px_28px_rgba(0,0,0,0.35)] overflow-visible">
+              <div className="pointer-events-none absolute inset-0 rounded-[16px] bg-[radial-gradient(480px_180px_at_50%_0%,rgba(201,168,106,0.06),transparent_65%)] opacity-80" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
               <Podium teams={sma} category="SMA / SEDERAJAT" />
             </div>
           )}
           {smp.length > 0 && (
-            <div className="relative rounded-[20px] border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-3 xs:p-4 sm:p-5 md:p-5 lg:p-6 pt-6 sm:pt-7 shadow-[0_10px_40px_rgba(0,0,0,0.35),0_1px_0_rgba(255,255,255,0.06)_inset] overflow-visible">
-              <div className="pointer-events-none absolute inset-0 rounded-[20px] bg-[radial-gradient(520px_200px_at_50%_0%,rgba(201,168,106,0.07),transparent_65%)]" />
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-t-[20px]" />
+            <div className="relative rounded-[16px] border border-white/[0.06] bg-[#111318] p-3 xs:p-4 sm:p-5 lg:p-5 pt-5 sm:pt-6 shadow-[0_8px_28px_rgba(0,0,0,0.35)] overflow-visible">
+              <div className="pointer-events-none absolute inset-0 rounded-[16px] bg-[radial-gradient(480px_180px_at_50%_0%,rgba(201,168,106,0.06),transparent_65%)] opacity-80" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
               <Podium teams={smp} category="SMP / SEDERAJAT" />
             </div>
           )}
         </div>
 
-        <div className="mt-8 sm:mt-10 flex flex-col items-center gap-2 text-center">
-          <p className="text-[10px] sm:text-[11px] text-white/30 tracking-wide">Mahkota mewah di atas juara 1 — kalung medali untuk juara 2 & 3 • Peringkat berdasarkan online</p>
-          <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="mt-7 sm:mt-8 flex flex-col items-center gap-2 text-center">
+          <p className="text-[11px] text-white/35 tracking-wide">Peringkat berdasarkan dukungan online</p>
+          <div className="h-[0.5px] w-20 bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
         </div>
       </div>
 
