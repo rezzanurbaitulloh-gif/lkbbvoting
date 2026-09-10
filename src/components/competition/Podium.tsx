@@ -302,15 +302,19 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
           </div>
         )}
 
-        {/* SMP & SMA bersebelahan — end-user request */}
-        <div className={`mt-8 sm:mt-10 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-6 xl:gap-8 ${festive ? "animate-[fadeIn_0.6s_ease-out]" : ""}`}>
+        {/* SMP & SMA — dipisah tapi bersebelahan (side-by-side cards), bukan menyatu */}
+        <div className={`mt-8 sm:mt-10 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-6 xl:gap-8 ${festive ? "animate-[fadeIn_0.6s_ease-out]" : ""}`}>
           {sma.length > 0 && (
-            <div className="relative">
+            <div className="relative rounded-[20px] border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-[0_10px_40px_rgba(0,0,0,0.35),0_1px_0_rgba(255,255,255,0.06)_inset] overflow-hidden">
+              <div className="pointer-events-none absolute inset-0 rounded-[20px] bg-[radial-gradient(520px_200px_at_50%_0%,rgba(201,168,106,0.07),transparent_65%)]" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
               <Podium teams={sma} category="SMA / SEDERAJAT" />
             </div>
           )}
           {smp.length > 0 && (
-            <div className="relative">
+            <div className="relative rounded-[20px] border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-[0_10px_40px_rgba(0,0,0,0.35),0_1px_0_rgba(255,255,255,0.06)_inset] overflow-hidden">
+              <div className="pointer-events-none absolute inset-0 rounded-[20px] bg-[radial-gradient(520px_200px_at_50%_0%,rgba(201,168,106,0.07),transparent_65%)]" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
               <Podium teams={smp} category="SMP / SEDERAJAT" />
             </div>
           )}
