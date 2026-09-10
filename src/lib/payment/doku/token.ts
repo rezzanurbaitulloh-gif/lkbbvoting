@@ -23,11 +23,11 @@ export async function getDokuB2BToken(): Promise<string> {
       signature = generateAsymmetricSignature(cfg.privateKey, cfg.clientId, timestamp)
     } catch (e) {
       console.error("[doku] asymmetric signature failed", (e as Error).message)
-      throw new Error(`DOKU private key invalid: ${(e as Error).message}. Pastikan DOKU_PRIVATE_KEY adalah PKCS#8 unencrypted dan public key sudah di-upload ke DOKU Dashboard.`)
+      throw new Error(`DOKU private key invalid: ${(e as Error).message}. Pastikan DOKU_PRIVATE_KEY adalah PKCS#8 unencrypted dan Merchant Public Key sudah di-upload ke DOKU Dashboard.`)
     }
   } else {
     console.error("[doku] DOKU_PRIVATE_KEY not set — cannot get real B2B token")
-    throw new Error("DOKU_PRIVATE_KEY belum di-set di server (.env & Vercel). Generate RSA 2048 + upload public.pem ke DOKU Dashboard Sandbox.")
+    throw new Error("DOKU_PRIVATE_KEY belum di-set di server (.env & Vercel). Generate RSA 2048 + upload public.pem ke DOKU Dashboard.")
   }
 
   try {
@@ -49,7 +49,7 @@ export async function getDokuB2BToken(): Promise<string> {
       // Jangan fallback ke mock jika private key ada — beri pesan jelas agar user upload public key
       if (cfg.privateKey) {
         const msg = data.responseMessage || data.error || JSON.stringify(data).slice(0,300)
-        throw new Error(`DOKU B2B token gagal ${res.status}: ${msg}. Pastikan public.pem hasil 'openssl rsa -in private.key -pubout' sudah di-upload ke DOKU Dashboard Sandbox untuk client ${cfg.clientId} dan private key di server sinkron.`)
+        throw new Error(`DOKU B2B token gagal ${res.status}: ${msg}. Pastikan Merchant Public Key hasil 'openssl rsa -in private.key -pubout' sudah di-upload ke DOKU Dashboard Production untuk client ${cfg.clientId} dan private key di server sinkron.`)
       }
       return getMockToken()
     }

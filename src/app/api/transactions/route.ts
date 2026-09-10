@@ -107,7 +107,7 @@ export async function POST(req: Request) {
       const msg = dokuErr?.message || "Gagal generate QRIS DOKU"
       // Sanitize: jangan expose secret, tapi beri hint upload public key
       const isAuthError = /B2B token gagal|public\.pem|merchantId|401|500/i.test(msg)
-      const hint = isAuthError ? " — Pastikan public.pem (dari private-pkcs8.key) sudah di-upload ke DOKU Dashboard Sandbox untuk client " + (process.env.DOKU_CLIENT_ID || "BRN-0272-1788400874210") + " dan DOKU_MERCHANT_ID/TERMINAL_ID benar." : ""
+      const hint = isAuthError ? " — Pastikan Merchant Public Key sudah di-upload ke DOKU Dashboard Production untuk client " + (process.env.DOKU_CLIENT_ID || "BRN-0244-1788274023542") + " dan DOKU_MERCHANT_ID/TERMINAL_ID benar." : ""
       return NextResponse.json({ error: msg + hint }, { status: 502 })
     }
 

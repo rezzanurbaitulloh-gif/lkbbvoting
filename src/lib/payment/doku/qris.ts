@@ -29,7 +29,7 @@ export async function generateDokuQris(params: DokuQrisGenerateParams): Promise<
   // If mock token but we have a private key, it means B2B failed due to wrong public key upload — do not silently mock, throw so user sees real error
   if (isMockToken) {
     if (cfg.privateKey && cfg.privateKey.includes("BEGIN")) {
-      throw new Error("DOKU B2B token masih mock — private key ada tapi B2B gagal. Cek log server: pastikan public.pem sudah di-upload ke DOKU Dashboard Sandbox untuk client " + cfg.clientId)
+      throw new Error("DOKU B2B token masih mock — private key ada tapi B2B gagal. Cek log server: pastikan Merchant Public Key sudah di-upload ke DOKU Dashboard Production untuk client " + cfg.clientId)
     }
     return generateMockQris(params)
   }
@@ -90,7 +90,7 @@ export async function generateDokuQris(params: DokuQrisGenerateParams): Promise<
       console.error("[doku] qris generate failed", res.status, data)
       // Jika sudah pakai private key real, jangan fallback ke mock — biar error terlihat dan tidak jadi QR amount 0 / 5101
       if (cfg.privateKey && cfg.privateKey.includes("BEGIN")) {
-        throw new Error(`DOKU QRIS generate gagal ${res.status}: ${JSON.stringify(data).slice(0,500)}. Cek merchantId/terminalId & public key di DOKU Dashboard.`)
+        throw new Error(`DOKU QRIS generate gagal ${res.status}: ${JSON.stringify(data).slice(0,500)}. Cek merchantId/terminalId & Merchant Public Key di DOKU Dashboard Production.`)
       }
       if (cfg.env === "sandbox") {
         console.warn("[doku] fallback to mock QR due to API error (no private key)")
@@ -103,7 +103,7 @@ export async function generateDokuQris(params: DokuQrisGenerateParams): Promise<
     if (data.responseCode && !String(data.responseCode).startsWith("200")) {
       console.error("[doku] qris business error", data)
       if (cfg.privateKey && cfg.privateKey.includes("BEGIN")) {
-        throw new Error(`DOKU QRIS error ${data.responseCode}: ${data.responseMessage} — cek saldo/konfig sandbox.`)
+        throw new Error(`DOKU QRIS error ${data.responseCode}: ${data.responseMessage} — cek saldo/konfig Production.`)
       }
       if (cfg.env === "sandbox") {
         return generateMockQris(params)

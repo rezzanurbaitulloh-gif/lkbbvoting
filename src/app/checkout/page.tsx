@@ -136,8 +136,8 @@ function CheckoutInner(){
 
   const isDoku = trx?.provider === "DOKU" || !trx?.provider || trx?.provider === "doku"
   const config = {
-    success: { title:"DUKUNGAN BERHASIL", desc:`Terima kasih telah memberikan dukungan kepada ${p.name} — ballot telah masuk setelah webhook DOKU terverifikasi`, icon: CheckCircle2, color:"bg-emerald-500", bg:"bg-emerald-500/10 border-emerald-500/20" },
-    pending: { title:"PEMBAYARAN MENUNGGU", desc: isDoku ? "Selesaikan pembayaran QRIS via DOKU Sandbox. Ballot hanya bertambah setelah webhook DOKU terverifikasi." : "Selesaikan pembayaran QRIS. Ballot hanya bertambah setelah pembayaran terverifikasi webhook.", icon: Clock3, color:"bg-amber-500", bg:"bg-amber-500/10 border-amber-500/20" },
+    success: { title:"DUKUNGAN BERHASIL", desc:`Terima kasih telah memberikan dukungan kepada ${p.name} — ballot telah masuk setelah pembayaran terverifikasi`, icon: CheckCircle2, color:"bg-emerald-500", bg:"bg-emerald-500/10 border-emerald-500/20" },
+    pending: { title:"PEMBAYARAN MENUNGGU", desc: isDoku ? "Selesaikan pembayaran QRIS via DOKU. Ballot hanya bertambah setelah pembayaran terverifikasi." : "Selesaikan pembayaran QRIS. Ballot hanya bertambah setelah pembayaran terverifikasi webhook.", icon: Clock3, color:"bg-amber-500", bg:"bg-amber-500/10 border-amber-500/20" },
     failed: { title:"PEMBAYARAN TIDAK BERHASIL", desc:"Pembayaran gagal. Silakan coba lagi.", icon: XCircle, color:"bg-red-500", bg:"bg-red-500/10 border-red-500/20" },
     expired: { title:"TRANSAKSI KEDALUWARSA", desc:"Waktu pembayaran telah habis", icon: Timer, color:"bg-zinc-500", bg:"bg-zinc-500/10 border-zinc-500/20" },
   }[status as string] || { title:"PEMBAYARAN MENUNGGU", desc: isDoku ? "Menunggu verifikasi DOKU (webhook)" : "Menunggu verifikasi", icon: Clock3, color:"bg-amber-500", bg:"bg-amber-500/10 border-amber-500/20" }
@@ -172,19 +172,19 @@ function CheckoutInner(){
 
         {status==="pending" && (
           <div className="mt-4 rounded-2xl border border-border bg-card p-4">
-            <div className="text-xs font-bold tracking-widest">BAYAR VIA DOKU QRIS (SANDBOX)</div>
+            <div className="text-xs font-bold tracking-widest">BAYAR VIA QRIS</div>
             <div className="tabular-nums text-[24px] font-black text-amber-600">Menunggu</div>
             <div className="mx-auto mt-3 h-[220px] w-[220px] rounded-xl border border-border bg-white grid place-items-center p-2 overflow-hidden">
               {qrDataUrl ? (
-                <img id="qris-image" src={qrDataUrl} alt="QRIS DOKU" className="h-full w-full object-contain" />
+                <img id="qris-image" src={qrDataUrl} alt="QRIS" className="h-full w-full object-contain" />
               ) : trx?.qr_content ? (
                 <div className="text-[11px] leading-tight text-center text-muted-foreground break-all p-2">
-                  QRIS DOKU<br/><span className="font-mono text-[10px] break-all">{String(trx.qr_content).slice(0,60)}...</span><br/>
-                  <span className="text-[10px]">Gagal render QR, gunakan string di atas untuk simulasi</span>
+                  QRIS<br/><span className="font-mono text-[10px] break-all">{String(trx.qr_content).slice(0,60)}...</span><br/>
+                  <span className="text-[10px]">Gagal render QR, gunakan String di atas</span>
                 </div>
               ) : (
                 <div className="text-[11px] leading-tight text-center text-muted-foreground">
-                  QRIS DOKU<br/><span className="font-bold text-foreground">Menyiapkan QR...</span><br/>
+                  QRIS<br/><span className="font-bold text-foreground">Menyiapkan QR...</span><br/>
                   <span className="text-[10px]">Jika QR tidak muncul, klik Cek Status atau refresh</span>
                 </div>
               )}
@@ -207,8 +207,8 @@ function CheckoutInner(){
               </Button>
             )}
             {trx?.doku_reference_no && <div className="mt-2 text-[11px] font-mono text-muted-foreground">Ref: {trx.doku_reference_no.slice(0,16)}...</div>}
-            <p className="mt-2 text-xs text-muted-foreground">Ballot <b>tidak</b> langsung bertambah. Menunggu webhook DOKU <b>PAID</b> terverifikasi. Gunakan <a href="https://sandbox.doku.com/qris-simulator/" target="_blank" className="underline font-bold">DOKU Simulator</a> untuk simulasi bayar.</p>
-            <p className="mt-1 text-[11px] text-muted-foreground">Jika sudah simulasi bayar di DOKU Sandbox, klik Cek Status. Polling tiap 3 detik (hanya UX).</p>
+            <p className="mt-2 text-xs text-muted-foreground">Ballot <b>tidak</b> langsung bertambah. Menunggu pembayaran terverifikasi. Scan QR dengan e-wallet / m-banking, selesaikan dalam 15 menit.</p>
+            <p className="mt-1 text-[11px] text-muted-foreground">Jika sudah bayar, klik Cek Status. Polling tiap 3 detik (hanya UX).</p>
             {trx?.expires_at && <p className="mt-1 text-[11px] text-muted-foreground">Kadaluarsa: {new Date(trx.expires_at).toLocaleString("id-ID", { timeZone: "Asia/Jakarta" })}</p>}
           </div>
         )}

@@ -155,7 +155,7 @@ export default function InvoicePage(){
 
               <div className="rounded-xl border border-white/10 bg-[#111318] p-4">
                 <h3 className="text-xs font-black tracking-wide">BANTUAN</h3>
-                <p className="mt-1 text-xs text-white/50">Jika status masih Pending setelah bayar via DOKU Sandbox, gunakan Cek Status di halaman Checkout atau hubungi panitia via Kontak.</p>
+                <p className="mt-1 text-xs text-white/50">Jika status masih Pending setelah bayar, gunakan Cek Status di halaman Checkout atau hubungi panitia via Kontak.</p>
               </div>
             </div>
           ) : null}
