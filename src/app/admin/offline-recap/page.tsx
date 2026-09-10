@@ -2,10 +2,12 @@
 import { useEffect, useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
+import { AlertDialog } from "@/components/ui/alert-dialog"
+import { Badge } from "@/components/ui/badge"
 import { createBrowserSupabase } from "@/lib/supabase"
 import { useToast } from "@/components/ui/toast"
-import { Search, Plus, Trash2, X } from "lucide-react"
+import { Search, Plus, Trash2, X, Pencil } from "lucide-react"
 
 type Row = {
   id: string
@@ -95,6 +97,14 @@ export default function OfflineRecap(){
   const [openDialog, setOpenDialog] = useState(false)
   const [rows, setRows] = useState<Row[]>([{id:"1", category:"", teamId:"", teamSearch:"", qty:"", open:false}])
   const [saving, setSaving]=useState(false)
+  // ledger selection + edit
+  const [selected, setSelected] = useState<Set<string>>(new Set())
+  const [editTarget, setEditTarget] = useState<any|null>(null)
+  const [editSupports, setEditSupports] = useState<string>("")
+  const [editNote, setEditNote] = useState<string>("")
+  const [editSaving, setEditSaving] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<any|null>(null)
+  const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false)
 
   const supabase = createBrowserSupabase()
 
@@ -108,9 +118,74 @@ export default function OfflineRecap(){
     })
   }
   const loadRecent = ()=>{
-    fetch("/api/admin/offline-recap").then(r=> r.json()).then(d=> { if(Array.isArray(d)) setRecent(d) }).catch(()=>{})
+    fetch("/api/admin/offline-recap?limit=100").then(r=> r.json()).then(d=> { if(Array.isArray(d)) setRecent(d) }).catch(()=>{})
   }
   useEffect(()=>{ loadTeams(); loadRecent() },[])
+
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected)
+    if (next.has(id)) next.delete(id)
+    else next.add(id)
+    setSelected(next)
+  }
+  const toggleAll = () => {
+    if (selected.size === recent.length && recent.length > 0) setSelected(new Set())
+    else setSelected(new Set(recent.map((r:any)=> r.id)))
+  }
+  const handleBulkDelete = async () => {
+    if (selected.size === 0) return
+    const ids = Array.from(selected)
+    try {
+      const res = await fetch(`/api/admin/offline-recap?ids=${ids.join(",")}`, { method: "DELETE" })
+      const j = await res.json().catch(()=> ({}))
+      if (!res.ok) throw new Error(j.error || "Gagal hapus")
+      toast({ title: `${j.deleted ?? ids.length} data offline dihapus`, variant: "success" })
+      setSelected(new Set())
+      loadRecent()
+    } catch (e:any) {
+      toast({ title: "Gagal hapus", description: e.message, variant: "error" })
+    }
+  }
+  const handleSingleDelete = async () => {
+    if (!deleteTarget) return
+    try {
+      const res = await fetch(`/api/admin/offline-recap?id=${deleteTarget.id}`, { method: "DELETE" })
+      const j = await res.json().catch(()=> ({}))
+      if (!res.ok) throw new Error(j.error || "Gagal hapus")
+      toast({ title: "Data dihapus", description: `#${deleteTarget.peletons?.number} ${deleteTarget.peletons?.name} • ${deleteTarget.supports} ballot`, variant: "success" })
+      loadRecent()
+    } catch (e:any) {
+      toast({ title: "Gagal hapus", description: e.message, variant: "error" })
+    }
+  }
+  const openEdit = (row: any) => {
+    setEditTarget(row)
+    setEditSupports(String(row.supports ?? ""))
+    setEditNote(row.note ?? "")
+  }
+  const handleEditSave = async () => {
+    if (!editTarget) return
+    const n = parseInt(editSupports, 10)
+    if (!Number.isInteger(n) || n === 0 || n < -10000 || n > 10000) {
+      toast({ title: "Jumlah tidak valid", description: "Wajib integer -10000..10000 dan !=0", variant: "error" })
+      return
+    }
+    setEditSaving(true)
+    try {
+      const res = await fetch("/api/admin/offline-recap", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: editTarget.id, supports: n, note: editNote || null })
+      })
+      const j = await res.json().catch(()=> ({}))
+      if (!res.ok) throw new Error(j.error || "Gagal ubah")
+      toast({ title: "Data diperbarui", variant: "success" })
+      setEditTarget(null)
+      loadRecent()
+    } catch (e:any) {
+      toast({ title: "Gagal ubah", description: e.message, variant: "error" })
+    } finally { setEditSaving(false) }
+  }
 
   const addRow = ()=>{
     setRows(prev=> [...prev, {id: String(Date.now()+Math.random()), category:"" as any, teamId:"", teamSearch:"", qty:"", open:false}])
@@ -253,18 +328,113 @@ export default function OfflineRecap(){
         </DialogContent>
       </Dialog>
 
-      <div className="rounded-[16px] border border-border bg-card p-4">
-        <h3 className="text-sm font-black">Riwayat Offline Terbaru (ledger)</h3>
-        <div className="mt-3 space-y-2">
-          {recent.map((r:any)=> (
-            <div key={r.id} className="flex justify-between rounded-xl border border-border p-3 text-xs">
-              <div>#{r.peletons?.number} {r.peletons?.name} • +{r.supports} offline</div>
-              <div className="text-muted-foreground">{new Date(r.created_at).toLocaleString("id-ID")}</div>
+      <div className="rounded-[16px] border border-border bg-card overflow-hidden">
+        <div className="p-4 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <h3 className="text-sm font-black">Riwayat Offline Terbaru (ledger) — {recent.length} data</h3>
+          {selected.size>0 && (
+            <Button variant="outline" size="sm" className="rounded-full text-red-600 gap-2" onClick={()=> setBulkDeleteConfirm(true)}>
+              <Trash2 className="h-3.5 w-3.5"/> Hapus {selected.size} dipilih
+            </Button>
+          )}
+        </div>
+
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-x-auto">
+          <div className="min-w-[720px] grid grid-cols-[40px_90px_1fr_90px_130px_120px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-y border-border bg-muted/30">
+            <div><input type="checkbox" checked={selected.size===recent.length && recent.length>0} onChange={toggleAll} /></div>
+            <div>NO / KAT</div>
+            <div>TIM</div>
+            <div>BALLOT</div>
+            <div>WAKTU</div>
+            <div className="text-right">AKSI</div>
+          </div>
+          {recent.length===0 ? (
+            <div className="p-8 text-center text-sm text-muted-foreground">Belum ada rekap offline.</div>
+          ) : recent.map((r:any)=> (
+            <div key={r.id} className="min-w-[720px] grid grid-cols-[40px_90px_1fr_90px_130px_120px] gap-2 px-4 py-3 items-center border-b border-border/50 last:border-0 text-sm">
+              <div><input type="checkbox" checked={selected.has(r.id)} onChange={()=> toggleSelect(r.id)} /></div>
+              <div className="flex items-center gap-1.5">
+                <span className="font-mono font-bold text-xs">#{r.peletons?.number ?? "-"}</span>
+                <Badge variant="outline" className="text-[10px] px-1.5 py-0">{r.peletons?.category ?? "-"}</Badge>
+              </div>
+              <div className="min-w-0">
+                <div className="font-bold truncate text-xs">{r.peletons?.name ?? r.peleton_id?.slice(0,8)}</div>
+                <div className="text-[11px] text-muted-foreground truncate">{r.note || "—"}</div>
+              </div>
+              <div className={`font-black tabular-nums text-xs ${r.supports>0?"text-emerald-600":r.supports<0?"text-red-600":""}`}>{r.supports>0?`+${r.supports}`:r.supports}</div>
+              <div className="text-[11px] text-muted-foreground leading-tight">{new Date(r.created_at).toLocaleDateString("id-ID")}<br/><span className="text-[10px]">{new Date(r.created_at).toLocaleTimeString("id-ID",{hour:'2-digit',minute:'2-digit'})}</span></div>
+              <div className="flex justify-end gap-1.5">
+                <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs gap-1" onClick={()=> openEdit(r)}><Pencil className="h-3 w-3"/>Ubah</Button>
+                <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600" onClick={()=> setDeleteTarget(r)}><Trash2 className="h-3 w-3"/>Hapus</Button>
+              </div>
             </div>
           ))}
-          {recent.length===0 && <div className="text-xs text-muted-foreground">Belum ada rekap offline.</div>}
         </div>
+
+        {/* Mobile cards */}
+        <div className="md:hidden space-y-2 p-3">
+          {recent.length===0 ? (
+            <div className="p-6 text-center text-sm text-muted-foreground">Belum ada rekap offline.</div>
+          ) : recent.map((r:any)=> (
+            <div key={r.id} className="rounded-xl border border-border p-3 flex flex-col gap-2">
+              <div className="flex items-start gap-2">
+                <input type="checkbox" className="mt-1" checked={selected.has(r.id)} onChange={()=> toggleSelect(r.id)} />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-black">#{r.peletons?.number ?? "-"} </span>
+                    <Badge variant="outline" className="text-[10px]">{r.peletons?.category ?? "-"}</Badge>
+                    <span className={`ml-auto font-black text-xs ${r.supports>0?"text-emerald-600":"text-red-600"}`}>{r.supports>0?`+${r.supports}`:r.supports} ballot</span>
+                  </div>
+                  <div className="text-sm font-bold truncate">{r.peletons?.name ?? r.peleton_id?.slice(0,8)}</div>
+                  <div className="text-xs text-muted-foreground truncate">{r.note || "Tanpa catatan"}</div>
+                  <div className="text-[11px] text-muted-foreground mt-1">{new Date(r.created_at).toLocaleString("id-ID")}</div>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-1.5">
+                <Button variant="outline" size="sm" className="w-full rounded-full h-8 text-xs gap-1" onClick={()=> openEdit(r)}><Pencil className="h-3 w-3"/>Ubah</Button>
+                <Button variant="outline" size="sm" className="w-full rounded-full h-8 text-xs text-red-600 border-red-200 gap-1" onClick={()=> setDeleteTarget(r)}><Trash2 className="h-3 w-3"/>Hapus</Button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {recent.length>0 && (
+          <div className="p-3 border-t border-border bg-muted/20 flex items-center justify-between">
+            <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={selected.size===recent.length && recent.length>0} onChange={toggleAll} /> Pilih semua ({recent.length})</label>
+            {selected.size>0 ? <span className="text-xs font-bold">{selected.size} dipilih</span> : <span className="text-[11px] text-muted-foreground">Centang untuk hapus massal</span>}
+          </div>
+        )}
       </div>
+
+      {/* Edit dialog */}
+      <Dialog open={!!editTarget} onOpenChange={(o)=> !o && setEditTarget(null)}>
+        <DialogContent className="sm:max-w-[480px]">
+          <DialogHeader>
+            <DialogTitle>Ubah Rekap Offline</DialogTitle>
+            <DialogDescription>
+              {editTarget ? `#${editTarget.peletons?.number} ${editTarget.peletons?.name} (${editTarget.peletons?.category})` : ""} — perubahan tercatat di audit log.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-3 py-2">
+            <div>
+              <label className="text-xs font-bold">Jumlah Ballot *</label>
+              <Input type="number" value={editSupports} onChange={e=> setEditSupports(e.target.value)} placeholder="150" className="mt-1" />
+              <p className="text-[11px] text-muted-foreground mt-1">Bisa negatif untuk koreksi (mis. -10). Range -10000..10000, 0 tidak boleh.</p>
+            </div>
+            <div>
+              <label className="text-xs font-bold">Catatan (opsional)</label>
+              <Input value={editNote} onChange={e=> setEditNote(e.target.value)} placeholder="Koreksi lapangan / revisi juri..." className="mt-1" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={()=> setEditTarget(null)} disabled={editSaving} className="rounded-full">Batal</Button>
+            <Button onClick={handleEditSave} disabled={editSaving} className="rounded-full min-w-[100px]">{editSaving ? "Menyimpan..." : "Simpan"}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={!!deleteTarget} onOpenChange={(o)=> !o && setDeleteTarget(null)} title="Hapus rekap offline?" description={deleteTarget ? `Yakin hapus #${deleteTarget.peletons?.number} ${deleteTarget.peletons?.name} • ${deleteTarget.supports} ballot? Data tidak bisa dikembalikan, tercatat di audit log.` : ""} onConfirm={handleSingleDelete} />
+      <AlertDialog open={bulkDeleteConfirm} onOpenChange={setBulkDeleteConfirm} title={`Hapus ${selected.size} data offline?`} description={`Yakin hapus ${selected.size} data rekap offline terpilih? Tidak bisa dikembalikan, semua tercatat di audit log.`} onConfirm={handleBulkDelete} />
     </div>
   )
 }
