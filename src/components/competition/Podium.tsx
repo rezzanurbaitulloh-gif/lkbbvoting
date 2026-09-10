@@ -231,14 +231,14 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
 
   if (!isPublished) return null
   return (
-    <section className="relative overflow-hidden bg-[#040A14] border-y border-[#C9A86A]/15 py-8 sm:py-10 md:py-12 lg:py-14">
-      {/* background ornaments like screenshot — more depth & subtle motion */}
+    <section className="relative overflow-hidden bg-[#09090b] border-y border-white/[0.06] py-9 sm:py-11 md:py-13 lg:py-14">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[0.5px] bg-gradient-to-r from-transparent via-[#C9A86A]/18 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/[0.05] to-transparent" />
+      {/* background ornaments — menyatu dengan tema #09090b */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[#040A14]" />
-        <div className="absolute inset-0 bg-[radial-gradient(900px_420px_at_50%_-40px,rgba(201,168,106,0.16),transparent_70%)]" />
-        <div className="absolute inset-0 opacity-[0.035]" style={{ backgroundImage: `linear-gradient(rgba(201,168,106,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,106,0.5) 1px, transparent 1px)`, backgroundSize: "56px 56px" }} />
-        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C9A86A]/40 to-transparent" />
-        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C9A86A]/15 to-transparent" />
+        <div className="absolute inset-0 bg-[#09090b]" />
+        <div className="absolute inset-0 bg-[radial-gradient(900px_420px_at_50%_-40px,rgba(201,168,106,0.11),transparent_70%)]" />
+        <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: `linear-gradient(rgba(201,168,106,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,106,0.5) 1px, transparent 1px)`, backgroundSize: "56px 56px" }} />
         {/* floating orbs behind — gentle drift */}
         <div className="absolute -top-10 -right-10 h-64 w-64 rounded-full bg-[#C9A86A]/[0.07] blur-3xl animate-[floatOrb_9s_ease-in-out_infinite]" />
         <div className="absolute -bottom-16 -left-12 h-72 w-72 rounded-full bg-[#C9A86A]/[0.05] blur-3xl animate-[floatOrb_11s_ease-in-out_infinite_reverse]" />

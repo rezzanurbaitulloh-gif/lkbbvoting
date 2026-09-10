@@ -64,8 +64,9 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
     setOpen(false)
   }
   return (
-    <header className={`sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 transform transition-transform duration-300 will-change-transform ${hidden ? "-translate-y-full" : "translate-y-0"}`}>
-      <div className="mx-auto flex h-[56px] sm:h-[60px] lg:h-[64px] max-w-[1280px] items-center justify-between px-3 sm:px-4 md:px-6 gap-2">
+    <header className={`sticky top-0 z-50 w-full border-b border-white/[0.06] bg-background/72 backdrop-blur-[14px] supports-[backdrop-filter]:bg-background/58 transform transition-transform duration-300 will-change-transform ${hidden ? "-translate-y-full" : "translate-y-0"}`}>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[0.5px] bg-gradient-to-r from-transparent via-[#C9A86A]/18 to-transparent" />
+      <div className="mx-auto flex h-[56px] sm:h-[58px] lg:h-[60px] max-w-[1280px] items-center justify-between px-3 sm:px-4 md:px-6 gap-2">
         {/* Logo — dynamic from site_settings */}
         <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
           <div className="relative h-11 w-11 sm:h-12 sm:w-12 max-[320px]:h-9 max-[320px]:w-9 bg-transparent flex items-center justify-center shrink-0">
@@ -198,7 +199,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
         </div>
       </div>
       {/* Mobile search bar — khusus untuk cari nama tim */}
-      <div className="lg:hidden border-t border-border bg-muted/20 px-3 sm:px-4 py-2.5 sm:py-3">
+      <div className="lg:hidden border-t border-white/[0.05] bg-muted/10 px-3 sm:px-4 py-2.5 sm:py-3">
         <form onSubmit={handleSearchSubmit} className="relative flex items-center">
           <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
           <input

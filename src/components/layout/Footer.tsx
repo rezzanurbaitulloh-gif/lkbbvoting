@@ -79,8 +79,8 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
     return <span className="bg-muted text-foreground h-full w-full grid place-items-center rounded-full text-[10px]">{plat.slice(0,2).toUpperCase()}</span>
   }
   return (
-    <footer className="mt-auto border-t border-[#C9A86A]/10 bg-surface overflow-hidden relative">
-      <div className="pointer-events-none absolute top-0 inset-x-0 h-px gold-hairline-premium opacity-70" />
+    <footer className="mt-auto border-t border-white/[0.06] bg-surface overflow-hidden relative">
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-[#C9A86A]/16 to-transparent" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(600px_300px_at_80%_0%,rgba(201,168,106,0.06),transparent_70%)]" />
       <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 sm:py-10">
         <div className="grid gap-6 sm:gap-8 grid-cols-1 min-[360px]:grid-cols-1 sm:grid-cols-2 md:grid-cols-[1.4fr_0.9fr_0.9fr_1fr]">
