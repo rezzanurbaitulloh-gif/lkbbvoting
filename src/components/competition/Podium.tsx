@@ -61,7 +61,7 @@ function Laurel({ side, color, delay = 0 }: { side: "left" | "right"; color: str
 function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number; delay?: number }) {
   const isFirst = rank === 1
   const isSecond = rank === 2
-  // palettes — refined with hover & proper heights
+  // palettes — responsive fit: w-full grid, heights fluid, no kepotong
   const cfg = isFirst
     ? {
         borderGrad: "from-[#FFE9A8] via-[#C9A86A] to-[#8C6A2A]",
@@ -75,10 +75,9 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         juaraBar: "from-[#8C6A2A] via-[#C9A86A] to-[#8C6A2A]",
         juaraText: "text-[#1A1400]",
         foot: "bg-[#0B1220] border-[#C9A86A]/30",
-        // more proper ratio: w ~ 1, h ~ 1.75 on mobile, 1.85 desktop
-        height: "h-[282px] xs:h-[312px] sm:h-[360px] md:h-[410px] lg:h-[508px]",
-        width: "w-[108px] xs:w-[126px] sm:w-[162px] md:w-[192px] lg:w-[272px]",
-        logoSize: "h-[54px] w-[54px] xs:h-[60px] xs:w-[60px] sm:h-[72px] sm:w-[72px] md:h-[80px] md:w-[80px] lg:h-[88px] lg:w-[88px]",
+        height: "h-[228px] xs:h-[262px] sm:h-[318px] md:h-[356px] lg:h-[388px] xl:h-[452px]",
+        width: "w-full",
+        logoSize: "h-[44px] w-[44px] xs:h-[52px] xs:w-[52px] sm:h-[64px] sm:w-[64px] md:h-[72px] md:w-[72px] lg:h-[78px] lg:w-[78px] xl:h-[84px] xl:w-[84px]",
       }
     : isSecond
     ? {
@@ -93,9 +92,9 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         juaraBar: "from-[#334155] via-[#94A3B8] to-[#334155]",
         juaraText: "text-white",
         foot: "bg-[#0B1220] border-[#475569]/30",
-        height: "h-[242px] xs:h-[268px] sm:h-[310px] md:h-[350px] lg:h-[432px]",
-        width: "w-[100px] xs:w-[116px] sm:w-[150px] md:w-[176px] lg:w-[248px]",
-        logoSize: "h-[50px] w-[50px] xs:h-[56px] xs:w-[56px] sm:h-[66px] sm:w-[66px] md:h-[72px] md:w-[72px] lg:h-[78px] lg:w-[78px]",
+        height: "h-[202px] xs:h-[232px] sm:h-[280px] md:h-[312px] lg:h-[342px] xl:h-[390px]",
+        width: "w-full",
+        logoSize: "h-[42px] w-[42px] xs:h-[48px] xs:w-[48px] sm:h-[58px] sm:w-[58px] md:h-[64px] md:w-[64px] lg:h-[70px] lg:w-[70px] xl:h-[74px] xl:w-[74px]",
       }
     : {
         borderGrad: "from-[#FDBA74] via-[#B45309] to-[#7C2D12]",
@@ -109,16 +108,16 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         juaraBar: "from-[#7C2D12] via-[#B45309] to-[#7C2D12]",
         juaraText: "text-white",
         foot: "bg-[#0F0A06] border-[#7C2D12]/30",
-        height: "h-[232px] xs:h-[258px] sm:h-[298px] md:h-[336px] lg:h-[414px]",
-        width: "w-[100px] xs:w-[116px] sm:w-[150px] md:w-[176px] lg:w-[248px]",
-        logoSize: "h-[50px] w-[50px] xs:h-[56px] xs:w-[56px] sm:h-[66px] sm:w-[66px] md:h-[72px] md:w-[72px] lg:h-[78px] lg:w-[78px]",
+        height: "h-[196px] xs:h-[224px] sm:h-[272px] md:h-[302px] lg:h-[330px] xl:h-[376px]",
+        width: "w-full",
+        logoSize: "h-[42px] w-[42px] xs:h-[48px] xs:w-[48px] sm:h-[58px] sm:w-[58px] md:h-[64px] md:w-[64px] lg:h-[70px] lg:w-[70px] xl:h-[74px] xl:w-[74px]",
       }
 
   const clip = "polygon(13px 0, calc(100% - 13px) 0, 100% 13px, 100% 100%, 0 100%, 0 13px)"
 
   return (
     <div
-      className={`relative flex flex-col items-center ${cfg.width} shrink-0 ${isFirst ? "z-20" : "z-10"} group/card`}
+      className={`relative flex flex-col items-center ${cfg.width} min-w-0 flex-1 ${isFirst ? "z-20" : "z-10"} group/card`}
       style={{ animation: `shieldEnter 0.72s cubic-bezier(0.16,1,0.3,1) both`, animationDelay: `${delay}ms` }}
     >
       {/* soft aura behind juara 1 */}
@@ -211,8 +210,8 @@ export function Podium({ teams, category, showPoints = true }: { teams: Team[]; 
           <span className="text-[10px] sm:text-[11px] text-white/45 tabular-nums">{teams.length} tim</span>
         </div>
       )}
-      {/* shields row — proper gap & responsive, juara 1 center taller, no overflow on 320px */}
-      <div className="flex items-end justify-center gap-[6px] xs:gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 max-w-[980px] mx-auto px-0.5 sm:px-1">
+      {/* shields row — grid 3 col, w-full so tidak kepotong di 320px maupun di kolom lg:grid-cols-2 */}
+      <div className="grid grid-cols-3 items-end gap-1 xs:gap-1.5 sm:gap-2 md:gap-3 lg:gap-3 xl:gap-4 max-w-[560px] lg:max-w-none mx-auto w-full px-0">
         {ordered.map(({ team, rank, delay }) => (
           <ShieldPodiumCard key={team.id} team={team} rank={rank} delay={delay} />
         ))}
@@ -302,19 +301,19 @@ export function PodiumSection({ smp, sma, isPublished }: { smp: Team[]; sma: Tea
           </div>
         )}
 
-        {/* SMP & SMA — dipisah tapi bersebelahan (side-by-side cards), bukan menyatu */}
-        <div className={`mt-8 sm:mt-10 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-6 xl:gap-8 ${festive ? "animate-[fadeIn_0.6s_ease-out]" : ""}`}>
+        {/* SMP & SMA — dipisah tapi bersebelahan, card overflow-visible biar mahkota tidak kepotong */}
+        <div className={`mt-8 sm:mt-10 md:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-6 xl:gap-7 ${festive ? "animate-[fadeIn_0.6s_ease-out]" : ""}`}>
           {sma.length > 0 && (
-            <div className="relative rounded-[20px] border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-[0_10px_40px_rgba(0,0,0,0.35),0_1px_0_rgba(255,255,255,0.06)_inset] overflow-hidden">
+            <div className="relative rounded-[20px] border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-3 xs:p-4 sm:p-5 md:p-5 lg:p-6 pt-6 sm:pt-7 shadow-[0_10px_40px_rgba(0,0,0,0.35),0_1px_0_rgba(255,255,255,0.06)_inset] overflow-visible">
               <div className="pointer-events-none absolute inset-0 rounded-[20px] bg-[radial-gradient(520px_200px_at_50%_0%,rgba(201,168,106,0.07),transparent_65%)]" />
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-t-[20px]" />
               <Podium teams={sma} category="SMA / SEDERAJAT" />
             </div>
           )}
           {smp.length > 0 && (
-            <div className="relative rounded-[20px] border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-4 sm:p-5 md:p-6 shadow-[0_10px_40px_rgba(0,0,0,0.35),0_1px_0_rgba(255,255,255,0.06)_inset] overflow-hidden">
+            <div className="relative rounded-[20px] border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-3 xs:p-4 sm:p-5 md:p-5 lg:p-6 pt-6 sm:pt-7 shadow-[0_10px_40px_rgba(0,0,0,0.35),0_1px_0_rgba(255,255,255,0.06)_inset] overflow-visible">
               <div className="pointer-events-none absolute inset-0 rounded-[20px] bg-[radial-gradient(520px_200px_at_50%_0%,rgba(201,168,106,0.07),transparent_65%)]" />
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-t-[20px]" />
               <Podium teams={smp} category="SMP / SEDERAJAT" />
             </div>
           )}
