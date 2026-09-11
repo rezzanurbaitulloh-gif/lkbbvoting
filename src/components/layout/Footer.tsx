@@ -76,10 +76,10 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
     if(plat==="linkedin") return wrap("bg-[#0A66C2]", svgLinkedin)
     if(plat==="whatsapp") return wrap("bg-[#25D366]", svgWhatsapp)
     if(plat==="telegram") return wrap("bg-[#26A8E8]", svgTelegram)
-    return <span className="bg-muted text-foreground h-full w-full grid place-items-center rounded-full text-[10px]">{plat.slice(0,2).toUpperCase()}</span>
+    return <span className="bg-white/[0.04] backdrop-blur text-foreground h-full w-full grid place-items-center rounded-full text-[10px]">{plat.slice(0,2).toUpperCase()}</span>
   }
   return (
-    <footer className="mt-auto border-t border-white/[0.06] bg-surface overflow-hidden relative">
+    <footer className="mt-auto border-t border-white/[0.06] bg-white/[0.02] backdrop-blur overflow-hidden relative">
       <div className="pointer-events-none absolute top-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-[#C9A86A]/16 to-transparent" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(600px_300px_at_80%_0%,rgba(201,168,106,0.06),transparent_70%)]" />
       <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 sm:py-10">
@@ -126,7 +126,7 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
               <div>Email: <a href={`mailto:${email}`} className="text-foreground">{email}</a></div>
               <div className="pt-2 flex gap-2 flex-wrap">
                 {socialList.map(s=> (
-                  <a key={s.platform+"-"+s.url} href={s.url} target="_blank" title={s.platform} className="h-8 w-8 rounded-full border border-border overflow-hidden hover:scale-105 transition-transform grid place-items-center">
+                  <a key={s.platform+"-"+s.url} href={s.url} target="_blank" title={s.platform} className="h-8 w-8 rounded-full border border-white/[0.06] overflow-hidden hover:scale-105 transition-transform grid place-items-center">
                     {platformIcon(s.platform)}
                   </a>
                 ))}

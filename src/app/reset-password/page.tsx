@@ -11,8 +11,8 @@ export default function Reset(){
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 pb-[72px] md:pb-0 grid place-items-center p-4 bg-muted/20">
-        <div className="w-full max-w-[420px] rounded-[20px] border border-border bg-card p-6 md:p-8 shadow-soft">
+      <main className="flex-1 pb-[72px] md:pb-0 grid place-items-center p-4 bg-white/[0.04] backdrop-blur/20">
+        <div className="w-full max-w-[420px] rounded-[20px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-6 md:p-8 shadow-soft">
           <h1 className="text-[20px] font-black tracking-tight text-center">Reset Password</h1>
           {!done ? (
             <form onSubmit={e=>{e.preventDefault(); setDone(true)}} className="mt-6 grid gap-3">

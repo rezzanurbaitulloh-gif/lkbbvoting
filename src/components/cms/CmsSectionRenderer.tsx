@@ -35,7 +35,7 @@ export function CmsSectionRenderer({ section }: { section: Section }){
     case "banner":
       return (
         <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6">
-          <div className="overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur">
             {c.image ? <img src={c.image} alt={c.alt || c.heading || ""} className="h-auto w-full object-cover" /> : <div className="p-8 text-center text-sm text-muted-foreground">Banner: {c.heading || "—"}</div>}
             {(c.heading || c.description) && (
               <div className="p-4">
@@ -73,7 +73,7 @@ export function CmsSectionRenderer({ section }: { section: Section }){
     case "image":
       return (
         <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6 flex justify-center">
-          {c.src ? <img src={c.src} alt={c.alt || ""} className="max-w-full rounded-2xl border border-border" /> : <div className="text-sm text-muted-foreground">— belum ada gambar —</div>}
+          {c.src ? <img src={c.src} alt={c.alt || ""} className="max-w-full rounded-2xl border border-white/[0.06]" /> : <div className="text-sm text-muted-foreground">— belum ada gambar —</div>}
         </section>
       )
     case "gallery":
@@ -90,7 +90,7 @@ export function CmsSectionRenderer({ section }: { section: Section }){
         <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6 sm:py-8 overflow-hidden">
           <div className="grid grid-cols-1 min-[360px]:grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
             {(Array.isArray(c.items) ? c.items : []).map((item:any,i:number)=>(
-              <div key={i} className="rounded-xl border border-border bg-card p-4 text-center">
+              <div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4 text-center">
                 <div className="text-xl font-black">{item.value}</div>
                 <div className="text-xs text-muted-foreground">{item.label}</div>
               </div>
@@ -109,7 +109,7 @@ export function CmsSectionRenderer({ section }: { section: Section }){
       // Generic fallback — never show raw JSON / programming language on public web
       return (
         <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6">
-          <div className="rounded-xl border border-border bg-card p-4">
+          <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4">
             <div className="text-sm font-black">{section.title}</div>
             {c.description && <p className="mt-1 text-sm text-muted-foreground">{c.description}</p>}
             {c.heading && <p className="mt-1 text-sm text-muted-foreground">{c.heading}</p>}

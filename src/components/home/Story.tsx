@@ -17,7 +17,7 @@ export function Story({ sponsors, event }: { sponsors?: any[] | null; event?: an
             <Link href="/tentang"><Button variant="outline" className="rounded-full">Selengkapnya</Button></Link>
             <Link href="/kompetisi"><Button className="rounded-full">Tentang Kompetisi</Button></Link>
           </div>
-          <div className="mt-6 grid grid-cols-3 gap-4 border-t border-border pt-6">
+          <div className="mt-6 grid grid-cols-3 gap-4 border-t border-white/[0.06] pt-6">
             {[
               ["DISIPLIN","Fondasi utama setiap gerakan presisi"],
               ["KEKOMPAKAN","Kekuatan dalam kebersamaan"],
@@ -31,12 +31,12 @@ export function Story({ sponsors, event }: { sponsors?: any[] | null; event?: an
           </div>
         </div>
         <div className="relative">
-          <div className="overflow-hidden rounded-[20px] border border-border bg-muted aspect-[4/3]">
+          <div className="overflow-hidden rounded-[20px] border border-white/[0.06] bg-white/[0.04] backdrop-blur aspect-[4/3]">
             <img src="https://images.unsplash.com/photo-1599707367072-cd6ada2bc32d?w=900&auto=format&fit=crop&q=70" alt="LKBB" className="h-full w-full object-cover" />
           </div>
           {/* Poster card */}
-          <div className="absolute -bottom-4 -left-4 hidden md:flex gap-3 rounded-2xl border border-border bg-card p-3 shadow-elevated max-w-[320px]">
-            <img src="/assets/poster/lkbb-poster.jpg" alt="Poster" className="h-20 w-14 rounded-lg object-cover border border-border" />
+          <div className="absolute -bottom-4 -left-4 hidden md:flex gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-3 shadow-elevated max-w-[320px]">
+            <img src="/assets/poster/lkbb-poster.jpg" alt="Poster" className="h-20 w-14 rounded-lg object-cover border border-white/[0.06]" />
             <div>
               <div className="text-xs font-bold leading-tight">LKBB JAVASOMA 2026</div>
               <div className="text-xs text-muted-foreground leading-relaxed">Pendaftaran Agustus s.d. kuota terpenuhi • Pelaksanaan 24 Okt 2026</div>
@@ -47,7 +47,7 @@ export function Story({ sponsors, event }: { sponsors?: any[] | null; event?: an
 
       {/* Sponsors row within story — DB-driven, no hardcode */}
       {sponsors && sponsors.length>0 && (
-        <div className="mt-10 rounded-[16px] border border-border bg-card p-4 md:p-5 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+        <div className="mt-10 rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4 md:p-5 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
           <div>
             <div className="label-ceremonial">Didukung Oleh</div>
             <div className="mt-1 flex flex-wrap gap-2 text-xs font-bold">

@@ -46,11 +46,11 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
   }
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-[14px] xs:rounded-[16px] border border-white/[0.06] bg-card max-w-full">
+    <div className="group relative flex flex-col overflow-hidden rounded-[14px] xs:rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur max-w-full">
       <div className="absolute top-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-[#C9A86A]/0 group-hover:via-[#C9A86A]/40 to-transparent transition-all duration-500" />
       <Link href={profileUrl} className="block">
         <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-[#0F1115]">
-          {!imgLoaded && !imgError && <div className="absolute inset-0 animate-pulse bg-muted" />}
+          {!imgLoaded && !imgError && <div className="absolute inset-0 animate-pulse bg-white/[0.04] backdrop-blur" />}
           {!imgError && photo ? (
             <img
               src={photo}
@@ -118,7 +118,7 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
 export function PeletonCardCompact({ peleton, showPoints }: { peleton: any, showPoints?: boolean }){
   const logo = peleton.logo_url || peleton.image_url || peleton.image
   return (
-    <Link href={`/dukungan?peleton=${peleton.slug}`} className="flex items-center gap-3 rounded-[16px] border border-border bg-card p-4 hover:bg-muted/50 transition-colors min-w-0">
+    <Link href={`/dukungan?peleton=${peleton.slug}`} className="flex items-center gap-3 rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4 hover:bg-white/[0.04] backdrop-blur/50 transition-colors min-w-0">
       <div className="h-11 w-11 bg-transparent grid place-items-center shrink-0">
         <img src={logo} alt={peleton.name} className="h-full w-full object-contain bg-transparent" />
       </div>
@@ -128,7 +128,7 @@ export function PeletonCardCompact({ peleton, showPoints }: { peleton: any, show
         <div className="text-xs text-muted-foreground truncate">{peleton.school}</div>
       </div>
       <div className="text-right shrink-0 ml-2">
-        <div className="inline-flex rounded-full bg-muted px-2.5 py-1 text-xs font-black">#{peleton.number}</div>
+        <div className="inline-flex rounded-full bg-white/[0.04] backdrop-blur px-2.5 py-1 text-xs font-black">#{peleton.number}</div>
         {showPoints && peleton.total_ballots != null && <div className="mt-1 text-xs font-black tabular-nums">{Number(peleton.total_ballots).toLocaleString("id-ID")} dukungan</div>}
       </div>
     </Link>

@@ -32,8 +32,8 @@ export default function RegisterPage(){
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 pb-[72px] md:pb-0 grid place-items-center p-4 bg-muted/20">
-        <div className="w-full max-w-[420px] rounded-[20px] border border-border bg-card p-6 md:p-8 shadow-soft">
+      <main className="flex-1 pb-[72px] md:pb-0 grid place-items-center p-4 bg-white/[0.04] backdrop-blur/20">
+        <div className="w-full max-w-[420px] rounded-[20px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-6 md:p-8 shadow-soft">
           <h1 className="text-[20px] font-black tracking-tight text-center">Buat Akun Baru</h1>
           <p className="text-sm text-muted-foreground text-center">Dukung peleton favoritmu sekarang</p>
           <form onSubmit={onSubmit} className="mt-6 grid gap-3">
@@ -42,7 +42,7 @@ export default function RegisterPage(){
               <label className="text-xs font-bold">Password</label>
               <div className="relative">
                 <Input value={password} onChange={e=>setPassword(e.target.value)} placeholder="Minimal 6 karakter" type={showPass ? "text" : "password"} className="pr-10" autoComplete="new-password" />
-                <button type="button" onClick={()=> setShowPass(!showPass)} className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 grid place-items-center rounded-full hover:bg-muted text-muted-foreground">
+                <button type="button" onClick={()=> setShowPass(!showPass)} className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 grid place-items-center rounded-full hover:bg-white/[0.04] backdrop-blur text-muted-foreground">
                   {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>

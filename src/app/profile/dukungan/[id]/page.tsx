@@ -169,10 +169,10 @@ export default function InvoicePage(){
                   </div>
 
                   {tx.status === "Pending" && (
-                    <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+                    <div className="mt-4 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4">
                       <div className="text-xs font-bold tracking-widest text-center">BAYAR VIA QRIS</div>
                       <div className="tabular-nums text-[18px] font-black text-amber-600 text-center">Menunggu Pembayaran</div>
-                      <div className="mx-auto mt-3 h-[220px] w-[220px] rounded-xl border border-border bg-white grid place-items-center p-2 overflow-hidden">
+                      <div className="mx-auto mt-3 h-[220px] w-[220px] rounded-xl border border-white/[0.06] bg-white grid place-items-center p-2 overflow-hidden">
                         {qrDataUrl ? (
                           <img src={qrDataUrl} alt="QRIS" className="h-full w-full object-contain" />
                         ) : tx.qr_content ? (

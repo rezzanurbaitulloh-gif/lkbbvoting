@@ -47,7 +47,7 @@ function ChartTooltipContent({
 }: any) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-xl border bg-popover px-3 py-2 shadow-xl text-xs">
+    <div className="rounded-xl border bg-[#0F1115] px-3 py-2 shadow-xl text-xs">
       {!hideLabel && label ? <div className="mb-1 font-medium">{labelFormatter ? labelFormatter(label, payload) : label}</div> : null}
       <div className="grid gap-1">
         {payload.map((item: any, i: number) => (

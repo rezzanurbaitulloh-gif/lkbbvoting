@@ -95,7 +95,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
           {nav.map(item=> {
             const active = pathname===item.href || (item.href!=="/" && pathname.startsWith(item.href + "/"))
             return (
-              <Link key={item.href} href={item.href} className={cn("rounded-full px-3.5 py-2 text-[13px] font-medium transition-colors", active ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted")}>
+              <Link key={item.href} href={item.href} className={cn("rounded-full px-3.5 py-2 text-[13px] font-medium transition-colors", active ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-white/[0.04] backdrop-blur")}>
                 {item.label}
               </Link>
             )
@@ -104,10 +104,10 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
 
         {/* Actions — 44px hit area */}
         <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-          <button onClick={()=> setSearchOpen(!searchOpen)} aria-label="Cari tim" className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.06] bg-card hover:bg-muted text-muted-foreground hover:text-foreground transition-colors lg:hidden">
+          <button onClick={()=> setSearchOpen(!searchOpen)} aria-label="Cari tim" className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.06] bg-white/[0.03] backdrop-blur hover:bg-white/[0.04] backdrop-blur text-muted-foreground hover:text-foreground transition-colors lg:hidden">
             <Search className="h-[18px] w-[18px]" />
           </button>
-          <Link href="/search" className="hidden lg:inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.06] bg-card hover:bg-muted transition-colors" aria-label="Cari">
+          <Link href="/search" className="hidden lg:inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.06] bg-white/[0.03] backdrop-blur hover:bg-white/[0.04] backdrop-blur transition-colors" aria-label="Cari">
             <Search className="h-[18px] w-[18px] text-muted-foreground" />
           </Link>
           <SoundControl />
@@ -115,7 +115,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
             <div className="hidden md:flex relative" ref={profileRef}>
               <button
                 onClick={()=> setProfileOpen(!profileOpen)}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-card hover:bg-muted pl-1 pr-3 py-1 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.03] backdrop-blur hover:bg-white/[0.04] backdrop-blur pl-1 pr-3 py-1 transition-colors"
                 aria-haspopup="menu"
                 aria-expanded={profileOpen}
               >
@@ -126,21 +126,21 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                 <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform", profileOpen && "rotate-180")} />
               </button>
               {profileOpen && (
-                <div className="absolute right-0 top-[calc(100%+8px)] w-[240px] rounded-2xl border border-border bg-card shadow-xl overflow-hidden z-50">
-                  <div className="px-4 py-3 border-b border-border bg-muted/30">
+                <div className="absolute right-0 top-[calc(100%+8px)] w-[240px] rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur shadow-xl overflow-hidden z-50">
+                  <div className="px-4 py-3 border-b border-white/[0.06] bg-white/[0.04] backdrop-blur/30">
                     <div className="text-sm font-bold leading-tight truncate">{currentUser.name}</div>
                     <div className="text-xs text-muted-foreground truncate">{currentUser.email}</div>
                     {isAdmin && <div className="mt-1 inline-flex rounded-full bg-gold px-2 py-0.5 text-[10px] font-black tracking-widest text-gold-foreground">admin</div>}
                   </div>
                   <div className="p-1.5 flex flex-col gap-2">
-                    <Link href="/profile" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "hover:bg-muted text-muted-foreground hover:text-foreground")}>
+                    <Link href="/profile" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "hover:bg-white/[0.04] backdrop-blur text-muted-foreground hover:text-foreground")}>
                       <User className="h-4 w-4 shrink-0" /> <span>Profile</span>
                     </Link>
-                    <Link href="/profile/edit" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-[#0B0C0F] shadow-sm" : "hover:bg-muted text-muted-foreground hover:text-foreground")}>
+                    <Link href="/profile/edit" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-[#0B0C0F] shadow-sm" : "hover:bg-white/[0.04] backdrop-blur text-muted-foreground hover:text-foreground")}>
                       <Settings className="h-4 w-4 shrink-0" /> <span>Pengaturan</span>
                     </Link>
                     {isAdmin && (
-                      <Link href="/admin" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-left transition-colors", pathname.startsWith("/admin") ? "bg-white text-[#0B0C0F] shadow-sm" : "hover:bg-muted text-muted-foreground hover:text-foreground")}>
+                      <Link href="/admin" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-left transition-colors", pathname.startsWith("/admin") ? "bg-white text-[#0B0C0F] shadow-sm" : "hover:bg-white/[0.04] backdrop-blur text-muted-foreground hover:text-foreground")}>
                         <LayoutDashboard className="h-4 w-4 text-gold shrink-0" /> <span>Dashboard Admin</span>
                       </Link>
                     )}
@@ -166,7 +166,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
           )}
 
           <Sheet open={open} onOpenChange={setOpen}>
-            <Button variant="ghost" size="icon" className="lg:hidden h-11 w-11 rounded-full border border-white/[0.06] bg-card shrink-0" aria-label="Menu" onClick={()=> setOpen(true)}>
+            <Button variant="ghost" size="icon" className="lg:hidden h-11 w-11 rounded-full border border-white/[0.06] bg-white/[0.03] backdrop-blur shrink-0" aria-label="Menu" onClick={()=> setOpen(true)}>
               <Menu className="h-[18px] w-[18px]" />
             </Button>
             <SheetContent side="right" className="w-[88vw] max-w-[320px] sm:w-[320px] p-0 overflow-hidden">
@@ -182,7 +182,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
               <nav className="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
                 {currentUser ? (
                   <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-3 rounded-xl bg-muted p-3 w-full">
+                    <div className="flex items-center gap-3 rounded-xl bg-white/[0.04] backdrop-blur p-3 w-full">
                       <div className="h-10 w-10 rounded-full bg-foreground text-background grid place-items-center text-sm font-black">
                         {currentUser.name.slice(0,2).toUpperCase()}
                       </div>
@@ -192,15 +192,15 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                       </div>
                       {isAdmin && <span className="ml-auto rounded-full bg-gold px-2 py-0.5 text-[10px] font-black text-gold-foreground">admin</span>}
                     </div>
-                    <Link href="/profile" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground")}><User className="h-4 w-4 shrink-0"/> <span>Profile</span></Link>
-                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground")}><Settings className="h-4 w-4 shrink-0"/> <span>Pengaturan</span></Link>
-                    {isAdmin && <Link href="/admin" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-left transition-colors", pathname.startsWith("/admin") ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground")}><LayoutDashboard className="h-4 w-4 text-gold shrink-0"/> <span>Dashboard Admin</span></Link>}
+                    <Link href="/profile" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-white/[0.04] backdrop-blur hover:text-foreground")}><User className="h-4 w-4 shrink-0"/> <span>Profile</span></Link>
+                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-white/[0.04] backdrop-blur hover:text-foreground")}><Settings className="h-4 w-4 shrink-0"/> <span>Pengaturan</span></Link>
+                    {isAdmin && <Link href="/admin" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-left transition-colors", pathname.startsWith("/admin") ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-white/[0.04] backdrop-blur hover:text-foreground")}><LayoutDashboard className="h-4 w-4 text-gold shrink-0"/> <span>Dashboard Admin</span></Link>}
                     <button onClick={async ()=>{ setOpen(false); await logout(); router.push("/"); router.refresh() }} className="flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors text-left"><LogOut className="h-4 w-4 shrink-0"/> <span>Logout</span></button>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2">
-                    <Link href="/profile" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground")}><User className="h-4 w-4 shrink-0"/> <span>Profile</span></Link>
-                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground")}><Settings className="h-4 w-4 shrink-0"/> <span>Pengaturan</span></Link>
+                    <Link href="/profile" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-white/[0.04] backdrop-blur hover:text-foreground")}><User className="h-4 w-4 shrink-0"/> <span>Profile</span></Link>
+                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-white/[0.04] backdrop-blur hover:text-foreground")}><Settings className="h-4 w-4 shrink-0"/> <span>Pengaturan</span></Link>
                     <Link href="/login" onClick={()=>setOpen(false)}><Button variant="outline" className="w-full rounded-full">Masuk</Button></Link>
                   </div>
                 )}
@@ -218,13 +218,13 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
               value={mobileSearch}
               onChange={e=> setMobileSearch(e.target.value)}
               placeholder="Cari nama tim..."
-              className="h-11 w-full rounded-full border border-white/[0.08] bg-muted pl-9 pr-11 text-[13px] placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#C9A86A]"
+              className="h-11 w-full rounded-full border border-white/[0.08] bg-white/[0.04] backdrop-blur pl-9 pr-11 text-[13px] placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#C9A86A]"
             />
             <button type="submit" aria-label="Cari" className="absolute right-1 h-9 w-9 grid place-items-center rounded-full bg-foreground text-background">
               <Search className="h-4 w-4" />
             </button>
           </form>
-          <button onClick={()=> setSearchOpen(false)} aria-label="Tutup pencarian" className="h-11 w-11 grid place-items-center rounded-full border border-white/[0.06] bg-card shrink-0">✕</button>
+          <button onClick={()=> setSearchOpen(false)} aria-label="Tutup pencarian" className="h-11 w-11 grid place-items-center rounded-full border border-white/[0.06] bg-white/[0.03] backdrop-blur shrink-0">✕</button>
         </div>
       )}
 

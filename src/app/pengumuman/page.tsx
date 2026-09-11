@@ -21,7 +21,7 @@ export default function PengumumanPage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-border bg-[#09090b] text-white">
+        <div className="border-b border-white/[0.06] bg-[#09090b] text-white">
           <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Informasi Resmi</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">PENGUMUMAN</h1>
@@ -29,9 +29,9 @@ export default function PengumumanPage(){
         </div>
         <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6 space-y-3">
           {announcements.map(a=> (
-            <div key={a.id} className="rounded-[16px] border border-border bg-card p-5">
+            <div key={a.id} className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5">
               <div className="flex flex-wrap gap-2 items-center">
-                <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold tracking-widest ${catColor[a.category] || "bg-muted"}`}>{a.category.toUpperCase()}</span>
+                <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold tracking-widest ${catColor[a.category] || "bg-white/[0.04] backdrop-blur"}`}>{a.category.toUpperCase()}</span>
                 <span className="text-xs text-muted-foreground">{a.date}</span>
               </div>
               <h3 className="mt-2 text-[15px] font-black leading-tight">{a.title}</h3>

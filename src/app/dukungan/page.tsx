@@ -41,7 +41,7 @@ function DukunganInner(){
 
   if(loadError) return (
     <div className="mx-auto max-w-[480px] px-4 py-12 text-center">
-      <div className="rounded-2xl border border-border bg-card p-6">
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-6">
         <div className="text-sm font-bold">{loadError}</div>
         <Link href="/tim" className="mt-4 inline-flex"><Button className="rounded-full">Pilih Peleton di Tim</Button></Link>
       </div>
@@ -111,7 +111,7 @@ function DukunganInner(){
   return (
     <div className="mx-auto max-w-[1080px] px-3 xs:px-4 sm:px-6 py-4 xs:py-6 grid lg:grid-cols-[1.1fr_0.9fr] gap-4 xs:gap-6">
       <div className="space-y-4">
-        <div className="rounded-[12px] xs:rounded-[16px] border border-white/[0.06] bg-card overflow-hidden">
+        <div className="rounded-[12px] xs:rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur overflow-hidden">
           <div className="h-1.5 xs:h-2 bg-gold" />
           <div className="p-3 xs:p-4 sm:p-5 flex gap-3 xs:gap-4">
             <img src={peleton.image_url} alt="" className="h-16 w-16 xs:h-20 xs:w-20 rounded-xl object-cover border border-white/[0.06] shrink-0" />
@@ -125,14 +125,14 @@ function DukunganInner(){
             </div>
           </div>
           <div className="px-3 xs:px-5 pb-3 xs:pb-5">
-            <div className="rounded-xl bg-muted/50 border border-white/[0.04] p-2.5 xs:p-3 text-[11px] xs:text-xs leading-relaxed text-muted-foreground">
+            <div className="rounded-xl bg-white/[0.04] backdrop-blur/50 border border-white/[0.04] p-2.5 xs:p-3 text-[11px] xs:text-xs leading-relaxed text-muted-foreground">
               Dukungan untuk <b className="text-foreground">{peleton.name}</b> akan tercatat sebagai ballot resmi <b>hanya setelah pembayaran terverifikasi</b>. {isClosed && <span className="text-red-600 font-bold">{closedMessage}. Riwayat transaksi lama tetap diproses.</span>}
             </div>
             {isClosed && <div className="mt-2.5 xs:mt-3 rounded-xl bg-amber-500/10 border border-amber-500/20 p-2.5 text-[11px] xs:text-xs font-bold text-amber-700 leading-relaxed">{closedMessage}</div>}
           </div>
         </div>
 
-        <div className="rounded-[12px] xs:rounded-[16px] border border-white/[0.06] bg-card p-3 xs:p-4 sm:p-5">
+        <div className="rounded-[12px] xs:rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-3 xs:p-4 sm:p-5">
           <h3 className="text-[13px] xs:text-sm font-black">Pilih Paket Dukungan</h3>
           <p className="text-[11px] xs:text-xs text-muted-foreground">Harga resmi (dari DB): Rp{onlinePrice.toLocaleString("id-ID")} / ballot (online)</p>
           {isClosed && <p className="mt-2 text-[11px] xs:text-xs font-bold text-red-600">Pilih Paket dinonaktifkan — transaksi dihentikan.</p>}
@@ -154,7 +154,7 @@ function DukunganInner(){
             <div className="label-ceremonial text-[11px] xs:text-xs">Atur Jumlah Ballot</div>
             <p className="mt-1 text-[11px] xs:text-xs text-muted-foreground leading-relaxed">Ketik langsung atau gunakan tombol plus/minus. Maks 10.000 per transaksi.</p>
             <div className={`mt-2.5 xs:mt-2 flex items-center gap-2 xs:gap-3 ${isClosed ? "opacity-50 pointer-events-none" : ""}`}>
-              <button disabled={isClosed || loading} onClick={()=>setQty(q=>Math.max(1, (Number(q)||1)-1))} className="h-10 w-10 xs:h-11 xs:w-11 rounded-full border border-white/[0.06] bg-card grid place-items-center hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 shrink-0"><Minus className="h-3.5 w-3.5 xs:h-4 xs:w-4"/></button>
+              <button disabled={isClosed || loading} onClick={()=>setQty(q=>Math.max(1, (Number(q)||1)-1))} className="h-10 w-10 xs:h-11 xs:w-11 rounded-full border border-white/[0.06] bg-white/[0.03] backdrop-blur grid place-items-center hover:bg-white/[0.04] backdrop-blur disabled:cursor-not-allowed disabled:opacity-50 shrink-0"><Minus className="h-3.5 w-3.5 xs:h-4 xs:w-4"/></button>
               <input
                 type="number"
                 inputMode="numeric"
@@ -170,16 +170,16 @@ function DukunganInner(){
                   }
                 }}
                 disabled={isClosed}
-                className="flex-1 min-w-0 rounded-full border border-white/[0.06] bg-muted h-10 xs:h-11 text-center text-[15px] xs:text-base font-black tabular-nums focus:outline-none focus:ring-2 focus:ring-[#C9A86A] disabled:opacity-50 px-2"
+                className="flex-1 min-w-0 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur h-10 xs:h-11 text-center text-[15px] xs:text-base font-black tabular-nums focus:outline-none focus:ring-2 focus:ring-[#C9A86A] disabled:opacity-50 px-2"
               />
-              <button disabled={isClosed || loading} onClick={()=>setQty(q=> Math.min(10000, (Number(q)||1)+1))} className="h-10 w-10 xs:h-11 xs:w-11 rounded-full border border-white/[0.06] bg-card grid place-items-center hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 shrink-0"><Plus className="h-3.5 w-3.5 xs:h-4 xs:w-4"/></button>
+              <button disabled={isClosed || loading} onClick={()=>setQty(q=> Math.min(10000, (Number(q)||1)+1))} className="h-10 w-10 xs:h-11 xs:w-11 rounded-full border border-white/[0.06] bg-white/[0.03] backdrop-blur grid place-items-center hover:bg-white/[0.04] backdrop-blur disabled:cursor-not-allowed disabled:opacity-50 shrink-0"><Plus className="h-3.5 w-3.5 xs:h-4 xs:w-4"/></button>
             </div>
           </div>
         </div>
       </div>
 
       <div className="lg:sticky lg:top-[76px] h-fit space-y-4">
-        <div className="rounded-[12px] xs:rounded-[16px] border border-white/[0.06] bg-card p-3 xs:p-4 sm:p-5">
+        <div className="rounded-[12px] xs:rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-3 xs:p-4 sm:p-5">
           <h3 className="text-[13px] xs:text-sm font-black">Ringkasan Dukungan</h3>
           <div className="mt-3 xs:mt-4 space-y-2 text-[13px] xs:text-sm">
             <div className="flex justify-between gap-2"><span className="text-muted-foreground">Peleton</span><span className="font-bold truncate text-right">{peleton.name}</span></div>
@@ -203,8 +203,8 @@ export default function DukunganPage(){
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 bg-muted/20 pb-[72px] md:pb-0">
-        <div className="border-b border-white/[0.06] bg-card">
+      <main className="flex-1 bg-white/[0.04] backdrop-blur/20 pb-[72px] md:pb-0">
+        <div className="border-b border-white/[0.06] bg-white/[0.03] backdrop-blur">
           <div className="mx-auto max-w-[1080px] px-3 xs:px-4 sm:px-6 py-3.5 xs:py-4">
             <div className="label-gold text-[11px] xs:text-xs">Dukung Tim</div>
             <h1 className="text-[18px] xs:text-[20px] font-black tracking-tight leading-none">DUKUNG PELETON FAVORITMU</h1>

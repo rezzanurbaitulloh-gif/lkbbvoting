@@ -15,15 +15,15 @@ export default function Transaksi(){
   return (
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Riwayat Transaksi</h1></div>{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600 gap-2" onClick={handleBulkDelete}><Trash2 className="h-3.5 w-3.5"/>Hapus {selected.size} dipilih</Button>}</div>
-      <div className="rounded-[16px] border border-border bg-card overflow-hidden">
+      <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur overflow-hidden">
         {/* Desktop table — DOKU aware */}
         <div className="hidden md:block overflow-x-auto">
-          <div className="min-w-[800px] grid grid-cols-[40px_110px_110px_1fr_80px_90px_90px_80px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-border bg-muted/30">
+          <div className="min-w-[800px] grid grid-cols-[40px_110px_110px_1fr_80px_90px_90px_80px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-white/[0.06] bg-white/[0.04] backdrop-blur/30">
             <div><input type="checkbox" checked={selected.size===txs.length && txs.length>0} onChange={toggleAll} /></div><div>ID INTERNAL</div><div>TANGGAL</div><div>NAMA TIM</div><div>QTY</div><div>JUMLAH</div><div>PROVIDER</div><div>STATUS</div>
           </div>
           {txs.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada transaksi.</div> :
             txs.map((t:any)=> (
-            <div key={t.id} className="min-w-[800px] grid grid-cols-[40px_110px_110px_1fr_80px_90px_90px_80px] gap-2 px-4 py-3 items-center border-b border-border/50 text-sm">
+            <div key={t.id} className="min-w-[800px] grid grid-cols-[40px_110px_110px_1fr_80px_90px_90px_80px] gap-2 px-4 py-3 items-center border-b border-white/[0.06]/50 text-sm">
               <div><input type="checkbox" checked={selected.has(t.id)} onChange={()=> toggleSelect(t.id)} /></div>
               <div className="font-mono font-bold text-xs truncate" title={t.id}>{t.id.slice(0,8)}<div className="font-mono text-[10px] text-muted-foreground truncate" title={t.provider_ref || t.doku_reference_no}>{(t.doku_reference_no || t.provider_ref || "").slice(0,12)}</div></div>
               <div className="text-xs">{new Date(t.created_at).toLocaleDateString("id-ID")}<div className="text-[10px] text-muted-foreground">{new Date(t.created_at).toLocaleTimeString("id-ID", {hour:'2-digit', minute:'2-digit'})}</div></div>
@@ -39,7 +39,7 @@ export default function Transaksi(){
         <div className="md:hidden space-y-2 p-3">
           {txs.length===0 ? <div className="p-6 text-center text-sm text-muted-foreground">Belum ada transaksi.</div> :
             txs.map((t:any)=> (
-            <div key={t.id} className="rounded-xl border border-border p-3 flex flex-col gap-2">
+            <div key={t.id} className="rounded-xl border border-white/[0.06] p-3 flex flex-col gap-2">
               <div className="flex justify-between items-center">
                 <label className="flex items-center gap-2 text-xs font-mono"><input type="checkbox" checked={selected.has(t.id)} onChange={()=> toggleSelect(t.id)} />{t.id.slice(0,8)}</label>
                 <div className="flex items-center gap-1.5">
@@ -55,7 +55,7 @@ export default function Transaksi(){
           ))}
         </div>
         {txs.length>0 && (
-          <div className="p-3 border-t border-border bg-muted/20 flex items-center justify-between">
+          <div className="p-3 border-t border-white/[0.06] bg-white/[0.04] backdrop-blur/20 flex items-center justify-between">
             <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={selected.size===txs.length && txs.length>0} onChange={toggleAll} /> Pilih semua ({txs.length})</label>
             {selected.size>0 && <span className="text-xs font-bold">{selected.size} dipilih</span>}
           </div>

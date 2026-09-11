@@ -28,7 +28,7 @@ export function CaraDukungDialog({ open, onOpenChange }: { open: boolean, onOpen
                 </div>
                 <div className="flex-1 min-w-0 pb-1">
                   <div className="flex items-center gap-2">
-                    <span className="inline-flex h-5 min-w-5 px-1.5 rounded-full bg-muted text-[11px] font-black grid place-items-center">0{i+1}</span>
+                    <span className="inline-flex h-5 min-w-5 px-1.5 rounded-full bg-white/[0.04] backdrop-blur text-[11px] font-black grid place-items-center">0{i+1}</span>
                     <span className="text-sm font-black leading-tight">{s.title}</span>
                   </div>
                   <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{s.desc}</p>

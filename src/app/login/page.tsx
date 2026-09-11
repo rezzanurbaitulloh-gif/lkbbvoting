@@ -31,8 +31,8 @@ export default function LoginPage(){
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 pb-[72px] md:pb-0 grid place-items-center p-4 bg-muted/20">
-        <div className="w-full max-w-[420px] rounded-[20px] border border-border bg-card p-6 md:p-8 shadow-soft">
+      <main className="flex-1 pb-[72px] md:pb-0 grid place-items-center p-4 bg-white/[0.04] backdrop-blur/20">
+        <div className="w-full max-w-[420px] rounded-[20px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-6 md:p-8 shadow-soft">
           <div className="text-center">
             <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="mx-auto h-16 w-16 sm:h-20 sm:w-20 object-contain bg-transparent" />
             <h1 className="mt-3 text-[20px] font-black tracking-tight">Masuk ke Akun</h1>
@@ -44,7 +44,7 @@ export default function LoginPage(){
               <label className="text-xs font-bold">Password</label>
               <div className="relative">
                 <Input value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" type={showPass ? "text" : "password"} className="pr-10" autoComplete="current-password" />
-                <button type="button" onClick={()=> setShowPass(!showPass)} aria-label={showPass ? "Sembunyikan password" : "Lihat password"} className="absolute right-1 top-1/2 -translate-y-1/2 h-11 w-11 grid place-items-center rounded-full hover:bg-muted text-muted-foreground">
+                <button type="button" onClick={()=> setShowPass(!showPass)} aria-label={showPass ? "Sembunyikan password" : "Lihat password"} className="absolute right-1 top-1/2 -translate-y-1/2 h-11 w-11 grid place-items-center rounded-full hover:bg-white/[0.04] backdrop-blur text-muted-foreground">
                   {showPass ? <EyeOff className="h-[18px] w-[18px]" /> : <Eye className="h-[18px] w-[18px]" />}
                 </button>
               </div>

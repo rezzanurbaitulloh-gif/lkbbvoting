@@ -119,14 +119,14 @@ export default function AdminPeleton(){
         ))}
       </div>
 
-      <div className="rounded-[16px] border border-border bg-card overflow-hidden">
+      <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur overflow-hidden">
         {/* Desktop table — URUTAN dihapus, nomor urut = urutan tampil per kategori */}
         <div className="hidden md:block overflow-x-auto">
-          <div className="grid grid-cols-[40px_60px_1fr_80px_80px_140px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-border bg-muted/30">
+          <div className="grid grid-cols-[40px_60px_1fr_80px_80px_140px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-white/[0.06] bg-white/[0.04] backdrop-blur/30">
             <div><input type="checkbox" checked={filtered.length>0 && selected.size===filtered.length} onChange={toggleAll} /></div><div>NO</div><div>TIM</div><div>KELOMPOK</div><div>TAMPIL</div><div className="text-right">AKSI</div>
           </div>
           {filtered.map(p=> (
-            <div key={p.id} className="grid grid-cols-[40px_60px_1fr_80px_80px_140px] gap-2 px-4 py-3 items-center border-b border-border/50 last:border-0">
+            <div key={p.id} className="grid grid-cols-[40px_60px_1fr_80px_80px_140px] gap-2 px-4 py-3 items-center border-b border-white/[0.06]/50 last:border-0">
               <div><input type="checkbox" checked={selected.has(p.id)} onChange={()=> toggleSelect(p.id)} /></div>
               <div className="font-mono text-sm">#{p.number}</div>
               <div className="flex gap-3 min-w-0">
@@ -150,7 +150,7 @@ export default function AdminPeleton(){
         {/* Mobile cards */}
         <div className="md:hidden space-y-2 p-3">
           {filtered.map(p=> (
-            <div key={p.id} className="rounded-xl border border-border p-3 flex flex-col gap-2">
+            <div key={p.id} className="rounded-xl border border-white/[0.06] p-3 flex flex-col gap-2">
               <div className="flex gap-3">
                 <input type="checkbox" className="mt-1" checked={selected.has(p.id)} onChange={()=> toggleSelect(p.id)} />
                 <img src={p.image_url} alt="" className="h-10 w-10 rounded-lg object-cover border shrink-0" />
@@ -174,7 +174,7 @@ export default function AdminPeleton(){
           {filtered.length===0 && <div className="p-6 text-center text-sm text-muted-foreground">Belum ada tim di kelompok ini.</div>}
         </div>
         {filtered.length>0 && (
-          <div className="p-3 border-t border-border bg-muted/20 flex items-center justify-between">
+          <div className="p-3 border-t border-white/[0.06] bg-white/[0.04] backdrop-blur/20 flex items-center justify-between">
             <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={selected.size===filtered.length && filtered.length>0} onChange={toggleAll} /> Pilih semua ({filtered.length})</label>
             {selected.size>0 && <span className="text-xs font-bold">{selected.size} dipilih</span>}
           </div>

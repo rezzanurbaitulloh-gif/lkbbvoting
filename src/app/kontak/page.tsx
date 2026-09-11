@@ -18,7 +18,7 @@ export default function KontakPage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-border bg-[#09090b] text-white">
+        <div className="border-b border-white/[0.06] bg-[#09090b] text-white">
           <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Hubungi Kami</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">KONTAK</h1>
@@ -26,7 +26,7 @@ export default function KontakPage(){
         </div>
         <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6 grid lg:grid-cols-[0.9fr_1.1fr] gap-6">
           <div className="space-y-4">
-            <div className="rounded-[16px] border border-border bg-card p-5">
+            <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5">
               <h3 className="text-sm font-black">Informasi Kontak</h3>
               <div className="mt-3 grid gap-2 text-sm">
                 <div><span className="text-muted-foreground">Email</span><br/><span className="font-bold">info@lkbb-event.id</span></div>
@@ -35,12 +35,12 @@ export default function KontakPage(){
                 <div><span className="text-muted-foreground">Alamat</span><br/><span>SMK Negeri 1 Kertosono, Nganjuk, Jawa Timur</span></div>
               </div>
             </div>
-            <div className="rounded-[16px] border border-border bg-card p-5">
+            <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5">
               <h4 className="text-sm font-black">Jam Operasional</h4>
               <p className="text-sm text-muted-foreground">Senin - Sabtu, 08.00 - 17.00 WIB</p>
             </div>
           </div>
-          <div className="rounded-[16px] border border-border bg-card p-6">
+          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-6">
             <h3 className="text-sm font-black">Kirim Pesan</h3>
             {sent ? (
               <div className="mt-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-center">

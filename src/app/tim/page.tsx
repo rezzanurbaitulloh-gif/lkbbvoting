@@ -61,7 +61,7 @@ export default async function TimPage(){
           const logo = p.logo_url || p.image_url || "/assets/brand/lkbb-logo.jpg"
           const number = String(p.number || "").padStart(2,"0")
           return (
-            <Link key={p.id} href={`/tim/${p.slug}`} className="group flex items-center justify-between gap-2.5 xs:gap-3 rounded-[12px] xs:rounded-xl border border-white/[0.06] bg-card px-2.5 xs:px-3 sm:px-4 py-2.5 xs:py-3 hover:border-[#C9A86A]/20 hover:bg-muted/20 transition-colors min-w-0">
+            <Link key={p.id} href={`/tim/${p.slug}`} className="group flex items-center justify-between gap-2.5 xs:gap-3 rounded-[12px] xs:rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur px-2.5 xs:px-3 sm:px-4 py-2.5 xs:py-3 hover:border-[#C9A86A]/20 hover:bg-white/[0.04] backdrop-blur/20 transition-colors min-w-0">
               <div className="flex items-center gap-2 xs:gap-3 min-w-0 flex-1">
                 <span className="shrink-0 rounded-full bg-gold px-2 xs:px-2.5 py-1 text-[10px] xs:text-[11px] font-black tracking-widest text-gold-foreground">#{number}</span>
                 <span className="text-[13px] xs:text-sm sm:text-[15px] font-black tracking-tight truncate">{p.name}</span>
