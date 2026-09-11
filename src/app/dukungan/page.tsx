@@ -141,11 +141,11 @@ function DukunganInner(){
               const price = n * onlinePrice
               const isPop = n===50
               return (
-                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border-2 p-2.5 xs:p-4 text-left transition-colors ${qty===n ? "border-primary bg-primary text-primary-foreground" : "border-white/[0.06] bg-card hover:border-primary/30"} ${isClosed ? "cursor-not-allowed" : ""}`}>
-                  {isPop && <span className="absolute -top-1.5 xs:-top-2 right-2 xs:right-3 rounded-full bg-primary px-1.5 xs:px-2 py-0.5 text-[9px] xs:text-[10px] font-black text-primary-foreground">POPULER</span>}
-                  <div className={`text-[10px] xs:text-xs font-bold tracking-widest ${qty===n ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{n} Dukungan</div>
+                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border p-2.5 xs:p-4 text-left backdrop-blur transition-colors ${qty===n ? "border-[#C9A86A]/30 bg-[#C9A86A]/10 text-white" : "border-white/[0.06] bg-white/[0.03] hover:border-white/15 hover:bg-white/[0.05] text-white/85"} ${isClosed ? "cursor-not-allowed" : ""}`}>
+                  {isPop && <span className="absolute -top-1.5 xs:-top-2 right-2 xs:right-3 rounded-full bg-[#C9A86A] px-1.5 xs:px-2 py-0.5 text-[9px] xs:text-[10px] font-black text-[#0C0A06] border border-[#C9A86A]">POPULER</span>}
+                  <div className={`text-[10px] xs:text-xs font-bold tracking-widest ${qty===n ? "text-[#C9A86A]" : "text-white/60"}`}>{n} Dukungan</div>
                   <div className="mt-1 text-[15px] xs:text-[17px] sm:text-[18px] font-black tabular-nums">Rp{price.toLocaleString("id-ID")}</div>
-                  <div className={`text-[11px] xs:text-xs ${qty===n ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{n} ballot</div>
+                  <div className={`text-[11px] xs:text-xs ${qty===n ? "text-white/70" : "text-white/50"}`}>{n} ballot</div>
                 </button>
               )
             })}

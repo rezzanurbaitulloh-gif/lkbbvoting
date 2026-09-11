@@ -89,7 +89,6 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
         <div className="flex flex-col p-2.5 xs:p-3 sm:p-4 pb-2">
           <div className="flex gap-2 xs:gap-2.5 sm:gap-3">
             <div className="flex-1 min-w-0">
-              <div className="text-[10px] xs:text-[11px] font-bold tracking-[0.12em] text-gold">#{number}</div>
               <h3 className="text-[13px] xs:text-[14px] sm:text-[15px] font-black leading-tight tracking-tight text-foreground line-clamp-2 text-balance break-words">{name}</h3>
               <p className="text-[11px] xs:text-[11px] sm:text-[12px] font-medium text-muted-foreground line-clamp-1 break-words">{peleton.school || ""}</p>
             </div>
