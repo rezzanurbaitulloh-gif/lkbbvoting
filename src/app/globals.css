@@ -446,6 +446,24 @@ html:not(.dark) { --background: #09090b; --foreground: #F4F4F1; --surface: #1113
   [class*="border"][class*="bg-white"]:not([class*="bg-white/5"]):not([class*="bg-white/10"]):not([class*="bg-white/"]) * {
     color: black !important;
   }
+
+  /* 3) Request terbaru: border berwarna TERANG (emas/primer, amber, zinc, white) yang masih text-white => paksa hitam */
+  /* Hanya untuk background/border terang agar hitam kontras; border gelap (crimson, emerald, red) tetap putih untuk readability */
+  [class*="border-[#C9A86A"][class*="text-white"]:not([class*="bg-[#A51D2D"]):not([class*="bg-emerald"]):not([class*="bg-red"]):not([class*="bg-gradient"]),
+  [class*="border-[#D4B77A"][class*="text-white"],
+  [class*="border-amber"][class*="text-white"],
+  [class*="border-zinc"][class*="text-white"] {
+    color: black !important;
+  }
+  [class*="border-[#C9A86A"] [class*="text-white"]:not([class*="bg-gradient"]),
+  [class*="border-[#D4B77A"] [class*="text-white"] {
+    color: black !important;
+  }
+  /* Badge gold translucent terang => hitam (sesuai instruksi); crimson gelap tetap putih agar terbaca */
+  .border-\[\#C9A86A30\].text-white, .border-\[\#C9A86A30\] .text-white,
+  [class*="bg-[#C9A86A14]"][class*="text-white"] {
+    color: black !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

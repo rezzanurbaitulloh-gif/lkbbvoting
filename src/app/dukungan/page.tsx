@@ -141,11 +141,11 @@ function DukunganInner(){
               const price = n * onlinePrice
               const isPop = n===50
               return (
-                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border bg-transparent backdrop-blur transition-all duration-200 ${qty===n ? "border-[#C9A86A] text-white scale-[1.02] shadow-[0_2px_12px_rgba(201,168,106,0.12)]" : "border-white/15 hover:border-white/25 text-white/85 hover:scale-[1.01]"} ${isClosed ? "cursor-not-allowed" : ""}`}>
+                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border backdrop-blur transition-all duration-200 ${qty===n ? "border-[#C9A86A] bg-[#C9A86A]/12 text-black scale-[1.02] shadow-[0_2px_12px_rgba(201,168,106,0.12)]" : "border-white/15 bg-transparent hover:border-white/25 text-white/85 hover:scale-[1.01]"} ${isClosed ? "cursor-not-allowed" : ""}`}>
                   {isPop && <span className="absolute -top-1.5 xs:-top-2 right-2 xs:right-3 rounded-full bg-[#C9A86A] px-1.5 xs:px-2 py-0.5 text-[9px] xs:text-[10px] font-black text-[#0C0A06] border border-[#C9A86A] shadow-sm">POPULER</span>}
-                  <div className={`text-[10px] xs:text-xs font-bold tracking-widest ${qty===n ? "text-[#C9A86A]" : "text-white/60"}`}>{n} Dukungan</div>
+                  <div className={`text-[10px] xs:text-xs font-bold tracking-widest ${qty===n ? "text-black/70" : "text-white/60"}`}>{n} Dukungan</div>
                   <div className="mt-1 text-[15px] xs:text-[17px] sm:text-[18px] font-black tabular-nums">Rp{price.toLocaleString("id-ID")}</div>
-                  <div className={`text-[11px] xs:text-xs ${qty===n ? "text-white/70" : "text-white/50"}`}>{n} ballot</div>
+                  <div className={`text-[11px] xs:text-xs ${qty===n ? "text-black/60" : "text-white/50"}`}>{n} ballot</div>
                 </button>
               )
             })}
