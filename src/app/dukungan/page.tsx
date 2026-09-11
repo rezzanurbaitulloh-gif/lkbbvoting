@@ -117,8 +117,8 @@ function DukunganInner(){
             <img src={peleton.image_url} alt="" className="h-16 w-16 xs:h-20 xs:w-20 rounded-xl object-cover border border-white/10 shrink-0" />
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap gap-1.5 xs:gap-2">
-                <Badge variant="gold" className="text-[11px] xs:text-xs">#{peleton.number}</Badge>
-                <Badge variant="outline" className="text-[11px] xs:text-xs">{peleton.category}</Badge>
+                <Badge variant="outline" className="text-[11px] xs:text-xs bg-white/5 backdrop-blur border-white/10 text-white">#{peleton.number}</Badge>
+                <Badge variant="outline" className="text-[11px] xs:text-xs bg-white/5 backdrop-blur border-white/10 text-white/80">{peleton.category}</Badge>
               </div>
               <div className="mt-1 text-[14px] xs:text-[15px] sm:text-[16px] font-black leading-tight break-words">{peleton.name}</div>
               <div className="text-[11px] xs:text-xs sm:text-sm text-muted-foreground line-clamp-1 break-words">{peleton.school} • {peleton.city}</div>
@@ -141,8 +141,8 @@ function DukunganInner(){
               const price = n * onlinePrice
               const isPop = n===50
               return (
-                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border p-2.5 xs:p-4 text-left backdrop-blur transition-colors ${qty===n ? "border-[#C9A86A]/30 bg-[#C9A86A]/10 text-white" : "border-white/10 bg-white/5 hover:border-white/15 hover:bg-white/10 text-white/85"} ${isClosed ? "cursor-not-allowed" : ""}`}>
-                  {isPop && <span className="absolute -top-1.5 xs:-top-2 right-2 xs:right-3 rounded-full bg-[#C9A86A] px-1.5 xs:px-2 py-0.5 text-[9px] xs:text-[10px] font-black text-[#0C0A06] border border-[#C9A86A]">POPULER</span>}
+                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border p-2.5 xs:p-4 text-left backdrop-blur transition-all duration-200 ${qty===n ? "border-[#C9A86A]/40 bg-[#C9A86A]/15 text-white scale-[1.02] shadow-[0_4px_16px_rgba(201,168,106,0.15)]" : "border-white/10 bg-white/[0.03] hover:border-[#C9A86A]/20 hover:bg-white/[0.05] text-white/85 hover:scale-[1.01]"} ${isClosed ? "cursor-not-allowed" : "hover:shadow-sm"}`}>
+                  {isPop && <span className="absolute -top-1.5 xs:-top-2 right-2 xs:right-3 rounded-full bg-[#C9A86A] px-1.5 xs:px-2 py-0.5 text-[9px] xs:text-[10px] font-black text-[#0C0A06] border border-[#C9A86A] shadow-sm">POPULER</span>}
                   <div className={`text-[10px] xs:text-xs font-bold tracking-widest ${qty===n ? "text-[#C9A86A]" : "text-white/60"}`}>{n} Dukungan</div>
                   <div className="mt-1 text-[15px] xs:text-[17px] sm:text-[18px] font-black tabular-nums">Rp{price.toLocaleString("id-ID")}</div>
                   <div className={`text-[11px] xs:text-xs ${qty===n ? "text-white/70" : "text-white/50"}`}>{n} ballot</div>
