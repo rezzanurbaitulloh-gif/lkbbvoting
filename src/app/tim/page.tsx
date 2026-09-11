@@ -87,11 +87,11 @@ export default async function TimPage(){
   }
 
   const getHeaderBadge = () => {
-    if (isNotStarted) return { label: "Belum Dimulai", color: "bg-white text-black border border-white shadow-sm" }
+    if (isNotStarted) return { label: "Belum Dimulai", color: "bg-primary text-black border border-primary shadow-sm" }
     if (isActive) return { label: "Aktif — Dukungan Dibuka", color: "bg-primary text-black border border-primary shadow-sm" }
     if (isVotingClosed) return { label: "Voting Ditutup", color: "bg-[#FACC15] text-black border border-[#FACC15] shadow-sm" }
     if (isPublished) return { label: "Hasil Dipublikasikan", color: "bg-primary text-black border border-primary shadow-sm" }
-    return { label: state, color: "bg-white text-black border border-white" }
+    return { label: state, color: "bg-primary text-black border border-primary" }
   }
   const headerBadge = getHeaderBadge()
 

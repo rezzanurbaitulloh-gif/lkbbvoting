@@ -115,7 +115,7 @@ export default function AdminPeleton(){
 
       <div className="flex gap-1.5 overflow-x-auto">
         {(["All","SMP","SMA"] as const).map(c=>(
-          <button key={c} onClick={()=>{ setFilter(c); setSelected(new Set()) }} className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold border backdrop-blur ${filter===c ? "bg-white text-black border-white shadow-sm" : "bg-white/[0.03] text-white/65 border-white/[0.07] hover:bg-white/[0.06] hover:text-white hover:border-white/12"}`}>{c==="All" ? "Semua" : c==="SMP" ? "SMP / Sederajat" : "SMA / Sederajat"}</button>
+          <button key={c} onClick={()=>{ setFilter(c); setSelected(new Set()) }} className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold border backdrop-blur ${filter===c ? "bg-primary text-black border-primary shadow-sm" : "bg-white/[0.03] text-white/65 border-white/[0.07] hover:bg-white/[0.06] hover:text-white hover:border-white/12"}`}>{c==="All" ? "Semua" : c==="SMP" ? "SMP / Sederajat" : "SMA / Sederajat"}</button>
         ))}
       </div>
 
