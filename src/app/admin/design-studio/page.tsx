@@ -245,37 +245,131 @@ export default function DesignStudio(){
           </div>
         </div>
 
-        {/* Canvas */}
+        {/* Canvas — VISUAL PREVIEW like Figma, not code */}
         <div className="flex-1 bg-[#040A14] overflow-auto flex flex-col items-center p-4 sm:p-6">
           <div className="shrink-0 flex items-center gap-2 mb-4">
             <span className="text-[11px] font-bold tracking-widest text-white/40">CANVAS</span>
             <span className="text-[11px] px-2 py-1 rounded-full bg-white/10 text-white/60">{viewport} • {viewportWidth}px • {zoom}%</span>
+            <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-white/30 ml-2">Klik elemen untuk edit • {sections.length} sections</span>
           </div>
-          <div className="w-full flex justify-center overflow-auto">
-            <div className="bg-white shadow-2xl overflow-hidden border border-white/10" style={{ width: viewportWidth, transform: `scale(${scale})`, transformOrigin: "top center", minHeight: 600 }}>
-              {/* Real preview: iframe to actual page */}
-              <iframe src={`/${selectedPage==="home" ? "" : selectedPage}`} title="canvas" className="w-full h-[800px] border-0" style={{ width: viewportWidth, height: 900 }} />
-              {/* Overlay selection: simple list of sections as clickable overlay for demo */}
-              <div className="absolute inset-0 pointer-events-none" />
-            </div>
-          </div>
-          {/* Fallback editable list below iframe for quick edit without iframe postMessage */}
-          <div className="mt-6 w-full max-w-[900px] grid gap-3">
-            {sections.map(s=> (
-              <div key={s.id} onClick={()=> setSelectedId(s.id)} className={`rounded-xl border p-3 cursor-pointer text-left ${selectedId===s.id ? "border-[#C9A86A] bg-[#C9A86A]/10" : "border-white/10 bg-[#111318] hover:border-white/20"}`}>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-black text-white">{s.title} <span className="text-[10px] font-bold text-white/40">• {s.type} • {s.key}</span></span>
-                  <span className={`text-[10px] px-2 py-1 rounded-full ${s.is_visible ? "bg-emerald-500/20 text-emerald-300" : "bg-red-500/20 text-red-300"}`}>{s.is_visible ? "Visible" : "Hidden"}</span>
-                </div>
-                <div className="mt-1 text-xs text-white/60 truncate">{JSON.stringify(s.content).slice(0,120)}</div>
-                <div className="mt-2 flex gap-1.5">
-                  <Button size="sm" variant="outline" className="h-7 rounded-full text-xs" onClick={(e)=>{e.stopPropagation(); setSelectedId(s.id)}}>Edit</Button>
-                  <Button size="sm" variant="ghost" className="h-7 rounded-full text-xs" onClick={(e)=>{e.stopPropagation(); handleHide(s.id)}}>{s.is_visible ? "Hide" : "Show"}</Button>
-                  <Button size="sm" variant="ghost" className="h-7 rounded-full text-xs" onClick={(e)=>{e.stopPropagation(); handleDuplicate(s.id)}}>Duplicate</Button>
-                  <Button size="sm" variant="ghost" className="h-7 rounded-full text-xs text-red-400" onClick={(e)=>{e.stopPropagation(); handleDelete(s.id)}}>Delete</Button>
-                </div>
+          <div className="w-full flex justify-center overflow-auto pb-8">
+            <div className="bg-[#09090b] shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden border border-white/10 rounded-[12px]" style={{ width: viewportWidth, transform: `scale(${scale})`, transformOrigin: "top center", minHeight: 600 }}>
+              {/* Visual preview — renders real sections, clickable */}
+              <div className="w-full">
+                {sections.length===0 ? (
+                  <div className="p-12 text-center">
+                    <div className="mx-auto h-16 w-16 rounded-full bg-white/5 grid place-items-center text-white/20"><Plus className="h-6 w-6"/></div>
+                    <div className="mt-3 text-sm font-bold text-white">Canvas kosong</div>
+                    <div className="text-xs text-white/50">Tambah section dari panel ELEMENTS</div>
+                  </div>
+                ) : sections.filter(s=> s.is_visible).map(s=> {
+                  const isSelected = selectedId===s.id
+                  const content = s.content || {}
+                  return (
+                    <div
+                      key={s.id}
+                      onClick={()=> setSelectedId(s.id)}
+                      className={`relative group cursor-pointer transition-all ${isSelected ? "ring-2 ring-[#C9A86A] ring-offset-2 ring-offset-[#09090b] z-10" : "hover:ring-1 hover:ring-white/20"}`}
+                    >
+                      {isSelected && <div className="absolute -top-6 left-0 z-20 flex items-center gap-1.5 bg-[#C9A86A] text-[#0C0A06] px-2.5 py-1 rounded-full text-xs font-black shadow"><Box className="h-3 w-3"/> {s.title} • {s.type}</div>}
+                      {/* Section visual by type */}
+                      {s.type==="hero" && (
+                        <div className="relative overflow-hidden bg-[#09090b] text-white p-8 sm:p-12 text-center" style={{ background: s.settings?.background || undefined }}>
+                          {content.backgroundImage && <img src={String(content.backgroundImage)} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" />}
+                          <div className="relative">
+                            <div className="text-[11px] font-bold tracking-[0.18em] text-[#C9A86A]">{String(content.eyebrow || "LKBB • JAVASOMA THE IMPRESSION")}</div>
+                            <h2 className="mt-2 text-[28px] sm:text-[36px] font-black leading-none tracking-tight" style={{ color: content.titleColor || "#fff" }}>{String(content.headingLine1 || "PELETON")} <span className="gold-gradient-text">{String(content.headingLine2 || "TERFAVORIT")}</span></h2>
+                            <div className="mt-2 text-[11px] tracking-[0.14em] text-white/70">{String(content.subtitle || "LKBB")} • {String(content.subtitle2 || "JAVASOMA")}</div>
+                            <div className="mt-1 text-xs text-[#C9A86A] font-bold tracking-wide">{String(content.tagline || "ASTRA DHARMA HAYUNING BUDAYA")}</div>
+                            <div className="mt-4 flex justify-center gap-2">
+                              <span className="rounded-full bg-[#C9A86A] text-[#0C0A06] px-5 py-2 text-xs font-black">{String(content.ctaPrimaryLabel || "LIHAT PESERTA")}</span>
+                              <span className="rounded-full border border-white/15 bg-white/5 px-5 py-2 text-xs font-bold text-white/80">{String(content.ctaSecondaryLabel || "CARA DUKUNG")}</span>
+                            </div>
+                          </div>
+                          {isSelected && <div className="absolute bottom-2 right-2 flex gap-1"><span className="h-2 w-8 bg-[#C9A86A] rounded-full" /></div>}
+                        </div>
+                      )}
+                      {s.type==="countdown" && (
+                        <div className="bg-[#0B0C0F] border-y border-white/5 p-6 text-center">
+                          <div className="text-[10px] font-bold tracking-[0.16em] text-white/50">{String(content.title || "EVENT DIMULAI DALAM")}</div>
+                          <div className="mt-3 grid grid-cols-4 gap-2 max-w-[420px] mx-auto">
+                            {[["43","HARI"],["12","JAM"],["28","MENIT"],["05","DETIK"]].map(([v,l])=> (
+                              <div key={l} className="rounded-xl border border-white/10 bg-white/[0.04] py-3"><div className="text-[22px] font-black text-white">{v}</div><div className="text-[9px] tracking-widest text-white/50">{l}</div></div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {s.type==="featured" && (
+                        <div className="bg-[#09090b] p-6">
+                          <div className="flex items-center gap-2 mb-3"><span className="text-[11px] font-bold tracking-widest text-[#C9A86A]">01 — PESERTA</span><span className="ml-auto text-xs px-2.5 py-1 rounded-full bg-white text-[#09090b] font-black">SMP / SMA</span></div>
+                          <h3 className="text-[18px] font-black text-white">{String(content.title || "DUKUNG PELETON FAVORITMU!")}</h3>
+                          <p className="text-xs text-white/60 mt-1">{String(content.description || "Beranda urut nomor tampil")}</p>
+                          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            {[1,2,3,4,5,6].map(i=> (
+                              <div key={i} className="rounded-xl border border-white/10 bg-[#111318] p-3">
+                                <div className="aspect-[4/3] rounded-lg bg-white/5 grid place-items-center text-white/20 text-xs">Foto #{i}</div>
+                                <div className="mt-2 h-3 w-20 bg-white/10 rounded" /><div className="mt-1 h-3 w-28 bg-white/5 rounded" />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {s.type==="podium" && (
+                        <div className="bg-[#040A14] p-6 text-center border-y border-white/5">
+                          <div className="text-[10px] tracking-[0.16em] text-[#C9A86A] font-bold">HASIL SEMENTARA</div>
+                          <h3 className="text-[18px] font-black text-white mt-1">PODIUM PELETON TERFAVORIT</h3>
+                          <div className="mt-4 flex items-end justify-center gap-2">
+                            {[2,1,3].map(rank=> (
+                              <div key={rank} className={`rounded-t-xl border bg-gradient-to-b ${rank===1?"from-amber-200 via-[#C9A86A] to-[#8C6A2A] h-[140px] w-[90px]":"from-zinc-200 to-zinc-500 h-[110px] w-[80px]"} grid place-items-center text-[#0C0A06] font-black`}>{rank}</div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {s.type==="sponsors" && (
+                        <div className="bg-[#09090b] border-y border-white/5 p-6">
+                          <div className="text-center text-[11px] tracking-widest text-white/50">DIDUKUNG OLEH</div>
+                          <div className="mt-3 flex justify-center gap-3 flex-wrap">
+                            {[1,2,3,4].map(i=> <div key={i} className="h-12 w-20 rounded-xl border border-white/10 bg-white/5 grid place-items-center text-[10px] text-white/30">Logo</div>)}
+                          </div>
+                        </div>
+                      )}
+                      {s.type==="cta" && (
+                        <div className="bg-[#C9A86A] p-8 text-center">
+                          <h3 className="text-[18px] font-black text-[#0C0A06]">{String(content.title || "SIAP MENDUKUNG?")}</h3>
+                          <div className="mt-3 inline-flex rounded-full bg-[#0C0A06] text-white px-6 py-2 text-xs font-black">{String(content.buttonLabel || "Dukung Sekarang")}</div>
+                        </div>
+                      )}
+                      {s.type==="text_block" && (
+                        <div className="bg-[#111318] p-6 border-y border-white/5">
+                          <h3 className="text-sm font-black text-white">{String(content.title || s.title)}</h3>
+                          <p className="text-sm text-white/60 mt-2">{String(content.text || content.description || "Teks editable — klik untuk ubah di panel kanan.")}</p>
+                        </div>
+                      )}
+                      {s.type==="banner" && (
+                        <div className="bg-gradient-to-r from-[#C9A86A] to-[#8C6A2A] p-6 text-center">
+                          <div className="text-sm font-black text-[#0C0A06]">{String(content.title || "Banner")}</div>
+                          <div className="text-xs text-[#0C0A06]/70">{String(content.text || "")}</div>
+                        </div>
+                      )}
+                      {s.type==="image" && (
+                        <div className="bg-[#111318] p-6 text-center">
+                          {content.src ? <img src={String(content.src)} alt={String(content.alt||"")} className="mx-auto max-h-[320px] rounded-xl border border-white/10" /> : <div className="h-[180px] rounded-xl border border-dashed border-white/10 bg-white/5 grid place-items-center text-white/30 text-xs">Image — kosong, isi di Properties</div>}
+                        </div>
+                      )}
+                      {s.type==="divider" && <div className="bg-[#09090b] p-4"><div className="h-px bg-white/10 w-full" /></div>}
+                      {!["hero","countdown","featured","podium","sponsors","cta","text_block","banner","image","divider"].includes(s.type) && (
+                        <div className="bg-[#111318] p-6 border-y border-white/5">
+                          <div className="text-xs font-bold text-white/50">{s.type} • {s.key}</div>
+                          <div className="text-sm text-white mt-1">{s.title}</div>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
-            ))}
+              <div className="h-[1px] bg-white/10 w-full" />
+              <div className="bg-[#111318] p-3 text-center text-xs text-white/30">End of page • {sections.length} sections</div>
+            </div>
           </div>
         </div>
 
