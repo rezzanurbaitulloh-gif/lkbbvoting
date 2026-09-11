@@ -108,7 +108,7 @@ export default async function TimPage(){
           <div className="flex flex-wrap items-center gap-2 xs:gap-2.5 mb-3 xs:mb-4">
             <span className="inline-flex rounded-full border border-white/12 bg-white/5 backdrop-blur px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-bold tracking-wide text-white/80">SMP / SEDERAJAT</span>
             {isVotingClosed && <span className="inline-flex rounded-full border border-white/10 bg-white/5 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-white/60">ONLINE SAJA</span>}
-            {isPublished && <span className="inline-flex rounded-full border border-[#C9A86A]/20 bg-[#C9A86A]/10 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-[#C9A86A]">FINAL</span>}
+            {isPublished && <span className="inline-flex rounded-full border border-[#C9A86A]/20 bg-[#C9A86A]/10 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-white">FINAL</span>}
             <span className="text-[11px] xs:text-xs text-muted-foreground tabular-nums border border-white/10 bg-white/5 backdrop-blur px-2 py-1 rounded-full text-white/50">{smp.length} tim</span>
           </div>
           {smp.length===0 ? <div className="rounded-xl border border-dashed border-white/10 p-6 xs:p-8 text-center text-[13px] xs:text-sm text-muted-foreground">Belum ada peleton SMP.</div> : renderGrid(smp)}
@@ -119,7 +119,7 @@ export default async function TimPage(){
           <div className="flex flex-wrap items-center gap-2 xs:gap-2.5 mb-3 xs:mb-4">
             <span className="inline-flex rounded-full border border-white/12 bg-white/5 backdrop-blur px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-bold tracking-wide text-white/80">SMA / SEDERAJAT</span>
             {isVotingClosed && <span className="inline-flex rounded-full border border-white/10 bg-white/5 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-white/60">ONLINE SAJA</span>}
-            {isPublished && <span className="inline-flex rounded-full border border-[#C9A86A]/20 bg-[#C9A86A]/10 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-[#C9A86A]">FINAL</span>}
+            {isPublished && <span className="inline-flex rounded-full border border-[#C9A86A]/20 bg-[#C9A86A]/10 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-white">FINAL</span>}
             <span className="text-[11px] xs:text-xs text-muted-foreground tabular-nums border border-white/10 bg-white/5 backdrop-blur px-2 py-1 rounded-full text-white/50">{sma.length} tim</span>
           </div>
           {sma.length===0 ? <div className="rounded-xl border border-dashed border-white/10 p-6 xs:p-8 text-center text-[13px] xs:text-sm text-muted-foreground">Belum ada peleton SMA.</div> : renderGrid(sma)}

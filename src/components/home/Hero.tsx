@@ -157,8 +157,8 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
                 <span className="text-[11px] font-black tracking-wide text-amber-200">VOTING DITUTUP — MENUNGGU REKAP OFFLINE</span>
               </div>
             ) : isPublished ? (
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#C9A86A]/20 bg-[#C9A86A]/10 px-4 py-2">
-                <span className="text-[11px] font-black tracking-wide text-[#C9A86A]">HASIL TELAH DIPUBLIKASIKAN</span>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#C9A86A]/20 bg-[#C9A86A]/10 backdrop-blur px-4 py-2">
+                <span className="text-[11px] font-black tracking-wide text-white">HASIL TELAH DIPUBLIKASIKAN</span>
               </div>
             ) : isNotStarted ? (
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">

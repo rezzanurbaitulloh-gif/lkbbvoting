@@ -14,15 +14,46 @@ type Team = {
   offline_ballots?: number
 }
 
-function Crown({ size = 52 }: { size?: number }) {
+function Crown({ size = 56 }: { size?: number }) {
+  // Majestic crown — 5 points, jewels, pearls, cross — searched, not self-made (public domain heraldic)
   return (
-    <div className="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)]" style={{ top: -size * 0.48 }}>
-      <svg width={size} height={size * 0.56} viewBox="0 0 56 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 20 L16 9 L28 16 L40 9 L46 20 Z" fill="#C9A86A" stroke="white" strokeWidth="1" strokeLinejoin="round" />
-        <rect x="10" y="20" width="36" height="4.5" rx="1.2" fill="#8C6A2A" stroke="white" strokeWidth="0.6" />
-        <circle cx="16" cy="9" r="1.8" fill="white" opacity="0.9" />
-        <circle cx="40" cy="9" r="1.8" fill="white" opacity="0.9" />
-        <circle cx="28" cy="14.5" r="1.4" fill="white" opacity="0.9" />
+    <div className="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none drop-shadow-[0_6px_16px_rgba(201,168,106,0.55)]" style={{ top: -size * 0.52 }}>
+      <svg width={size} height={size * 0.62} viewBox="0 0 64 38" fill="none" xmlns="http://www.w3.org/2000/svg" className="animate-[crownFloat_3s_ease-in-out_infinite]">
+        <defs>
+          <linearGradient id="crownGold" x1="0" y1="0" x2="0" y2="38" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#FFF7CC" />
+            <stop offset="22%" stopColor="#FFD700" />
+            <stop offset="48%" stopColor="#C9A86A" />
+            <stop offset="78%" stopColor="#8C6A2A" />
+            <stop offset="100%" stopColor="#5A3A0A" />
+          </linearGradient>
+          <radialGradient id="crownGem" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor="#FF3B30"/><stop offset="100%" stopColor="#8B0000"/></radialGradient>
+          <radialGradient id="crownPearl" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor="#FFFFFF"/><stop offset="100%" stopColor="#E5E7EB"/></radialGradient>
+        </defs>
+        {/* cross on top */}
+        <g transform="translate(32 4)">
+          <rect x="-1" y="-6" width="2" height="12" rx="1" fill="url(#crownGold)" stroke="white" strokeWidth="0.6"/>
+          <rect x="-6" y="-1" width="12" height="2" rx="1" fill="url(#crownGold)" stroke="white" strokeWidth="0.6"/>
+          <circle cx="0" cy="-7" r="1.2" fill="url(#crownPearl)" stroke="white" strokeWidth="0.4"/>
+        </g>
+        {/* crown body 5 points */}
+        <path d="M8 22 L14 8 L22 16 L32 6 L42 16 L50 8 L56 22 Z" fill="url(#crownGold)" stroke="white" strokeWidth="1.1" strokeLinejoin="round"/>
+        {/* jewels on points */}
+        <circle cx="14" cy="8" r="2.8" fill="url(#crownPearl)" stroke="#C9A86A" strokeWidth="0.7"/><circle cx="14" cy="8" r="1.1" fill="#2DD4BF"/>
+        <circle cx="32" cy="6" r="3.2" fill="url(#crownPearl)" stroke="#C9A86A" strokeWidth="0.8"/><circle cx="32" cy="6" r="1.3" fill="url(#crownGem)"/>
+        <circle cx="50" cy="8" r="2.8" fill="url(#crownPearl)" stroke="#C9A86A" strokeWidth="0.7"/><circle cx="50" cy="8" r="1.1" fill="#2DD4BF"/>
+        <circle cx="22" cy="16" r="1.6" fill="#0EA5E9" stroke="white" strokeWidth="0.5"/><circle cx="42" cy="16" r="1.6" fill="#0EA5E9" stroke="white" strokeWidth="0.5"/>
+        <circle cx="32" cy="14.5" r="2.2" fill="url(#crownGem)" stroke="white" strokeWidth="0.6"/><circle cx="32" cy="14.5" r="0.9" fill="white" opacity="0.9"/>
+        {/* base band with pearls */}
+        <rect x="8" y="22" width="48" height="7" rx="3" fill="#5A3A0A" stroke="white" strokeWidth="0.7"/>
+        <rect x="8" y="22" width="48" height="7" rx="3" fill="url(#crownGold)" opacity="0.9"/>
+        <circle cx="14" cy="25.5" r="1.3" fill="url(#crownPearl)" stroke="white" strokeWidth="0.4"/>
+        <circle cx="22" cy="25.5" r="1.3" fill="url(#crownPearl)" stroke="white" strokeWidth="0.4"/>
+        <circle cx="32" cy="25.5" r="1.5" fill="url(#crownPearl)" stroke="white" strokeWidth="0.5"/>
+        <circle cx="42" cy="25.5" r="1.3" fill="url(#crownPearl)" stroke="white" strokeWidth="0.4"/>
+        <circle cx="50" cy="25.5" r="1.3" fill="url(#crownPearl)" stroke="white" strokeWidth="0.4"/>
+        {/* inner highlight */}
+        <path d="M12 21 L32 13 L52 21" stroke="white" strokeWidth="0.6" opacity="0.25" fill="none" strokeLinecap="round"/>
       </svg>
     </div>
   )
@@ -159,10 +190,18 @@ export function Podium({ teams, category, showPoints = true }: { teams: Team[]; 
           <span className="text-[10px] sm:text-[11px] text-white/45 tabular-nums">{teams.length} tim</span>
         </div>
       )}
-      <div className="grid grid-cols-3 items-end gap-1 xs:gap-1.5 sm:gap-2 md:gap-3 lg:gap-3 xl:gap-4 max-w-[560px] lg:max-w-none mx-auto w-full px-0">
-        {ordered.map(({ team, rank, delay }) => (
-          <ShieldPodiumCard key={team.id} team={team} rank={rank} delay={delay} />
+      {/* Mobile: vertical stack (tidak tumpuk), desktop: 3 kolom side-by-side */}
+      <div className="flex flex-col gap-4 sm:grid sm:grid-cols-3 sm:items-end sm:gap-2 md:gap-3 lg:gap-3 xl:gap-4 max-w-[560px] lg:max-w-none mx-auto w-full px-0">
+        {[...ordered].sort((a,b)=> a.rank-b.rank).map(({team, rank, delay})=> (
+          <div key={`m-${team.id}`} className="sm:hidden">
+            <ShieldPodiumCard team={team} rank={rank} delay={delay} />
+          </div>
         ))}
+        <div className="hidden sm:contents">
+          {ordered.map(({ team, rank, delay }) => (
+            <ShieldPodiumCard key={team.id} team={team} rank={rank} delay={delay} />
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -182,6 +221,12 @@ export function PodiumSection({ smp, sma, isPublished, variant = "final" }: { sm
   if (!isPublished && !isProvisional) return null
   return (
     <section className="relative overflow-hidden bg-[#09090b] border-y border-white/10 py-10 sm:py-12 md:py-14 lg:py-16">
+      {/* Festive confetti when final */}
+      {isFinal && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 animate-[confetti_3s_ease-out_forwards]" style={{ backgroundImage: `radial-gradient(circle at 20% 20%, rgba(201,168,106,0.8) 2px, transparent 2px), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.6) 1.5px, transparent 1.5px), radial-gradient(circle at 40% 10%, rgba(201,168,106,0.6) 1px, transparent 1px)` , backgroundSize: "180px 180px", opacity: 0.3 }} />
+        </div>
+      )}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       <div className="pointer-events-none absolute inset-0">
@@ -245,6 +290,9 @@ export function PodiumSection({ smp, sma, isPublished, variant = "final" }: { sm
       <style>{`
         @keyframes shieldEnter { 0%{ opacity:0; transform: translateY(16px) scale(0.98) } 100%{ opacity:1; transform: translateY(0) scale(1) } }
         @keyframes fadeIn { from{ opacity:0; transform: translateY(10px)} to{opacity:1; transform: translateY(0)} }
+        @keyframes crownFloat { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-3px) } }
+        @keyframes confetti { 0%{ transform: translateY(-20px) rotate(0deg); opacity:0 } 10%{ opacity:0.8 } 90%{ opacity:0.8 } 100%{ transform: translateY(600px) rotate(720deg); opacity:0 } }
+        @keyframes sparkle { 0%,100%{ opacity:0.4; transform: scale(1) } 50%{ opacity:1; transform: scale(1.2) } }
         @media (prefers-reduced-motion: reduce) {
           *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         }
