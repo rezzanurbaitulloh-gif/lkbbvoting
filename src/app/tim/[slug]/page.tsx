@@ -62,8 +62,8 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
               </div>
               <div>
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="gold" className="shadow-sm">{peleton.category}</Badge>
-                  <Badge variant="outline" className="bg-white/10 border-white/20 text-white backdrop-blur">{peleton.city} • {peleton.province}</Badge>
+                  <Badge variant="outline" className="bg-white/[0.04] backdrop-blur border border-white/10 text-white/80">{peleton.category}</Badge>
+                  <Badge variant="outline" className="bg-white/[0.04] backdrop-blur border border-white/10 text-white/70">{peleton.city} • {peleton.province}</Badge>
                 </div>
                 <div className="mt-3 flex gap-3 items-center">
                   <img src={logo} alt="logo" className="h-14 w-14 object-contain bg-transparent hidden md:block drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.5))" }} />
@@ -76,8 +76,8 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-white/60 text-pretty max-w-2xl">{peleton.description}</p>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Link href={supportUrl}><Button size="lg" className="rounded-full px-8 h-[46px] font-black bg-[#C9A86A] text-[#0C0A06] hover:bg-[#D4B77A] shadow-[0_4px_16px_rgba(201,168,106,0.30)] border border-[#C9A86A]">DUKUNG PELETON INI</Button></Link>
-                  {showRank && <span className="inline-flex items-center rounded-full bg-[#C9A86A] px-3 py-1 text-xs font-black text-[#0C0A06] border border-[#C9A86A] shadow-sm">RANK #{rank}</span>}
+                  <Link href={supportUrl}><Button size="lg" className="rounded-full px-8 h-[46px] font-bold border border-white/[0.08] bg-white/[0.04] backdrop-blur text-white/90 hover:bg-white/[0.07] hover:border-white/12 hover:text-white">DUKUNG PELETON INI</Button></Link>
+                  {showRank && <span className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] backdrop-blur px-3 py-1 text-xs font-bold text-white/80">RANK #{rank}</span>}
                 </div>
                 <div className="mt-6 flex gap-3 max-w-lg">
                   <div className="flex-1 rounded-xl border border-white/15 bg-white/[0.07] backdrop-blur p-3 text-center shadow-sm">
@@ -136,13 +136,13 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                 )}
                 <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-3 text-center flex flex-col gap-1">
                   <div className="text-[11px] font-bold tracking-widest text-white/60">Status Kompetisi</div>
-                  <div className="inline-flex self-center rounded-full px-3 py-1 text-xs font-black border shadow-sm" style={{background: isNotStarted ? "#FFFFFF" : isActive ? "#C9A86A" : isVotingClosed ? "#FACC15" : "#C9A86A", color: isActive || isPublished ? "#0C0A06" : isVotingClosed ? "#0B0C0F" : "#0B0C0F", borderColor: isNotStarted ? "#FFFFFF" : isActive ? "#C9A86A" : isVotingClosed ? "#FACC15" : "#C9A86A"}}>
+                  <div className="inline-flex self-center rounded-full px-3 py-1 text-xs font-bold border backdrop-blur" style={{background: isActive ? "rgba(34,197,94,0.10)" : "rgba(255,255,255,0.04)", color: isActive ? "rgb(134,239,172)" : "rgba(255,255,255,0.85)", borderColor: isActive ? "rgba(34,197,94,0.22)" : "rgba(255,255,255,0.08)"}}>
                     {isNotStarted ? "Belum Dimulai" : isActive ? "Aktif" : isVotingClosed ? "Voting Ditutup" : isPublished ? "Hasil Dipublikasikan" : state}
                   </div>
                   {isVotingClosed && <div className="inline-flex self-center rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">Peringkat Online Saja</div>}
                   {isPublished && <div className="inline-flex self-center rounded-full bg-[#C9A86A] text-[#0C0A06] px-2.5 py-1 text-[10px] font-black">Peringkat Akhir</div>}
                 </div>
-                <Link href={supportUrl}><Button className="w-full rounded-full h-[44px] font-black bg-[#C9A86A] text-[#0C0A06] hover:bg-[#D4B77A] border border-[#C9A86A] shadow-[0_4px_16px_rgba(201,168,106,0.25)]">DUKUNG</Button></Link>
+                <Link href={supportUrl}><Button variant="outline" className="w-full rounded-full h-[44px] font-bold border border-white/[0.08] bg-white/[0.04] backdrop-blur text-white/90 hover:bg-white/[0.07] hover:border-white/12 hover:text-white">DUKUNG</Button></Link>
                 <ShareButtons profileUrl={profileUrl} supportUrl={supportUrl} />
               </div>
             </div>
