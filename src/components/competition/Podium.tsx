@@ -85,7 +85,7 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         juaraBar: "from-[#8C6A2A] via-[#C9A86A] to-[#8C6A2A]",
         juaraText: "text-[#1A1400]",
         foot: "bg-white/5 backdrop-blur border-white/10",
-        height: "h-[264px] xs:h-[292px] sm:h-[328px] md:h-[360px] lg:h-[388px] xl:h-[424px]",
+        height: "h-[276px] xs:h-[304px] sm:h-[340px] md:h-[372px] lg:h-[400px] xl:h-[436px]",
         width: "w-full",
         logoSize: "h-[46px] w-[46px] xs:h-[52px] xs:w-[52px] sm:h-[60px] sm:w-[60px] md:h-[66px] md:w-[66px] lg:h-[70px] lg:w-[70px] xl:h-[76px] xl:w-[76px]",
       }
@@ -101,7 +101,7 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         juaraBar: "from-[#1E242E] via-[#2E333E] to-[#1E242E]",
         juaraText: "text-white/90",
         foot: "bg-white/5 backdrop-blur border-white/10",
-        height: "h-[216px] xs:h-[240px] sm:h-[278px] md:h-[306px] lg:h-[332px] xl:h-[368px]",
+        height: "h-[228px] xs:h-[252px] sm:h-[290px] md:h-[318px] lg:h-[344px] xl:h-[380px]",
         width: "w-full",
         logoSize: "h-[40px] w-[40px] xs:h-[46px] xs:w-[46px] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px] lg:h-[64px] lg:w-[64px] xl:h-[68px] xl:w-[68px]",
       }
@@ -116,7 +116,7 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         juaraBar: "from-[#1E242E] via-[#3A2A1A] to-[#1E242E]",
         juaraText: "text-white/85",
         foot: "bg-white/5 backdrop-blur border-white/10",
-        height: "h-[206px] xs:h-[230px] sm:h-[270px] md:h-[296px] lg:h-[322px] xl:h-[356px]",
+        height: "h-[218px] xs:h-[242px] sm:h-[282px] md:h-[308px] lg:h-[334px] xl:h-[368px]",
         width: "w-full",
         logoSize: "h-[40px] w-[40px] xs:h-[46px] xs:w-[46px] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px] lg:h-[64px] lg:w-[64px] xl:h-[68px] xl:w-[68px]",
       }
