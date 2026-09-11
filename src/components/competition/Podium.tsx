@@ -185,9 +185,8 @@ export function Podium({ teams, category, showPoints = true }: { teams: Team[]; 
   return (
     <div className="w-full">
       {category && (
-        <div className="flex items-center justify-center gap-2 mb-6 xs:mb-7 sm:mb-8">
+        <div className="flex items-center justify-center mb-6 xs:mb-7 sm:mb-8">
           <span className="inline-flex rounded-full bg-primary text-black px-2.5 sm:px-3 py-1 text-[10px] sm:text-[11px] font-black tracking-wide shadow-[0_2px_10px_rgba(201,168,106,0.25)]">{category}</span>
-          <span className="text-[10px] sm:text-[11px] text-white/45 tabular-nums">{teams.length} tim</span>
         </div>
       )}
       {/* 1 card per kategori, 3 shields side-by-side — jarak bawah kategori diperlebar agar mahkota tidak menutupi */}
