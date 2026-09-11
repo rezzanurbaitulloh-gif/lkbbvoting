@@ -599,13 +599,13 @@ export default function SettingsPage(){
 
       {tab==="event" && (
         <div className="space-y-4 sm:space-y-5">
-          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-4 sm:space-y-5">
+          <div className="relative z-30 overflow-visible rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-4 sm:space-y-5">
             <h3 className="text-sm font-black">Event & Voting</h3>
             <div><label className="text-xs font-bold">Nama Kompetisi (competitions.name)</label><Input defaultValue={event.name} id="name" /></div>
             <div><label className="text-xs font-bold">Sub-judul</label><Input defaultValue={event.subtitle} id="subtitle" /></div>
             <div><label className="text-xs font-bold">Tagline</label><Input defaultValue={event.tagline} id="tagline" /></div>
-            <div className="relative z-20"><label className="text-xs font-bold">Status Event Saat Ini</label><Select value={stateVal} onValueChange={setStateVal} options={STATE_OPTIONS} /></div>
-            <div className="relative z-10 text-xs text-muted-foreground">Hanya <b>Aktif</b> yang mengizinkan transaksi. <b>Belum Dimulai</b>: belum bisa dukung. <b>Voting Ditutup</b>: transaksi dihentikan, tampil peringkat <b>online saja</b>. <b>Hasil Dipublikasikan</b>: peringkat akhir + podium.</div>
+            <div className="relative z-30 overflow-visible"><label className="text-xs font-bold">Status Event Saat Ini</label><Select value={stateVal} onValueChange={setStateVal} options={STATE_OPTIONS} /></div>
+            <div className="text-xs text-muted-foreground">Hanya <b>Aktif</b> yang mengizinkan transaksi. <b>Belum Dimulai</b>: belum bisa dukung. <b>Voting Ditutup</b>: transaksi dihentikan, tampil peringkat <b>online saja</b>. <b>Hasil Dipublikasikan</b>: peringkat akhir + podium.</div>
             <Button disabled={saving} className="rounded-full" onClick={()=>{
               const name=(document.getElementById("name") as HTMLInputElement).value
               const subtitle=(document.getElementById("subtitle") as HTMLInputElement).value
@@ -616,7 +616,7 @@ export default function SettingsPage(){
               handleSaveEventField("state", stateVal)
             }}>Simpan Info & Status</Button>
           </div>
-          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-3">
+          <div className="relative z-10 rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-3">
             <h3 className="text-sm font-black">Harga Ballot</h3>
             <div><label className="text-xs font-bold">Harga Online per ballot (Rp)</label><Input defaultValue={event.settings?.online_price} id="online_price" type="number" /></div>
             <div><label className="text-xs font-bold">Harga Offline per ballot (Rp)</label><Input defaultValue={event.settings?.offline_price} id="offline_price" type="number" /></div>

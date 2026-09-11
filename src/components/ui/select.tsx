@@ -41,7 +41,7 @@ export function Select({
         <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", open && "rotate-180")} />
       </button>
       {open && (
-        <div className="absolute z-50 mt-1 w-full rounded-xl border border-white/10 bg-[#0F1115] shadow-xl max-h-60 overflow-auto">
+        <div className="absolute z-[60] mt-1 w-full rounded-xl border border-white/10 bg-[#0F1115] shadow-xl max-h-60 overflow-auto">
           {options.map(opt=> (
             <button
               key={opt.value}
