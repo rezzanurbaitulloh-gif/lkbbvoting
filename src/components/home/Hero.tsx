@@ -88,7 +88,7 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
   const logoAsBackground = cmsSettings.logoAsBackground === true
   if (cms && cms.is_visible === false) return null
   return (
-    <section className="relative overflow-hidden bg-[#09090b] text-black">
+    <section className="relative overflow-hidden bg-[#09090b] text-white">
       <div className="absolute inset-0">
         <img src={bgImage} alt="" className="h-full w-full object-cover" style={{ opacity: overlayOpacity }} />
         <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/30 via-[#09090b]/55 to-[#09090b]" />

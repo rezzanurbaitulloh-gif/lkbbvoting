@@ -84,7 +84,7 @@ export default function InvoicePage(){
 
   if(!currentUser){
     return (
-      <div className="min-h-screen flex flex-col bg-[#09090b] text-black">
+      <div className="min-h-screen flex flex-col bg-[#09090b] text-white">
         <Navbar />
         <main className="flex-1 grid place-items-center p-8 bg-[#09090b]">
           <div className="text-center rounded-2xl border border-white/10 bg-[#111318] p-8">
@@ -99,7 +99,7 @@ export default function InvoicePage(){
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#09090b] text-black">
+    <div className="min-h-screen flex flex-col bg-[#09090b] text-white">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0 bg-[#09090b]">
         <div className="mx-auto max-w-[720px] px-3 sm:px-4 md:px-6 py-6">
@@ -108,7 +108,7 @@ export default function InvoicePage(){
           <p className="text-xs text-white/50">Detail lengkap transaksi dukungan — simpan sebagai bukti</p>
 
           {loading ? (
-            <div className="mt-6 rounded-[16px] border border-white/10 bg-[#111318] p-8 text-center text-sm text-black">Memuat invoice...</div>
+            <div className="mt-6 rounded-[16px] border border-white/10 bg-[#111318] p-8 text-center text-sm text-white">Memuat invoice...</div>
           ) : error ? (
             <div className="mt-6 rounded-[16px] border border-red-500/20 bg-red-500/10 p-8 text-center text-sm text-red-400">{error}</div>
           ) : tx ? (
@@ -176,7 +176,7 @@ export default function InvoicePage(){
                         {qrDataUrl ? (
                           <img src={qrDataUrl} alt="QRIS" className="h-full w-full object-contain" />
                         ) : tx.qr_content ? (
-                          <div className="text-[10px] font-mono break-all text-black/60 p-2 text-center">{tx.qr_content.slice(0,60)}...</div>
+                          <div className="text-[10px] font-mono break-all text-white/60 p-2 text-center">{tx.qr_content.slice(0,60)}...</div>
                         ) : (
                           <div className="text-xs text-muted-foreground">Menyiapkan QR...</div>
                         )}

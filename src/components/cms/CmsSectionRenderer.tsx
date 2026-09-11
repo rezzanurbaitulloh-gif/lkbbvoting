@@ -20,14 +20,14 @@ export function CmsSectionRenderer({ section }: { section: Section }){
     case "hero":
       // hero is handled separately by Hero component; this fallback text_block
       return (
-        <section className="bg-[#09090b] text-black py-10 px-4">
+        <section className="bg-[#09090b] text-white py-10 px-4">
           <div className="mx-auto max-w-[1280px]">
             <div className="text-[11px] tracking-[0.18em] text-[#C9A86A] font-bold">{c.eyebrow || ""}</div>
             <h2 className="text-3xl font-black text-[#C9A86A]">{c.headingLine1 || ""} {c.headingLine2 || ""}</h2>
             <p className="text-white/60 text-sm mt-2 max-w-[520px]">{c.description || ""}</p>
             <div className="mt-4 flex gap-2">
               {c.ctaPrimaryLabel && <Link href={c.ctaPrimaryLink || "/tim"}><Button className="rounded-full bg-[#C9A86A] text-[#0B0C0F]">{c.ctaPrimaryLabel}</Button></Link>}
-              {c.ctaSecondaryLabel && <Button variant="outline" className="rounded-full bg-transparent border-white/20 text-black">{c.ctaSecondaryLabel}</Button>}
+              {c.ctaSecondaryLabel && <Button variant="outline" className="rounded-full bg-transparent border-white/20 text-white">{c.ctaSecondaryLabel}</Button>}
             </div>
           </div>
         </section>

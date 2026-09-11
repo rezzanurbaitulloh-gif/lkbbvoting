@@ -48,7 +48,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="relative border-b border-white/10 overflow-hidden bg-[#09090b] text-black">
+        <div className="relative border-b border-white/10 overflow-hidden bg-[#09090b] text-white">
           <div className="absolute inset-0">
             <img src={photo} alt="" className="h-full w-full object-cover opacity-20" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/70 to-transparent" />

@@ -21,7 +21,7 @@ export default function PengumumanPage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-white/10 bg-[#09090b] text-black">
+        <div className="border-b border-white/10 bg-[#09090b] text-white">
           <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Informasi Resmi</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">PENGUMUMAN</h1>

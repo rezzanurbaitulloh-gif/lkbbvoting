@@ -50,7 +50,7 @@ export default function AdminOverview(){
     return ()=>{ clearInterval(interval); supabase.removeChannel(channel) }
   },[])
   return (
-    <div className="min-h-screen bg-[#0B0C0F] text-black p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5 md:space-y-6">
+    <div className="min-h-screen bg-[#0B0C0F] text-white p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5 md:space-y-6">
       {/* Header — premium, not generic */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
