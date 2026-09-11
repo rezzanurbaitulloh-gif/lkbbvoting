@@ -24,7 +24,7 @@ export default function ProfilePage(){
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-1 grid place-items-center p-8 pb-[72px] md:pb-8">
-          <div className="max-w-sm text-center rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-8">
+          <div className="max-w-sm text-center rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-8">
             <div className="text-sm font-black">Belum Masuk</div>
             <p className="text-sm text-muted-foreground">Masuk untuk melihat profil dan riwayat dukungan.</p>
             <div className="mt-4 grid grid-cols-2 gap-2">
@@ -42,7 +42,7 @@ export default function ProfilePage(){
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6">
-          <div className="rounded-[20px] border border-white/[0.06] bg-white/[0.03] backdrop-blur overflow-hidden">
+          <div className="rounded-[20px] border border-white/10 bg-white/5 backdrop-blur overflow-hidden">
             <div className="h-24 bg-gradient-to-r from-[#09090b] to-[#1A1E27]" />
             <div className="px-6 pb-6">
               <div className="flex gap-4 -mt-8 items-end">
@@ -64,11 +64,11 @@ export default function ProfilePage(){
               </div>
 
               <div className="mt-6 grid md:grid-cols-3 gap-4">
-                <div className="rounded-xl bg-white/[0.04] backdrop-blur p-4 text-center">
+                <div className="rounded-xl bg-white/5 backdrop-blur p-4 text-center">
                   <div className="text-[24px] font-black tabular-nums">{transactions.length}</div>
                   <div className="text-xs text-muted-foreground">Transaksi Dukungan</div>
                 </div>
-                <div className="rounded-xl bg-white/[0.04] backdrop-blur p-4 text-center">
+                <div className="rounded-xl bg-white/5 backdrop-blur p-4 text-center">
                   <div className="text-[24px] font-black tabular-nums">{favPeletons.length}</div>
                   <div className="text-xs text-muted-foreground">Peleton Favorit</div>
                 </div>
@@ -87,17 +87,17 @@ export default function ProfilePage(){
           </div>
 
           <div className="mt-6 grid lg:grid-cols-2 gap-6">
-            <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5">
+            <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5">
               <h3 className="text-sm font-black flex items-center gap-2"><Heart className="h-4 w-4"/> Peleton Favorit</h3>
               {favPeletons.length===0 ? (
-                <div className="mt-3 rounded-xl border border-dashed border-white/[0.06] p-6 text-center">
+                <div className="mt-3 rounded-xl border border-dashed border-white/10 p-6 text-center">
                   <p className="text-sm text-muted-foreground">Belum ada peleton favorit.</p>
                   <Link href="/peleton"><Button size="sm" className="mt-2 rounded-full">Jelajahi Peleton</Button></Link>
                 </div>
               ) : (
                 <div className="mt-3 grid gap-2">
                   {favPeletons.map(p=> (
-                    <div key={p.id} className="flex gap-3 rounded-xl border border-white/[0.06] p-3">
+                    <div key={p.id} className="flex gap-3 rounded-xl border border-white/10 p-3">
                       <img src={p.image_url || p.image} alt="" className="h-12 w-12 rounded-lg object-cover" />
                       <div className="min-w-0">
                         <div className="text-sm font-bold truncate">{p.name}</div>
@@ -110,17 +110,17 @@ export default function ProfilePage(){
               )}
             </div>
 
-            <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5">
+            <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5">
               <h3 className="text-sm font-black">Riwayat Dukungan Terbaru</h3>
               {transactions.length===0 ? (
-                <div className="mt-3 rounded-xl border border-dashed border-white/[0.06] p-6 text-center">
+                <div className="mt-3 rounded-xl border border-dashed border-white/10 p-6 text-center">
                   <p className="text-sm text-muted-foreground">Belum ada dukungan. Dukung peleton favoritmu sekarang!</p>
                   <Link href="/peleton"><Button size="sm" className="mt-2 rounded-full">Dukung</Button></Link>
                 </div>
               ) : (
                 <div className="mt-3 grid gap-2">
                   {transactions.slice(0,5).map((tx:any)=> (
-                    <Link key={tx.id} href={`/profile/dukungan/${tx.id}`} className="flex items-center justify-between rounded-xl border border-white/[0.06] p-3 hover:bg-white/[0.04] backdrop-blur/50 transition-colors">
+                    <Link key={tx.id} href={`/profile/dukungan/${tx.id}`} className="flex items-center justify-between rounded-xl border border-white/10 p-3 hover:bg-white/5 backdrop-blur/50 transition-colors">
                       <div>
                         <div className="text-sm font-bold">{tx.peletons?.name || tx.peletonName}</div>
                         <div className="text-xs text-muted-foreground">{new Date(tx.created_at || tx.date).toLocaleDateString("id-ID")} • {tx.supports} ballot • Rp{(tx.amount||0).toLocaleString("id-ID")}</div>

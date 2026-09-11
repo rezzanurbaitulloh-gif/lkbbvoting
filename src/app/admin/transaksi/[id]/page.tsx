@@ -6,7 +6,7 @@ export default async function TransaksiDetail({ params }: { params: Promise<{id:
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <Link href="/admin/transaksi" className="text-xs font-semibold">← Kembali</Link>
       <h1 className="text-[18px] font-black">Transaksi {id}</h1>
-      <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 grid gap-2 text-sm">
+      <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 grid gap-2 text-sm">
         <div className="flex justify-between"><span className="text-muted-foreground">Jumlah</span><span className="font-black">Rp300.000</span></div>
         <div className="flex justify-between"><span className="text-muted-foreground">Peleton</span><span className="font-bold">SMKN 1 KERTOSONO</span></div>
         <div className="flex justify-between"><span className="text-muted-foreground">User</span><span>Reja Saputra • reja@lkbb.id</span></div>

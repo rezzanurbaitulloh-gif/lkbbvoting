@@ -10,7 +10,7 @@ const steps = [
 
 export function HowItWorks(){
   return (
-    <section className="border-y border-white/[0.06] bg-white/[0.02] backdrop-blur">
+    <section className="border-y border-white/10 bg-white/5 backdrop-blur">
       <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-10">
         <div className="label-gold">Cara Dukung</div>
         <h2 className="mt-1 text-[18px] font-bold tracking-tight">Dukunganmu sangat berarti bagi mereka.</h2>
@@ -18,7 +18,7 @@ export function HowItWorks(){
           {steps.map((s, i)=> (
             <div key={s.n} className="relative flex flex-col items-center text-center">
               {i<steps.length-1 && <div className="hidden md:block absolute top-7 left-[60%] right-[-40%] h-[1px] bg-border" />}
-              <div className="h-14 w-14 rounded-full bg-background border border-white/[0.06] grid place-items-center shadow-subtle">
+              <div className="h-14 w-14 rounded-full bg-background border border-white/10 grid place-items-center shadow-subtle">
                 <s.icon className="h-5 w-5 text-muted-foreground" />
               </div>
               <div className="mt-2 text-[11px] font-black tracking-widest text-gold">{s.n}</div>

@@ -10,7 +10,7 @@ export function TimelinePreview(){
     supabase.from("timeline_stages").select("*").order("sort_order").then(({data})=> setTimeline(data||[]))
   },[])
   return (
-    <section className="border-t border-white/[0.06] bg-white/[0.02] backdrop-blur">
+    <section className="border-t border-white/10 bg-white/5 backdrop-blur">
       <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-10">
         <div className="flex items-baseline justify-between">
           <h3 className="text-sm font-black tracking-tight">TIMELINE KOMPETISI</h3>
@@ -18,8 +18,8 @@ export function TimelinePreview(){
         </div>
         <div className="mt-6 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
           {timelineStages.map(s=> (
-            <div key={s.id} className={`rounded-2xl border p-3 ${s.status==="current" ? "border-[#C9A86A30] bg-[#C9A86A0A]" : s.status==="completed" ? "border-white/[0.06] bg-white/[0.03] backdrop-blur" : "border-dashed bg-transparent"}`}>
-              <div className={`h-8 w-8 rounded-full grid place-items-center text-xs font-black ${s.status==="completed" ? "bg-[#10B981] text-white" : s.status==="current" ? "bg-gold text-gold-foreground" : "bg-white/[0.04] backdrop-blur text-muted-foreground"}`}>
+            <div key={s.id} className={`rounded-2xl border p-3 ${s.status==="current" ? "border-[#C9A86A30] bg-[#C9A86A0A]" : s.status==="completed" ? "border-white/10 bg-white/5 backdrop-blur" : "border-dashed bg-transparent"}`}>
+              <div className={`h-8 w-8 rounded-full grid place-items-center text-xs font-black ${s.status==="completed" ? "bg-[#10B981] text-white" : s.status==="current" ? "bg-gold text-gold-foreground" : "bg-white/5 backdrop-blur text-muted-foreground"}`}>
                 {s.status==="completed" ? <Check className="h-4 w-4"/> : s.sort_order}
               </div>
               <div className="mt-2 text-[12px] font-bold leading-tight line-clamp-1">{s.title}</div>

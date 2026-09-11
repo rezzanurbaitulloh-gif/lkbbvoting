@@ -53,14 +53,14 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         laurel: "#C9A86A",
         juaraBar: "from-[#8C6A2A] via-[#C9A86A] to-[#8C6A2A]",
         juaraText: "text-[#1A1400]",
-        foot: "bg-white/[0.02] backdrop-blur border-white/[0.06]",
+        foot: "bg-white/5 backdrop-blur border-white/10",
         height: "h-[236px] xs:h-[264px] sm:h-[308px] md:h-[340px] lg:h-[368px] xl:h-[404px]",
         width: "w-full",
         logoSize: "h-[46px] w-[46px] xs:h-[52px] xs:w-[52px] sm:h-[60px] sm:w-[60px] md:h-[66px] md:w-[66px] lg:h-[70px] lg:w-[70px] xl:h-[76px] xl:w-[76px]",
       }
     : isSecond
     ? {
-        borderGrad: "from-white/[0.10] via-white/[0.14] to-white/[0.08]",
+        borderGrad: "from-white/10 via-white/10 to-white/10",
         bg: "from-[#111318] via-[#0F1115] to-[#0A0C10]",
         glow: "shadow-[0_8px_22px_rgba(0,0,0,0.32)]",
         medalBg: "from-[#F8FAFC] via-[#CBD5E1] to-[#64748B]",
@@ -69,7 +69,7 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         laurel: "#9AA0A9",
         juaraBar: "from-[#1E242E] via-[#2E333E] to-[#1E242E]",
         juaraText: "text-white/90",
-        foot: "bg-white/[0.02] backdrop-blur border-white/[0.05]",
+        foot: "bg-white/5 backdrop-blur border-white/10",
         height: "h-[192px] xs:h-[216px] sm:h-[260px] md:h-[288px] lg:h-[312px] xl:h-[348px]",
         width: "w-full",
         logoSize: "h-[40px] w-[40px] xs:h-[46px] xs:w-[46px] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px] lg:h-[64px] lg:w-[64px] xl:h-[68px] xl:w-[68px]",
@@ -84,7 +84,7 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
         laurel: "#9AA0A9",
         juaraBar: "from-[#1E242E] via-[#3A2A1A] to-[#1E242E]",
         juaraText: "text-white/85",
-        foot: "bg-white/[0.02] backdrop-blur border-white/[0.05]",
+        foot: "bg-white/5 backdrop-blur border-white/10",
         height: "h-[184px] xs:h-[208px] sm:h-[252px] md:h-[278px] lg:h-[302px] xl:h-[336px]",
         width: "w-full",
         logoSize: "h-[40px] w-[40px] xs:h-[46px] xs:w-[46px] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px] lg:h-[64px] lg:w-[64px] xl:h-[68px] xl:w-[68px]",
@@ -98,7 +98,7 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
       <div className={`relative w-full ${cfg.height} bg-gradient-to-b ${cfg.borderGrad} p-[1px] ${cfg.glow} transition-transform duration-200 will-change-transform group-hover/card:-translate-y-[1px]`} style={{ clipPath: clip }}>
         <div className={`relative w-full h-full bg-gradient-to-b ${cfg.bg} flex flex-col items-center pt-[22px] xs:pt-6 sm:pt-8 md:pt-9 pb-[46px] sm:pb-[52px] overflow-hidden`} style={{ clipPath: clip }}>
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(560px_220px_at_50%_0%,rgba(201,168,106,0.08),transparent_68%)]" />
-          <div className="pointer-events-none absolute top-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/[0.12] to-transparent" />
+          <div className="pointer-events-none absolute top-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
           <div className={`relative ${cfg.logoSize} shrink-0 grid place-items-center drop-shadow-[0_4px_14px_rgba(0,0,0,0.45)]`}>
             <img src={team.logo_url || team.image_url || "/assets/brand/lkbb-logo.jpg"} alt={team.name} className="h-full w-full object-contain drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]" loading="lazy" />
           </div>
@@ -126,7 +126,7 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
       </div>
       <div className={`-mt-[1px] w-[90%] h-[10px] xs:h-[11px] sm:h-[13px] md:h-[15px] lg:h-[16px] ${cfg.foot} border-x border-b shadow-[0_8px_18px_rgba(0,0,0,0.42)] relative overflow-hidden`}>
         <div className="absolute inset-x-0 top-0 h-px bg-white/14" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.05] via-transparent to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/10" />
         <div className="absolute bottom-0 inset-x-0 h-px bg-black/20" />
       </div>
     </div>
@@ -181,9 +181,9 @@ export function PodiumSection({ smp, sma, isPublished, variant = "final" }: { sm
 
   if (!isPublished && !isProvisional) return null
   return (
-    <section className="relative overflow-hidden bg-[#09090b] border-y border-white/[0.05] py-10 sm:py-12 md:py-14 lg:py-16">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
+    <section className="relative overflow-hidden bg-[#09090b] border-y border-white/10 py-10 sm:py-12 md:py-14 lg:py-16">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[0.5px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[#09090b]" />
         <div className="absolute inset-0 bg-[radial-gradient(860px_380px_at_50%_-20px,rgba(201,168,106,0.06),transparent_68%)]" />
@@ -238,7 +238,7 @@ export function PodiumSection({ smp, sma, isPublished, variant = "final" }: { sm
 
         <div className="mt-7 sm:mt-8 flex flex-col items-center gap-2 text-center">
           <p className="text-[11px] text-white/35 tracking-wide">Peringkat berdasarkan dukungan online</p>
-          <div className="h-[0.5px] w-20 bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+          <div className="h-[0.5px] w-20 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         </div>
       </div>
 

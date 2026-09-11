@@ -153,9 +153,9 @@ function CheckoutInner(){
         <h1 className="mt-5 text-[20px] font-black tracking-tight">{config.title}</h1>
         <p className="mt-1 text-sm text-muted-foreground text-pretty">{config.desc}</p>
 
-        <div className="mt-6 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4 text-left">
+        <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4 text-left">
           <div className="flex gap-3">
-            <img src={p.image_url || p.image} alt="" className="h-14 w-14 rounded-xl object-cover border border-white/[0.06]" />
+            <img src={p.image_url || p.image} alt="" className="h-14 w-14 rounded-xl object-cover border border-white/10" />
             <div>
               <div className="text-sm font-black">{p.name}</div>
               <div className="text-xs text-muted-foreground">{p.school}</div>
@@ -172,10 +172,10 @@ function CheckoutInner(){
         </div>
 
         {status==="pending" && (
-          <div className="mt-4 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4">
+          <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4">
             <div className="text-xs font-bold tracking-widest">BAYAR VIA QRIS</div>
             <div className="tabular-nums text-[24px] font-black text-amber-600">Menunggu</div>
-            <div className="mx-auto mt-3 h-[220px] w-[220px] rounded-xl border border-white/[0.06] bg-white grid place-items-center p-2 overflow-hidden">
+            <div className="mx-auto mt-3 h-[220px] w-[220px] rounded-xl border border-white/10 bg-white grid place-items-center p-2 overflow-hidden">
               {qrDataUrl ? (
                 <img id="qris-image" src={qrDataUrl} alt="QRIS" className="h-full w-full object-contain" />
               ) : trx?.qr_content ? (
@@ -247,7 +247,7 @@ export default function CheckoutPage(){
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 bg-white/[0.04] backdrop-blur/20 pb-[72px] md:pb-0">
+      <main className="flex-1 bg-white/5 backdrop-blur/20 pb-[72px] md:pb-0">
         <Suspense fallback={<div className="p-8 text-center">Memuat…</div>}>
           <CheckoutInner />
         </Suspense>

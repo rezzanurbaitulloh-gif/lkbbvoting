@@ -30,7 +30,7 @@ function SearchInner(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-white/[0.06] bg-[#09090b] text-white">
+        <div className="border-b border-white/10 bg-[#09090b] text-white">
           <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6">
             <h1 className="text-[22px] font-black tracking-tight">PENCARIAN</h1>
             <div className="mt-4 relative max-w-xl">
@@ -46,7 +46,7 @@ function SearchInner(){
               <p className="text-xs text-muted-foreground">Ketik minimal 2 karakter untuk memulai pencarian</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 {["SMKN 1 Kertosono","Paskibra","Javasoma","Peleton"].map(k=> (
-                  <button key={k} onClick={()=>setQ(k)} className="rounded-full border border-white/[0.06] bg-white/[0.03] backdrop-blur px-3 py-1.5 text-xs font-semibold hover:bg-white/[0.04] backdrop-blur">{k}</button>
+                  <button key={k} onClick={()=>setQ(k)} className="rounded-full border border-white/10 bg-white/5 backdrop-blur px-3 py-1.5 text-xs font-semibold hover:bg-white/5 backdrop-blur">{k}</button>
                 ))}
               </div>
             </div>
@@ -59,7 +59,7 @@ function SearchInner(){
                   <h3 className="text-xs font-black tracking-widest">PELETON • {peletonResults.length}</h3>
                   <div className="mt-2 grid sm:grid-cols-2 gap-2">
                     {peletonResults.map(p=> (
-                      <Link key={p.id} href={`/tim/${p.slug}`} className="flex gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-3 hover:bg-white/[0.04] backdrop-blur">
+                      <Link key={p.id} href={`/tim/${p.slug}`} className="flex gap-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur p-3 hover:bg-white/5 backdrop-blur">
                         <img src={p.image_url || p.image} alt="" className="h-12 w-12 rounded-lg object-cover" />
                         <div><div className="text-sm font-bold">{p.name}</div><div className="text-xs text-muted-foreground">{p.school} • {p.city}</div></div>
                       </Link>
@@ -72,7 +72,7 @@ function SearchInner(){
                   <h3 className="text-xs font-black tracking-widest">PENGUMUMAN • {annResults.length}</h3>
                   <div className="mt-2 grid gap-2">
                     {annResults.map(a=> (
-                      <div key={a.id} className="rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-3">
+                      <div key={a.id} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-3">
                         <div className="text-sm font-bold">{a.title}</div>
                         <div className="text-xs text-muted-foreground line-clamp-2">{a.content}</div>
                       </div>

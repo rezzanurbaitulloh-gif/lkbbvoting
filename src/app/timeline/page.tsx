@@ -14,7 +14,7 @@ export default async function TimelinePage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-white/[0.06] bg-[#09090b] text-white">
+        <div className="border-b border-white/10 bg-[#09090b] text-white">
           <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Jadwal Kompetisi</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em] leading-none">TIMELINE</h1>
@@ -25,8 +25,8 @@ export default async function TimelinePage(){
           {/* Desktop horizontal, mobile vertical */}
           <div className="hidden md:grid grid-cols-8 gap-3">
             {timelineStages.map(s=> (
-              <div key={s.id} className={`rounded-2xl border p-4 text-center ${s.status==="current" ? "border-[#C9A86A] bg-[#C9A86A0A]" : s.status==="completed" ? "border-emerald-500/20 bg-emerald-500/5" : "border-dashed bg-white/[0.03] backdrop-blur"}`}>
-                <div className={`mx-auto h-10 w-10 rounded-full grid place-items-center text-sm font-black border ${s.status==="completed" ? "bg-emerald-500 text-white border-emerald-500" : s.status==="current" ? "bg-gold text-gold-foreground border-gold" : "bg-white/[0.04] backdrop-blur text-muted-foreground border-white/[0.06]"}`}>
+              <div key={s.id} className={`rounded-2xl border p-4 text-center ${s.status==="current" ? "border-[#C9A86A] bg-[#C9A86A0A]" : s.status==="completed" ? "border-emerald-500/20 bg-emerald-500/5" : "border-dashed bg-white/5 backdrop-blur"}`}>
+                <div className={`mx-auto h-10 w-10 rounded-full grid place-items-center text-sm font-black border ${s.status==="completed" ? "bg-emerald-500 text-white border-emerald-500" : s.status==="current" ? "bg-gold text-gold-foreground border-gold" : "bg-white/5 backdrop-blur text-muted-foreground border-white/10"}`}>
                   {s.status==="completed" ? <Check className="h-5 w-5"/> : s.sort_order}
                 </div>
                 <div className="mt-3 text-xs font-black leading-tight">{s.title}</div>
@@ -38,8 +38,8 @@ export default async function TimelinePage(){
 
           <div className="md:hidden space-y-3">
             {timelineStages.map(s=> (
-              <div key={s.id} className={`flex gap-3 rounded-2xl border p-4 ${s.status==="current" ? "border-[#C9A86A] bg-[#C9A86A0A]" : "border-white/[0.06] bg-white/[0.03] backdrop-blur"}`}>
-                <div className={`h-9 w-9 rounded-full grid place-items-center text-xs font-black shrink-0 ${s.status==="completed" ? "bg-emerald-500 text-white" : s.status==="current" ? "bg-gold text-gold-foreground" : "bg-white/[0.04] backdrop-blur text-muted-foreground"}`}>
+              <div key={s.id} className={`flex gap-3 rounded-2xl border p-4 ${s.status==="current" ? "border-[#C9A86A] bg-[#C9A86A0A]" : "border-white/10 bg-white/5 backdrop-blur"}`}>
+                <div className={`h-9 w-9 rounded-full grid place-items-center text-xs font-black shrink-0 ${s.status==="completed" ? "bg-emerald-500 text-white" : s.status==="current" ? "bg-gold text-gold-foreground" : "bg-white/5 backdrop-blur text-muted-foreground"}`}>
                   {s.status==="completed" ? <Check className="h-4 w-4"/> : s.sort_order}
                 </div>
                 <div>
@@ -50,7 +50,7 @@ export default async function TimelinePage(){
             ))}
           </div>
 
-          <div className="mt-8 rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5">
+          <div className="mt-8 rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5">
             <h3 className="text-sm font-black">Status Saat Ini</h3>
             <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white"><Clock className="h-3.5 w-3.5"/> VOTING BERLANGSUNG</div>
             <p className="mt-2 text-sm text-muted-foreground">Voting peleton terfavorit dibuka 1 September 2026 hingga 24 Oktober 2026. Dukung peleton favoritmu sekarang.</p>

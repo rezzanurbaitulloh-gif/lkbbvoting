@@ -49,11 +49,11 @@ export default function Page(){
   return (
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-black">Sponsor</h1></div><div className="flex gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600 gap-2" onClick={handleBulkDelete}><Trash2 className="h-3.5 w-3.5"/>Hapus {selected.size} dipilih</Button>}<Button size="sm" className="rounded-full" onClick={openAdd}>Tambah Baru</Button></div></div>
-      <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-3 sm:p-4 overflow-hidden">
+      <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-3 sm:p-4 overflow-hidden">
         <div className="grid gap-3">
           {list.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada data.</div> :
             list.map((item:any)=> (
-            <div key={item.id} className="flex flex-col sm:flex-row sm:items-center gap-2.5 rounded-xl border border-white/[0.06] p-3 min-w-0 overflow-hidden">
+            <div key={item.id} className="flex flex-col sm:flex-row sm:items-center gap-2.5 rounded-xl border border-white/10 p-3 min-w-0 overflow-hidden">
               <div className="flex gap-2.5 min-w-0 flex-1">
                 <input type="checkbox" checked={selected.has(item.id)} onChange={()=> toggleSelect(item.id)} className="mt-1 sm:mt-0 shrink-0" />
                 <div className="min-w-0 flex-1">
@@ -69,7 +69,7 @@ export default function Page(){
           ))}
         </div>
         {list.length>0 && (
-          <div className="mt-3 flex items-center justify-between border-t border-white/[0.06] pt-3">
+          <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
             <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={selected.size===list.length && list.length>0} onChange={toggleAll} /> Pilih semua ({list.length})</label>
             {selected.size>0 && <span className="text-xs font-bold">{selected.size} dipilih</span>}
           </div>

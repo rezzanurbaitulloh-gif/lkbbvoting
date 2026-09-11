@@ -13,8 +13,8 @@ export default function ForgotPage(){
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 pb-[72px] md:pb-0 grid place-items-center p-4 bg-white/[0.04] backdrop-blur/20">
-        <div className="w-full max-w-[420px] rounded-[20px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-6 md:p-8 shadow-soft">
+      <main className="flex-1 pb-[72px] md:pb-0 grid place-items-center p-4 bg-white/5 backdrop-blur/20">
+        <div className="w-full max-w-[420px] rounded-[20px] border border-white/10 bg-white/5 backdrop-blur p-6 md:p-8 shadow-soft">
           <h1 className="text-[20px] font-black tracking-tight text-center">Lupa Password</h1>
           <p className="text-sm text-muted-foreground text-center">Masukkan email untuk reset password</p>
           {!sent ? (

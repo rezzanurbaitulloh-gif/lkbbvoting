@@ -46,11 +46,11 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
   }
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-[14px] xs:rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur max-w-full">
+    <div className="group relative flex flex-col overflow-hidden rounded-[14px] xs:rounded-[16px] border border-white/10 bg-white/5 backdrop-blur max-w-full">
       <div className="absolute top-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-[#C9A86A]/0 group-hover:via-[#C9A86A]/40 to-transparent transition-all duration-500" />
       <Link href={profileUrl} className="block">
-        <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-white/[0.02] backdrop-blur">
-          {!imgLoaded && !imgError && <div className="absolute inset-0 animate-pulse bg-white/[0.04] backdrop-blur" />}
+        <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-white/5 backdrop-blur">
+          {!imgLoaded && !imgError && <div className="absolute inset-0 animate-pulse bg-white/5 backdrop-blur" />}
           {!imgError && photo ? (
             <img
               src={photo}
@@ -64,9 +64,9 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
             />
           ) : null}
           {imgError || !photo ? (
-            <div className="absolute inset-0 grid place-items-center bg-white/[0.02] backdrop-blur p-4">
+            <div className="absolute inset-0 grid place-items-center bg-white/5 backdrop-blur p-4">
               <div className="flex flex-col items-center gap-3 text-center">
-                <div className="h-20 w-20 xs:h-24 xs:w-24 rounded-full bg-white/[0.04] border border-white/[0.06] grid place-items-center p-3">
+                <div className="h-20 w-20 xs:h-24 xs:w-24 rounded-full bg-white/5 border border-white/10 grid place-items-center p-3">
                   <img src={logo} alt={`${name} logo`} className="h-full w-full object-contain opacity-90" />
                 </div>
                 <div className="text-[11px] font-bold tracking-[0.16em] text-[#C9A86A]">#{number} • {category}</div>
@@ -98,13 +98,13 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
       </Link>
       <div className="flex flex-col gap-2 p-2.5 xs:p-3 sm:p-4 pt-2">
         <Link href={supportUrl} className="block">
-          <Button variant="outline" size="sm" className="w-full rounded-full h-11 text-[13px] xs:text-sm font-bold tracking-wide border-white/[0.14] bg-white/[0.03] text-white hover:bg-white/[0.06] hover:border-[#C9A86A]/30 hover:text-white">DUKUNG</Button>
+          <Button variant="outline" size="sm" className="w-full rounded-full h-11 text-[13px] xs:text-sm font-bold tracking-wide border-white/10 bg-white/5 text-white hover:bg-white/5 hover:border-[#C9A86A]/30 hover:text-white">DUKUNG</Button>
         </Link>
         <div className="grid grid-cols-2 gap-1.5 xs:gap-2">
-          <Button variant="outline" className="rounded-full h-11 w-full border-white/[0.10] bg-white/[0.02] text-white/80 hover:bg-white/[0.06] hover:text-white hover:border-white/15" onClick={() => handleShare("profile")} aria-label="Bagikan Profil">
+          <Button variant="outline" className="rounded-full h-11 w-full border-white/10 bg-white/5 text-white/80 hover:bg-white/5 hover:text-white hover:border-white/15" onClick={() => handleShare("profile")} aria-label="Bagikan Profil">
             <Share2 className="h-4 w-4" />
           </Button>
-          <Button variant="outline" className="rounded-full h-11 w-full border-white/[0.10] bg-white/[0.02] text-white/80 hover:bg-white/[0.06] hover:text-white hover:border-white/15" onClick={() => handleShare("support")} aria-label="Bagikan Dukungan">
+          <Button variant="outline" className="rounded-full h-11 w-full border-white/10 bg-white/5 text-white/80 hover:bg-white/5 hover:text-white hover:border-white/15" onClick={() => handleShare("support")} aria-label="Bagikan Dukungan">
             <QrCode className="h-4 w-4" />
           </Button>
         </div>
@@ -118,7 +118,7 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
 export function PeletonCardCompact({ peleton, showPoints }: { peleton: any, showPoints?: boolean }){
   const logo = peleton.logo_url || peleton.image_url || peleton.image
   return (
-    <Link href={`/dukungan?peleton=${peleton.slug}`} className="flex items-center gap-3 rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4 hover:bg-white/[0.04] backdrop-blur/50 transition-colors min-w-0">
+    <Link href={`/dukungan?peleton=${peleton.slug}`} className="flex items-center gap-3 rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-4 hover:bg-white/5 backdrop-blur/50 transition-colors min-w-0">
       <div className="h-11 w-11 bg-transparent grid place-items-center shrink-0">
         <img src={logo} alt={peleton.name} className="h-full w-full object-contain bg-transparent" />
       </div>
@@ -128,7 +128,7 @@ export function PeletonCardCompact({ peleton, showPoints }: { peleton: any, show
         <div className="text-xs text-muted-foreground truncate">{peleton.school}</div>
       </div>
       <div className="text-right shrink-0 ml-2">
-        <div className="inline-flex rounded-full bg-white/[0.04] backdrop-blur px-2.5 py-1 text-xs font-black">#{peleton.number}</div>
+        <div className="inline-flex rounded-full bg-white/5 backdrop-blur px-2.5 py-1 text-xs font-black">#{peleton.number}</div>
         {showPoints && peleton.total_ballots != null && <div className="mt-1 text-xs font-black tabular-nums">{Number(peleton.total_ballots).toLocaleString("id-ID")} dukungan</div>}
       </div>
     </Link>

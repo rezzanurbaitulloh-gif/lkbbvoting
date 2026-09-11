@@ -18,7 +18,7 @@ export function SoundControl(){
   }
   if(!mounted) {
     return (
-      <button aria-label="Suara" className="h-9 w-9 grid place-items-center rounded-full border border-white/[0.06] hover:bg-white/[0.04] backdrop-blur transition-colors">
+      <button aria-label="Suara" className="h-9 w-9 grid place-items-center rounded-full border border-white/10 hover:bg-white/5 backdrop-blur transition-colors">
         <Volume2 className="h-4 w-4 text-muted-foreground" />
       </button>
     )
@@ -28,7 +28,7 @@ export function SoundControl(){
       onClick={toggle}
       aria-label={enabled ? "Matikan suara notifikasi" : "Nyalakan suara notifikasi"}
       title={enabled ? "Suara aktif — klik untuk mute" : "Suara dimatikan — klik untuk nyalakan"}
-      className={`h-9 w-9 grid place-items-center rounded-full border border-white/[0.06] bg-transparent hover:bg-white/[0.04] backdrop-blur transition-colors ${enabled ? "text-foreground" : "text-muted-foreground opacity-60"}`}
+      className={`h-9 w-9 grid place-items-center rounded-full border border-white/10 bg-transparent hover:bg-white/5 backdrop-blur transition-colors ${enabled ? "text-foreground" : "text-muted-foreground opacity-60"}`}
     >
       {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
     </button>

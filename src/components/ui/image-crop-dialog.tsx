@@ -71,7 +71,7 @@ export function ImageCropDialog({
           <DialogTitle>Sesuaikan Gambar</DialogTitle>
           <DialogDescription>Geser dan ubah ukuran kotak potong — rasio bebas. Pratinjau langsung terlihat.</DialogDescription>
         </DialogHeader>
-        <div className="max-h-[50vh] overflow-auto bg-white/[0.04] backdrop-blur rounded-xl border">
+        <div className="max-h-[50vh] overflow-auto bg-white/5 backdrop-blur rounded-xl border">
           {src && (
             <ReactCrop crop={crop} onChange={(c) => setCrop(c)} onComplete={(c) => setCompletedCrop(c)}>
               <img ref={imgRef} src={src} alt="Preview" onLoad={onImageLoad} className="max-w-full" />

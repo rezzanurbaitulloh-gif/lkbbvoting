@@ -120,14 +120,14 @@ export function ImageUploadGrid({ label, value, onChange, folder = "general", bu
           <button
             type="button"
             onClick={() => setBgMode("with")}
-            className={`flex-1 rounded-full px-3 py-2 text-xs font-bold border transition-colors ${bgMode === "with" ? "bg-white/[0.07] backdrop-blur border border-white/10 text-white border-foreground" : "bg-white/[0.03] backdrop-blur border-white/[0.06] hover:bg-white/[0.04] backdrop-blur"}`}
+            className={`flex-1 rounded-full px-3 py-2 text-xs font-bold border transition-colors ${bgMode === "with" ? "bg-white/10 backdrop-blur border border-white/10 text-white border-foreground" : "bg-white/5 backdrop-blur border-white/10 hover:bg-white/5 backdrop-blur"}`}
           >
             Dengan Latar Belakang
           </button>
           <button
             type="button"
             onClick={() => setBgMode("without")}
-            className={`flex-1 rounded-full px-3 py-2 text-xs font-bold border transition-colors ${bgMode === "without" ? "bg-white/[0.07] backdrop-blur border border-white/10 text-white border-foreground" : "bg-white/[0.03] backdrop-blur border-white/[0.06] hover:bg-white/[0.04] backdrop-blur"}`}
+            className={`flex-1 rounded-full px-3 py-2 text-xs font-bold border transition-colors ${bgMode === "without" ? "bg-white/10 backdrop-blur border border-white/10 text-white border-foreground" : "bg-white/5 backdrop-blur border-white/10 hover:bg-white/5 backdrop-blur"}`}
           >
             Tanpa Latar Belakang
           </button>
@@ -139,7 +139,7 @@ export function ImageUploadGrid({ label, value, onChange, folder = "general", bu
         onDragLeave={() => setDragOver(false)}
         onDrop={onDrop}
         className={`relative grid place-items-center rounded-xl border-2 border-dashed bg-transparent cursor-pointer transition-colors overflow-hidden
-          ${dragOver ? "border-[var(--primary)] bg-[var(--primary)]/5" : "border-white/[0.06] hover:border-[var(--primary)]/50 hover:bg-white/[0.04] backdrop-blur/20"}
+          ${dragOver ? "border-[var(--primary)] bg-[var(--primary)]/5" : "border-white/10 hover:border-[var(--primary)]/50 hover:bg-white/5 backdrop-blur/20"}
           ${value ? "h-auto min-h-[160px] p-2" : "h-[160px]"}
         `}
       >
@@ -176,7 +176,7 @@ export function ImageUploadGrid({ label, value, onChange, folder = "general", bu
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2 py-4 text-center px-4">
-            <div className="h-10 w-10 rounded-full bg-white/[0.04] backdrop-blur grid place-items-center">
+            <div className="h-10 w-10 rounded-full bg-white/5 backdrop-blur grid place-items-center">
               <Upload className="h-5 w-5 text-muted-foreground" />
             </div>
             <div className="text-xs font-bold">Drag & drop gambar di sini</div>

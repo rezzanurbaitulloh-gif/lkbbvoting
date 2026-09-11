@@ -156,7 +156,7 @@ export default function InvoicePage(){
                     </div>
                   </div>
 
-                  <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                  <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4">
                     <div className="grid gap-2 text-sm">
                       <div className="flex justify-between"><span className="text-white/50">Jumlah Ballot</span><span className="font-black tabular-nums">{tx.supports} ballot</span></div>
                       <div className="flex justify-between"><span className="text-white/50">Harga per Ballot</span><span className="tabular-nums">Rp{tx.supports ? Math.round(tx.amount / tx.supports).toLocaleString("id-ID") : tx.amount?.toLocaleString("id-ID")}</span></div>
@@ -169,10 +169,10 @@ export default function InvoicePage(){
                   </div>
 
                   {tx.status === "Pending" && (
-                    <div className="mt-4 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4">
+                    <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4">
                       <div className="text-xs font-bold tracking-widest text-center">BAYAR VIA QRIS</div>
                       <div className="tabular-nums text-[18px] font-black text-amber-600 text-center">Menunggu Pembayaran</div>
-                      <div className="mx-auto mt-3 h-[220px] w-[220px] rounded-xl border border-white/[0.06] bg-white grid place-items-center p-2 overflow-hidden">
+                      <div className="mx-auto mt-3 h-[220px] w-[220px] rounded-xl border border-white/10 bg-white grid place-items-center p-2 overflow-hidden">
                         {qrDataUrl ? (
                           <img src={qrDataUrl} alt="QRIS" className="h-full w-full object-contain" />
                         ) : tx.qr_content ? (

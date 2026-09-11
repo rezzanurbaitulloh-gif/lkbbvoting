@@ -74,7 +74,7 @@ export function ShareSheet({
           <div>
             <label className="text-xs font-bold">Tautan</label>
             <div className="mt-1 flex gap-2">
-              <div className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.04] backdrop-blur/30 px-3 py-2.5 text-xs break-all">{url}</div>
+              <div className="flex-1 rounded-xl border border-white/10 bg-white/5 backdrop-blur/30 px-3 py-2.5 text-xs break-all">{url}</div>
               <Button variant="outline" size="sm" className="rounded-full shrink-0 h-10 px-4 gap-1.5" onClick={handleCopy}>
                 {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
                 {copied ? "Disalin" : "Salin"}
@@ -82,7 +82,7 @@ export function ShareSheet({
             </div>
           </div>
           {/* QR */}
-          <div className="rounded-2xl border border-white/[0.06] bg-white p-4 flex flex-col items-center">
+          <div className="rounded-2xl border border-white/10 bg-white p-4 flex flex-col items-center">
             <div className="text-xs font-bold tracking-wide">QR CODE</div>
             {qr ? <img src={qr} alt="QR" className="mt-3 h-[180px] w-[180px] object-contain" /> : <div className="mt-3 h-[180px] w-[180px] grid place-items-center text-xs text-muted-foreground">Memuat QR...</div>}
             <div className="mt-2 text-[11px] text-muted-foreground text-center break-all px-2">{title}</div>

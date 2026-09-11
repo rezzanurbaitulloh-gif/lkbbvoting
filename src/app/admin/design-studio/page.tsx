@@ -185,13 +185,13 @@ export default function DesignStudio(){
   return (
     <div className="h-screen flex flex-col bg-[#09090b] text-white overflow-hidden">
       {/* Header */}
-      <div className="h-14 border-b border-white/[0.06] flex items-center justify-between px-3 sm:px-4 bg-white/[0.03] backdrop-blur shrink-0">
+      <div className="h-14 border-b border-white/10 flex items-center justify-between px-3 sm:px-4 bg-white/5 backdrop-blur shrink-0">
         <div className="flex items-center gap-3">
           <a href="/admin" className="text-xs font-bold tracking-wide text-white/60 hover:text-white">← Dashboard</a>
           <div className="h-4 w-px bg-white/10" />
           <span className="text-sm font-black">DESIGN STUDIO</span>
-          <select value={selectedPage} onChange={e=> setSelectedPage(e.target.value)} className="ml-2 bg-white/[0.06] border border-white/10 rounded-full px-3 py-1 text-xs font-bold">
-            {pages.map(p=> <option key={p.slug} value={p.slug} className="bg-white/[0.03] backdrop-blur">{p.title} • {p.slug}</option>)}
+          <select value={selectedPage} onChange={e=> setSelectedPage(e.target.value)} className="ml-2 bg-white/5 border border-white/10 rounded-full px-3 py-1 text-xs font-bold">
+            {pages.map(p=> <option key={p.slug} value={p.slug} className="bg-white/5 backdrop-blur">{p.title} • {p.slug}</option>)}
             {pages.length===0 && <option value="home">Beranda • home</option>}
           </select>
           <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 text-[10px] font-bold text-amber-200">Draft</span>
@@ -207,8 +207,8 @@ export default function DesignStudio(){
 
       <div className="flex-1 flex overflow-hidden">
         {/* Elements */}
-        <div className="w-[220px] shrink-0 border-r border-white/[0.06] bg-white/[0.02] backdrop-blur hidden lg:flex flex-col">
-          <div className="p-3 border-b border-white/[0.04]">
+        <div className="w-[220px] shrink-0 border-r border-white/10 bg-white/5 backdrop-blur hidden lg:flex flex-col">
+          <div className="p-3 border-b border-white/10">
             <div className="text-[11px] font-bold tracking-widest text-white/60">ELEMENTS</div>
             <div className="mt-2 grid grid-cols-2 gap-2">
               {[
@@ -224,7 +224,7 @@ export default function DesignStudio(){
                   if(!pageId) return
                   const res = await fetch("/api/admin/cms/sections", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ page_id: pageId, key: it.label.toLowerCase()+"_"+Date.now().toString(36).slice(0,4), title: it.label, type: it.type, is_visible:true, sort_order: sections.length, settings:{}, content: it.type==="text_block" ? {text:"Teks baru"} : it.type==="image" ? {src:"", alt:""} : {} }) })
                   if(res.ok) loadSections(selectedPage)
-                }} className="flex flex-col items-center gap-1.5 rounded-xl border border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.06] p-3 text-xs font-bold text-white/80">
+                }} className="flex flex-col items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/5 p-3 text-xs font-bold text-white/80">
                   <it.icon className="h-4 w-4 text-[#C9A86A]"/> {it.label}
                 </button>
               ))}
@@ -234,7 +234,7 @@ export default function DesignStudio(){
             <div className="text-[11px] font-bold tracking-widest text-white/60 flex items-center gap-2"><Layers className="h-3 w-3"/> LAYERS</div>
             <div className="mt-2 space-y-1">
               {sections.map((s, idx)=> (
-                <div key={s.id} onClick={()=> setSelectedId(s.id)} className={`group flex items-center gap-2 rounded-lg border px-2.5 py-2 cursor-pointer ${selectedId===s.id ? "bg-[#C9A86A]/10 border-[#C9A86A]/30 text-white" : "bg-white/[0.03] border-white/[0.06] text-white/70 hover:text-white hover:bg-white/[0.06]"}`}>
+                <div key={s.id} onClick={()=> setSelectedId(s.id)} className={`group flex items-center gap-2 rounded-lg border px-2.5 py-2 cursor-pointer ${selectedId===s.id ? "bg-[#C9A86A]/10 border-[#C9A86A]/30 text-white" : "bg-white/5 border-white/10 text-white/70 hover:text-white hover:bg-white/5"}`}>
                   <span className="text-[10px] font-mono text-white/40">{String(idx+1).padStart(2,"0")}</span>
                   <span className="text-xs font-bold truncate flex-1">{s.title || s.key}</span>
                   <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/10">{s.type}</span>
@@ -244,7 +244,7 @@ export default function DesignStudio(){
               {sections.length===0 && <div className="text-xs text-white/40 py-6 text-center">Belum ada section.<br/>Klik + Text untuk tambah.</div>}
             </div>
           </div>
-          <div className="p-3 border-t border-white/[0.04] flex gap-2">
+          <div className="p-3 border-t border-white/10 flex gap-2">
             <Button variant="outline" size="sm" className="flex-1 rounded-full border-white/10 bg-white/5 text-white/70 h-8 text-xs" onClick={()=> setShowHistory(!showHistory)}><History className="h-3.5 w-3.5"/> History</Button>
           </div>
         </div>
@@ -259,7 +259,7 @@ export default function DesignStudio(){
           <div className="w-full flex justify-center overflow-auto pb-6 sm:pb-8">
             <div className="bg-[#09090b] shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden border border-white/10 rounded-[12px] flex flex-col" style={{ width: viewportWidth, transform: `scale(${scale})`, transformOrigin: "top center", minHeight: 680 }}>
               {/* Full website preview — header + sections + footer, semua editable */}
-              <div className="h-14 border-b border-white/[0.06] bg-white/[0.03] backdrop-blur flex items-center justify-between px-4 shrink-0">
+              <div className="h-14 border-b border-white/10 bg-white/5 backdrop-blur flex items-center justify-between px-4 shrink-0">
                 <div className="flex items-center gap-2"><div className="h-8 w-8 rounded bg-[#C9A86A] grid place-items-center text-[10px] font-black text-[#0C0A06]">LKBB</div><span className="text-xs font-black text-white">LKBB JAVASOMA</span></div>
                 <div className="hidden sm:flex gap-1 text-[11px] text-white/60"><span>Beranda</span><span>Tim</span><span>Kompetisi</span><span>Profile</span></div>
                 <div className="h-7 px-3 rounded-full bg-white text-[#0B0C0F] text-xs font-black grid place-items-center">Preview</div>
@@ -325,7 +325,7 @@ export default function DesignStudio(){
                           <div className="text-[10px] font-bold tracking-[0.16em] text-white/50">{String(content.title || "EVENT DIMULAI DALAM")}</div>
                           <div className="mt-3 grid grid-cols-4 gap-2 max-w-[420px] mx-auto">
                             {[["43","HARI"],["12","JAM"],["28","MENIT"],["05","DETIK"]].map(([v,l])=> (
-                              <div key={l} className="rounded-xl border border-white/10 bg-white/[0.04] py-3"><div className="text-[22px] font-black text-white">{v}</div><div className="text-[9px] tracking-widest text-white/50">{l}</div></div>
+                              <div key={l} className="rounded-xl border border-white/10 bg-white/5 py-3"><div className="text-[22px] font-black text-white">{v}</div><div className="text-[9px] tracking-widest text-white/50">{l}</div></div>
                             ))}
                           </div>
                         </div>
@@ -337,7 +337,7 @@ export default function DesignStudio(){
                           <p className="text-xs text-white/60 mt-1">{String(content.description || "Beranda urut nomor tampil")}</p>
                           <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {[1,2,3,4,5,6].map(i=> (
-                              <div key={i} onClick={(e)=>{e.stopPropagation(); handleSelect("team-"+i)}} className={`rounded-xl border p-3 cursor-pointer ${selectedId===s.id+"-team-"+i ? "border-[#C9A86A] bg-[#C9A86A]/10" : "border-white/10 bg-white/[0.03] backdrop-blur hover:border-white/20"}`}>
+                              <div key={i} onClick={(e)=>{e.stopPropagation(); handleSelect("team-"+i)}} className={`rounded-xl border p-3 cursor-pointer ${selectedId===s.id+"-team-"+i ? "border-[#C9A86A] bg-[#C9A86A]/10" : "border-white/10 bg-white/5 backdrop-blur hover:border-white/20"}`}>
                                 <div className="aspect-[4/3] rounded-lg bg-white/5 grid place-items-center text-white/20 text-xs">Foto #{i} — klik untuk edit ukuran/posisi</div>
                                 <div className="mt-2 h-3 w-20 bg-white/10 rounded" /><div className="mt-1 h-3 w-28 bg-white/5 rounded" />
                               </div>
@@ -371,7 +371,7 @@ export default function DesignStudio(){
                         </div>
                       )}
                       {s.type==="text_block" && (
-                        <div className="bg-white/[0.03] backdrop-blur p-6 border-y border-white/5">
+                        <div className="bg-white/5 backdrop-blur p-6 border-y border-white/5">
                           <h3 onClick={(e)=>{e.stopPropagation(); handleSelect("text-title")}} className={`text-sm font-black cursor-pointer p-1 rounded ${selectedId===s.id+"-text-title" ? "ring-1 ring-[#C9A86A] bg-white/5 text-white" : "text-white hover:bg-white/5"}`}>{String(content.title || s.title)}</h3>
                           <p onClick={(e)=>{e.stopPropagation(); handleSelect("text-body")}} className={`text-sm mt-2 cursor-pointer p-1 rounded ${selectedId===s.id+"-text-body" ? "ring-1 ring-[#C9A86A] bg-white/5 text-white" : "text-white/60 hover:bg-white/5"}`}>{String(content.text || content.description || "Teks editable — klik untuk ubah di panel kanan. Drag untuk pindah, handle untuk resize.")}</p>
                         </div>
@@ -383,13 +383,13 @@ export default function DesignStudio(){
                         </div>
                       )}
                       {s.type==="image" && (
-                        <div className="bg-white/[0.03] backdrop-blur p-6 text-center">
+                        <div className="bg-white/5 backdrop-blur p-6 text-center">
                           {content.src ? <img onClick={(e)=>{e.stopPropagation(); handleSelect("image-src")}} src={String(content.src)} alt={String(content.alt||"")} className={`mx-auto max-h-[320px] rounded-xl border cursor-pointer ${selectedId===s.id+"-image-src" ? "border-[#C9A86A] ring-2 ring-[#C9A86A]/50" : "border-white/10 hover:border-white/20"}`} /> : <div onClick={(e)=>{e.stopPropagation(); handleSelect("image-src")}} className={`h-[180px] rounded-xl border border-dashed bg-white/5 grid place-items-center text-white/30 text-xs cursor-pointer ${selectedId===s.id+"-image-src" ? "border-[#C9A86A] bg-[#C9A86A]/10" : "border-white/10 hover:border-[#C9A86A]/30"}`}>Image — kosong, klik untuk ganti • Drag untuk pindah</div>}
                         </div>
                       )}
                       {s.type==="divider" && <div onClick={(e)=>{e.stopPropagation(); handleSelect("divider")}} className={`bg-[#09090b] p-4 cursor-pointer ${selectedId===s.id+"-divider" ? "bg-[#C9A86A]/10 ring-1 ring-[#C9A86A] ring-inset" : "hover:bg-white/5"}`}><div className="h-px bg-white/10 w-full" style={{ height: s.settings?.thickness || "1px", background: s.settings?.color || undefined }} /></div>}
                       {!["hero","countdown","featured","podium","sponsors","cta","text_block","banner","image","divider"].includes(s.type) && (
-                        <div className="bg-white/[0.03] backdrop-blur p-6 border-y border-white/5">
+                        <div className="bg-white/5 backdrop-blur p-6 border-y border-white/5">
                           <div className="text-xs font-bold text-white/50">{s.type} • {s.key}</div>
                           <div className="text-sm text-white mt-1">{s.title}</div>
                         </div>
@@ -399,16 +399,16 @@ export default function DesignStudio(){
                 })}
               </div>
               <div className="h-[1px] bg-white/10 w-full" />
-              <div className="bg-white/[0.03] backdrop-blur p-3 text-center text-xs text-white/30">End of page • {sections.length} sections • Semua elemen bisa di-drag, di-resize, dihapus, diubah warna/ukuran</div>
-              <div className="bg-white/[0.02] backdrop-blur border-t border-white/5 p-2 text-center text-[11px] text-white/20">Footer • LKBB JAVASOMA 2026 — full website preview</div>
+              <div className="bg-white/5 backdrop-blur p-3 text-center text-xs text-white/30">End of page • {sections.length} sections • Semua elemen bisa di-drag, di-resize, dihapus, diubah warna/ukuran</div>
+              <div className="bg-white/5 backdrop-blur border-t border-white/5 p-2 text-center text-[11px] text-white/20">Footer • LKBB JAVASOMA 2026 — full website preview</div>
             </div>
           </div>
           <div className="mt-3 text-center text-[11px] text-white/30">Preview full website • Klik teks untuk edit • Drag ↕ untuk urutan • Handle sudut untuk resize • Semua halaman (Beranda/Tim/Kompetisi) tersedia di selector atas</div>
         </div>
 
         {/* Properties */}
-        <div className="w-[300px] shrink-0 border-l border-white/[0.06] bg-white/[0.02] backdrop-blur hidden lg:flex flex-col">
-          <div className="p-3 border-b border-white/[0.04] flex items-center justify-between">
+        <div className="w-[300px] shrink-0 border-l border-white/10 bg-white/5 backdrop-blur hidden lg:flex flex-col">
+          <div className="p-3 border-b border-white/10 flex items-center justify-between">
             <span className="text-[11px] font-bold tracking-widest text-white/60">PROPERTIES</span>
             {selectedSection && <span className="text-[10px] px-2 py-1 rounded-full bg-[#C9A86A]/20 text-[#C9A86A] font-bold">{selectedSection.type}</span>}
           </div>
@@ -430,7 +430,7 @@ export default function DesignStudio(){
                     <span className="text-[10px] px-2 py-1 rounded-full bg-white/10 text-white/60">Handle untuk resize</span>
                   </div>
                 </div>
-                <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
+                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
                   <div className="text-[11px] font-bold tracking-widest text-white/60 flex items-center gap-1.5"><Type className="h-3 w-3"/> TEXT</div>
                   <div className="mt-2 grid gap-2">
                     <div><label className="text-xs font-bold text-white/70">Content</label>
@@ -451,7 +451,7 @@ export default function DesignStudio(){
                     )}
                   </div>
                 </div>
-                <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
+                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
                   <div className="text-[11px] font-bold tracking-widest text-white/60 flex items-center gap-1.5"><Palette className="h-3 w-3"/> STYLE</div>
                   <div className="mt-2 grid grid-cols-2 gap-2">
                     <div><label className="text-xs text-white/60">Warna</label><input type="color" value={selectedSection.settings?.[selectedSubKey+"Color"] || "#C9A86A"} onChange={e=> updateStyleField(selectedSubKey+"Color", e.target.value)} className="mt-1 w-full h-9 rounded-lg bg-white/5 border border-white/10" /></div>
@@ -466,7 +466,7 @@ export default function DesignStudio(){
               </>
             ) : (
               <>
-                <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
+                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
                   <div className="text-[11px] font-bold tracking-widest text-white/60">IDENTITY</div>
                   <div className="mt-2 grid gap-2">
                     <div><label className="text-xs font-bold text-white/70">Title</label><input value={selectedSection.title} onChange={e=> updateSection(selectedSection.id, {title: e.target.value})} className="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-2.5 py-2 text-sm text-white" /></div>
@@ -478,7 +478,7 @@ export default function DesignStudio(){
                   </div>
                 </div>
 
-                <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
+                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
                   <div className="text-[11px] font-bold tracking-widest text-white/60 flex items-center gap-1.5"><Type className="h-3 w-3"/> CONTENT</div>
                   <div className="mt-2 grid gap-2 max-h-[260px] overflow-auto">
                     {Object.entries(selectedSection.content || {}).map(([k,v])=> (
@@ -508,7 +508,7 @@ export default function DesignStudio(){
                   </div>
                 </div>
 
-                <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
+                <div className="rounded-xl bg-white/5 border border-white/10 p-3">
                   <div className="text-[11px] font-bold tracking-widest text-white/60 flex items-center gap-1.5"><Palette className="h-3 w-3"/> STYLE</div>
                   <div className="mt-2 grid gap-2">
                     {["background","color","fontSize","padding","margin","borderRadius","opacity"].map(field=> (
@@ -532,7 +532,7 @@ export default function DesignStudio(){
       </div>
 
       {/* Bottom bar */}
-      <div className="h-10 border-t border-white/[0.06] bg-white/[0.03] backdrop-blur flex items-center justify-between px-3 shrink-0">
+      <div className="h-10 border-t border-white/10 bg-white/5 backdrop-blur flex items-center justify-between px-3 shrink-0">
         <div className="flex items-center gap-1.5">
           <button onClick={()=> setViewport("desktop")} className={`h-7 px-2.5 rounded-full text-xs font-bold flex items-center gap-1.5 ${viewport==="desktop" ? "bg-white text-[#0B0C0F]" : "bg-white/5 text-white/60"}`}><Monitor className="h-3.5 w-3.5"/> Desktop</button>
           <button onClick={()=> setViewport("tablet")} className={`h-7 px-2.5 rounded-full text-xs font-bold flex items-center gap-1.5 ${viewport==="tablet" ? "bg-white text-[#0B0C0F]" : "bg-white/5 text-white/60"}`}><Tablet className="h-3.5 w-3.5"/> Tablet</button>

@@ -13,7 +13,7 @@ export function Stats({ peletons, event }: { peletons: any[]; event: any }){
     { label: "Pemimpin Saat Ini", value: leader?.name || "—", sub: leader ? `#${leader.number} • ${leader.city}` : "Segera" },
   ]
   return (
-    <section className="border-y border-white/[0.06] bg-white/[0.02] backdrop-blur overflow-hidden">
+    <section className="border-y border-white/10 bg-white/5 backdrop-blur overflow-hidden">
       <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6">
         <div className="grid grid-cols-1 min-[360px]:grid-cols-2 lg:grid-cols-4 divide-y min-[360px]:divide-y-0 min-[360px]:divide-x divide-border">
           {stats.map(s=> (

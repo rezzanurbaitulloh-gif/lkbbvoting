@@ -16,7 +16,7 @@ export default function PeraturanPage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-white/[0.06] bg-[#09090b] text-white">
+        <div className="border-b border-white/10 bg-[#09090b] text-white">
           <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Regulasi Resmi</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">PERATURAN KOMPETISI</h1>
@@ -24,7 +24,7 @@ export default function PeraturanPage(){
         </div>
         <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-8 space-y-4">
           {sections.map(sec=> (
-            <div key={sec.title} className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-6">
+            <div key={sec.title} className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-6">
               <h2 className="text-sm font-black tracking-tight">{sec.title.toUpperCase()}</h2>
               <ul className="mt-3 grid gap-2">
                 {sec.items.map((it,i)=> (

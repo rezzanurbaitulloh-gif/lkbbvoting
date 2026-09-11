@@ -61,7 +61,7 @@ export default async function TimPage(){
           const logo = p.logo_url || p.image_url || "/assets/brand/lkbb-logo.jpg"
           const number = String(p.number || "").padStart(2,"0")
           return (
-            <Link key={p.id} href={`/tim/${p.slug}`} className="group flex items-center justify-between gap-2.5 xs:gap-3 rounded-[12px] xs:rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur px-2.5 xs:px-3 sm:px-4 py-2.5 xs:py-3 hover:border-[#C9A86A]/20 hover:bg-white/[0.04] backdrop-blur/20 transition-colors min-w-0">
+            <Link key={p.id} href={`/tim/${p.slug}`} className="group flex items-center justify-between gap-2.5 xs:gap-3 rounded-[12px] xs:rounded-xl border border-white/10 bg-white/5 backdrop-blur px-2.5 xs:px-3 sm:px-4 py-2.5 xs:py-3 hover:border-[#C9A86A]/20 hover:bg-white/5 backdrop-blur/20 transition-colors min-w-0">
               <div className="flex items-center gap-2 xs:gap-3 min-w-0 flex-1">
                 <span className="shrink-0 rounded-full bg-gold px-2 xs:px-2.5 py-1 text-[10px] xs:text-[11px] font-black tracking-widest text-gold-foreground">#{number}</span>
                 <span className="text-[13px] xs:text-sm sm:text-[15px] font-black tracking-tight truncate">{p.name}</span>
@@ -90,7 +90,7 @@ export default async function TimPage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-white/[0.05] bg-[#09090b] text-white relative overflow-hidden">
+        <div className="border-b border-white/10 bg-[#09090b] text-white relative overflow-hidden">
           <div className="absolute inset-0 opacity-[0.18]"><img src={bgImage} alt="" className="h-full w-full object-cover" /></div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#09090b] via-[#09090b]/85 to-transparent" />
           <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6 xs:py-7 sm:py-8">
@@ -106,10 +106,10 @@ export default async function TimPage(){
         {/* SMP */}
         <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6 xs:py-7 sm:py-8">
           <div className="flex flex-wrap items-center gap-2 xs:gap-2.5 mb-3 xs:mb-4">
-            <span className="inline-flex rounded-full border border-white/12 bg-white/[0.04] backdrop-blur px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-bold tracking-wide text-white/80">SMP / SEDERAJAT</span>
-            {isVotingClosed && <span className="inline-flex rounded-full border border-white/10 bg-white/[0.04] backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-white/60">ONLINE SAJA</span>}
+            <span className="inline-flex rounded-full border border-white/12 bg-white/5 backdrop-blur px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-bold tracking-wide text-white/80">SMP / SEDERAJAT</span>
+            {isVotingClosed && <span className="inline-flex rounded-full border border-white/10 bg-white/5 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-white/60">ONLINE SAJA</span>}
             {isPublished && <span className="inline-flex rounded-full border border-[#C9A86A]/20 bg-[#C9A86A]/10 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-[#C9A86A]">FINAL</span>}
-            <span className="text-[11px] xs:text-xs text-muted-foreground tabular-nums border border-white/[0.06] bg-white/[0.02] backdrop-blur px-2 py-1 rounded-full text-white/50">{smp.length} tim</span>
+            <span className="text-[11px] xs:text-xs text-muted-foreground tabular-nums border border-white/10 bg-white/5 backdrop-blur px-2 py-1 rounded-full text-white/50">{smp.length} tim</span>
           </div>
           {smp.length===0 ? <div className="rounded-xl border border-dashed border-white/10 p-6 xs:p-8 text-center text-[13px] xs:text-sm text-muted-foreground">Belum ada peleton SMP.</div> : renderGrid(smp)}
         </div>
@@ -117,10 +117,10 @@ export default async function TimPage(){
         {/* SMA */}
         <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 pb-8 xs:pb-10">
           <div className="flex flex-wrap items-center gap-2 xs:gap-2.5 mb-3 xs:mb-4">
-            <span className="inline-flex rounded-full border border-white/12 bg-white/[0.04] backdrop-blur px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-bold tracking-wide text-white/80">SMA / SEDERAJAT</span>
-            {isVotingClosed && <span className="inline-flex rounded-full border border-white/10 bg-white/[0.04] backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-white/60">ONLINE SAJA</span>}
+            <span className="inline-flex rounded-full border border-white/12 bg-white/5 backdrop-blur px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-bold tracking-wide text-white/80">SMA / SEDERAJAT</span>
+            {isVotingClosed && <span className="inline-flex rounded-full border border-white/10 bg-white/5 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-white/60">ONLINE SAJA</span>}
             {isPublished && <span className="inline-flex rounded-full border border-[#C9A86A]/20 bg-[#C9A86A]/10 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-[#C9A86A]">FINAL</span>}
-            <span className="text-[11px] xs:text-xs text-muted-foreground tabular-nums border border-white/[0.06] bg-white/[0.02] backdrop-blur px-2 py-1 rounded-full text-white/50">{sma.length} tim</span>
+            <span className="text-[11px] xs:text-xs text-muted-foreground tabular-nums border border-white/10 bg-white/5 backdrop-blur px-2 py-1 rounded-full text-white/50">{sma.length} tim</span>
           </div>
           {sma.length===0 ? <div className="rounded-xl border border-dashed border-white/10 p-6 xs:p-8 text-center text-[13px] xs:text-sm text-muted-foreground">Belum ada peleton SMA.</div> : renderGrid(sma)}
         </div>

@@ -19,8 +19,8 @@ export function ShareButtons({ profileUrl, supportUrl }: { profileUrl: string; s
   return (
     <>
       <div className="grid grid-cols-2 gap-2">
-        <Button variant="outline" className="rounded-full h-11 border border-white/[0.08] bg-white/[0.03] text-white/85 hover:bg-white/[0.06] hover:text-white hover:border-white/15" onClick={()=> share("profile")}>Bagikan Profil</Button>
-        <Button variant="outline" className="rounded-full h-11 border border-white/[0.08] bg-white/[0.03] text-white/85 hover:bg-white/[0.06] hover:text-white hover:border-white/15" onClick={()=> share("support")}>Bagikan Dukungan</Button>
+        <Button variant="outline" className="rounded-full h-11 border border-white/10 bg-white/5 text-white/85 hover:bg-white/5 hover:text-white hover:border-white/15" onClick={()=> share("profile")}>Bagikan Profil</Button>
+        <Button variant="outline" className="rounded-full h-11 border border-white/10 bg-white/5 text-white/85 hover:bg-white/5 hover:text-white hover:border-white/15" onClick={()=> share("support")}>Bagikan Dukungan</Button>
       </div>
       <ShareSheet open={open} onOpenChange={setOpen} url={url} title={title} />
     </>

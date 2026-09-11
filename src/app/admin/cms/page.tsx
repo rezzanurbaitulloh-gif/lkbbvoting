@@ -77,10 +77,10 @@ export default function CmsPages(){
 
       <div className="grid gap-3">
         {pages.map(p=> (
-          <div key={p.id} className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div key={p.id} className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <span className="rounded-full bg-white/[0.07] backdrop-blur border border-white/10 text-white px-2.5 py-1 text-[11px] font-black">/{p.slug}</span>
+                <span className="rounded-full bg-white/10 backdrop-blur border border-white/10 text-white px-2.5 py-1 text-[11px] font-black">/{p.slug}</span>
                 {p.is_system && <span className="rounded-full bg-amber-500 text-white px-2 py-0.5 text-[11px] font-bold">Sistem</span>}
                 {p.is_published ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 text-white px-2 py-0.5 text-[11px] font-bold"><Eye className="h-3 w-3"/> Publish</span> : <span className="inline-flex items-center gap-1 rounded-full bg-zinc-400 text-white px-2 py-0.5 text-[11px] font-bold"><EyeOff className="h-3 w-3"/> Draft</span>}
                 <span className="text-[11px] text-muted-foreground">#{p.sort_order} • {p.sections_count ?? 0} section</span>
@@ -114,7 +114,7 @@ export default function CmsPages(){
               <div><label className="text-xs font-bold">SEO Title</label><Input value={form.seo_title} onChange={e=> setForm({...form, seo_title:e.target.value})} placeholder="LKBB — ..." /></div>
               <div><label className="text-xs font-bold">Publish?</label><Select value={form.is_published ? "true":"false"} onValueChange={v=> setForm({...form, is_published: v==="true"})} options={[{value:"true",label:"Ya, publish"},{value:"false",label:"Draft"}]} /></div>
             </div>
-            <div><label className="text-xs font-bold">SEO Description</label><textarea value={form.seo_description} onChange={e=> setForm({...form, seo_description:e.target.value})} className="w-full min-h-[60px] rounded-xl border border-white/[0.08] px-3 py-2 text-sm" placeholder="Deskripsi untuk Google" /></div>
+            <div><label className="text-xs font-bold">SEO Description</label><textarea value={form.seo_description} onChange={e=> setForm({...form, seo_description:e.target.value})} className="w-full min-h-[60px] rounded-xl border border-white/10 px-3 py-2 text-sm" placeholder="Deskripsi untuk Google" /></div>
           </div>
           <DialogFooter><Button variant="outline" onClick={()=> setOpen(false)} disabled={saving}>Batal</Button><Button onClick={handleSave} disabled={saving}>{saving ? "Menyimpan..." : editing ? "Simpan" : "Buat"}</Button></DialogFooter>
         </DialogContent>

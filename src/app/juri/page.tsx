@@ -12,7 +12,7 @@ export default function JuriPage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-white/[0.06] bg-[#09090b] text-white">
+        <div className="border-b border-white/10 bg-[#09090b] text-white">
           <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Dewan Juri</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em]">JURI KOMPETEN</h1>
@@ -21,8 +21,8 @@ export default function JuriPage(){
         <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
           <div className="grid md:grid-cols-3 gap-6">
             {judges.map(j=> (
-              <div key={j.id} className="rounded-[20px] border border-white/[0.06] bg-white/[0.03] backdrop-blur overflow-hidden">
-                <div className="aspect-[4/3] overflow-hidden bg-white/[0.04] backdrop-blur">
+              <div key={j.id} className="rounded-[20px] border border-white/10 bg-white/5 backdrop-blur overflow-hidden">
+                <div className="aspect-[4/3] overflow-hidden bg-white/5 backdrop-blur">
                   <img src={j.photo_url || j.photo} alt={j.name} className="h-full w-full object-cover" />
                 </div>
                 <div className="p-5">
@@ -33,7 +33,7 @@ export default function JuriPage(){
               </div>
             ))}
           </div>
-          <div className="mt-8 rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-6">
+          <div className="mt-8 rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-6">
             <h3 className="text-sm font-black">Kriteria Penilaian</h3>
             <div className="mt-4 grid md:grid-cols-3 gap-4">
               {[
@@ -41,7 +41,7 @@ export default function JuriPage(){
                 ["Variasi 30%","Kreativitas, kekompakan, yel-yel"],
                 ["Formasi 30%","Keindahan transisi, kekompakan, presisi"],
               ].map(([t,d])=> (
-                <div key={t} className="rounded-xl bg-white/[0.04] backdrop-blur p-4 text-center">
+                <div key={t} className="rounded-xl bg-white/5 backdrop-blur p-4 text-center">
                   <div className="text-sm font-black">{t}</div>
                   <div className="text-xs text-muted-foreground">{d}</div>
                 </div>

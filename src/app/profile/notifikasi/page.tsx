@@ -36,7 +36,7 @@ export default function SubProfile(){
           </h1>
 
           {isEdit && (
-            <div className="mt-4 max-w-lg rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-6 grid gap-3">
+            <div className="mt-4 max-w-lg rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-6 grid gap-3">
               <div><label className="text-xs font-bold">Nama</label><Input defaultValue={currentUser.name} /></div>
               <div><label className="text-xs font-bold">Email</label><Input defaultValue={currentUser.email} /></div>
               <div><label className="text-xs font-bold">No. HP</label><Input placeholder="08xx-xxxx-xxxx" /></div>
@@ -49,7 +49,7 @@ export default function SubProfile(){
               {favorites.length===0 ? <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Belum ada peleton favorit.</div> :
                 <div className="grid sm:grid-cols-2 gap-3">
                   {allPeletons.filter(p=> favorites.includes(p.id)).map(p=> (
-                    <div key={p.id} className="flex gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-3">
+                    <div key={p.id} className="flex gap-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur p-3">
                       <img src={p.image_url || p.image} alt="" className="h-14 w-14 rounded-lg object-cover"/>
                       <div><div className="text-sm font-bold">{p.name}</div><div className="text-xs text-muted-foreground">{p.school}</div><Link href={`/peleton/${p.slug}`} className="text-xs font-bold text-gold">Lihat →</Link></div>
                     </div>
@@ -63,7 +63,7 @@ export default function SubProfile(){
             <div className="mt-4 space-y-2">
               {transactions.length===0 ? <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Belum ada transaksi. Transaksi dari DB akan muncul di sini dan di dashboard.</div> :
                 transactions.map((tx:any)=> (
-                  <div key={tx.id} className="rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4 flex justify-between items-center">
+                  <div key={tx.id} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-4 flex justify-between items-center">
                     <div>
                       <div className="text-sm font-bold">{tx.peletons?.name || tx.peletonName || tx.peleton_id}</div>
                       <div className="text-xs text-muted-foreground">{new Date(tx.created_at || tx.date).toLocaleString("id-ID")} • {tx.supports} ballot</div>
@@ -85,7 +85,7 @@ export default function SubProfile(){
                 {t:"Voting dibuka", d:"Voting peleton terfavorit telah dibuka", time:"1 hari lalu"},
                 {t:"Pengumuman", d:"Technical meeting 3 Oktober 2026 wajib hadir", time:"3 hari lalu"},
               ].map((n,i)=> (
-                <div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4">
+                <div key={i} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-4">
                   <div className="text-sm font-bold">{n.t}</div>
                   <div className="text-sm text-muted-foreground">{n.d}</div>
                   <div className="text-xs text-muted-foreground">{n.time}</div>
