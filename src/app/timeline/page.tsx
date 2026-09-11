@@ -26,7 +26,7 @@ export default async function TimelinePage(){
           <div className="hidden md:grid grid-cols-8 gap-3">
             {timelineStages.map(s=> (
               <div key={s.id} className={`rounded-2xl border p-4 text-center ${s.status==="current" ? "border-primary bg-primary/5" : s.status==="completed" ? "border-emerald-500/20 bg-emerald-500/5" : "border-dashed bg-white/5 backdrop-blur"}`}>
-                <div className={`mx-auto h-10 w-10 rounded-full grid place-items-center text-sm font-black border ${s.status==="completed" ? "bg-emerald-500 text-white border-emerald-500" : s.status==="current" ? "bg-primary text-black border-primary" : "bg-white/5 backdrop-blur text-muted-foreground border-white/10"}`}>
+                <div className={`mx-auto h-10 w-10 rounded-full grid place-items-center text-sm font-black border ${s.status==="completed" ? "bg-emerald-500 text-black border-emerald-500" : s.status==="current" ? "bg-primary text-black border-primary" : "bg-white/5 backdrop-blur text-muted-foreground border-white/10"}`}>
                   {s.status==="completed" ? <Check className="h-5 w-5"/> : s.sort_order}
                 </div>
                 <div className="mt-3 text-xs font-black leading-tight">{s.title}</div>

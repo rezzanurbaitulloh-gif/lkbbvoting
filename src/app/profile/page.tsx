@@ -125,7 +125,7 @@ export default function ProfilePage(){
                         <div className="text-sm font-bold">{tx.peletons?.name || tx.peletonName}</div>
                         <div className="text-xs text-muted-foreground">{new Date(tx.created_at || tx.date).toLocaleDateString("id-ID")} • {tx.supports} ballot • Rp{(tx.amount||0).toLocaleString("id-ID")}</div>
                       </div>
-                      <Badge className="bg-emerald-500 text-white border-emerald-500">{tx.status}</Badge>
+                      <Badge className="bg-emerald-500 text-black border-emerald-500">{tx.status}</Badge>
                     </Link>
                   ))}
                   <Link href="/profile/dukungan" className="text-center text-xs font-semibold text-gold hover:underline">Lihat semua →</Link>
