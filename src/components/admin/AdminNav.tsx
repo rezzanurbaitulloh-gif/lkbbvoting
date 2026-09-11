@@ -2,12 +2,13 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
-import { LayoutDashboard, Users, CreditCard, Trophy, Megaphone, Calendar, Star, Handshake, Settings, ScrollText, UserCog, Menu, FileText, Shield, Layers } from "lucide-react"
+import { LayoutDashboard, Users, CreditCard, Trophy, Megaphone, Calendar, Star, Handshake, Settings, ScrollText, UserCog, Menu, FileText, Shield, Layers, Palette } from "lucide-react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 
 const nav = [
   { href:"/admin", label:"Dashboard", icon: LayoutDashboard },
+  { href:"/admin/design-studio", label:"Design Studio", icon: Palette },
   // Dynamic CMS — baru (media manager dihapus sesuai permintaan)
   { href:"/admin/cms", label:"Konten Dinamis", icon: Layers },
   { href:"/admin/peleton", label:"Peleton", icon: Users },
@@ -23,10 +24,10 @@ const nav = [
   { href:"/admin/audit-log", label:"Riwayat", icon: ScrollText },
 ]
 
-// Grouping for sidebar (tanpa media manager, tanpa SEO, tanpa hak akses terpisah karena hanya 2 role: admin & user)
-const navCms = nav.slice(0,2) // Dashboard, CMS
-const navKompetisi = nav.slice(2,8) // peleton, transaksi, klasemen, pengumuman, timeline, juri, sponsor
-const navSistem = nav.slice(8) // users, settings, audit-log
+// Grouping for sidebar (Design Studio di CMS group)
+const navCms = nav.slice(0,3) // Dashboard, Design Studio, CMS
+const navKompetisi = nav.slice(3,9) // peleton, transaksi, klasemen, pengumuman, timeline, juri, sponsor (6)
+const navSistem = nav.slice(9) // users, settings, audit-log
 
 export function AdminNav({ children }: { children: React.ReactNode }){
   const path = usePathname()
