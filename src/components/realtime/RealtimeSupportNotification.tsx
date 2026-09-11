@@ -51,7 +51,7 @@ function SupportPopup({ item, onClose }: { item: QueueItem; onClose: () => void 
         {item.supporterAvatar ? (
           <img src={item.supporterAvatar} alt={item.supporterName} className="h-12 w-12 rounded-full object-cover border-2 border-white/20 shrink-0" />
         ) : (
-          <div className={`h-12 w-12 rounded-full grid place-items-center shrink-0 ${item.isPrivate ? "bg-emerald-500" : "bg-primary"} text-white`}>
+          <div className={`h-12 w-12 rounded-full grid place-items-center shrink-0 ${item.isPrivate ? "bg-emerald-500" : "bg-primary"} text-black`}>
             <PartyPopper className="h-6 w-6" />
           </div>
         )}
