@@ -168,7 +168,7 @@ export function ImageUploadGrid({ label, value, onChange, folder = "general", bu
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); onChange(null) }}
-              className="absolute top-2 right-2 h-7 w-7 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80"
+              className="absolute top-2 right-2 h-7 w-7 grid place-items-center rounded-full bg-black/60 text-black hover:bg-black/80"
             >
               <X className="h-4 w-4" />
             </button>

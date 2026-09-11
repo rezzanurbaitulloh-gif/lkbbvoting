@@ -54,7 +54,7 @@ export function ShareSheet({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[380px] p-0 overflow-hidden gap-0">
-        <div className="bg-[#0B0C0F] text-white p-5">
+        <div className="bg-[#0B0C0F] text-black p-5">
           <DialogHeader>
             <DialogTitle className="text-white text-[16px] font-black">Bagikan</DialogTitle>
             <DialogDescription className="text-white/60">Pilih cara berbagi tautan ini</DialogDescription>

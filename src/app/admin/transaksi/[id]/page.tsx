@@ -11,7 +11,7 @@ export default async function TransaksiDetail({ params }: { params: Promise<{id:
         <div className="flex justify-between"><span className="text-muted-foreground">Peleton</span><span className="font-bold">SMKN 1 KERTOSONO</span></div>
         <div className="flex justify-between"><span className="text-muted-foreground">User</span><span>Reja Saputra • reja@lkbb.id</span></div>
         <div className="flex justify-between"><span className="text-muted-foreground">Metode</span><span>QRIS</span></div>
-        <div className="flex justify-between"><span className="text-muted-foreground">Status</span><span className="rounded-full bg-emerald-500 px-2 py-1 text-xs font-bold text-white">Success</span></div>
+        <div className="flex justify-between"><span className="text-muted-foreground">Status</span><span className="rounded-full bg-emerald-500 px-2 py-1 text-xs font-bold text-black">Success</span></div>
         <div className="hairline my-2" />
         <div className="text-xs text-muted-foreground">Dukungan hanya tercatat setelah transaksi Success — sesuai critical logic.</div>
         <div className="flex gap-2 mt-2">

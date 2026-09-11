@@ -118,7 +118,7 @@ function DukunganInner(){
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap gap-1.5 xs:gap-2">
                 <Badge variant="outline" className="text-[11px] xs:text-xs bg-white/5 backdrop-blur border-white/10 text-white">#{peleton.number}</Badge>
-                <Badge variant="outline" className="text-[11px] xs:text-xs bg-white/5 backdrop-blur border-white/10 text-white/80">{peleton.category}</Badge>
+                <Badge variant="outline" className="text-[11px] xs:text-xs bg-white/5 backdrop-blur border-white/10 text-white">{peleton.category}</Badge>
               </div>
               <div className="mt-1 text-[14px] xs:text-[15px] sm:text-[16px] font-black leading-tight break-words">{peleton.name}</div>
               <div className="text-[11px] xs:text-xs sm:text-sm text-muted-foreground line-clamp-1 break-words">{peleton.school} • {peleton.city}</div>

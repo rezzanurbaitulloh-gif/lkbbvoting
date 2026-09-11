@@ -76,13 +76,13 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
             </div>
           ) : null}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
-          <div className="absolute left-2 xs:left-3 top-2 xs:top-3 rounded-full bg-black/70 backdrop-blur px-1.5 xs:px-2.5 py-0.5 text-[10px] xs:text-[11px] font-black tracking-widest text-white border border-white/10">
+          <div className="absolute left-2 xs:left-3 top-2 xs:top-3 rounded-full bg-black/70 backdrop-blur px-1.5 xs:px-2.5 py-0.5 text-[10px] xs:text-[11px] font-black tracking-widest text-black border border-white/10">
             #{number}
           </div>
           <button onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); handleFav(); }} aria-label={fav ? "Hapus dari favorit" : "Tambah ke favorit"} aria-pressed={fav} className={cn("absolute right-2 xs:right-3 top-2 xs:top-3 h-11 w-11 grid place-items-center rounded-full backdrop-blur border transition-colors", fav ? "bg-[#A51D2D] border-[#A51D2D] text-white" : "bg-black/40 border-white/15 text-white hover:bg-black/60")}>
             <Heart className={cn("h-[18px] w-[18px]", fav && "fill-white")} />
           </button>
-          <div className="absolute bottom-2 xs:bottom-3 right-2 xs:right-3 rounded-full bg-white/90 backdrop-blur px-1.5 xs:px-2.5 py-0.5 text-[9px] xs:text-[10px] font-bold tracking-widest text-black border border-white/20 max-w-[42%] xs:max-w-[45%] truncate">
+          <div className="absolute bottom-2 xs:bottom-3 right-2 xs:right-3 rounded-full bg-white/90 backdrop-blur px-1.5 xs:px-2.5 py-0.5 text-[9px] xs:text-[10px] font-bold tracking-widest text-white border border-white/20 max-w-[42%] xs:max-w-[45%] truncate">
             {category}
           </div>
         </div>
@@ -101,10 +101,10 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
           <Button variant="outline" size="sm" className="w-full rounded-full h-11 text-[13px] xs:text-sm font-bold tracking-wide border-white/10 bg-white/5 text-white hover:bg-white/5 hover:border-[#C9A86A]/30 hover:text-white">DUKUNG</Button>
         </Link>
         <div className="grid grid-cols-2 gap-1.5 xs:gap-2">
-          <Button variant="outline" className="rounded-full h-11 w-full border-white/10 bg-white/5 text-white/80 hover:bg-white/5 hover:text-white hover:border-white/15" onClick={() => handleShare("profile")} aria-label="Bagikan Profil">
+          <Button variant="outline" className="rounded-full h-11 w-full border-white/10 bg-white/5 text-white hover:bg-white/5 hover:text-white hover:border-white/15" onClick={() => handleShare("profile")} aria-label="Bagikan Profil">
             <Share2 className="h-4 w-4" />
           </Button>
-          <Button variant="outline" className="rounded-full h-11 w-full border-white/10 bg-white/5 text-white/80 hover:bg-white/5 hover:text-white hover:border-white/15" onClick={() => handleShare("support")} aria-label="Bagikan Dukungan">
+          <Button variant="outline" className="rounded-full h-11 w-full border-white/10 bg-white/5 text-white hover:bg-white/5 hover:text-white hover:border-white/15" onClick={() => handleShare("support")} aria-label="Bagikan Dukungan">
             <QrCode className="h-4 w-4" />
           </Button>
         </div>

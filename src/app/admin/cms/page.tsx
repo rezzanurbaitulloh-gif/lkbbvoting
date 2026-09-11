@@ -82,7 +82,7 @@ export default function CmsPages(){
               <div className="flex items-center gap-2">
                 <span className="rounded-full bg-white/[0.07] backdrop-blur border border-white/10 text-white px-2.5 py-1 text-[11px] font-black">/{p.slug}</span>
                 {p.is_system && <span className="rounded-full bg-amber-500 text-white px-2 py-0.5 text-[11px] font-bold">Sistem</span>}
-                {p.is_published ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 text-white px-2 py-0.5 text-[11px] font-bold"><Eye className="h-3 w-3"/> Publish</span> : <span className="inline-flex items-center gap-1 rounded-full bg-zinc-400 text-white px-2 py-0.5 text-[11px] font-bold"><EyeOff className="h-3 w-3"/> Draft</span>}
+                {p.is_published ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 text-white px-2 py-0.5 text-[11px] font-bold"><Eye className="h-3 w-3"/> Publish</span> : <span className="inline-flex items-center gap-1 rounded-full bg-zinc-400 text-black px-2 py-0.5 text-[11px] font-bold"><EyeOff className="h-3 w-3"/> Draft</span>}
                 <span className="text-[11px] text-muted-foreground">#{p.sort_order} • {p.sections_count ?? 0} section</span>
               </div>
               <div className="mt-1 text-sm font-black truncate">{p.title}</div>

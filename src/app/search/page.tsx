@@ -30,12 +30,12 @@ function SearchInner(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-white/10 bg-[#09090b] text-white">
+        <div className="border-b border-white/10 bg-[#09090b] text-black">
           <div className="mx-auto max-w-[1080px] px-3 sm:px-4 md:px-6 py-6">
             <h1 className="text-[22px] font-black tracking-tight">PENCARIAN</h1>
             <div className="mt-4 relative max-w-xl">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
-              <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Cari peleton, berita, pengumuman…" className="h-[44px] w-full rounded-full border border-white/15 bg-white/10 backdrop-blur pl-10 pr-4 text-sm placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#C9A86A] text-white" autoFocus />
+              <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Cari peleton, berita, pengumuman…" className="h-[44px] w-full rounded-full border border-white/15 bg-white/10 backdrop-blur pl-10 pr-4 text-sm placeholder:text-white focus:outline-none focus:ring-2 focus:ring-[#C9A86A] text-white" autoFocus />
             </div>
           </div>
         </div>

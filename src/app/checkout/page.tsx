@@ -167,7 +167,7 @@ function CheckoutInner(){
             <div className="flex justify-between"><span className="text-muted-foreground">ID Invoice</span><span className="font-mono font-bold">LKBB-{id.slice(0,8).toUpperCase()}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">ID Transaksi</span><span className="font-mono font-bold text-[10px]">{id.slice(0,12)}...</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Metode</span><span className="font-bold">QRIS</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Status</span><span className="inline-flex rounded-full bg-emerald-500 px-2 py-0.5 text-[11px] font-bold text-white">{status.toUpperCase()}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Status</span><span className="inline-flex rounded-full bg-emerald-500 px-2 py-0.5 text-[11px] font-bold text-black">{status.toUpperCase()}</span></div>
           </div>
         </div>
 

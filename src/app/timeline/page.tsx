@@ -14,7 +14,7 @@ export default async function TimelinePage(){
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="border-b border-white/10 bg-[#09090b] text-white">
+        <div className="border-b border-white/10 bg-[#09090b] text-black">
           <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
             <div className="label-gold text-white/60">Jadwal Kompetisi</div>
             <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em] leading-none">TIMELINE</h1>
@@ -52,7 +52,7 @@ export default async function TimelinePage(){
 
           <div className="mt-8 rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5">
             <h3 className="text-sm font-black">Status Saat Ini</h3>
-            <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white"><Clock className="h-3.5 w-3.5"/> VOTING BERLANGSUNG</div>
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-black"><Clock className="h-3.5 w-3.5"/> VOTING BERLANGSUNG</div>
             <p className="mt-2 text-sm text-muted-foreground">Voting peleton terfavorit dibuka 1 September 2026 hingga 24 Oktober 2026. Dukung peleton favoritmu sekarang.</p>
           </div>
         </div>

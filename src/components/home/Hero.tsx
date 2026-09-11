@@ -88,7 +88,7 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
   const logoAsBackground = cmsSettings.logoAsBackground === true
   if (cms && cms.is_visible === false) return null
   return (
-    <section className="relative overflow-hidden bg-[#09090b] text-white">
+    <section className="relative overflow-hidden bg-[#09090b] text-black">
       <div className="absolute inset-0">
         <img src={bgImage} alt="" className="h-full w-full object-cover" style={{ opacity: overlayOpacity }} />
         <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/30 via-[#09090b]/55 to-[#09090b]" />
@@ -126,7 +126,7 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
               <Link href={ctaPrimaryLink} className="w-full xs:w-auto">
                 <Button size="lg" className="w-full xs:w-auto rounded-full px-6 xs:px-7 h-[44px] xs:h-[44px] text-[13px] xs:text-sm font-black tracking-wide shadow-[0_4px_16px_rgba(201,168,106,0.22)]">{ctaPrimaryLabel}</Button>
               </Link>
-              <Button onClick={()=> setCaraOpen(true)} variant="ghost" size="default" className="w-full xs:w-auto rounded-full px-5 h-[36px] xs:h-[38px] text-xs xs:text-[13px] font-semibold tracking-wide border border-white/10 bg-white/5 backdrop-blur text-white/80 hover:text-white hover:bg-white/10">{ctaSecondaryLabel}</Button>
+              <Button onClick={()=> setCaraOpen(true)} variant="ghost" size="default" className="w-full xs:w-auto rounded-full px-5 h-[36px] xs:h-[38px] text-xs xs:text-[13px] font-semibold tracking-wide border border-white/10 bg-white/5 backdrop-blur text-white hover:text-white hover:bg-white/10">{ctaSecondaryLabel}</Button>
             </div>
             <CaraDukungDialog open={caraOpen} onOpenChange={setCaraOpen} />
           </div>

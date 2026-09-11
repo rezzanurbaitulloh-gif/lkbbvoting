@@ -50,7 +50,7 @@ export default function AdminOverview(){
     return ()=>{ clearInterval(interval); supabase.removeChannel(channel) }
   },[])
   return (
-    <div className="min-h-screen bg-[#0B0C0F] text-white p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5 md:space-y-6">
+    <div className="min-h-screen bg-[#0B0C0F] text-black p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5 md:space-y-6">
       {/* Header — premium, not generic */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
@@ -61,7 +61,7 @@ export default function AdminOverview(){
           <h1 className="mt-1 text-[18px] sm:text-[20px] font-black tracking-[-0.02em] text-white">DASHBOARD</h1>
         </div>
         <div className="flex items-center gap-2 self-start sm:self-auto">
-          <span className="rounded-full bg-gradient-to-r from-[#C9A86A] to-[#8C6A2A] px-3 py-1 text-xs font-black tracking-wide text-white shadow">{stats.state || "ACTIVE"}</span>
+          <span className="rounded-full bg-gradient-to-r from-[#C9A86A] to-[#8C6A2A] px-3 py-1 text-xs font-black tracking-wide text-black shadow">{stats.state || "ACTIVE"}</span>
           <span className="hidden md:inline-flex text-xs text-white/40">20 Okt - 24 Okt 2026</span>
         </div>
       </div>
@@ -188,7 +188,7 @@ export default function AdminOverview(){
           <h3 className="text-xs font-black tracking-wide">STATUS EVENT</h3>
           <div className="mt-3">
             <div className="text-[11px] text-white/40">STATUS SAAT INI</div>
-            <div className="mt-1 inline-flex rounded-full bg-emerald-500 px-3 py-1 text-xs font-black text-white">{stats.state || "ACTIVE"}</div>
+            <div className="mt-1 inline-flex rounded-full bg-emerald-500 px-3 py-1 text-xs font-black text-black">{stats.state || "ACTIVE"}</div>
             <div className="mt-2 text-xs text-white/60">Dukungan sedang berlangsung</div>
             <div className="mt-3 grid gap-1 text-[11px]">
               <div className="flex justify-between"><span className="text-white/40">EVENT DIMULAI</span><span className="font-bold">24 Oktober 2026 08:00</span></div>

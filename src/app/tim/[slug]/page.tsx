@@ -48,7 +48,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="relative border-b border-white/10 overflow-hidden bg-[#09090b] text-white">
+        <div className="relative border-b border-white/10 overflow-hidden bg-[#09090b] text-black">
           <div className="absolute inset-0">
             <img src={photo} alt="" className="h-full w-full object-cover opacity-20" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/70 to-transparent" />
@@ -62,8 +62,8 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
               </div>
               <div>
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="outline" className="bg-white/5 backdrop-blur border border-white/10 text-white/80">{peleton.category}</Badge>
-                  <Badge variant="outline" className="bg-white/5 backdrop-blur border border-white/10 text-white/70">{peleton.city} • {peleton.province}</Badge>
+                  <Badge variant="outline" className="bg-white/5 backdrop-blur border border-white/10 text-white">{peleton.category}</Badge>
+                  <Badge variant="outline" className="bg-white/5 backdrop-blur border border-white/10 text-white">{peleton.city} • {peleton.province}</Badge>
                 </div>
                 <div className="mt-3 flex gap-3 items-center">
                   <img src={logo} alt="logo" className="h-14 w-14 object-contain bg-transparent hidden md:block drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.5))" }} />
@@ -76,8 +76,8 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-white/60 text-pretty max-w-2xl">{peleton.description}</p>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Link href={supportUrl}><Button size="lg" className="rounded-full px-8 h-[46px] font-bold border border-white/10 bg-white/5 backdrop-blur text-white/90 hover:bg-white/10 hover:border-white/12 hover:text-white">DUKUNG PELETON INI</Button></Link>
-                  {showRank && <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 backdrop-blur px-3 py-1 text-xs font-bold text-white/80">RANK #{rank}</span>}
+                  <Link href={supportUrl}><Button size="lg" className="rounded-full px-8 h-[46px] font-bold border border-white/10 bg-white/5 backdrop-blur text-white hover:bg-white/10 hover:border-white/12 hover:text-white">DUKUNG PELETON INI</Button></Link>
+                  {showRank && <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 backdrop-blur px-3 py-1 text-xs font-bold text-white">RANK #{rank}</span>}
                 </div>
                 <div className="mt-6 flex gap-3 max-w-lg">
                   <div className="flex-1 rounded-xl border border-white/15 bg-white/10 backdrop-blur p-3 text-center shadow-sm">
@@ -142,7 +142,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                   {isVotingClosed && <div className="inline-flex self-center rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">Peringkat Online Saja</div>}
                   {isPublished && <div className="inline-flex self-center rounded-full bg-[#C9A86A] text-[#0C0A06] px-2.5 py-1 text-[10px] font-black">Peringkat Akhir</div>}
                 </div>
-                <Link href={supportUrl}><Button variant="outline" className="w-full rounded-full h-[44px] font-bold border border-white/10 bg-white/5 backdrop-blur text-white/90 hover:bg-white/10 hover:border-white/12 hover:text-white">DUKUNG</Button></Link>
+                <Link href={supportUrl}><Button variant="outline" className="w-full rounded-full h-[44px] font-bold border border-white/10 bg-white/5 backdrop-blur text-white hover:bg-white/10 hover:border-white/12 hover:text-white">DUKUNG</Button></Link>
                 <ShareButtons profileUrl={profileUrl} supportUrl={supportUrl} />
               </div>
             </div>

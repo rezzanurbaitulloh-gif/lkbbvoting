@@ -68,7 +68,7 @@ function SupportPopup({ item, onClose }: { item: QueueItem; onClose: () => void 
             <p className="mt-2 text-sm text-white/60">Terima kasih sudah meramaikan!</p>
           )}
         </div>
-        <button onClick={onClose} aria-label="Tutup notifikasi" className="h-8 w-8 grid place-items-center rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white shrink-0">
+        <button onClick={onClose} aria-label="Tutup notifikasi" className="h-8 w-8 grid place-items-center rounded-full bg-white/10 hover:bg-white/20 text-white hover:text-white shrink-0">
           <X className="h-4 w-4" />
         </button>
       </div>

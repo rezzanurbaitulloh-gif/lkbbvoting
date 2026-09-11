@@ -247,7 +247,7 @@ export default function CmsSectionBuilder(){
                   <span className="text-sm font-black truncate">{s.title}</span>
                   <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-bold">{s.type}</span>
                   <span className="rounded-full bg-white/[0.04] backdrop-blur px-2 py-0.5 text-[11px] font-mono">{s.key}</span>
-                  {!s.is_visible && <span className="rounded-full bg-zinc-500 text-white px-2 py-0.5 text-[11px] font-bold">Hidden</span>}
+                  {!s.is_visible && <span className="rounded-full bg-zinc-500 text-black px-2 py-0.5 text-[11px] font-bold">Hidden</span>}
                 </div>
                 <div className="text-xs text-muted-foreground truncate">{Object.keys(s.content||{}).slice(0,3).join(" • ") || "— belum ada konten —"}</div>
               </div>

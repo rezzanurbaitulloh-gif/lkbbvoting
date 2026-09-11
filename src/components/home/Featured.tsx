@@ -22,7 +22,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
         {hasBadge && (
           <div className="flex justify-center mb-4 px-2">
             {showSementara && <span className="inline-flex rounded-full bg-[#FACC15] text-[#0B0C0F] px-3 py-1 text-[11px] sm:text-xs font-black tracking-wide text-center max-w-full shadow">HASIL SEMENTARA</span>}
-            {showFinal && <span className="inline-flex rounded-full bg-gradient-to-r from-[#C9A86A] to-[#8C6A2A] text-white px-3 py-1 text-[11px] sm:text-xs font-black tracking-wide text-center max-w-full shadow">HASIL FINAL</span>}
+            {showFinal && <span className="inline-flex rounded-full bg-gradient-to-r from-[#C9A86A] to-[#8C6A2A] text-black px-3 py-1 text-[11px] sm:text-xs font-black tracking-wide text-center max-w-full shadow">HASIL FINAL</span>}
           </div>
         )}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6">
@@ -35,7 +35,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
             <h2 className="mt-3 text-[22px] sm:text-[26px] md:text-[30px] font-black tracking-[-0.032em] text-white leading-[0.92] break-words font-display">DUKUNG PELETON <span className="text-white">FAVORITMU!</span></h2>
             <p className="mt-3 text-[13px] sm:text-[13.5px] text-white/60 leading-relaxed max-w-xl">Beranda urut nomor tampil (01, 02, 03…) — SMP & SMA terpisah. Peringkat disembunyikan saat voting aktif.</p>
           </div>
-          <Link href="/tim" className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/5 hover:border-white/15 px-4 py-2 text-xs font-semibold text-white/80 hover:text-white transition-colors shrink-0">LIHAT SEMUA <ArrowRight className="h-3 w-3"/></Link>
+          <Link href="/tim" className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/5 hover:border-white/15 px-4 py-2 text-xs font-semibold text-white hover:text-white transition-colors shrink-0">LIHAT SEMUA <ArrowRight className="h-3 w-3"/></Link>
         </div>
 
         {/* SMP */}
