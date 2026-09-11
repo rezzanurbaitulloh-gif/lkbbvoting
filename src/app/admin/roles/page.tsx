@@ -9,7 +9,7 @@ export default function Roles(){
       <div className="flex items-center justify-between"><div><h1 className="text-[18px] font-black">Peran Pengguna</h1></div></div>
       <div className="grid gap-3">
         {roles.map(r=> (
-          <div key={r.name} className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-4 flex items-center justify-between">
+          <div key={r.name} className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4 flex items-center justify-between">
             <div>
               <div className="text-sm font-black">{r.name}</div>
               <div className="text-xs text-muted-foreground">{r.perms} • {r.users}</div>
@@ -18,7 +18,7 @@ export default function Roles(){
           </div>
         ))}
       </div>
-      <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur/20 p-4 text-xs text-muted-foreground">Super Admin bisa mengatur semua yang ada di website. User Biasa hanya bisa melihat dan memberi dukungan.</div>
+      <div className="rounded-xl border border-white/[0.06] bg-white/[0.04] backdrop-blur/20 p-4 text-xs text-muted-foreground">Super Admin bisa mengatur semua yang ada di website. User Biasa hanya bisa melihat dan memberi dukungan.</div>
     </div>
   )
 }

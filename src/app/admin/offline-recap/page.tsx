@@ -49,15 +49,15 @@ function SearchableSelect({
         type="button"
         disabled={disabled}
         onClick={()=> !disabled && setOpen(!open)}
-        className={`flex h-10 w-full items-center justify-between rounded-xl border border-white/10 bg-background px-3 py-2 text-sm ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+        className={`flex h-10 w-full items-center justify-between rounded-xl border border-white/[0.08] bg-background px-3 py-2 text-sm ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <span className={selected ? "text-foreground truncate text-left" : "text-muted-foreground truncate"}>{selected?.label || placeholder}</span>
         <Search className="h-3.5 w-3.5 opacity-50 shrink-0 ml-2" />
       </button>
       {open && (
-        <div className="absolute z-50 mt-1 w-full rounded-xl border border-white/10 bg-[#0F1115] shadow-xl overflow-hidden">
-          <div className="p-2 border-b border-white/10">
-            <div className="flex items-center gap-2 rounded-lg border border-white/10 px-2">
+        <div className="absolute z-50 mt-1 w-full rounded-xl border border-white/[0.06] bg-[#0F1115] shadow-xl overflow-hidden">
+          <div className="p-2 border-b border-white/[0.06]">
+            <div className="flex items-center gap-2 rounded-lg border border-white/[0.08] px-2">
               <Search className="h-3.5 w-3.5 text-muted-foreground" />
               <input
                 autoFocus
@@ -76,7 +76,7 @@ function SearchableSelect({
                   key={opt.value}
                   type="button"
                   onClick={()=> { onChange(opt.value); setOpen(false); setSearch("") }}
-                  className={`flex w-full items-center gap-2 px-3 py-2.5 text-sm text-left hover:bg-white/5 backdrop-blur transition-colors ${value===opt.value ? "bg-white/5 backdrop-blur font-bold" : ""}`}
+                  className={`flex w-full items-center gap-2 px-3 py-2.5 text-sm text-left hover:bg-white/[0.04] backdrop-blur transition-colors ${value===opt.value ? "bg-white/[0.04] backdrop-blur font-bold" : ""}`}
                 >
                   <span className="flex-1 truncate">{opt.label}</span>
                   {value===opt.value && <span className="text-[11px] text-primary">✓</span>}
@@ -256,7 +256,7 @@ export default function OfflineRecap(){
 
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogContent className="sm:max-w-[640px] max-h-[85vh] overflow-hidden flex flex-col p-0">
-          <DialogHeader className="p-5 pb-3 border-b border-white/10 shrink-0">
+          <DialogHeader className="p-5 pb-3 border-b border-white/[0.06] shrink-0">
             <DialogTitle>Rekap Ballot Offline</DialogTitle>
             <DialogDescription>Tambah ballot offline per tim. Bisa tambah banyak tim sekaligus via tombol Tambah Tim.</DialogDescription>
           </DialogHeader>
@@ -266,7 +266,7 @@ export default function OfflineRecap(){
                 .filter(t=> !row.category || t.category===row.category)
                 .map(t=> ({value:t.id, label:`#${t.number} ${t.name} (${t.category})`, category:t.category}))
               return (
-                <div key={row.id} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur/20 p-3 space-y-3 relative">
+                <div key={row.id} className="rounded-xl border border-white/[0.06] bg-white/[0.04] backdrop-blur/20 p-3 space-y-3 relative">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black">Tim #{idx+1}</span>
                     {rows.length>1 && (
@@ -319,7 +319,7 @@ export default function OfflineRecap(){
               <Plus className="h-4 w-4"/> Tambah Tim
             </Button>
           </div>
-          <div className="p-4 border-t border-white/10 flex gap-2 justify-end shrink-0 bg-white/5 backdrop-blur">
+          <div className="p-4 border-t border-white/[0.06] flex gap-2 justify-end shrink-0 bg-white/[0.03] backdrop-blur">
             <Button variant="outline" onClick={()=> setOpenDialog(false)} disabled={saving} className="rounded-full">Batal</Button>
             <Button onClick={handleSave} disabled={saving} className="rounded-full min-w-[120px]">
               {saving ? "Memproses..." : "Simpan Semua"}
@@ -328,7 +328,7 @@ export default function OfflineRecap(){
         </DialogContent>
       </Dialog>
 
-      <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur overflow-hidden">
+      <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur overflow-hidden">
         <div className="p-4 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h3 className="text-sm font-black">Riwayat Offline Terbaru (ledger) — {recent.length} data</h3>
           {selected.size>0 && (
@@ -340,7 +340,7 @@ export default function OfflineRecap(){
 
         {/* Desktop table */}
         <div className="hidden md:block overflow-x-auto">
-          <div className="min-w-[720px] grid grid-cols-[40px_90px_1fr_90px_130px_120px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-y border-white/10 bg-white/5 backdrop-blur/30">
+          <div className="min-w-[720px] grid grid-cols-[40px_90px_1fr_90px_130px_120px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-y border-white/[0.06] bg-white/[0.04] backdrop-blur/30">
             <div><input type="checkbox" checked={selected.size===recent.length && recent.length>0} onChange={toggleAll} /></div>
             <div>NO / KAT</div>
             <div>TIM</div>
@@ -351,7 +351,7 @@ export default function OfflineRecap(){
           {recent.length===0 ? (
             <div className="p-8 text-center text-sm text-muted-foreground">Belum ada rekap offline.</div>
           ) : recent.map((r:any)=> (
-            <div key={r.id} className="min-w-[720px] grid grid-cols-[40px_90px_1fr_90px_130px_120px] gap-2 px-4 py-3 items-center border-b border-white/10/50 last:border-0 text-sm">
+            <div key={r.id} className="min-w-[720px] grid grid-cols-[40px_90px_1fr_90px_130px_120px] gap-2 px-4 py-3 items-center border-b border-white/[0.06]/50 last:border-0 text-sm">
               <div><input type="checkbox" checked={selected.has(r.id)} onChange={()=> toggleSelect(r.id)} /></div>
               <div className="flex items-center gap-1.5">
                 <span className="font-mono font-bold text-xs">#{r.peletons?.number ?? "-"}</span>
@@ -376,7 +376,7 @@ export default function OfflineRecap(){
           {recent.length===0 ? (
             <div className="p-6 text-center text-sm text-muted-foreground">Belum ada rekap offline.</div>
           ) : recent.map((r:any)=> (
-            <div key={r.id} className="rounded-xl border border-white/10 p-3 flex flex-col gap-2">
+            <div key={r.id} className="rounded-xl border border-white/[0.06] p-3 flex flex-col gap-2">
               <div className="flex items-start gap-2">
                 <input type="checkbox" className="mt-1" checked={selected.has(r.id)} onChange={()=> toggleSelect(r.id)} />
                 <div className="flex-1 min-w-0">
@@ -399,7 +399,7 @@ export default function OfflineRecap(){
         </div>
 
         {recent.length>0 && (
-          <div className="p-3 border-t border-white/10 bg-white/5 backdrop-blur/20 flex items-center justify-between">
+          <div className="p-3 border-t border-white/[0.06] bg-white/[0.04] backdrop-blur/20 flex items-center justify-between">
             <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={selected.size===recent.length && recent.length>0} onChange={toggleAll} /> Pilih semua ({recent.length})</label>
             {selected.size>0 ? <span className="text-xs font-bold">{selected.size} dipilih</span> : <span className="text-[11px] text-muted-foreground">Centang untuk hapus massal</span>}
           </div>

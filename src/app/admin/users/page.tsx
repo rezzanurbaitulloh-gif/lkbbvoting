@@ -41,15 +41,15 @@ export default function Users(){
   return (
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex items-center justify-between"><h1 className="text-[18px] font-black">Kelola Pengguna</h1><div className="flex items-center gap-2">{selected.size>0 && <Button variant="outline" size="sm" className="rounded-full text-red-600 gap-2" onClick={handleBulkDelete}><Trash2 className="h-3.5 w-3.5"/>Hapus {selected.size} dipilih</Button>}</div></div>
-      <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur overflow-hidden">
+      <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur overflow-hidden">
         {/* Desktop */}
         <div className="hidden md:block overflow-x-auto">
-          <div className="grid grid-cols-[40px_1.4fr_1.2fr_120px_100px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-white/10 bg-white/5 backdrop-blur/30">
+          <div className="grid grid-cols-[40px_1.4fr_1.2fr_120px_100px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-white/[0.06] bg-white/[0.04] backdrop-blur/30">
             <div><input type="checkbox" checked={selected.size===users.length && users.length>0} onChange={toggleAll} /></div><div>NAMA</div><div>EMAIL</div><div>PERAN</div><div>AKSI</div>
           </div>
           {users.length===0 ? <div className="p-8 text-center text-sm text-muted-foreground">Belum ada pengguna.</div> :
             users.map((u:any)=> (
-            <div key={u.id} className="grid grid-cols-[40px_1.4fr_1.2fr_120px_100px] gap-2 px-4 py-3 items-center border-b border-white/10/50 text-sm">
+            <div key={u.id} className="grid grid-cols-[40px_1.4fr_1.2fr_120px_100px] gap-2 px-4 py-3 items-center border-b border-white/[0.06]/50 text-sm">
               <div><input type="checkbox" checked={selected.has(u.id)} onChange={()=> toggleSelect(u.id)} /></div>
               <div className="font-bold truncate">{u.public_name || "-"}</div>
               <div className="text-muted-foreground text-xs truncate">{u.email}</div>
@@ -62,7 +62,7 @@ export default function Users(){
         <div className="md:hidden space-y-2 p-3">
           {users.length===0 ? <div className="p-6 text-center text-sm text-muted-foreground">Belum ada pengguna.</div> :
             users.map((u:any)=> (
-            <div key={u.id} className="rounded-xl border border-white/10 p-3 flex gap-3">
+            <div key={u.id} className="rounded-xl border border-white/[0.06] p-3 flex gap-3">
               <input type="checkbox" className="mt-1" checked={selected.has(u.id)} onChange={()=> toggleSelect(u.id)} />
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-bold truncate">{u.public_name || "-"}</div>
@@ -74,7 +74,7 @@ export default function Users(){
           ))}
         </div>
         {users.length>0 && (
-          <div className="p-3 border-t border-white/10 bg-white/5 backdrop-blur/20 flex items-center justify-between">
+          <div className="p-3 border-t border-white/[0.06] bg-white/[0.04] backdrop-blur/20 flex items-center justify-between">
             <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={selected.size===users.length && users.length>0} onChange={toggleAll} /> Pilih semua ({users.length})</label>
             {selected.size>0 && <span className="text-xs font-bold">{selected.size} dipilih</span>}
           </div>
@@ -89,7 +89,7 @@ export default function Users(){
             <div>
               <label className="text-xs font-bold">Kata Sandi Baru (opsional)</label>
               <div className="flex gap-2">
-                <input type={showPass ? "text" : "password"} value={newPassword} onChange={e=> setNewPassword(e.target.value)} placeholder="Kosongkan jika tidak diubah" className="flex-1 h-10 rounded-xl border border-white/10 px-3 text-sm" />
+                <input type={showPass ? "text" : "password"} value={newPassword} onChange={e=> setNewPassword(e.target.value)} placeholder="Kosongkan jika tidak diubah" className="flex-1 h-10 rounded-xl border border-white/[0.08] px-3 text-sm" />
                 <Button variant="outline" size="sm" onClick={()=> setShowPass(!showPass)}>{showPass ? "Sembunyikan" : "Lihat"}</Button>
               </div>
               <p className="text-[11px] text-muted-foreground mt-1">Demi keamanan, kata sandi lama tidak bisa dilihat. Masukkan kata sandi baru jika ingin mengubah.</p>

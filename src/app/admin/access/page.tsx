@@ -86,7 +86,7 @@ export default function AccessControl(){
 
       <div className="grid md:grid-cols-2 gap-3">
         {Object.entries(ROLE_LABEL).map(([role,label])=> (
-          <div key={role} className={`rounded-[16px] border p-4 ${role==="ADMIN" ? "bg-white/10 backdrop-blur border border-white/10 text-white border-foreground" : "bg-white/5 backdrop-blur/20 border-white/10"}`}>
+          <div key={role} className={`rounded-[16px] border p-4 ${role==="ADMIN" ? "bg-white/[0.07] backdrop-blur border border-white/10 text-white border-foreground" : "bg-white/[0.04] backdrop-blur/20 border-white/[0.06]"}`}>
             <div className="flex items-center gap-2">
               {role==="ADMIN" ? <Crown className="h-4 w-4 text-amber-500"/> : <Shield className="h-4 w-4"/>}
               <span className="text-sm font-black">{role}</span>
@@ -97,8 +97,8 @@ export default function AccessControl(){
         ))}
       </div>
 
-      <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur overflow-hidden">
-        <div className="p-4 border-b border-white/10">
+      <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur overflow-hidden">
+        <div className="p-4 border-b border-white/[0.06]">
           <h3 className="text-sm font-black">Matrix Permission — {selectedRole}</h3>
           <p className="text-xs text-muted-foreground">Klik untuk toggle. Hijau = boleh, abu = tidak.</p>
         </div>
@@ -110,7 +110,7 @@ export default function AccessControl(){
                 {list.map((perm:any)=> {
                   const granted = isGranted(selectedRole, perm.key)
                   return (
-                    <label key={perm.key} className={`flex items-center justify-between rounded-xl border px-3 py-2.5 cursor-pointer transition-colors ${granted ? "bg-emerald-500/10 border-emerald-500/30" : "bg-white/5 backdrop-blur/30 border-white/10"}`}>
+                    <label key={perm.key} className={`flex items-center justify-between rounded-xl border px-3 py-2.5 cursor-pointer transition-colors ${granted ? "bg-emerald-500/10 border-emerald-500/30" : "bg-white/[0.04] backdrop-blur/30 border-white/[0.06]"}`}>
                       <div className="min-w-0">
                         <div className="text-sm font-bold truncate">{perm.name}</div>
                         <div className="text-xs text-muted-foreground truncate">{perm.key} — {perm.description}</div>
@@ -125,17 +125,17 @@ export default function AccessControl(){
         </div>
       </div>
 
-      <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur overflow-hidden">
-        <div className="p-4 border-b border-white/10 flex items-center justify-between">
+      <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur overflow-hidden">
+        <div className="p-4 border-b border-white/[0.06] flex items-center justify-between">
           <div><h3 className="text-sm font-black flex items-center gap-2"><Users className="h-4 w-4"/> Daftar Pengguna & Peran</h3><p className="text-xs text-muted-foreground">{profiles.length} akun</p></div>
           <span className="text-xs text-muted-foreground">Klik Kelola untuk ubah peran</span>
         </div>
         <div className="max-h-[360px] overflow-y-auto">
-          <div className="hidden md:grid grid-cols-[1.4fr_1.2fr_140px_100px] gap-2 px-4 py-2 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-white/10 bg-white/5 backdrop-blur/20">
+          <div className="hidden md:grid grid-cols-[1.4fr_1.2fr_140px_100px] gap-2 px-4 py-2 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-white/[0.06] bg-white/[0.04] backdrop-blur/20">
             <div>NAMA</div><div>EMAIL</div><div>PERAN</div><div>AKSI</div>
           </div>
           {profiles.map((u:any)=> (
-            <div key={u.id} className="flex flex-col md:grid md:grid-cols-[1.4fr_1.2fr_140px_100px] gap-2 px-4 py-3 items-center border-b border-white/10/50 text-sm">
+            <div key={u.id} className="flex flex-col md:grid md:grid-cols-[1.4fr_1.2fr_140px_100px] gap-2 px-4 py-3 items-center border-b border-white/[0.06]/50 text-sm">
               <div className="font-bold truncate w-full md:w-auto">{u.public_name||"-"}</div>
               <div className="text-xs text-muted-foreground truncate w-full md:w-auto">{u.email}</div>
               <div className="w-full md:w-auto"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${u.role==="ADMIN" ? "bg-amber-500 text-white" : "bg-secondary"}`}>{u.role==="ADMIN" ? "admin" : "user"}</span></div>
@@ -155,7 +155,7 @@ export default function AccessControl(){
         </DialogContent>
       </Dialog>
 
-      <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur/20 p-3 text-xs flex items-center gap-2"><Lock className="h-4 w-4"/> Sistem disederhanakan: hanya admin & user. Semua perubahan hak akses tercatat di audit_logs dan langsung diberlakukan di middleware (ADMIN).</div>
+      <div className="rounded-xl border border-white/[0.06] bg-white/[0.04] backdrop-blur/20 p-3 text-xs flex items-center gap-2"><Lock className="h-4 w-4"/> Sistem disederhanakan: hanya admin & user. Semua perubahan hak akses tercatat di audit_logs dan langsung diberlakukan di middleware (ADMIN).</div>
     </div>
   )
 }

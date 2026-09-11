@@ -47,28 +47,28 @@ export default function ResultsControl(){
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <h1 className="text-[18px] font-black">Kontrol Publikasi Hasil</h1>
       <div className="grid md:grid-cols-2 gap-4">
-        <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-4">
+        <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4">
           <h3 className="text-sm font-black">Hasil Sementara</h3>
           
           <div className="mt-3 space-y-1">
-            {provisional.map((p:any,i:number)=> <div key={p.id} className="flex justify-between rounded-xl border border-white/10 p-2 text-xs"><span>{i+1}st #{p.number} {p.name}</span><span>{p.online_ballots} online</span></div>)}
+            {provisional.map((p:any,i:number)=> <div key={p.id} className="flex justify-between rounded-xl border border-white/[0.06] p-2 text-xs"><span>{i+1}st #{p.number} {p.name}</span><span>{p.online_ballots} online</span></div>)}
           </div>
           <Button disabled={!!toggling} onClick={()=>toggle("show_provisional_result")} variant={event.show_provisional_result ? "default" : "outline"} className="mt-3 w-full rounded-full">{toggling==="show_provisional_result" ? "Memproses..." : event.show_provisional_result ? "✓ Ditampilkan" : "Tampilkan Sementara"}</Button>
         </div>
-        <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-4">
+        <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4">
           <h3 className="text-sm font-black">Hasil Akhir</h3>
           
           <div className="mt-3 space-y-1">
-            {final.map((p:any,i:number)=> <div key={p.id} className="flex justify-between rounded-xl border border-white/10 bg-white/5 backdrop-blur p-2 text-xs"><span>{i+1}st #{p.number} {p.name}</span><span className="font-black">{p.total_ballots} total</span></div>)}
+            {final.map((p:any,i:number)=> <div key={p.id} className="flex justify-between rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-2 text-xs"><span>{i+1}st #{p.number} {p.name}</span><span className="font-black">{p.total_ballots} total</span></div>)}
           </div>
           <Button disabled={!!toggling} onClick={()=>toggle("show_final_result")} variant={event.show_final_result ? "default" : "outline"} className="mt-3 w-full rounded-full">{toggling==="show_final_result" ? "Memproses..." : event.show_final_result ? "✓ Ditampilkan" : "Tampilkan Final"}</Button>
         </div>
       </div>
-      <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-4">
+      <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-4">
         <h3 className="text-sm font-black">Podium Preview (SMA)</h3>
         <div className="mt-3 grid md:grid-cols-3 gap-3">
           {final.filter((p:any)=> p.category==="SMA").slice(0,3).map((p:any,i:number)=> (
-            <div key={p.id} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-3 text-center">
+            <div key={p.id} className="rounded-xl border border-white/[0.06] bg-white/[0.03] backdrop-blur p-3 text-center">
               <div className="text-xs font-black">{i===0?"1st":i===1?"2nd":"3rd"}</div>
               <div className="text-sm font-black">#{p.number} {p.name}</div>
               <div className="text-xs text-muted-foreground">{p.total_ballots} ballot</div>

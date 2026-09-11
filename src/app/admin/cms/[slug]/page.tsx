@@ -92,7 +92,7 @@ function SectionContentEditor({ content, onChange, type }: { content: Record<str
                 description={isLogoField(k) ? "Logo asli tanpa crop — pilih dengan/tanpa latar belakang" : "Drag & drop atau klik grid"}
               />
             ) : typeof v==="string" && v.length>80 ? (
-              <textarea value={v} onChange={e=> updateField(k, e.target.value)} className="w-full min-h-[80px] rounded-xl border border-white/10 px-3 py-2 text-sm" />
+              <textarea value={v} onChange={e=> updateField(k, e.target.value)} className="w-full min-h-[80px] rounded-xl border border-white/[0.08] px-3 py-2 text-sm" />
             ) : (
               <Input value={typeof v==="string" ? v : JSON.stringify(v)} onChange={e=> {
                 // try keep type: if original is number/bool parse, otherwise string
@@ -107,11 +107,11 @@ function SectionContentEditor({ content, onChange, type }: { content: Record<str
       })}
       <Button type="button" variant="outline" size="sm" className="rounded-full gap-1" onClick={addField}><Plus className="h-3.5 w-3.5"/> Tambah Field</Button>
       {/* raw JSON fallback */}
-      <details className="rounded-xl border border-white/10 bg-white/5 backdrop-blur/20 p-3">
+      <details className="rounded-xl border border-white/[0.06] bg-white/[0.04] backdrop-blur/20 p-3">
         <summary className="text-xs font-bold cursor-pointer">Lihat / Edit JSON mentah (advanced)</summary>
         <textarea value={JSON.stringify(content, null, 2)} onChange={e=> {
           try{ const parsed = JSON.parse(e.target.value); onChange(parsed) } catch{}
-        }} className="mt-2 w-full min-h-[120px] rounded-xl border border-white/10 bg-background px-3 py-2 font-mono text-xs" />
+        }} className="mt-2 w-full min-h-[120px] rounded-xl border border-white/[0.08] bg-background px-3 py-2 font-mono text-xs" />
       </details>
     </div>
   )
@@ -216,7 +216,7 @@ export default function CmsSectionBuilder(){
   return (
     <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5">
       <div className="flex items-center gap-2 text-xs">
-        <Link href="/admin/cms" className="inline-flex items-center gap-1 rounded-full border border-white/10 px-3 py-1 hover:bg-white/5 backdrop-blur"><ArrowLeft className="h-3.5 w-3.5"/> Daftar Halaman</Link>
+        <Link href="/admin/cms" className="inline-flex items-center gap-1 rounded-full border border-white/[0.06] px-3 py-1 hover:bg-white/[0.04] backdrop-blur"><ArrowLeft className="h-3.5 w-3.5"/> Daftar Halaman</Link>
         <span className="text-muted-foreground">/</span>
         <span className="font-bold">/{page.slug}</span>
         <span className={`ml-2 rounded-full px-2 py-0.5 text-[11px] font-bold ${page.is_published ? "bg-emerald-500 text-white" : "bg-zinc-400 text-white"}`}>{page.is_published ? "Publish" : "Draft"}</span>
@@ -231,22 +231,22 @@ export default function CmsSectionBuilder(){
         </div>
       </div>
 
-      <div className="rounded-[12px] border border-white/10 bg-white/5 backdrop-blur p-3 text-xs">Tip: matikan “Mata” untuk sembunyikan section tanpa hapus. Gunakan panah ↑↓ untuk atur urutan — urutan menentukan struktur halaman.</div>
+      <div className="rounded-[12px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-3 text-xs">Tip: matikan “Mata” untuk sembunyikan section tanpa hapus. Gunakan panah ↑↓ untuk atur urutan — urutan menentukan struktur halaman.</div>
 
       <div className="grid gap-3">
         {sections.map((s, idx)=> (
-          <div key={s.id} className={`rounded-[16px] border bg-white/5 backdrop-blur overflow-hidden ${s.is_visible ? "border-white/10" : "border-dashed border-zinc-300 opacity-60"}`}>
-            <div className="flex items-center gap-3 p-3 border-b border-white/10/50 bg-white/5 backdrop-blur/20">
+          <div key={s.id} className={`rounded-[16px] border bg-white/[0.03] backdrop-blur overflow-hidden ${s.is_visible ? "border-white/[0.06]" : "border-dashed border-zinc-300 opacity-60"}`}>
+            <div className="flex items-center gap-3 p-3 border-b border-white/[0.06]/50 bg-white/[0.04] backdrop-blur/20">
               <div className="flex flex-col gap-1">
                 <Button variant="ghost" size="icon" className="h-6 w-6" onClick={()=> move(idx,-1)} disabled={idx===0}><ChevronUp className="h-3.5 w-3.5"/></Button>
                 <Button variant="ghost" size="icon" className="h-6 w-6" onClick={()=> move(idx,1)} disabled={idx===sections.length-1}><ChevronDown className="h-3.5 w-3.5"/></Button>
               </div>
-              <div className="h-8 w-8 rounded-lg bg-white/10 backdrop-blur border border-white/10 text-white grid place-items-center text-[11px] font-black">#{s.sort_order}</div>
+              <div className="h-8 w-8 rounded-lg bg-white/[0.07] backdrop-blur border border-white/10 text-white grid place-items-center text-[11px] font-black">#{s.sort_order}</div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-black truncate">{s.title}</span>
                   <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-bold">{s.type}</span>
-                  <span className="rounded-full bg-white/5 backdrop-blur px-2 py-0.5 text-[11px] font-mono">{s.key}</span>
+                  <span className="rounded-full bg-white/[0.04] backdrop-blur px-2 py-0.5 text-[11px] font-mono">{s.key}</span>
                   {!s.is_visible && <span className="rounded-full bg-zinc-500 text-white px-2 py-0.5 text-[11px] font-bold">Hidden</span>}
                 </div>
                 <div className="text-xs text-muted-foreground truncate">{Object.keys(s.content||{}).slice(0,3).join(" • ") || "— belum ada konten —"}</div>
@@ -266,7 +266,7 @@ export default function CmsSectionBuilder(){
                   const str = typeof v==="string" ? v : JSON.stringify(v)
                   const isImg = typeof v==="string" && (v.startsWith("http") || v.startsWith("/assets"))
                   return (
-                    <div key={k} className="rounded-full border border-white/10 bg-white/5 backdrop-blur/30 px-2.5 py-1 text-[11px] max-w-[220px] truncate">
+                    <div key={k} className="rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur/30 px-2.5 py-1 text-[11px] max-w-[220px] truncate">
                       <span className="font-bold">{k}:</span> <span className="text-muted-foreground">{isImg ? "🖼️ " : ""}{str.slice(0,40)}{str.length>40?"…":""}</span>
                     </div>
                   )
@@ -297,7 +297,7 @@ export default function CmsSectionBuilder(){
               <div><label className="text-xs font-bold">Tampilkan?</label><Select value={form.is_visible ? "true":"false"} onValueChange={v=> setForm({...form, is_visible: v==="true"})} options={[{value:"true",label:"Ya, tampilkan"},{value:"false",label:"Sembunyikan"}]} /></div>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur/20 p-3 space-y-3">
+            <div className="rounded-xl border border-white/[0.06] bg-white/[0.04] backdrop-blur/20 p-3 space-y-3">
               <div className="text-xs font-black">Konten Dinamis (teks, gambar, banner, tombol)</div>
               <SectionContentEditor content={form.content||{}} onChange={(c)=> setForm({...form, content:c})} type={form.type} />
             </div>
@@ -319,11 +319,11 @@ export default function CmsSectionBuilder(){
               </div>
             )}
 
-            <div className="rounded-xl border border-white/10 p-3 space-y-2">
+            <div className="rounded-xl border border-white/[0.06] p-3 space-y-2">
               <div className="text-xs font-black">Settings JSON (advanced — layout / variant)</div>
               <textarea value={JSON.stringify(form.settings||{}, null, 2)} onChange={e=> {
                 try{ const parsed=JSON.parse(e.target.value); setForm({...form, settings:parsed}) }catch{}
-              }} className="w-full min-h-[80px] rounded-xl border border-white/10 bg-background px-3 py-2 font-mono text-xs" placeholder='{"variant":"dark","columns":3}' />
+              }} className="w-full min-h-[80px] rounded-xl border border-white/[0.08] bg-background px-3 py-2 font-mono text-xs" placeholder='{"variant":"dark","columns":3}' />
               <p className="text-[11px] text-muted-foreground">JSON untuk varian tampilan (tidak wajib). Untuk hero, gunakan panel di atas agar lebih mudah.</p>
             </div>
           </div>

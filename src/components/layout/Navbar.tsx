@@ -126,8 +126,8 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                 <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform", profileOpen && "rotate-180")} />
               </button>
               {profileOpen && (
-                <div className="absolute right-0 top-[calc(100%+8px)] w-[240px] rounded-2xl border border-white/10 bg-white/5 backdrop-blur shadow-xl overflow-hidden z-50">
-                  <div className="px-4 py-3 border-b border-white/10 bg-white/5 backdrop-blur/30">
+                <div className="absolute right-0 top-[calc(100%+8px)] w-[240px] rounded-2xl border border-border bg-card shadow-xl overflow-hidden z-50">
+                  <div className="px-4 py-3 border-b border-border bg-muted/30">
                     <div className="text-sm font-bold leading-tight truncate">{currentUser.name}</div>
                     <div className="text-xs text-muted-foreground truncate">{currentUser.email}</div>
                     {isAdmin && <div className="mt-1 inline-flex rounded-full bg-gold px-2 py-0.5 text-[10px] font-black tracking-widest text-gold-foreground">admin</div>}

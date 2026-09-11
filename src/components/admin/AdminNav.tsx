@@ -37,9 +37,9 @@ export function AdminNav({ children }: { children: React.ReactNode }){
     return path === href || path.startsWith(href + "/")
   }
   return (
-    <div className="min-h-screen bg-white/5 backdrop-blur/20 flex">
-      <aside className="hidden lg:flex w-[260px] shrink-0 flex-col border-r border-white/10 bg-white/5 backdrop-blur">
-        <div className="h-[64px] flex items-center justify-center gap-3 px-5 border-b border-white/10 text-center">
+    <div className="min-h-screen bg-white/[0.04] backdrop-blur/20 flex">
+      <aside className="hidden lg:flex w-[260px] shrink-0 flex-col border-r border-white/[0.06] bg-white/[0.03] backdrop-blur">
+        <div className="h-[64px] flex items-center justify-center gap-3 px-5 border-b border-white/[0.06] text-center">
           <img src="/assets/brand/lkbb-logo.jpg" alt="LKBB" className="h-11 w-11 object-contain bg-transparent" />
           <div className="text-center">
             <div className="text-sm font-black leading-none text-center">LKBB ADMIN</div>
@@ -51,7 +51,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           {navCms.map(item=> {
             const active = isActive(item.href)
             return (
-              <Link key={item.href} href={item.href} className={`flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left ${active ? "bg-white/10 backdrop-blur border border-white/10 text-white" : "hover:bg-white/5 backdrop-blur text-muted-foreground hover:text-foreground"}`}>
+              <Link key={item.href} href={item.href} className={`flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left ${active ? "bg-white/[0.07] backdrop-blur border border-white/10 text-white" : "hover:bg-white/[0.04] backdrop-blur text-muted-foreground hover:text-foreground"}`}>
                 <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
               </Link>
             )
@@ -61,7 +61,7 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           {navKompetisi.map(item=> {
             const active = isActive(item.href)
             return (
-              <Link key={item.href} href={item.href} className={`flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left ${active ? "bg-white/10 backdrop-blur border border-white/10 text-white" : "hover:bg-white/5 backdrop-blur text-muted-foreground hover:text-foreground"}`}>
+              <Link key={item.href} href={item.href} className={`flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left ${active ? "bg-white/[0.07] backdrop-blur border border-white/10 text-white" : "hover:bg-white/[0.04] backdrop-blur text-muted-foreground hover:text-foreground"}`}>
                 <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
               </Link>
             )
@@ -71,18 +71,18 @@ export function AdminNav({ children }: { children: React.ReactNode }){
           {navSistem.map(item=> {
             const active = isActive(item.href)
             return (
-              <Link key={item.href} href={item.href} className={`flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left ${active ? "bg-white/10 backdrop-blur border border-white/10 text-white" : "hover:bg-white/5 backdrop-blur text-muted-foreground hover:text-foreground"}`}>
+              <Link key={item.href} href={item.href} className={`flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left ${active ? "bg-white/[0.07] backdrop-blur border border-white/10 text-white" : "hover:bg-white/[0.04] backdrop-blur text-muted-foreground hover:text-foreground"}`}>
                 <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
               </Link>
             )
           })}
         </nav>
-        <div className="px-4 sm:px-6 py-3 border-t border-white/10">
-          <Link href="/" className="flex w-full items-center justify-start gap-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur px-3 py-2.5 text-left text-xs font-bold">← Kembali ke Website</Link>
+        <div className="px-4 sm:px-6 py-3 border-t border-white/[0.06]">
+          <Link href="/" className="flex w-full items-center justify-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.04] backdrop-blur px-3 py-2.5 text-left text-xs font-bold">← Kembali ke Website</Link>
         </div>
       </aside>
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="lg:hidden sticky top-0 z-30 h-[56px] flex items-center justify-between px-4 border-b border-white/10 bg-white/5 backdrop-blur">
+        <header className="lg:hidden sticky top-0 z-30 h-[56px] flex items-center justify-between px-4 border-b border-white/[0.06] bg-white/[0.03] backdrop-blur">
           <div className="flex items-center gap-2">
             <Sheet open={open} onOpenChange={setOpen}>
               <Button variant="ghost" size="icon" className="h-9 w-9" onClick={()=> setOpen(true)}>
@@ -102,21 +102,21 @@ export function AdminNav({ children }: { children: React.ReactNode }){
                   {nav.map(item=> {
                     const active = isActive(item.href)
                     return (
-                      <Link key={item.href} href={item.href} onClick={()=> setOpen(false)} className={`flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left ${active ? "bg-white/10 backdrop-blur border border-white/10 text-white" : "hover:bg-white/5 backdrop-blur text-muted-foreground hover:text-foreground"}`}>
+                      <Link key={item.href} href={item.href} onClick={()=> setOpen(false)} className={`flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left ${active ? "bg-white/[0.07] backdrop-blur border border-white/10 text-white" : "hover:bg-white/[0.04] backdrop-blur text-muted-foreground hover:text-foreground"}`}>
                         <item.icon className="h-4 w-4 shrink-0" /> <span>{item.label}</span>
                       </Link>
                     )
                   })}
                 </nav>
                 <div className="px-4 sm:px-6 py-3 border-t">
-                  <Link href="/" onClick={()=> setOpen(false)} className="flex w-full items-center justify-start gap-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur px-3 py-2.5 text-left text-xs font-bold">← Kembali ke Website</Link>
+                  <Link href="/" onClick={()=> setOpen(false)} className="flex w-full items-center justify-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.04] backdrop-blur px-3 py-2.5 text-left text-xs font-bold">← Kembali ke Website</Link>
                 </div>
               </SheetContent>
             </Sheet>
             <img src="/assets/brand/lkbb-logo.jpg" alt="" className="h-10 w-10 object-contain bg-transparent" />
             <span className="text-sm font-black">ADMIN LKBB</span>
           </div>
-          <Link href="/" className="text-xs font-bold border border-white/10 rounded-full px-3 py-1">Website →</Link>
+          <Link href="/" className="text-xs font-bold border border-white/[0.06] rounded-full px-3 py-1">Website →</Link>
         </header>
         <div className="flex-1 min-w-0">
           {children}

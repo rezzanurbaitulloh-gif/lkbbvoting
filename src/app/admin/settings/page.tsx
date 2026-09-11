@@ -234,20 +234,20 @@ export default function SettingsPage(){
 
       <div className="flex gap-1.5 overflow-x-auto pb-1">
         {tabs.map(t=> (
-          <button key={t.id} onClick={()=> setTab(t.id)} className={`shrink-0 inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold border ${tab===t.id ? "bg-white/10 backdrop-blur border border-white/10 text-white border-foreground" : "bg-white/5 backdrop-blur border-white/10 hover:bg-white/5 backdrop-blur"}`}>
+          <button key={t.id} onClick={()=> setTab(t.id)} className={`shrink-0 inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold border ${tab===t.id ? "bg-white/[0.07] backdrop-blur border border-white/10 text-white border-foreground" : "bg-white/[0.03] backdrop-blur border-white/[0.06] hover:bg-white/[0.04] backdrop-blur"}`}>
             <t.icon className="h-3.5 w-3.5"/> {t.label}
           </button>
         ))}
       </div>
 
       {tab==="general" && (
-        <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-4 sm:space-y-5">
+        <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-4 sm:space-y-5">
           <h3 className="text-sm font-black">Umum — Identitas Website</h3>
           <div><label className="text-xs font-bold">Nama Kompetisi</label><Input id="site_name" defaultValue={getVal("site.name","LKBB JAVASOMA")} /></div>
           <div><label className="text-xs font-bold">Sub-judul</label><Input id="site_subtitle" defaultValue={getVal("site.subtitle","The Impression")} /></div>
           <div><label className="text-xs font-bold">Tagline</label><Input id="site_tagline" defaultValue={getVal("site.tagline","ASTRA DHARMA HAYUNING BUDAYA")} /></div>
           <div><label className="text-xs font-bold">Penyelenggara</label><Input id="site_org" defaultValue={getVal("site.organizer","PASKIBRA SMKN 1 KERTOSONO")} /></div>
-          <div><label className="text-xs font-bold">Deskripsi Footer</label><textarea id="site_desc" defaultValue={getVal("site.description","")} className="w-full min-h-[70px] rounded-xl border border-white/10 px-3 py-2 text-sm" /></div>
+          <div><label className="text-xs font-bold">Deskripsi Footer</label><textarea id="site_desc" defaultValue={getVal("site.description","")} className="w-full min-h-[70px] rounded-xl border border-white/[0.08] px-3 py-2 text-sm" /></div>
           <Button disabled={saving} className="rounded-full" onClick={()=>{
             const updates = [
               { key:"site.name", value: (document.getElementById("site_name") as HTMLInputElement).value, category:"general" },
@@ -263,7 +263,7 @@ export default function SettingsPage(){
       )}
 
       {tab==="branding" && (
-        <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-4 sm:space-y-5">
+        <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-4 sm:space-y-5">
           <h3 className="text-sm font-black flex items-center gap-2"><ImgIcon className="h-4 w-4"/> Branding — Logo & Poster</h3>
           <p className="text-xs text-muted-foreground">Upload via grid drag & drop — klik grid atau drag gambar. Tanpa field URL.</p>
           {[
@@ -280,7 +280,7 @@ export default function SettingsPage(){
       )}
 
       {tab==="contact" && (
-        <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-4 sm:space-y-5">
+        <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-4 sm:space-y-5">
           <h3 className="text-sm font-black">Kontak</h3>
           <div><label className="text-xs font-bold">Email</label><Input id="c_email" defaultValue={getVal("contact.email")} /></div>
           <div><label className="text-xs font-bold">WhatsApp Umum</label><Input id="c_wa" defaultValue={getVal("contact.whatsapp")} placeholder="628xxx" /></div>
@@ -308,7 +308,7 @@ export default function SettingsPage(){
 
       {tab==="social" && (
         <div className="space-y-4">
-          <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-5">
+          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-5">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-xl bg-[#0B0C0F] grid place-items-center text-[var(--primary)] border"><Share2 className="h-4 w-4"/></div>
               <div>
@@ -318,7 +318,7 @@ export default function SettingsPage(){
             </div>
             <div className="space-y-3">
               {socialList.map((item, idx)=> (
-                <div key={item.id} className="rounded-xl border border-white/10 p-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center bg-white/5 backdrop-blur/10">
+                <div key={item.id} className="rounded-xl border border-white/[0.06] p-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center bg-white/[0.04] backdrop-blur/10">
                   <div className="flex items-center gap-2 flex-1 min-w-0 w-full">
                     <div className="h-9 w-9 rounded-xl border grid place-items-center shrink-0 overflow-hidden">
                       {item.platform==="instagram" && <span className="bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white h-full w-full grid place-items-center"><svg viewBox="0 0 24 24" className="h-5 w-5 fill-white"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></span>}
@@ -352,7 +352,7 @@ export default function SettingsPage(){
               ))}
               {socialList.length===0 && <div className="text-xs text-muted-foreground text-center py-4">Belum ada sosial. Tambah di bawah.</div>}
             </div>
-            <div className="rounded-xl border border-dashed border-white/10 p-3 space-y-3 bg-white/5 backdrop-blur/20">
+            <div className="rounded-xl border border-dashed border-white/[0.06] p-3 space-y-3 bg-white/[0.04] backdrop-blur/20">
               <div className="text-xs font-black">Tambah Platform Baru</div>
               <div className="grid sm:grid-cols-[180px_1fr_auto] gap-2">
                 <Select value={newSocialPlatform} onValueChange={setNewSocialPlatform} options={[{value:"instagram",label:"Instagram"},{value:"tiktok",label:"TikTok"},{value:"youtube",label:"YouTube"},{value:"facebook",label:"Facebook"},{value:"twitter",label:"X (Twitter)"},{value:"linkedin",label:"LinkedIn"},{value:"whatsapp",label:"WhatsApp"},{value:"telegram",label:"Telegram"}]} />
@@ -390,7 +390,7 @@ export default function SettingsPage(){
       {tab==="appearance" && (
         <div className="space-y-4">
           {/* Warna & Tema */}
-          <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-5">
+          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-5">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-xl grid place-items-center text-white" style={{background: previewPrimary}}><Palette className="h-4 w-4"/></div>
               <div>
@@ -404,7 +404,7 @@ export default function SettingsPage(){
                 <div>
                   <label className="text-xs font-bold">Warna Primer</label>
                   <div className="mt-1.5 flex gap-2 items-center">
-                    <div className="relative h-[42px] w-[64px] rounded-xl border border-white/10 overflow-hidden shrink-0">
+                    <div className="relative h-[42px] w-[64px] rounded-xl border border-white/[0.06] overflow-hidden shrink-0">
                       <input type="color" value={primaryColor} onChange={e=> setPrimaryColor(e.target.value)} className="absolute inset-0 h-full w-full p-0 border-0 cursor-pointer" style={{background: primaryColor}} />
                     </div>
                     <Input value={primaryColor} onChange={e=> setPrimaryColor(e.target.value)} placeholder="#C9A86A" className="flex-1 font-mono text-sm" />
@@ -412,15 +412,15 @@ export default function SettingsPage(){
                   <p className="text-[11px] text-muted-foreground mt-1">Gunakan palette warna penuh atau ketik hex manual (contoh #FF385C).</p>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {["#C9A86A","#FF385C","#0066CC","#00A86B","#8B5CF6","#F59E0B","#EF4444","#0EA5E9","#111111","#F97316"].map(c=> (
-                      <button key={c} onClick={()=> setPrimaryColor(c)} className="h-7 w-7 rounded-full border border-white/10 shrink-0" style={{background:c}} title={c} />
+                      <button key={c} onClick={()=> setPrimaryColor(c)} className="h-7 w-7 rounded-full border border-white/[0.06] shrink-0" style={{background:c}} title={c} />
                     ))}
                   </div>
                 </div>
               </div>
 
               {/* Preview */}
-              <div className="rounded-xl border border-white/10 overflow-hidden bg-white/5 backdrop-blur/20">
-                <div className="px-3 py-2 border-b border-white/10 bg-white/5 backdrop-blur flex items-center justify-between">
+              <div className="rounded-xl border border-white/[0.06] overflow-hidden bg-white/[0.04] backdrop-blur/20">
+                <div className="px-3 py-2 border-b border-white/[0.06] bg-white/[0.03] backdrop-blur flex items-center justify-between">
                   <span className="text-xs font-bold flex items-center gap-1.5"><Eye className="h-3.5 w-3.5"/> Preview</span>
                   <span className="text-[11px] text-muted-foreground">Live — warna primer {previewPrimary}</span>
                 </div>
@@ -459,7 +459,7 @@ export default function SettingsPage(){
           </div>
 
           {/* Hero background — Background judul web di beranda */}
-          <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-5">
+          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-5">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-xl bg-[#0B0C0F] grid place-items-center text-[#C9A86A] border"><ImgIcon className="h-4 w-4"/></div>
               <div>
@@ -495,7 +495,7 @@ export default function SettingsPage(){
               </div>
 
               {/* Hero preview */}
-              <div className="rounded-xl overflow-hidden border border-white/10 bg-[#09090b] relative h-[220px] sm:h-[260px] grid place-items-center text-center">
+              <div className="rounded-xl overflow-hidden border border-white/[0.06] bg-[#09090b] relative h-[220px] sm:h-[260px] grid place-items-center text-center">
                 {heroBg ? <img src={heroBg} alt="hero bg preview" className="absolute inset-0 h-full w-full object-cover" style={{opacity: heroOverlay/100}} onError={e=> (e.currentTarget.style.display='none')} /> : <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#09090b]" />}
                 <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/20 via-[#09090b]/50 to-[#09090b]" />
                 {heroLogo && <img src={heroLogo} alt="" className="absolute inset-0 m-auto h-[140px] w-[140px] object-contain opacity-10 pointer-events-none" />}
@@ -520,7 +520,7 @@ export default function SettingsPage(){
           </div>
 
           {/* Tim background — sama seperti hero tapi CRUD terpisah */}
-          <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-5">
+          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-5">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-xl bg-[#0B0C0F] grid place-items-center text-[#D4B77A] border"><ImgIcon className="h-4 w-4"/></div>
               <div>
@@ -544,7 +544,7 @@ export default function SettingsPage(){
                   <div className="flex justify-between text-[11px] text-muted-foreground"><span>Transparan</span><span>Pekat</span></div>
                 </div>
               </div>
-              <div className="rounded-xl overflow-hidden border border-white/10 bg-[#09090b] relative h-[200px] grid place-items-center text-center">
+              <div className="rounded-xl overflow-hidden border border-white/[0.06] bg-[#09090b] relative h-[200px] grid place-items-center text-center">
                 {(timBg || heroBg) ? <img src={timBg || heroBg} alt="tim bg preview" className="absolute inset-0 h-full w-full object-cover" style={{opacity: (timBg ? timOverlay : heroOverlay)/100}} onError={e=> (e.currentTarget.style.display='none')} /> : <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#09090b]" />}
                 <div className="absolute inset-0 bg-gradient-to-r from-[#09090b] via-[#09090b]/85 to-transparent" />
                 <div className="relative px-4">
@@ -565,7 +565,7 @@ export default function SettingsPage(){
           </div>
 
           {/* Sponsor toggle */}
-          <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-4">
+          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-4">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-xl bg-amber-500 grid place-items-center text-white"><Sparkles className="h-4 w-4"/></div>
               <div>
@@ -573,7 +573,7 @@ export default function SettingsPage(){
                 <p className="text-xs text-muted-foreground">Kontrol apakah blok sponsor tampil di beranda & halaman kompetisi paling bawah.</p>
               </div>
             </div>
-            <label className="flex items-center justify-between rounded-xl border border-white/10 p-4 cursor-pointer hover:bg-white/5 backdrop-blur/30 transition-colors">
+            <label className="flex items-center justify-between rounded-xl border border-white/[0.06] p-4 cursor-pointer hover:bg-white/[0.04] backdrop-blur/30 transition-colors">
               <div>
                 <div className="text-sm font-bold">Tampilkan Sponsor di Website</div>
                 <div className="text-xs text-muted-foreground">Jika dimatikan, sponsor tidak akan tampil di mana pun (beranda & kompetisi), meski data sponsor masih ada.</div>
@@ -583,9 +583,9 @@ export default function SettingsPage(){
                 <input type="checkbox" checked={sponsorEnabled} onChange={e=> setSponsorEnabled(e.target.checked)} className="h-5 w-10 appearance-none rounded-full bg-zinc-300 relative transition-colors checked:bg-emerald-500 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:h-4 before:w-4 before:rounded-full before:bg-white before:transition-transform checked:before:translate-x-5 cursor-pointer" />
               </div>
             </label>
-            <div className="rounded-xl border border-dashed p-4 flex items-center justify-between bg-white/5 backdrop-blur/20">
+            <div className="rounded-xl border border-dashed p-4 flex items-center justify-between bg-white/[0.04] backdrop-blur/20">
               <div className="flex gap-2">
-                {["ASTRA","BRI","Telkomsel"].map(s=> <span key={s} className={`rounded-full px-3 py-1.5 text-xs font-bold border ${sponsorEnabled ? "bg-white/5 backdrop-blur border-white/10" : "bg-zinc-100 text-zinc-400 border-zinc-200 line-through"}`}>{s}</span>)}
+                {["ASTRA","BRI","Telkomsel"].map(s=> <span key={s} className={`rounded-full px-3 py-1.5 text-xs font-bold border ${sponsorEnabled ? "bg-white/[0.03] backdrop-blur border-white/[0.06]" : "bg-zinc-100 text-zinc-400 border-zinc-200 line-through"}`}>{s}</span>)}
               </div>
               <span className="text-xs text-muted-foreground">{sponsorEnabled ? "Pratinjau: sponsor tampil" : "Pratinjau: sponsor disembunyikan"}</span>
             </div>
@@ -599,7 +599,7 @@ export default function SettingsPage(){
 
       {tab==="event" && (
         <div className="space-y-4 sm:space-y-5">
-          <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-4 sm:space-y-5">
+          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-4 sm:space-y-5">
             <h3 className="text-sm font-black">Event & Voting</h3>
             <div><label className="text-xs font-bold">Nama Kompetisi (competitions.name)</label><Input defaultValue={event.name} id="name" /></div>
             <div><label className="text-xs font-bold">Sub-judul</label><Input defaultValue={event.subtitle} id="subtitle" /></div>
@@ -616,7 +616,7 @@ export default function SettingsPage(){
               handleSaveEventField("state", stateVal)
             }}>Simpan Info & Status</Button>
           </div>
-          <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-3">
+          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-3">
             <h3 className="text-sm font-black">Harga Ballot</h3>
             <div><label className="text-xs font-bold">Harga Online per ballot (Rp)</label><Input defaultValue={event.settings?.online_price} id="online_price" type="number" /></div>
             <div><label className="text-xs font-bold">Harga Offline per ballot (Rp)</label><Input defaultValue={event.settings?.offline_price} id="offline_price" type="number" /></div>
@@ -628,7 +628,7 @@ export default function SettingsPage(){
             }}>Simpan Harga</Button>
             <p className="text-xs text-muted-foreground">Harga resmi dihitung server dari DB, tidak dari client.</p>
           </div>
-          <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-3">
+          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-3">
             <h3 className="text-sm font-black">Tampilan Hasil</h3>
             <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={prov} onChange={e=> setProv(e.target.checked)} /> Tampilkan <b>HASIL SEMENTARA</b> (badge kuning)</label>
             <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={fin} onChange={e=> setFin(e.target.checked)} /> Tampilkan <b>HASIL FINAL</b> (badge emas)</label>
@@ -644,7 +644,7 @@ export default function SettingsPage(){
 
       {tab==="sound" && (
         <div className="space-y-4">
-          <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5 space-y-5">
+          <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur p-5 space-y-5">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-xl bg-[#0B0C0F] grid place-items-center text-[var(--primary)] border"><Sparkles className="h-4 w-4"/></div>
               <div>
@@ -652,7 +652,7 @@ export default function SettingsPage(){
                 <p className="text-xs text-muted-foreground">Atur suara ledakan (duar) dan suara pembaca teks. TTS mode random akan acak male/female setiap notifikasi.</p>
               </div>
             </div>
-            <label className="flex items-center justify-between rounded-xl border border-white/10 p-4 cursor-pointer hover:bg-white/5 backdrop-blur/30 transition-colors">
+            <label className="flex items-center justify-between rounded-xl border border-white/[0.06] p-4 cursor-pointer hover:bg-white/[0.04] backdrop-blur/30 transition-colors">
               <div>
                 <div className="text-sm font-bold">Aktifkan Sound</div>
                 <div className="text-xs text-muted-foreground">Jika dimatikan, tidak ada duar maupun TTS di semua user (tetap bisa di-toggle user di device).</div>
@@ -666,7 +666,7 @@ export default function SettingsPage(){
                 <Button type="button" variant="outline" size="sm" className="rounded-full shrink-0" onClick={()=> setPickerFor("soundExp")}><ImgIcon className="h-3.5 w-3.5"/> Pilih</Button>
               </div>
               <div className="mt-2 flex gap-2">
-                <label className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-xs font-bold cursor-pointer hover:bg-white/5 backdrop-blur">
+                <label className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] px-3 py-1.5 text-xs font-bold cursor-pointer hover:bg-white/[0.04] backdrop-blur">
                   <input type="file" accept="audio/*" className="hidden" onChange={async e=>{
                     const file=e.target.files?.[0]; if(!file) return
                     const sup=createBrowserSupabase()
@@ -746,13 +746,13 @@ export default function SettingsPage(){
 
 
       {/* List settings — tanpa bahasa pemrograman, hanya nilai bersih */}
-      <details className="rounded-[12px] border border-white/10 bg-white/5 backdrop-blur">
+      <details className="rounded-[12px] border border-white/[0.06] bg-white/[0.03] backdrop-blur">
         <summary className="p-3 text-xs font-bold cursor-pointer">Lihat semua pengaturan — {settingsRows.length} kunci</summary>
-        <div className="p-3 border-t border-white/10 max-h-[320px] overflow-y-auto space-y-1">
+        <div className="p-3 border-t border-white/[0.06] max-h-[320px] overflow-y-auto space-y-1">
           {settingsRows.map((r:any)=> {
             const val = typeof r.value === 'string' ? r.value : typeof r.value === 'object' && r.value !== null ? (Array.isArray(r.value) ? r.value.join(', ') : Object.values(r.value).join(', ')).slice(0,60) : String(r.value)
             return (
-              <div key={r.key} className="flex justify-between gap-2 text-xs border-b border-white/10/50 py-1.5">
+              <div key={r.key} className="flex justify-between gap-2 text-xs border-b border-white/[0.06]/50 py-1.5">
                 <span className="font-bold">{r.key}</span>
                 <span className="truncate max-w-[50%] text-muted-foreground">{val.slice(0,60)}</span>
                 <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[10px]">{r.category}</span>

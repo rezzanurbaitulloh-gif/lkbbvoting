@@ -38,7 +38,7 @@ export function MediaPicker({
         <DialogHeader><DialogTitle>Pilih Media — {folder}</DialogTitle></DialogHeader>
         <div className="flex gap-2">
           <Input placeholder="Cari nama file..." value={search} onChange={e=> setSearch(e.target.value)} className="flex-1" />
-          <label className="inline-flex items-center justify-center rounded-full bg-white/10 backdrop-blur border border-white/10 text-white px-4 py-2 text-xs font-bold cursor-pointer hover:opacity-90">
+          <label className="inline-flex items-center justify-center rounded-full bg-white/[0.07] backdrop-blur border border-white/10 text-white px-4 py-2 text-xs font-bold cursor-pointer hover:opacity-90">
             {uploading ? "Mengunggah..." : "Upload"}
             <input type="file" accept="image/*" className="hidden" onChange={handleUpload} disabled={uploading} />
           </label>
@@ -46,8 +46,8 @@ export function MediaPicker({
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 overflow-y-auto max-h-[400px] p-1">
           {media.length===0 ? <div className="col-span-full p-8 text-center text-sm text-muted-foreground">Belum ada media. Upload dulu.</div> :
             media.map(m=> (
-              <button key={m.id} onClick={()=> { onSelect(m.url); onOpenChange(false) }} className="group rounded-xl border border-white/10 overflow-hidden hover:border-foreground text-left">
-                <div className="aspect-[4/3] bg-white/5 backdrop-blur overflow-hidden">
+              <button key={m.id} onClick={()=> { onSelect(m.url); onOpenChange(false) }} className="group rounded-xl border border-white/[0.06] overflow-hidden hover:border-foreground text-left">
+                <div className="aspect-[4/3] bg-white/[0.04] backdrop-blur overflow-hidden">
                   <img src={m.url} alt={m.alt_text||""} className="h-full w-full object-cover group-hover:scale-[1.02] transition-transform" />
                 </div>
                 <div className="p-2">

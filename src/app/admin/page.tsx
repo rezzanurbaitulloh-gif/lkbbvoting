@@ -223,7 +223,7 @@ export default function AdminOverview(){
             {/* Mobile cards */}
             <div className="md:hidden space-y-2">
               {recentTx.map((t:any)=> (
-                <div key={t.id} className="rounded-xl border border-white/10 bg-white/5 p-3 flex flex-col gap-1.5">
+                <div key={t.id} className="rounded-xl border border-white/10 bg-white/[0.04] p-3 flex flex-col gap-1.5">
                   <div className="flex justify-between items-center">
                     <span className="font-mono text-[11px] text-white/60">{t.id.slice(0,8)}</span>
                     <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${t.status==="Success" ? "bg-emerald-500 text-white" : t.status==="Failed" ? "bg-red-500 text-white" : "bg-amber-500 text-white"}`}>{t.status==="Success"?"Berhasil":t.status==="Failed"?"Gagal":"Menunggu"}</span>
