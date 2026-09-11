@@ -122,24 +122,23 @@ export default function AdminPeleton(){
       <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur overflow-hidden">
         {/* Desktop table — URUTAN dihapus, nomor urut = urutan tampil per kategori */}
         <div className="hidden md:block overflow-x-auto">
-          <div className="grid grid-cols-[40px_60px_1fr_80px_80px_140px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-white/[0.06] bg-white/[0.04] backdrop-blur/30">
+          <div className="grid grid-cols-[40px_60px_1fr_80px_80px_110px] gap-2 px-4 py-3 text-[11px] font-bold tracking-widest text-muted-foreground border-b border-white/[0.06] bg-white/[0.04] backdrop-blur/30">
             <div><input type="checkbox" checked={filtered.length>0 && selected.size===filtered.length} onChange={toggleAll} /></div><div>NO</div><div>TIM</div><div>KELOMPOK</div><div>TAMPIL</div><div className="text-right">AKSI</div>
           </div>
           {filtered.map(p=> (
-            <div key={p.id} className="grid grid-cols-[40px_60px_1fr_80px_80px_140px] gap-2 px-4 py-3 items-center border-b border-white/[0.06]/50 last:border-0">
+            <div key={p.id} className="grid grid-cols-[40px_60px_1fr_80px_80px_110px] gap-2 px-4 py-3 items-center border-b border-white/[0.06]/50 last:border-0">
               <div><input type="checkbox" checked={selected.has(p.id)} onChange={()=> toggleSelect(p.id)} /></div>
               <div className="font-mono text-sm">#{p.number}</div>
-              <div className="flex gap-3 min-w-0">
+              <Link href={`/admin/peleton/${p.id}`} className="flex gap-3 min-w-0 hover:opacity-80 transition-opacity">
                 <img src={p.image_url} alt="" className="h-9 w-9 rounded-lg object-cover border" />
                 <div className="min-w-0">
-                  <div className="text-sm font-bold truncate">{p.name}</div>
+                  <div className="text-sm font-bold truncate hover:text-primary transition-colors">{p.name}</div>
                   <div className="text-xs text-muted-foreground truncate">{p.school} • #{p.number}</div>
                 </div>
-              </div>
+              </Link>
               <div className="text-xs"><Badge variant="outline">{p.category}</Badge></div>
               <div><span className={`inline-flex rounded-full px-2 py-1 text-[11px] font-bold ${p.active ? "bg-emerald-500 text-white" : "bg-zinc-500 text-white"}`}>{p.active ? "Tampil" : "Disembunyikan"}</span></div>
               <div className="flex justify-end gap-1.5">
-                <Link href={`/admin/peleton/${p.id}`}><Button variant="outline" size="sm" className="rounded-full h-7 text-xs">Lihat</Button></Link>
                 <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs gap-1" onClick={()=> openEdit(p)}><Pencil className="h-3 w-3"/>Ubah</Button>
                 <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600 gap-1" onClick={()=> setDelTarget(p)}><Trash2 className="h-3 w-3"/>Hapus</Button>
               </div>
@@ -153,19 +152,20 @@ export default function AdminPeleton(){
             <div key={p.id} className="rounded-xl border border-white/[0.06] p-3 flex flex-col gap-2">
               <div className="flex gap-3">
                 <input type="checkbox" className="mt-1" checked={selected.has(p.id)} onChange={()=> toggleSelect(p.id)} />
-                <img src={p.image_url} alt="" className="h-10 w-10 rounded-lg object-cover border shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold">#{p.number}</span>
-                    <Badge variant="outline" className="text-[11px]">{p.category}</Badge>
-                    <span className={`ml-auto inline-flex rounded-full px-2 py-0.5 text-[11px] font-bold ${p.active ? "bg-emerald-500 text-white" : "bg-zinc-500 text-white"}`}>{p.active ? "Tampil" : "Sembunyi"}</span>
+                <Link href={`/admin/peleton/${p.id}`} className="flex gap-3 flex-1 min-w-0 hover:opacity-80 transition-opacity">
+                  <img src={p.image_url} alt="" className="h-10 w-10 rounded-lg object-cover border shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs font-bold">#{p.number}</span>
+                      <Badge variant="outline" className="text-[11px]">{p.category}</Badge>
+                      <span className={`ml-auto inline-flex rounded-full px-2 py-0.5 text-[11px] font-bold ${p.active ? "bg-emerald-500 text-white" : "bg-zinc-500 text-white"}`}>{p.active ? "Tampil" : "Sembunyi"}</span>
+                    </div>
+                    <div className="text-sm font-bold truncate hover:text-primary transition-colors">{p.name}</div>
+                    <div className="text-xs text-muted-foreground truncate">{p.school}</div>
                   </div>
-                  <div className="text-sm font-bold truncate">{p.name}</div>
-                  <div className="text-xs text-muted-foreground truncate">{p.school}</div>
-                </div>
+                </Link>
               </div>
-              <div className="grid grid-cols-3 gap-1.5">
-                <Link href={`/admin/peleton/${p.id}`}><Button variant="outline" size="sm" className="w-full rounded-full h-7 text-xs">Lihat</Button></Link>
+              <div className="grid grid-cols-2 gap-1.5">
                 <Button variant="outline" size="sm" className="w-full rounded-full h-7 text-xs gap-1" onClick={()=> openEdit(p)}><Pencil className="h-3 w-3"/>Ubah</Button>
                 <Button variant="outline" size="sm" className="w-full rounded-full h-7 text-xs text-red-600 border-red-200 gap-1" onClick={()=> setDelTarget(p)}><Trash2 className="h-3 w-3"/>Hapus</Button>
               </div>
