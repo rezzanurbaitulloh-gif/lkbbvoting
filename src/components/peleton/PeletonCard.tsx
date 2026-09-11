@@ -49,7 +49,7 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
     <div className="group relative flex flex-col overflow-hidden rounded-[14px] xs:rounded-[16px] border border-white/[0.06] bg-white/[0.03] backdrop-blur max-w-full">
       <div className="absolute top-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-[#C9A86A]/0 group-hover:via-[#C9A86A]/40 to-transparent transition-all duration-500" />
       <Link href={profileUrl} className="block">
-        <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-[#0F1115]">
+        <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-white/[0.02] backdrop-blur">
           {!imgLoaded && !imgError && <div className="absolute inset-0 animate-pulse bg-white/[0.04] backdrop-blur" />}
           {!imgError && photo ? (
             <img
@@ -64,7 +64,7 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
             />
           ) : null}
           {imgError || !photo ? (
-            <div className="absolute inset-0 grid place-items-center bg-[#0F1115] p-4">
+            <div className="absolute inset-0 grid place-items-center bg-white/[0.02] backdrop-blur p-4">
               <div className="flex flex-col items-center gap-3 text-center">
                 <div className="h-20 w-20 xs:h-24 xs:w-24 rounded-full bg-white/[0.04] border border-white/[0.06] grid place-items-center p-3">
                   <img src={logo} alt={`${name} logo`} className="h-full w-full object-contain opacity-90" />

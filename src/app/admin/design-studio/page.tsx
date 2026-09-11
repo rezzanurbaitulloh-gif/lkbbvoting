@@ -185,13 +185,13 @@ export default function DesignStudio(){
   return (
     <div className="h-screen flex flex-col bg-[#09090b] text-white overflow-hidden">
       {/* Header */}
-      <div className="h-14 border-b border-white/[0.06] flex items-center justify-between px-3 sm:px-4 bg-[#111318] shrink-0">
+      <div className="h-14 border-b border-white/[0.06] flex items-center justify-between px-3 sm:px-4 bg-white/[0.03] backdrop-blur shrink-0">
         <div className="flex items-center gap-3">
           <a href="/admin" className="text-xs font-bold tracking-wide text-white/60 hover:text-white">← Dashboard</a>
           <div className="h-4 w-px bg-white/10" />
           <span className="text-sm font-black">DESIGN STUDIO</span>
           <select value={selectedPage} onChange={e=> setSelectedPage(e.target.value)} className="ml-2 bg-white/[0.06] border border-white/10 rounded-full px-3 py-1 text-xs font-bold">
-            {pages.map(p=> <option key={p.slug} value={p.slug} className="bg-[#111318]">{p.title} • {p.slug}</option>)}
+            {pages.map(p=> <option key={p.slug} value={p.slug} className="bg-white/[0.03] backdrop-blur">{p.title} • {p.slug}</option>)}
             {pages.length===0 && <option value="home">Beranda • home</option>}
           </select>
           <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 text-[10px] font-bold text-amber-200">Draft</span>
@@ -207,7 +207,7 @@ export default function DesignStudio(){
 
       <div className="flex-1 flex overflow-hidden">
         {/* Elements */}
-        <div className="w-[220px] shrink-0 border-r border-white/[0.06] bg-[#0F1115] hidden lg:flex flex-col">
+        <div className="w-[220px] shrink-0 border-r border-white/[0.06] bg-white/[0.02] backdrop-blur hidden lg:flex flex-col">
           <div className="p-3 border-b border-white/[0.04]">
             <div className="text-[11px] font-bold tracking-widest text-white/60">ELEMENTS</div>
             <div className="mt-2 grid grid-cols-2 gap-2">
@@ -250,7 +250,7 @@ export default function DesignStudio(){
         </div>
 
         {/* Canvas — FULL WEBSITE PREVIEW, semua elemen editable */}
-        <div className="flex-1 bg-[#040A14] overflow-auto flex flex-col items-center p-2 sm:p-4">
+        <div className="flex-1 bg-[#09090b] overflow-auto flex flex-col items-center p-2 sm:p-4">
           <div className="shrink-0 flex items-center gap-2 mb-3 sm:mb-4">
             <span className="text-[11px] font-bold tracking-widest text-white/40">CANVAS</span>
             <span className="text-[11px] px-2 py-1 rounded-full bg-white/10 text-white/60">{viewport} • {viewportWidth}px • {zoom}%</span>
@@ -259,7 +259,7 @@ export default function DesignStudio(){
           <div className="w-full flex justify-center overflow-auto pb-6 sm:pb-8">
             <div className="bg-[#09090b] shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden border border-white/10 rounded-[12px] flex flex-col" style={{ width: viewportWidth, transform: `scale(${scale})`, transformOrigin: "top center", minHeight: 680 }}>
               {/* Full website preview — header + sections + footer, semua editable */}
-              <div className="h-14 border-b border-white/[0.06] bg-[#111318] flex items-center justify-between px-4 shrink-0">
+              <div className="h-14 border-b border-white/[0.06] bg-white/[0.03] backdrop-blur flex items-center justify-between px-4 shrink-0">
                 <div className="flex items-center gap-2"><div className="h-8 w-8 rounded bg-[#C9A86A] grid place-items-center text-[10px] font-black text-[#0C0A06]">LKBB</div><span className="text-xs font-black text-white">LKBB JAVASOMA</span></div>
                 <div className="hidden sm:flex gap-1 text-[11px] text-white/60"><span>Beranda</span><span>Tim</span><span>Kompetisi</span><span>Profile</span></div>
                 <div className="h-7 px-3 rounded-full bg-white text-[#0B0C0F] text-xs font-black grid place-items-center">Preview</div>
@@ -337,7 +337,7 @@ export default function DesignStudio(){
                           <p className="text-xs text-white/60 mt-1">{String(content.description || "Beranda urut nomor tampil")}</p>
                           <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {[1,2,3,4,5,6].map(i=> (
-                              <div key={i} onClick={(e)=>{e.stopPropagation(); handleSelect("team-"+i)}} className={`rounded-xl border p-3 cursor-pointer ${selectedId===s.id+"-team-"+i ? "border-[#C9A86A] bg-[#C9A86A]/10" : "border-white/10 bg-[#111318] hover:border-white/20"}`}>
+                              <div key={i} onClick={(e)=>{e.stopPropagation(); handleSelect("team-"+i)}} className={`rounded-xl border p-3 cursor-pointer ${selectedId===s.id+"-team-"+i ? "border-[#C9A86A] bg-[#C9A86A]/10" : "border-white/10 bg-white/[0.03] backdrop-blur hover:border-white/20"}`}>
                                 <div className="aspect-[4/3] rounded-lg bg-white/5 grid place-items-center text-white/20 text-xs">Foto #{i} — klik untuk edit ukuran/posisi</div>
                                 <div className="mt-2 h-3 w-20 bg-white/10 rounded" /><div className="mt-1 h-3 w-28 bg-white/5 rounded" />
                               </div>
@@ -346,7 +346,7 @@ export default function DesignStudio(){
                         </div>
                       )}
                       {s.type==="podium" && (
-                        <div className="bg-[#040A14] p-6 text-center border-y border-white/5">
+                        <div className="bg-[#09090b] p-6 text-center border-y border-white/5">
                           <div className="text-[10px] tracking-[0.16em] text-[#C9A86A] font-bold">HASIL SEMENTARA</div>
                           <h3 className="text-[18px] font-black text-white mt-1">PODIUM PELETON TERFAVORIT</h3>
                           <div className="mt-4 flex items-end justify-center gap-2">
@@ -371,7 +371,7 @@ export default function DesignStudio(){
                         </div>
                       )}
                       {s.type==="text_block" && (
-                        <div className="bg-[#111318] p-6 border-y border-white/5">
+                        <div className="bg-white/[0.03] backdrop-blur p-6 border-y border-white/5">
                           <h3 onClick={(e)=>{e.stopPropagation(); handleSelect("text-title")}} className={`text-sm font-black cursor-pointer p-1 rounded ${selectedId===s.id+"-text-title" ? "ring-1 ring-[#C9A86A] bg-white/5 text-white" : "text-white hover:bg-white/5"}`}>{String(content.title || s.title)}</h3>
                           <p onClick={(e)=>{e.stopPropagation(); handleSelect("text-body")}} className={`text-sm mt-2 cursor-pointer p-1 rounded ${selectedId===s.id+"-text-body" ? "ring-1 ring-[#C9A86A] bg-white/5 text-white" : "text-white/60 hover:bg-white/5"}`}>{String(content.text || content.description || "Teks editable — klik untuk ubah di panel kanan. Drag untuk pindah, handle untuk resize.")}</p>
                         </div>
@@ -383,13 +383,13 @@ export default function DesignStudio(){
                         </div>
                       )}
                       {s.type==="image" && (
-                        <div className="bg-[#111318] p-6 text-center">
+                        <div className="bg-white/[0.03] backdrop-blur p-6 text-center">
                           {content.src ? <img onClick={(e)=>{e.stopPropagation(); handleSelect("image-src")}} src={String(content.src)} alt={String(content.alt||"")} className={`mx-auto max-h-[320px] rounded-xl border cursor-pointer ${selectedId===s.id+"-image-src" ? "border-[#C9A86A] ring-2 ring-[#C9A86A]/50" : "border-white/10 hover:border-white/20"}`} /> : <div onClick={(e)=>{e.stopPropagation(); handleSelect("image-src")}} className={`h-[180px] rounded-xl border border-dashed bg-white/5 grid place-items-center text-white/30 text-xs cursor-pointer ${selectedId===s.id+"-image-src" ? "border-[#C9A86A] bg-[#C9A86A]/10" : "border-white/10 hover:border-[#C9A86A]/30"}`}>Image — kosong, klik untuk ganti • Drag untuk pindah</div>}
                         </div>
                       )}
                       {s.type==="divider" && <div onClick={(e)=>{e.stopPropagation(); handleSelect("divider")}} className={`bg-[#09090b] p-4 cursor-pointer ${selectedId===s.id+"-divider" ? "bg-[#C9A86A]/10 ring-1 ring-[#C9A86A] ring-inset" : "hover:bg-white/5"}`}><div className="h-px bg-white/10 w-full" style={{ height: s.settings?.thickness || "1px", background: s.settings?.color || undefined }} /></div>}
                       {!["hero","countdown","featured","podium","sponsors","cta","text_block","banner","image","divider"].includes(s.type) && (
-                        <div className="bg-[#111318] p-6 border-y border-white/5">
+                        <div className="bg-white/[0.03] backdrop-blur p-6 border-y border-white/5">
                           <div className="text-xs font-bold text-white/50">{s.type} • {s.key}</div>
                           <div className="text-sm text-white mt-1">{s.title}</div>
                         </div>
@@ -399,15 +399,15 @@ export default function DesignStudio(){
                 })}
               </div>
               <div className="h-[1px] bg-white/10 w-full" />
-              <div className="bg-[#111318] p-3 text-center text-xs text-white/30">End of page • {sections.length} sections • Semua elemen bisa di-drag, di-resize, dihapus, diubah warna/ukuran</div>
-              <div className="bg-[#0F1115] border-t border-white/5 p-2 text-center text-[11px] text-white/20">Footer • LKBB JAVASOMA 2026 — full website preview</div>
+              <div className="bg-white/[0.03] backdrop-blur p-3 text-center text-xs text-white/30">End of page • {sections.length} sections • Semua elemen bisa di-drag, di-resize, dihapus, diubah warna/ukuran</div>
+              <div className="bg-white/[0.02] backdrop-blur border-t border-white/5 p-2 text-center text-[11px] text-white/20">Footer • LKBB JAVASOMA 2026 — full website preview</div>
             </div>
           </div>
           <div className="mt-3 text-center text-[11px] text-white/30">Preview full website • Klik teks untuk edit • Drag ↕ untuk urutan • Handle sudut untuk resize • Semua halaman (Beranda/Tim/Kompetisi) tersedia di selector atas</div>
         </div>
 
         {/* Properties */}
-        <div className="w-[300px] shrink-0 border-l border-white/[0.06] bg-[#0F1115] hidden lg:flex flex-col">
+        <div className="w-[300px] shrink-0 border-l border-white/[0.06] bg-white/[0.02] backdrop-blur hidden lg:flex flex-col">
           <div className="p-3 border-b border-white/[0.04] flex items-center justify-between">
             <span className="text-[11px] font-bold tracking-widest text-white/60">PROPERTIES</span>
             {selectedSection && <span className="text-[10px] px-2 py-1 rounded-full bg-[#C9A86A]/20 text-[#C9A86A] font-bold">{selectedSection.type}</span>}
@@ -532,7 +532,7 @@ export default function DesignStudio(){
       </div>
 
       {/* Bottom bar */}
-      <div className="h-10 border-t border-white/[0.06] bg-[#111318] flex items-center justify-between px-3 shrink-0">
+      <div className="h-10 border-t border-white/[0.06] bg-white/[0.03] backdrop-blur flex items-center justify-between px-3 shrink-0">
         <div className="flex items-center gap-1.5">
           <button onClick={()=> setViewport("desktop")} className={`h-7 px-2.5 rounded-full text-xs font-bold flex items-center gap-1.5 ${viewport==="desktop" ? "bg-white text-[#0B0C0F]" : "bg-white/5 text-white/60"}`}><Monitor className="h-3.5 w-3.5"/> Desktop</button>
           <button onClick={()=> setViewport("tablet")} className={`h-7 px-2.5 rounded-full text-xs font-bold flex items-center gap-1.5 ${viewport==="tablet" ? "bg-white text-[#0B0C0F]" : "bg-white/5 text-white/60"}`}><Tablet className="h-3.5 w-3.5"/> Tablet</button>
