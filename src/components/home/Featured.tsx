@@ -35,7 +35,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
             <h2 className="mt-3 text-[22px] sm:text-[26px] md:text-[30px] font-black tracking-[-0.032em] text-white leading-[0.92] break-words font-display">DUKUNG PELETON <span className="text-white">FAVORITMU!</span></h2>
             <p className="mt-3 text-[13px] sm:text-[13.5px] text-white/60 leading-relaxed max-w-xl">Beranda urut nomor tampil (01, 02, 03…) — SMP & SMA terpisah. Peringkat disembunyikan saat voting aktif.</p>
           </div>
-          <Link href="/tim" className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-[#C9A86A]/20 bg-white/[0.02] hover:bg-[#C9A86A]/10 px-4 py-2 text-xs font-semibold text-[#C9A86A] hover:text-white transition-colors shrink-0">LIHAT SEMUA <ArrowRight className="h-3 w-3"/></Link>
+          <Link href="/tim" className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/15 px-4 py-2 text-xs font-semibold text-white/80 hover:text-white transition-colors shrink-0">LIHAT SEMUA <ArrowRight className="h-3 w-3"/></Link>
         </div>
 
         {/* SMP */}
@@ -65,7 +65,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
         </div>
 
         <Link href="/tim" className="mt-6 flex md:hidden">
-          <Button variant="outline" className="w-full rounded-full bg-transparent border-white/15 text-white h-10 text-sm">Lihat Semua</Button>
+          <Button variant="outline" className="w-full rounded-full bg-white/[0.04] border-white/15 text-white hover:bg-white/[0.07] hover:border-white/20 h-11 text-sm font-semibold">Lihat Semua</Button>
         </Link>
       </div>
     </section>

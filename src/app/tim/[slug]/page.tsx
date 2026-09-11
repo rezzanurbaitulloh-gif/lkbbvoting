@@ -62,9 +62,8 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
               </div>
               <div>
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="gold">{peleton.category}</Badge>
-                  <Badge variant="outline" className="bg-white/10 border-white/15 text-white">{peleton.city} • {peleton.province}</Badge>
-                  <Badge className="bg-[#A51D2D] text-white border-[#A51D2D]">Terverifikasi</Badge>
+                  <Badge variant="gold" className="shadow-sm">{peleton.category}</Badge>
+                  <Badge variant="outline" className="bg-white/10 border-white/20 text-white backdrop-blur">{peleton.city} • {peleton.province}</Badge>
                 </div>
                 <div className="mt-3 flex gap-3 items-center">
                   <img src={logo} alt="logo" className="h-14 w-14 object-contain bg-transparent hidden md:block drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.5))" }} />
@@ -77,20 +76,20 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-white/60 text-pretty max-w-2xl">{peleton.description}</p>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Link href={supportUrl}><Button size="lg" className="rounded-full px-8 h-[46px] font-black">DUKUNG PELETON INI</Button></Link>
-                  {showRank && <span className="inline-flex items-center rounded-full bg-[#C9A86A] px-3 py-1 text-xs font-black text-white">RANK #{rank}</span>}
+                  <Link href={supportUrl}><Button size="lg" className="rounded-full px-8 h-[46px] font-black bg-[#C9A86A] text-[#0C0A06] hover:bg-[#D4B77A] shadow-[0_4px_16px_rgba(201,168,106,0.30)] border border-[#C9A86A]">DUKUNG PELETON INI</Button></Link>
+                  {showRank && <span className="inline-flex items-center rounded-full bg-[#C9A86A] px-3 py-1 text-xs font-black text-[#0C0A06] border border-[#C9A86A] shadow-sm">RANK #{rank}</span>}
                 </div>
                 <div className="mt-6 flex gap-3 max-w-lg">
-                  <div className="flex-1 rounded-xl border border-white/10 bg-white/5 backdrop-blur p-3 text-center">
-                    <div className="text-[11px] font-bold tracking-widest text-white/50">NOMOR PESERTA</div>
+                  <div className="flex-1 rounded-xl border border-white/15 bg-white/[0.07] backdrop-blur p-3 text-center shadow-sm">
+                    <div className="text-[11px] font-bold tracking-widest text-white/70">NOMOR PESERTA</div>
                     <div className="text-sm font-black text-white">#{peleton.number}</div>
                   </div>
-                  <div className="flex-1 rounded-xl border border-white/10 bg-white/5 backdrop-blur p-3 text-center">
-                    <div className="text-[11px] font-bold tracking-widest text-white/50">KATEGORI</div>
+                  <div className="flex-1 rounded-xl border border-white/15 bg-white/[0.07] backdrop-blur p-3 text-center shadow-sm">
+                    <div className="text-[11px] font-bold tracking-widest text-white/70">KATEGORI</div>
                     <div className="text-sm font-black text-white">{peleton.category}</div>
                   </div>
-                  <div className="flex-1 rounded-xl border border-white/10 bg-white/5 backdrop-blur p-3 text-center">
-                    <div className="text-[11px] font-bold tracking-widest text-white/50">STATUS</div>
+                  <div className="flex-1 rounded-xl border border-white/15 bg-white/[0.07] backdrop-blur p-3 text-center shadow-sm">
+                    <div className="text-[11px] font-bold tracking-widest text-white/70">STATUS</div>
                     <div className="text-sm font-black text-[#C9A86A]">AKTIF</div>
                   </div>
                 </div>
@@ -113,10 +112,10 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
             <section className="rounded-[16px] border border-border bg-card p-5">
               <h2 className="text-sm font-black tracking-tight flex items-center gap-2"><Trophy className="h-4 w-4 text-muted-foreground"/> Informasi Kompetisi</h2>
               <div className="mt-3 grid sm:grid-cols-2 gap-3">
-                <div className="rounded-xl border border-border p-3 text-sm"><div className="font-bold">Nomor Peserta</div><div className="text-muted-foreground">#{peleton.number} — nomor resmi, bukan ranking</div></div>
-                <div className="rounded-xl border border-border p-3 text-sm"><div className="font-bold">Kategori</div><div className="text-muted-foreground">{peleton.category} / SEDERAJAT</div></div>
+                <div className="rounded-xl border border-border p-3 text-sm bg-card"><div className="font-bold text-foreground">Nomor Peserta</div><div className="text-muted-foreground">#{peleton.number} — nomor urut tampil tim</div></div>
+                <div className="rounded-xl border border-border p-3 text-sm bg-card"><div className="font-bold text-foreground">Kategori</div><div className="text-muted-foreground">{peleton.category} / SEDERAJAT</div></div>
               </div>
-              <p className="mt-3 text-xs leading-relaxed text-muted-foreground">Ranking dan nomor peserta adalah konsep berbeda. #{peleton.number} tetap #{peleton.number} meskipun memimpin klasemen.</p>
+              <p className="mt-3 text-xs leading-relaxed text-muted-foreground">Nomor urut tampil tim dan ranking adalah konsep berbeda. #{peleton.number} tetap #{peleton.number} meskipun memimpin klasemen.</p>
             </section>
           </div>
 
@@ -143,7 +142,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                   {isVotingClosed && <div className="inline-flex self-center rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">Peringkat Online Saja</div>}
                   {isPublished && <div className="inline-flex self-center rounded-full bg-[#C9A86A] text-white px-2.5 py-1 text-[10px] font-black">Peringkat Akhir</div>}
                 </div>
-                <Link href={supportUrl}><Button className="w-full rounded-full h-[44px] font-black">DUKUNG</Button></Link>
+                <Link href={supportUrl}><Button className="w-full rounded-full h-[44px] font-black bg-[#C9A86A] text-[#0C0A06] hover:bg-[#D4B77A] border border-[#C9A86A] shadow-[0_4px_16px_rgba(201,168,106,0.25)]">DUKUNG</Button></Link>
                 <ShareButtons profileUrl={profileUrl} supportUrl={supportUrl} />
               </div>
             </div>

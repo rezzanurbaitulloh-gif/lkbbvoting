@@ -99,13 +99,13 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
       </Link>
       <div className="flex flex-col gap-2 p-2.5 xs:p-3 sm:p-4 pt-2">
         <Link href={supportUrl} className="block">
-          <Button variant="outline" size="sm" className="w-full rounded-full h-8 xs:h-9 text-[12px] xs:text-[13px] font-bold tracking-wide border-white/12 bg-transparent hover:bg-white/[0.04] hover:text-foreground hover:border-white/18">DUKUNG</Button>
+          <Button variant="outline" size="sm" className="w-full rounded-full h-11 text-[13px] xs:text-sm font-bold tracking-wide border-white/[0.14] bg-white/[0.03] text-white hover:bg-white/[0.06] hover:border-[#C9A86A]/30 hover:text-white">DUKUNG</Button>
         </Link>
         <div className="grid grid-cols-2 gap-1.5 xs:gap-2">
-          <Button variant="outline" className="rounded-full h-11 w-full" onClick={() => handleShare("profile")} aria-label="Bagikan Profil">
+          <Button variant="outline" className="rounded-full h-11 w-full border-white/[0.10] bg-white/[0.02] text-white/80 hover:bg-white/[0.06] hover:text-white hover:border-white/15" onClick={() => handleShare("profile")} aria-label="Bagikan Profil">
             <Share2 className="h-4 w-4" />
           </Button>
-          <Button variant="outline" className="rounded-full h-11 w-full" onClick={() => handleShare("support")} aria-label="Bagikan Dukungan">
+          <Button variant="outline" className="rounded-full h-11 w-full border-white/[0.10] bg-white/[0.02] text-white/80 hover:bg-white/[0.06] hover:text-white hover:border-white/15" onClick={() => handleShare("support")} aria-label="Bagikan Dukungan">
             <QrCode className="h-4 w-4" />
           </Button>
         </div>
