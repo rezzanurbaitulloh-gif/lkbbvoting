@@ -17,7 +17,7 @@ type Team = {
 function Crown({ size = 56 }: { size?: number }) {
   // Majestic crown — 5 points, jewels, pearls, cross — searched, not self-made (public domain heraldic)
   return (
-    <div className="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none drop-shadow-[0_6px_16px_rgba(201,168,106,0.55)]" style={{ top: -size * 0.52 }}>
+    <div className="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none drop-shadow-[0_6px_16px_rgba(201,168,106,0.55)]" style={{ top: -size * 0.38 }}>
       <svg width={size} height={size * 0.62} viewBox="0 0 64 38" fill="none" xmlns="http://www.w3.org/2000/svg" className="animate-[crownFloat_3s_ease-in-out_infinite]">
         <defs>
           <linearGradient id="crownGold" x1="0" y1="0" x2="0" y2="38" gradientUnits="userSpaceOnUse">
@@ -185,13 +185,13 @@ export function Podium({ teams, category, showPoints = true }: { teams: Team[]; 
   return (
     <div className="w-full">
       {category && (
-        <div className="flex items-center justify-center gap-2 mb-3 xs:mb-4 sm:mb-5">
+        <div className="flex items-center justify-center gap-2 mb-6 xs:mb-7 sm:mb-8">
           <span className="inline-flex rounded-full bg-[#C9A86A] text-[#0B0C0F] px-2.5 sm:px-3 py-1 text-[10px] sm:text-[11px] font-black tracking-wide shadow-[0_2px_10px_rgba(201,168,106,0.25)]">{category}</span>
           <span className="text-[10px] sm:text-[11px] text-white/45 tabular-nums">{teams.length} tim</span>
         </div>
       )}
-      {/* 1 card per kategori, 3 shields side-by-side — tidak tumpuk, proporsional */}
-      <div className="grid grid-cols-3 items-end gap-1 xs:gap-1.5 sm:gap-2 md:gap-3 lg:gap-3 xl:gap-4 max-w-[560px] lg:max-w-none mx-auto w-full px-0">
+      {/* 1 card per kategori, 3 shields side-by-side — jarak bawah kategori diperlebar agar mahkota tidak menutupi */}
+      <div className="grid grid-cols-3 items-end gap-1 xs:gap-1.5 sm:gap-2 md:gap-3 lg:gap-3 xl:gap-4 max-w-[560px] lg:max-w-none mx-auto w-full px-0 pt-2 sm:pt-3">
         {ordered.map(({ team, rank, delay }) => (
           <ShieldPodiumCard key={team.id} team={team} rank={rank} delay={delay} />
         ))}
