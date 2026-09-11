@@ -71,7 +71,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                     <h1 className="text-[28px] md:text-[36px] font-black tracking-[-0.03em] leading-none text-balance">{peleton.name}</h1>
                     <p className="mt-1 text-sm font-medium text-white/70">{peleton.school}</p>
                     {showSementara && <span className="mt-2 inline-flex rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">HASIL SEMENTARA</span>}
-                    {showFinal && <span className="mt-2 inline-flex rounded-full bg-[#C9A86A] text-white px-2.5 py-1 text-[10px] font-black">HASIL FINAL</span>}
+                    {showFinal && <span className="mt-2 inline-flex rounded-full bg-[#C9A86A] text-[#0C0A06] px-2.5 py-1 text-[10px] font-black">HASIL FINAL</span>}
                   </div>
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-white/60 text-pretty max-w-2xl">{peleton.description}</p>
@@ -140,7 +140,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                     {isNotStarted ? "Belum Dimulai" : isActive ? "Aktif" : isVotingClosed ? "Voting Ditutup" : isPublished ? "Hasil Dipublikasikan" : state}
                   </div>
                   {isVotingClosed && <div className="inline-flex self-center rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">Peringkat Online Saja</div>}
-                  {isPublished && <div className="inline-flex self-center rounded-full bg-[#C9A86A] text-white px-2.5 py-1 text-[10px] font-black">Peringkat Akhir</div>}
+                  {isPublished && <div className="inline-flex self-center rounded-full bg-[#C9A86A] text-[#0C0A06] px-2.5 py-1 text-[10px] font-black">Peringkat Akhir</div>}
                 </div>
                 <Link href={supportUrl}><Button className="w-full rounded-full h-[44px] font-black bg-[#C9A86A] text-[#0C0A06] hover:bg-[#D4B77A] border border-[#C9A86A] shadow-[0_4px_16px_rgba(201,168,106,0.25)]">DUKUNG</Button></Link>
                 <ShareButtons profileUrl={profileUrl} supportUrl={supportUrl} />
