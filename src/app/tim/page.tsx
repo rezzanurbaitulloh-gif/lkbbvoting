@@ -78,7 +78,7 @@ export default async function TimPage(){
 
   const getHeaderBadge = () => {
     if (isNotStarted) return { label: "Belum Dimulai", color: "bg-zinc-500" }
-    if (isActive) return { label: "Aktif — Dukungan Dibuka", color: "bg-emerald-500" }
+    if (isActive) return { label: "Aktif — Dukungan Dibuka", color: "bg-[#C9A86A]/14 border border-[#C9A86A]/30 text-[#C9A86A]" }
     if (isVotingClosed) return { label: "Voting Ditutup", color: "bg-[#FACC15] text-[#0B0C0F]" }
     if (isPublished) return { label: "Hasil Dipublikasikan", color: "bg-[#C9A86A] text-[#0B0C0F]" }
     return { label: state, color: "bg-white/10" }

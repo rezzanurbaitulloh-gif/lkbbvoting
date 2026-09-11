@@ -76,7 +76,7 @@ export default async function HomePage(){
           <CmsSections key={s.id} sections={[s]} />
         ))}
         {(isPublished || isVotingClosed) && showPodiumViaCms && (smpPodium.length>0 || smaPodium.length>0) && (
-          <PodiumSection smp={teams.filter(p=>p.category==='SMP')} sma={teams.filter(p=>p.category==='SMA')} isPublished={true} />
+          <PodiumSection smp={teams.filter(p=>p.category==='SMP')} sma={teams.filter(p=>p.category==='SMA')} isPublished={isPublished} variant={isPublished ? "final" : "provisional"} />
         )}
         {showFeatured && <Featured peletons={teams} showSementara={showSementara} showFinal={showFinal} />}
         {extraSections.filter((s:any)=> {

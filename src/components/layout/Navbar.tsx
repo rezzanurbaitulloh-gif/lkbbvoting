@@ -26,15 +26,22 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
   const { currentUser, isAdmin, logout } = useApp()
   const profileRef = useRef<HTMLDivElement>(null)
   const [hidden, setHidden] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const lastScroll = useRef(0)
+  const ticking = useRef(false)
   useEffect(()=>{
     const onScroll = ()=>{
-      const cur = window.scrollY
-      if (cur < 16) { setHidden(false); lastScroll.current = cur; return }
-      // scroll down -> hide, scroll up dikit ( >5px ) -> show
-      if (cur > lastScroll.current + 5) setHidden(true)
-      else if (cur < lastScroll.current - 5) setHidden(false)
-      lastScroll.current = cur
+      if (ticking.current) return
+      ticking.current = true
+      requestAnimationFrame(()=>{
+        const cur = window.scrollY
+        if (cur < 80) { setHidden(false); lastScroll.current = cur; ticking.current=false; return }
+        const diff = cur - lastScroll.current
+        if (diff > 12) setHidden(true)
+        else if (diff < -12) setHidden(false)
+        lastScroll.current = cur
+        ticking.current=false
+      })
     }
     window.addEventListener("scroll", onScroll, { passive: true })
     return ()=> window.removeEventListener("scroll", onScroll)
@@ -61,6 +68,7 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
     if(!q) return
     router.push(`/search?q=${encodeURIComponent(q)}`)
     setMobileSearch("")
+    setSearchOpen(false)
     setOpen(false)
   }
   return (
@@ -94,10 +102,13 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
           })}
         </nav>
 
-        {/* Actions */}
+        {/* Actions — 44px hit area */}
         <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-          <Link href="/search" className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:bg-muted transition-colors">
-            <Search className="h-4 w-4 text-muted-foreground" />
+          <button onClick={()=> setSearchOpen(!searchOpen)} aria-label="Cari tim" className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.06] bg-card hover:bg-muted text-muted-foreground hover:text-foreground transition-colors lg:hidden">
+            <Search className="h-[18px] w-[18px]" />
+          </button>
+          <Link href="/search" className="hidden lg:inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.06] bg-card hover:bg-muted transition-colors" aria-label="Cari">
+            <Search className="h-[18px] w-[18px] text-muted-foreground" />
           </Link>
           <SoundControl />
           {currentUser ? (
@@ -155,8 +166,8 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
           )}
 
           <Sheet open={open} onOpenChange={setOpen}>
-            <Button variant="ghost" size="icon" className="lg:hidden h-8 w-8 sm:h-9 sm:w-9 rounded-full border border-border shrink-0" onClick={()=> setOpen(true)}>
-              <Menu className="h-4 w-4" />
+            <Button variant="ghost" size="icon" className="lg:hidden h-11 w-11 rounded-full border border-white/[0.06] bg-card shrink-0" aria-label="Menu" onClick={()=> setOpen(true)}>
+              <Menu className="h-[18px] w-[18px]" />
             </Button>
             <SheetContent side="right" className="w-[88vw] max-w-[320px] sm:w-[320px] p-0 overflow-hidden">
               <SheetHeader className="p-5 border-b text-left">
@@ -198,21 +209,24 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
           </Sheet>
         </div>
       </div>
-      {/* Mobile search bar — khusus untuk cari nama tim */}
-      <div className="lg:hidden border-t border-white/[0.05] bg-muted/10 px-3 sm:px-4 py-2.5 sm:py-3">
-        <form onSubmit={handleSearchSubmit} className="relative flex items-center">
-          <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
-          <input
-            value={mobileSearch}
-            onChange={e=> setMobileSearch(e.target.value)}
-            placeholder="Cari nama tim..."
-            className="h-9 sm:h-10 w-full rounded-full border border-border bg-background pl-9 sm:pl-10 pr-11 sm:pr-12 text-[13px] sm:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#C9A86A]"
-          />
-          <button type="submit" aria-label="Cari" className="absolute right-1 h-7 w-7 sm:h-8 sm:w-8 grid place-items-center rounded-full bg-foreground text-background">
-            <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-          </button>
-        </form>
-      </div>
+      {searchOpen && (
+        <div className="lg:hidden absolute inset-x-0 top-0 h-[56px] sm:h-[58px] bg-background border-b border-white/[0.06] flex items-center gap-2 px-3 sm:px-4 animate-[fadeIn_160ms_ease-out]">
+          <form onSubmit={handleSearchSubmit} className="relative flex-1 flex items-center">
+            <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <input
+              autoFocus
+              value={mobileSearch}
+              onChange={e=> setMobileSearch(e.target.value)}
+              placeholder="Cari nama tim..."
+              className="h-11 w-full rounded-full border border-white/[0.08] bg-muted pl-9 pr-11 text-[13px] placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#C9A86A]"
+            />
+            <button type="submit" aria-label="Cari" className="absolute right-1 h-9 w-9 grid place-items-center rounded-full bg-foreground text-background">
+              <Search className="h-4 w-4" />
+            </button>
+          </form>
+          <button onClick={()=> setSearchOpen(false)} aria-label="Tutup pencarian" className="h-11 w-11 grid place-items-center rounded-full border border-white/[0.06] bg-card shrink-0">✕</button>
+        </div>
+      )}
 
     </header>
   )

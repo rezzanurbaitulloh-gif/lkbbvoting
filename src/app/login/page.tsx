@@ -44,8 +44,8 @@ export default function LoginPage(){
               <label className="text-xs font-bold">Password</label>
               <div className="relative">
                 <Input value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" type={showPass ? "text" : "password"} className="pr-10" autoComplete="current-password" />
-                <button type="button" onClick={()=> setShowPass(!showPass)} className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 grid place-items-center rounded-full hover:bg-muted text-muted-foreground">
-                  {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                <button type="button" onClick={()=> setShowPass(!showPass)} aria-label={showPass ? "Sembunyikan password" : "Lihat password"} className="absolute right-1 top-1/2 -translate-y-1/2 h-11 w-11 grid place-items-center rounded-full hover:bg-muted text-muted-foreground">
+                  {showPass ? <EyeOff className="h-[18px] w-[18px]" /> : <Eye className="h-[18px] w-[18px]" />}
                 </button>
               </div>
             </div>

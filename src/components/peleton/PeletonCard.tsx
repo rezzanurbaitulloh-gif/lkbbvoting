@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 import { useToast } from "@/components/ui/toast"
 import { ShareSheet } from "@/components/share/ShareSheet"
 
-export function PeletonCard({ peleton }: { peleton: any }){
+export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: boolean }){
   const { toggleFavorite, isFavorite } = useApp()
   const { toast } = useToast()
   const fav = isFavorite(peleton.id)
@@ -24,6 +24,8 @@ export function PeletonCard({ peleton }: { peleton: any }){
   const [shareOpen, setShareOpen] = useState(false)
   const [shareUrl, setShareUrl] = useState("")
   const [shareTitle, setShareTitle] = useState("")
+  const [imgError, setImgError] = useState(false)
+  const [imgLoaded, setImgLoaded] = useState(false)
 
   const handleShare = async (type: "profile" | "support") => {
     const url = `${window.location.origin}${type === "profile" ? profileUrl : supportUrl}`
@@ -47,14 +49,38 @@ export function PeletonCard({ peleton }: { peleton: any }){
     <div className="group relative flex flex-col overflow-hidden rounded-[14px] xs:rounded-[16px] border border-white/[0.06] bg-card max-w-full">
       <div className="absolute top-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-[#C9A86A]/0 group-hover:via-[#C9A86A]/40 to-transparent transition-all duration-500" />
       <Link href={profileUrl} className="block">
-        <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-          <img src={photo} alt={name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" />
+        <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-[#0F1115]">
+          {!imgLoaded && !imgError && <div className="absolute inset-0 animate-pulse bg-muted" />}
+          {!imgError && photo ? (
+            <img
+              src={photo}
+              alt={name}
+              className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] ${imgLoaded ? "opacity-100" : "opacity-0"}`}
+              loading={eager ? "eager" : "lazy"}
+              decoding="async"
+              fetchPriority={eager ? "high" as any : "auto"}
+              onLoad={() => setImgLoaded(true)}
+              onError={() => setImgError(true)}
+            />
+          ) : null}
+          {imgError || !photo ? (
+            <div className="absolute inset-0 grid place-items-center bg-[#0F1115] p-4">
+              <div className="flex flex-col items-center gap-3 text-center">
+                <div className="h-20 w-20 xs:h-24 xs:w-24 rounded-full bg-white/[0.04] border border-white/[0.06] grid place-items-center p-3">
+                  <img src={logo} alt={`${name} logo`} className="h-full w-full object-contain opacity-90" />
+                </div>
+                <div className="text-[11px] font-bold tracking-[0.16em] text-[#C9A86A]">#{number} • {category}</div>
+                <div className="text-xs font-bold text-white/60 line-clamp-1">{name}</div>
+              </div>
+              <div className="pointer-events-none absolute inset-0 opacity-[0.025]" style={{ backgroundImage: `linear-gradient(rgba(201,168,106,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,106,0.5) 1px, transparent 1px)`, backgroundSize: "24px 24px" }} />
+            </div>
+          ) : null}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
           <div className="absolute left-2 xs:left-3 top-2 xs:top-3 rounded-full bg-black/70 backdrop-blur px-1.5 xs:px-2.5 py-0.5 text-[10px] xs:text-[11px] font-black tracking-widest text-white border border-white/10">
             #{number}
           </div>
-          <button onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); handleFav(); }} aria-label="favorite" className={cn("absolute right-2 xs:right-3 top-2 xs:top-3 h-7 w-7 xs:h-8 xs:w-8 grid place-items-center rounded-full backdrop-blur border transition-colors", fav ? "bg-[#A51D2D] border-[#A51D2D] text-white" : "bg-black/40 border-white/15 text-white hover:bg-black/60")}>
-            <Heart className={cn("h-3 w-3 xs:h-3.5 xs:w-3.5", fav && "fill-white")} />
+          <button onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); handleFav(); }} aria-label={fav ? "Hapus dari favorit" : "Tambah ke favorit"} aria-pressed={fav} className={cn("absolute right-2 xs:right-3 top-2 xs:top-3 h-11 w-11 grid place-items-center rounded-full backdrop-blur border transition-colors", fav ? "bg-[#A51D2D] border-[#A51D2D] text-white" : "bg-black/40 border-white/15 text-white hover:bg-black/60")}>
+            <Heart className={cn("h-[18px] w-[18px]", fav && "fill-white")} />
           </button>
           <div className="absolute bottom-2 xs:bottom-3 right-2 xs:right-3 rounded-full bg-white/90 backdrop-blur px-1.5 xs:px-2.5 py-0.5 text-[9px] xs:text-[10px] font-bold tracking-widest text-black border border-white/20 max-w-[42%] xs:max-w-[45%] truncate">
             {category}
@@ -73,14 +99,14 @@ export function PeletonCard({ peleton }: { peleton: any }){
       </Link>
       <div className="flex flex-col gap-2 p-2.5 xs:p-3 sm:p-4 pt-2">
         <Link href={supportUrl} className="block">
-          <Button size="sm" className="w-full rounded-full h-8 xs:h-9 text-[13px] xs:text-sm font-black tracking-wide">DUKUNG</Button>
+          <Button variant="outline" size="sm" className="w-full rounded-full h-8 xs:h-9 text-[12px] xs:text-[13px] font-bold tracking-wide border-white/12 bg-transparent hover:bg-white/[0.04] hover:text-foreground hover:border-white/18">DUKUNG</Button>
         </Link>
         <div className="grid grid-cols-2 gap-1.5 xs:gap-2">
-          <Button variant="outline" className="rounded-full h-8 w-full" onClick={() => handleShare("profile")} aria-label="Bagikan Profil">
-            <Share2 className="h-3.5 w-3.5" />
+          <Button variant="outline" className="rounded-full h-11 w-full" onClick={() => handleShare("profile")} aria-label="Bagikan Profil">
+            <Share2 className="h-4 w-4" />
           </Button>
-          <Button variant="outline" className="rounded-full h-8 w-full" onClick={() => handleShare("support")} aria-label="Bagikan Dukungan">
-            <QrCode className="h-3.5 w-3.5" />
+          <Button variant="outline" className="rounded-full h-11 w-full" onClick={() => handleShare("support")} aria-label="Bagikan Dukungan">
+            <QrCode className="h-4 w-4" />
           </Button>
         </div>
       </div>

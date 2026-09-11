@@ -64,7 +64,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="gold">{peleton.category}</Badge>
                   <Badge variant="outline" className="bg-white/10 border-white/15 text-white">{peleton.city} • {peleton.province}</Badge>
-                  <Badge className="bg-emerald-500 text-white border-emerald-500">Terverifikasi</Badge>
+                  <Badge className="bg-[#A51D2D] text-white border-[#A51D2D]">Terverifikasi</Badge>
                 </div>
                 <div className="mt-3 flex gap-3 items-center">
                   <img src={logo} alt="logo" className="h-14 w-14 object-contain bg-transparent hidden md:block drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.5))" }} />
@@ -91,7 +91,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                   </div>
                   <div className="flex-1 rounded-xl border border-white/10 bg-white/5 backdrop-blur p-3 text-center">
                     <div className="text-[11px] font-bold tracking-widest text-white/50">STATUS</div>
-                    <div className="text-sm font-black text-emerald-400">AKTIF</div>
+                    <div className="text-sm font-black text-[#C9A86A]">AKTIF</div>
                   </div>
                 </div>
               </div>
@@ -137,7 +137,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                 )}
                 <div className="rounded-xl border border-[#C9A86A20] bg-[#C9A86A0A] p-3 text-center flex flex-col gap-1">
                   <div className="label-gold">Status Kompetisi</div>
-                  <div className="inline-flex self-center rounded-full px-3 py-1 text-xs font-bold text-white" style={{background: isNotStarted ? "#6B7280" : isActive ? "#10B981" : isVotingClosed ? "#FACC15" : "#C9A86A", color: isVotingClosed ? "#0B0C0F" : "white"}}>
+                  <div className="inline-flex self-center rounded-full px-3 py-1 text-xs font-bold border" style={{background: isNotStarted ? "rgba(255,255,255,0.08)" : isActive ? "rgba(201,168,106,0.14)" : isVotingClosed ? "rgba(255,255,255,0.08)" : "#C9A86A", color: isActive ? "#C9A86A" : isPublished ? "#0C0A06" : "rgba(255,255,255,0.8)", borderColor: isActive ? "rgba(201,168,106,0.30)" : "rgba(255,255,255,0.12)"}}>
                     {isNotStarted ? "Belum Dimulai" : isActive ? "Aktif" : isVotingClosed ? "Voting Ditutup" : isPublished ? "Hasil Dipublikasikan" : state}
                   </div>
                   {isVotingClosed && <div className="inline-flex self-center rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">Peringkat Online Saja</div>}

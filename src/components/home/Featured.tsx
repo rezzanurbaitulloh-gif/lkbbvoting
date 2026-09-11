@@ -28,11 +28,11 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-3">
-              <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#C9A86A]/60 hidden sm:block" />
+              <span className="hidden sm:block text-[11px] font-bold tracking-[0.16em] text-[#C9A86A]/70">01</span>
+              <span className="h-px w-6 bg-[#C9A86A]/40 hidden sm:block" />
               <span className="text-[11px] font-bold tracking-[0.18em] text-[#C9A86A]">PESERTA</span>
-              <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#C9A86A]/60 hidden sm:block" />
             </div>
-            <h2 className="mt-3 text-[22px] sm:text-[26px] md:text-[30px] font-black tracking-[-0.032em] text-white leading-[0.92] break-words font-display">DUKUNG PELETON <span className="gold-gradient-text">FAVORITMU!</span></h2>
+            <h2 className="mt-3 text-[22px] sm:text-[26px] md:text-[30px] font-black tracking-[-0.032em] text-white leading-[0.92] break-words font-display">DUKUNG PELETON <span className="text-white">FAVORITMU!</span></h2>
             <p className="mt-3 text-[13px] sm:text-[13.5px] text-white/60 leading-relaxed max-w-xl">Beranda urut nomor tampil (01, 02, 03…) — SMP & SMA terpisah. Peringkat disembunyikan saat voting aktif.</p>
           </div>
           <Link href="/tim" className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-[#C9A86A]/20 bg-white/[0.02] hover:bg-[#C9A86A]/10 px-4 py-2 text-xs font-semibold text-[#C9A86A] hover:text-white transition-colors shrink-0">LIHAT SEMUA <ArrowRight className="h-3 w-3"/></Link>
@@ -46,7 +46,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
           </div>
           {smp.length===0 ? <p className="text-sm text-white/40 py-6 text-center border border-dashed border-white/10 rounded-xl">Belum ada peleton SMP.</p> : (
           <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-6">
-            {smp.map((p:any)=> <PeletonCard key={p.id} peleton={{...p, image: p.image_url || p.image, cover: p.image_url || p.cover}} />)}
+            {smp.map((p:any, idx:number)=> <PeletonCard key={p.id} peleton={{...p, image: p.image_url || p.image, cover: p.image_url || p.cover}} eager={idx<2} />)}
           </div>
           )}
         </div>
@@ -59,7 +59,7 @@ export function Featured({ peletons, showSementara, showFinal }: { peletons: any
           </div>
           {sma.length===0 ? <p className="text-sm text-white/40 py-6 text-center border border-dashed border-white/10 rounded-xl">Belum ada peleton SMA.</p> : (
           <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-6">
-            {sma.map((p:any)=> <PeletonCard key={p.id} peleton={{...p, image: p.image_url || p.image, cover: p.image_url || p.cover}} />)}
+            {sma.map((p:any, idx:number)=> <PeletonCard key={p.id} peleton={{...p, image: p.image_url || p.image, cover: p.image_url || p.cover}} eager={idx<2} />)}
           </div>
           )}
         </div>
