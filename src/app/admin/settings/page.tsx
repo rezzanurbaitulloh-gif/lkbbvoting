@@ -585,7 +585,7 @@ export default function SettingsPage(){
             </label>
             <div className="rounded-xl border border-dashed p-4 flex items-center justify-between bg-white/[0.04] backdrop-blur/20">
               <div className="flex gap-2">
-                {["ASTRA","BRI","Telkomsel"].map(s=> <span key={s} className={`rounded-full px-3 py-1.5 text-xs font-bold border ${sponsorEnabled ? "bg-white/[0.03] backdrop-blur border-white/[0.06]" : "bg-zinc-100 text-zinc-400 border-zinc-200 line-through"}`}>{s}</span>)}
+                {["ASTRA","BRI","Telkomsel"].map(s=> <span key={s} className={`rounded-full px-3 py-1.5 text-xs font-bold border ${sponsorEnabled ? "bg-white/[0.03] backdrop-blur border-white/[0.06] text-white" : "bg-white/[0.03] backdrop-blur border-white/[0.06] text-white/30 line-through"}`}>{s}</span>)}
               </div>
               <span className="text-xs text-muted-foreground">{sponsorEnabled ? "Pratinjau: sponsor tampil" : "Pratinjau: sponsor disembunyikan"}</span>
             </div>
