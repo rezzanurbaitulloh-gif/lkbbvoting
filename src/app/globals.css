@@ -422,13 +422,18 @@ html:not(.dark) { --background: #09090b; --foreground: #F4F4F1; --surface: #1113
     color: var(--primary) !important;
   }
 
-  /* 2) Border + background BERWARNA UNIFIED (bg-primary + opacity) => hitam */
-  /* Satu class bg-primary (admin controllable) — semua varian opacity harus hitam */
-  [class*="border"][class*="bg-primary"] {
+  /* 2) Border + background BERWARNA UNIFIED (bg-primary) => hitam HANYA untuk SOLID (tanpa opacity) */
+  /* Solid = bg-primary (tanpa /) -> hitam. Translucent bg-primary/5 /10 /20 + backdrop-blur = glassmorph -> putih (override di bawah) */
+  [class*="border"][class*="bg-primary"]:not([class*="bg-primary/"]) {
     color: black !important;
   }
-  [class*="border"][class*="bg-primary"] * {
+  [class*="border"][class*="bg-primary"]:not([class*="bg-primary/"]) * {
     color: black !important;
+  }
+  /* Glassmorph primer translucent (bg-primary/ + backdrop-blur) => putih, sesuai instruksi */
+  [class*="border"][class*="bg-primary/"][class*="backdrop-blur"],
+  [class*="border"][class*="bg-primary/"][class*="backdrop-blur"] * {
+    color: white !important;
   }
   /* Kecualikan badge/crisp yang background-nya gelap (crimson, emerald, red) tetap putih — sudah dipisah */
   [class*="border"][class*="bg-[#A51D2D"] *, [class*="border"][class*="bg-emerald"] *, [class*="border"][class*="bg-red"] * {
