@@ -32,7 +32,11 @@ export default function DesignStudio(){
   const [showHistory, setShowHistory] = useState(false)
   const [revisions, setRevisions] = useState<any[]>([])
 
-  const selectedSection = sections.find(s => s.id === selectedId) || null
+  const selectedParts = selectedId?.split("-") || []
+  const selectedSectionId = selectedParts.length > 1 && sections.some(s=> s.id===selectedParts[0]) ? selectedParts[0] : selectedId
+  const selectedSubKey = selectedParts.length > 1 && selectedId?.includes("-") ? selectedId.substring(selectedSectionId!.length + 1) : null
+  const selectedSection = sections.find(s => s.id === selectedSectionId) || sections.find(s => s.id === selectedId) || null
+  const isSubElement = !!selectedSubKey && selectedSection && selectedSection.content && selectedSubKey in selectedSection.content
 
   const loadPages = async () => {
     const res = await fetch("/api/admin/cms/pages")
@@ -245,17 +249,22 @@ export default function DesignStudio(){
           </div>
         </div>
 
-        {/* Canvas — VISUAL PREVIEW like Figma, not code */}
-        <div className="flex-1 bg-[#040A14] overflow-auto flex flex-col items-center p-4 sm:p-6">
-          <div className="shrink-0 flex items-center gap-2 mb-4">
+        {/* Canvas — FULL WEBSITE PREVIEW, semua elemen editable */}
+        <div className="flex-1 bg-[#040A14] overflow-auto flex flex-col items-center p-2 sm:p-4">
+          <div className="shrink-0 flex items-center gap-2 mb-3 sm:mb-4">
             <span className="text-[11px] font-bold tracking-widest text-white/40">CANVAS</span>
             <span className="text-[11px] px-2 py-1 rounded-full bg-white/10 text-white/60">{viewport} • {viewportWidth}px • {zoom}%</span>
-            <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-white/30 ml-2">Klik elemen untuk edit • {sections.length} sections</span>
+            <span className="hidden lg:inline-flex items-center gap-1 text-[11px] text-white/30 ml-2">Klik elemen untuk edit • Drag untuk pindah • Handle untuk resize</span>
           </div>
-          <div className="w-full flex justify-center overflow-auto pb-8">
-            <div className="bg-[#09090b] shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden border border-white/10 rounded-[12px]" style={{ width: viewportWidth, transform: `scale(${scale})`, transformOrigin: "top center", minHeight: 600 }}>
-              {/* Visual preview — renders real sections, clickable */}
-              <div className="w-full">
+          <div className="w-full flex justify-center overflow-auto pb-6 sm:pb-8">
+            <div className="bg-[#09090b] shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden border border-white/10 rounded-[12px] flex flex-col" style={{ width: viewportWidth, transform: `scale(${scale})`, transformOrigin: "top center", minHeight: 680 }}>
+              {/* Full website preview — header + sections + footer, semua editable */}
+              <div className="h-14 border-b border-white/[0.06] bg-[#111318] flex items-center justify-between px-4 shrink-0">
+                <div className="flex items-center gap-2"><div className="h-8 w-8 rounded bg-[#C9A86A] grid place-items-center text-[10px] font-black text-[#0C0A06]">LKBB</div><span className="text-xs font-black text-white">LKBB JAVASOMA</span></div>
+                <div className="hidden sm:flex gap-1 text-[11px] text-white/60"><span>Beranda</span><span>Tim</span><span>Kompetisi</span><span>Profile</span></div>
+                <div className="h-7 px-3 rounded-full bg-white text-[#0B0C0F] text-xs font-black grid place-items-center">Preview</div>
+              </div>
+              <div className="flex-1 w-full overflow-auto max-h-[700px]">
                 {sections.length===0 ? (
                   <div className="p-12 text-center">
                     <div className="mx-auto h-16 w-16 rounded-full bg-white/5 grid place-items-center text-white/20"><Plus className="h-6 w-6"/></div>
@@ -263,34 +272,56 @@ export default function DesignStudio(){
                     <div className="text-xs text-white/50">Tambah section dari panel ELEMENTS</div>
                   </div>
                 ) : sections.filter(s=> s.is_visible).map(s=> {
-                  const isSelected = selectedId===s.id
+                  const isSelected = selectedId===s.id || selectedId?.startsWith(s.id + "-")
                   const content = s.content || {}
+                  const handleSelect = (subId?: string) => setSelectedId(subId ? `${s.id}-${subId}` : s.id)
                   return (
                     <div
                       key={s.id}
                       onClick={()=> setSelectedId(s.id)}
-                      className={`relative group cursor-pointer transition-all ${isSelected ? "ring-2 ring-[#C9A86A] ring-offset-2 ring-offset-[#09090b] z-10" : "hover:ring-1 hover:ring-white/20"}`}
+                      className={`relative group/section cursor-pointer transition-all ${isSelected ? "ring-2 ring-[#C9A86A] ring-inset z-10" : "hover:ring-1 hover:ring-white/15"}`}
+                      draggable
+                      onDragStart={(e)=> { e.dataTransfer.setData("text/plain", s.id); (e.target as HTMLElement).style.opacity="0.5" }}
+                      onDragEnd={(e)=> (e.target as HTMLElement).style.opacity="1"}
+                      onDragOver={(e)=> e.preventDefault()}
+                      onDrop={(e)=> {
+                        const draggedId = e.dataTransfer.getData("text/plain")
+                        if(!draggedId || draggedId===s.id) return
+                        const from = sections.findIndex(x=>x.id===draggedId)
+                        const to = sections.findIndex(x=>x.id===s.id)
+                        if(from>=0 && to>=0) handleReorder(from,to)
+                      }}
                     >
-                      {isSelected && <div className="absolute -top-6 left-0 z-20 flex items-center gap-1.5 bg-[#C9A86A] text-[#0C0A06] px-2.5 py-1 rounded-full text-xs font-black shadow"><Box className="h-3 w-3"/> {s.title} • {s.type}</div>}
-                      {/* Section visual by type */}
+                      {isSelected && <div className="absolute -top-0 left-0 right-0 h-6 bg-[#C9A86A] flex items-center justify-between px-2.5 z-20"><span className="text-[11px] font-black text-[#0C0A06] flex items-center gap-1.5"><Box className="h-3 w-3"/> {s.title} • {s.type}</span><span className="text-[10px] font-bold text-[#0C0A06]/70">Drag ↕ • Klik elemen di dalam untuk edit detail</span></div>}
+                      {/* Drag handle */}
+                      <div className="absolute left-1 top-1/2 -translate-y-1/2 hidden group-hover/section:flex flex-col gap-0.5 bg-black/60 backdrop-blur rounded-full p-1 border border-white/10">
+                        <div className="h-1 w-3 bg-white/40 rounded-full" /><div className="h-1 w-3 bg-white/40 rounded-full" /><div className="h-1 w-3 bg-white/40 rounded-full" />
+                      </div>
+                      {/* Resize handles */}
+                      {isSelected && <>
+                        <div className="absolute -top-1 -left-1 h-3 w-3 bg-[#C9A86A] border-2 border-white rounded-full shadow cursor-nw-resize" />
+                        <div className="absolute -top-1 -right-1 h-3 w-3 bg-[#C9A86A] border-2 border-white rounded-full shadow cursor-ne-resize" />
+                        <div className="absolute -bottom-1 -left-1 h-3 w-3 bg-[#C9A86A] border-2 border-white rounded-full shadow cursor-sw-resize" />
+                        <div className="absolute -bottom-1 -right-1 h-3 w-3 bg-[#C9A86A] border-2 border-white rounded-full shadow cursor-se-resize" />
+                      </>}
+                      {/* Section visual by type — tiap sub-elemen bisa klik terpisah */}
                       {s.type==="hero" && (
-                        <div className="relative overflow-hidden bg-[#09090b] text-white p-8 sm:p-12 text-center" style={{ background: s.settings?.background || undefined }}>
+                        <div className="relative overflow-hidden bg-[#09090b] text-white p-8 sm:p-10 text-center" style={{ background: s.settings?.background || undefined }}>
                           {content.backgroundImage && <img src={String(content.backgroundImage)} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" />}
-                          <div className="relative">
-                            <div className="text-[11px] font-bold tracking-[0.18em] text-[#C9A86A]">{String(content.eyebrow || "LKBB • JAVASOMA THE IMPRESSION")}</div>
-                            <h2 className="mt-2 text-[28px] sm:text-[36px] font-black leading-none tracking-tight" style={{ color: content.titleColor || "#fff" }}>{String(content.headingLine1 || "PELETON")} <span className="gold-gradient-text">{String(content.headingLine2 || "TERFAVORIT")}</span></h2>
-                            <div className="mt-2 text-[11px] tracking-[0.14em] text-white/70">{String(content.subtitle || "LKBB")} • {String(content.subtitle2 || "JAVASOMA")}</div>
-                            <div className="mt-1 text-xs text-[#C9A86A] font-bold tracking-wide">{String(content.tagline || "ASTRA DHARMA HAYUNING BUDAYA")}</div>
-                            <div className="mt-4 flex justify-center gap-2">
-                              <span className="rounded-full bg-[#C9A86A] text-[#0C0A06] px-5 py-2 text-xs font-black">{String(content.ctaPrimaryLabel || "LIHAT PESERTA")}</span>
-                              <span className="rounded-full border border-white/15 bg-white/5 px-5 py-2 text-xs font-bold text-white/80">{String(content.ctaSecondaryLabel || "CARA DUKUNG")}</span>
+                          <div className="relative space-y-2">
+                            <div onClick={(e)=>{e.stopPropagation(); handleSelect("eyebrow")}} className={`inline-block px-2 py-1 rounded ${selectedId===s.id+"-eyebrow" ? "ring-1 ring-[#C9A86A] bg-[#C9A86A]/10" : "hover:bg-white/5"}`}><div className="text-[11px] font-bold tracking-[0.18em] text-[#C9A86A]">{String(content.eyebrow || "LKBB • JAVASOMA THE IMPRESSION")}</div></div>
+                            <div onClick={(e)=>{e.stopPropagation(); handleSelect("title")}} className={`block ${selectedId===s.id+"-title" ? "ring-1 ring-[#C9A86A] bg-white/5 rounded" : "hover:bg-white/5"}`}><h2 className="text-[28px] sm:text-[32px] font-black leading-none tracking-tight" style={{ color: content.titleColor || "#fff" }}>{String(content.headingLine1 || "PELETON")} <span className="gold-gradient-text">{String(content.headingLine2 || "TERFAVORIT")}</span></h2></div>
+                            <div onClick={(e)=>{e.stopPropagation(); handleSelect("subtitle")}} className={`inline-block px-2 py-1 rounded ${selectedId===s.id+"-subtitle" ? "ring-1 ring-[#C9A86A] bg-white/5" : "hover:bg-white/5"}`}><div className="text-[11px] tracking-[0.14em] text-white/70">{String(content.subtitle || "LKBB")} • {String(content.subtitle2 || "JAVASOMA")}</div></div>
+                            <div onClick={(e)=>{e.stopPropagation(); handleSelect("tagline")}} className={`inline-block px-2 py-1 rounded ${selectedId===s.id+"-tagline" ? "ring-1 ring-[#C9A86A] bg-white/5" : "hover:bg-white/5"}`}><div className="text-xs text-[#C9A86A] font-bold tracking-wide">{String(content.tagline || "ASTRA DHARMA HAYUNING BUDAYA")}</div></div>
+                            <div className="flex justify-center gap-2 pt-2">
+                              <span onClick={(e)=>{e.stopPropagation(); handleSelect("ctaPrimary")}} className={`rounded-full px-5 py-2 text-xs font-black cursor-pointer ${selectedId===s.id+"-ctaPrimary" ? "ring-2 ring-[#C9A86A] bg-[#C9A86A] text-[#0C0A06]" : "bg-[#C9A86A] text-[#0C0A06] hover:bg-[#D4B77A]"}`}>{String(content.ctaPrimaryLabel || "LIHAT PESERTA")}</span>
+                              <span onClick={(e)=>{e.stopPropagation(); handleSelect("ctaSecondary")}} className={`rounded-full border px-5 py-2 text-xs font-bold cursor-pointer ${selectedId===s.id+"-ctaSecondary" ? "ring-2 ring-white bg-white text-[#0B0C0F]" : "border-white/15 bg-white/5 text-white/80 hover:bg-white/10"}`}>{String(content.ctaSecondaryLabel || "CARA DUKUNG")}</span>
                             </div>
                           </div>
-                          {isSelected && <div className="absolute bottom-2 right-2 flex gap-1"><span className="h-2 w-8 bg-[#C9A86A] rounded-full" /></div>}
                         </div>
                       )}
                       {s.type==="countdown" && (
-                        <div className="bg-[#0B0C0F] border-y border-white/5 p-6 text-center">
+                        <div onClick={(e)=>{e.stopPropagation(); handleSelect("countdown")}} className={`bg-[#0B0C0F] border-y border-white/5 p-6 text-center cursor-pointer ${selectedId===s.id+"-countdown" ? "ring-1 ring-[#C9A86A] ring-inset" : ""}`}>
                           <div className="text-[10px] font-bold tracking-[0.16em] text-white/50">{String(content.title || "EVENT DIMULAI DALAM")}</div>
                           <div className="mt-3 grid grid-cols-4 gap-2 max-w-[420px] mx-auto">
                             {[["43","HARI"],["12","JAM"],["28","MENIT"],["05","DETIK"]].map(([v,l])=> (
@@ -301,13 +332,13 @@ export default function DesignStudio(){
                       )}
                       {s.type==="featured" && (
                         <div className="bg-[#09090b] p-6">
-                          <div className="flex items-center gap-2 mb-3"><span className="text-[11px] font-bold tracking-widest text-[#C9A86A]">01 — PESERTA</span><span className="ml-auto text-xs px-2.5 py-1 rounded-full bg-white text-[#09090b] font-black">SMP / SMA</span></div>
-                          <h3 className="text-[18px] font-black text-white">{String(content.title || "DUKUNG PELETON FAVORITMU!")}</h3>
+                          <div onClick={(e)=>{e.stopPropagation(); handleSelect("featured-title")}} className={`flex items-center gap-2 mb-3 cursor-pointer p-1 rounded ${selectedId===s.id+"-featured-title" ? "ring-1 ring-[#C9A86A] bg-white/5" : "hover:bg-white/5"}`}><span className="text-[11px] font-bold tracking-widest text-[#C9A86A]">01 — PESERTA</span><span className="ml-auto text-xs px-2.5 py-1 rounded-full bg-white text-[#09090b] font-black">SMP / SMA</span></div>
+                          <h3 onClick={(e)=>{e.stopPropagation(); handleSelect("featured-h3")}} className={`text-[18px] font-black text-white cursor-pointer p-1 rounded ${selectedId===s.id+"-featured-h3" ? "ring-1 ring-[#C9A86A] bg-white/5" : "hover:bg-white/5"}`}>{String(content.title || "DUKUNG PELETON FAVORITMU!")}</h3>
                           <p className="text-xs text-white/60 mt-1">{String(content.description || "Beranda urut nomor tampil")}</p>
                           <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {[1,2,3,4,5,6].map(i=> (
-                              <div key={i} className="rounded-xl border border-white/10 bg-[#111318] p-3">
-                                <div className="aspect-[4/3] rounded-lg bg-white/5 grid place-items-center text-white/20 text-xs">Foto #{i}</div>
+                              <div key={i} onClick={(e)=>{e.stopPropagation(); handleSelect("team-"+i)}} className={`rounded-xl border p-3 cursor-pointer ${selectedId===s.id+"-team-"+i ? "border-[#C9A86A] bg-[#C9A86A]/10" : "border-white/10 bg-[#111318] hover:border-white/20"}`}>
+                                <div className="aspect-[4/3] rounded-lg bg-white/5 grid place-items-center text-white/20 text-xs">Foto #{i} — klik untuk edit ukuran/posisi</div>
                                 <div className="mt-2 h-3 w-20 bg-white/10 rounded" /><div className="mt-1 h-3 w-28 bg-white/5 rounded" />
                               </div>
                             ))}
@@ -320,7 +351,7 @@ export default function DesignStudio(){
                           <h3 className="text-[18px] font-black text-white mt-1">PODIUM PELETON TERFAVORIT</h3>
                           <div className="mt-4 flex items-end justify-center gap-2">
                             {[2,1,3].map(rank=> (
-                              <div key={rank} className={`rounded-t-xl border bg-gradient-to-b ${rank===1?"from-amber-200 via-[#C9A86A] to-[#8C6A2A] h-[140px] w-[90px]":"from-zinc-200 to-zinc-500 h-[110px] w-[80px]"} grid place-items-center text-[#0C0A06] font-black`}>{rank}</div>
+                              <div key={rank} onClick={(e)=>{e.stopPropagation(); handleSelect("podium-"+rank)}} className={`rounded-t-xl border bg-gradient-to-b cursor-pointer ${rank===1?"from-amber-200 via-[#C9A86A] to-[#8C6A2A] h-[140px] w-[90px]":"from-zinc-200 to-zinc-500 h-[110px] w-[80px]"} grid place-items-center text-[#0C0A06] font-black ${selectedId===s.id+"-podium-"+rank ? "ring-2 ring-[#C9A86A]" : ""}`}>{rank}</div>
                             ))}
                           </div>
                         </div>
@@ -329,34 +360,34 @@ export default function DesignStudio(){
                         <div className="bg-[#09090b] border-y border-white/5 p-6">
                           <div className="text-center text-[11px] tracking-widest text-white/50">DIDUKUNG OLEH</div>
                           <div className="mt-3 flex justify-center gap-3 flex-wrap">
-                            {[1,2,3,4].map(i=> <div key={i} className="h-12 w-20 rounded-xl border border-white/10 bg-white/5 grid place-items-center text-[10px] text-white/30">Logo</div>)}
+                            {[1,2,3,4].map(i=> <div key={i} onClick={(e)=>{e.stopPropagation(); handleSelect("sponsor-"+i)}} className={`h-12 w-20 rounded-xl border grid place-items-center text-[10px] cursor-pointer ${selectedId===s.id+"-sponsor-"+i ? "border-[#C9A86A] bg-[#C9A86A]/10 text-[#C9A86A]" : "border-white/10 bg-white/5 text-white/30"}`}>Logo</div>)}
                           </div>
                         </div>
                       )}
                       {s.type==="cta" && (
                         <div className="bg-[#C9A86A] p-8 text-center">
-                          <h3 className="text-[18px] font-black text-[#0C0A06]">{String(content.title || "SIAP MENDUKUNG?")}</h3>
-                          <div className="mt-3 inline-flex rounded-full bg-[#0C0A06] text-white px-6 py-2 text-xs font-black">{String(content.buttonLabel || "Dukung Sekarang")}</div>
+                          <h3 onClick={(e)=>{e.stopPropagation(); handleSelect("cta-title")}} className={`text-[18px] font-black cursor-pointer p-1 rounded ${selectedId===s.id+"-cta-title" ? "ring-2 ring-[#0C0A06] bg-white/20" : ""} text-[#0C0A06]`}>{String(content.title || "SIAP MENDUKUNG?")}</h3>
+                          <div onClick={(e)=>{e.stopPropagation(); handleSelect("cta-button")}} className={`mt-3 inline-flex rounded-full px-6 py-2 text-xs font-black cursor-pointer ${selectedId===s.id+"-cta-button" ? "ring-2 ring-white bg-white text-[#0C0A06]" : "bg-[#0C0A06] text-white"}`}>{String(content.buttonLabel || "Dukung Sekarang")}</div>
                         </div>
                       )}
                       {s.type==="text_block" && (
                         <div className="bg-[#111318] p-6 border-y border-white/5">
-                          <h3 className="text-sm font-black text-white">{String(content.title || s.title)}</h3>
-                          <p className="text-sm text-white/60 mt-2">{String(content.text || content.description || "Teks editable — klik untuk ubah di panel kanan.")}</p>
+                          <h3 onClick={(e)=>{e.stopPropagation(); handleSelect("text-title")}} className={`text-sm font-black cursor-pointer p-1 rounded ${selectedId===s.id+"-text-title" ? "ring-1 ring-[#C9A86A] bg-white/5 text-white" : "text-white hover:bg-white/5"}`}>{String(content.title || s.title)}</h3>
+                          <p onClick={(e)=>{e.stopPropagation(); handleSelect("text-body")}} className={`text-sm mt-2 cursor-pointer p-1 rounded ${selectedId===s.id+"-text-body" ? "ring-1 ring-[#C9A86A] bg-white/5 text-white" : "text-white/60 hover:bg-white/5"}`}>{String(content.text || content.description || "Teks editable — klik untuk ubah di panel kanan. Drag untuk pindah, handle untuk resize.")}</p>
                         </div>
                       )}
                       {s.type==="banner" && (
                         <div className="bg-gradient-to-r from-[#C9A86A] to-[#8C6A2A] p-6 text-center">
-                          <div className="text-sm font-black text-[#0C0A06]">{String(content.title || "Banner")}</div>
+                          <div onClick={(e)=>{e.stopPropagation(); handleSelect("banner-title")}} className={`text-sm font-black cursor-pointer p-1 rounded ${selectedId===s.id+"-banner-title" ? "ring-1 ring-white bg-white/20 text-[#0C0A06]" : "text-[#0C0A06] hover:bg-white/10"}`}>{String(content.title || "Banner")}</div>
                           <div className="text-xs text-[#0C0A06]/70">{String(content.text || "")}</div>
                         </div>
                       )}
                       {s.type==="image" && (
                         <div className="bg-[#111318] p-6 text-center">
-                          {content.src ? <img src={String(content.src)} alt={String(content.alt||"")} className="mx-auto max-h-[320px] rounded-xl border border-white/10" /> : <div className="h-[180px] rounded-xl border border-dashed border-white/10 bg-white/5 grid place-items-center text-white/30 text-xs">Image — kosong, isi di Properties</div>}
+                          {content.src ? <img onClick={(e)=>{e.stopPropagation(); handleSelect("image-src")}} src={String(content.src)} alt={String(content.alt||"")} className={`mx-auto max-h-[320px] rounded-xl border cursor-pointer ${selectedId===s.id+"-image-src" ? "border-[#C9A86A] ring-2 ring-[#C9A86A]/50" : "border-white/10 hover:border-white/20"}`} /> : <div onClick={(e)=>{e.stopPropagation(); handleSelect("image-src")}} className={`h-[180px] rounded-xl border border-dashed bg-white/5 grid place-items-center text-white/30 text-xs cursor-pointer ${selectedId===s.id+"-image-src" ? "border-[#C9A86A] bg-[#C9A86A]/10" : "border-white/10 hover:border-[#C9A86A]/30"}`}>Image — kosong, klik untuk ganti • Drag untuk pindah</div>}
                         </div>
                       )}
-                      {s.type==="divider" && <div className="bg-[#09090b] p-4"><div className="h-px bg-white/10 w-full" /></div>}
+                      {s.type==="divider" && <div onClick={(e)=>{e.stopPropagation(); handleSelect("divider")}} className={`bg-[#09090b] p-4 cursor-pointer ${selectedId===s.id+"-divider" ? "bg-[#C9A86A]/10 ring-1 ring-[#C9A86A] ring-inset" : "hover:bg-white/5"}`}><div className="h-px bg-white/10 w-full" style={{ height: s.settings?.thickness || "1px", background: s.settings?.color || undefined }} /></div>}
                       {!["hero","countdown","featured","podium","sponsors","cta","text_block","banner","image","divider"].includes(s.type) && (
                         <div className="bg-[#111318] p-6 border-y border-white/5">
                           <div className="text-xs font-bold text-white/50">{s.type} • {s.key}</div>
@@ -368,9 +399,11 @@ export default function DesignStudio(){
                 })}
               </div>
               <div className="h-[1px] bg-white/10 w-full" />
-              <div className="bg-[#111318] p-3 text-center text-xs text-white/30">End of page • {sections.length} sections</div>
+              <div className="bg-[#111318] p-3 text-center text-xs text-white/30">End of page • {sections.length} sections • Semua elemen bisa di-drag, di-resize, dihapus, diubah warna/ukuran</div>
+              <div className="bg-[#0F1115] border-t border-white/5 p-2 text-center text-[11px] text-white/20">Footer • LKBB JAVASOMA 2026 — full website preview</div>
             </div>
           </div>
+          <div className="mt-3 text-center text-[11px] text-white/30">Preview full website • Klik teks untuk edit • Drag ↕ untuk urutan • Handle sudut untuk resize • Semua halaman (Beranda/Tim/Kompetisi) tersedia di selector atas</div>
         </div>
 
         {/* Properties */}
@@ -384,8 +417,53 @@ export default function DesignStudio(){
               <div className="py-12 text-center">
                 <div className="mx-auto h-12 w-12 rounded-full bg-white/5 grid place-items-center text-white/40"><Settings className="h-5 w-5"/></div>
                 <div className="mt-3 text-sm font-bold text-white">Pilih element</div>
-                <div className="text-xs text-white/50">Klik section di layers atau canvas</div>
+                <div className="text-xs text-white/50">Klik section di layers atau canvas — semua elemen bisa diklik</div>
               </div>
+            ) : isSubElement ? (
+              <>
+                <div className="rounded-xl bg-[#C9A86A]/10 border border-[#C9A86A]/20 p-3">
+                  <div className="text-[11px] font-bold tracking-widest text-[#C9A86A]">ELEMENT TERPILIH</div>
+                  <div className="mt-1 text-xs font-black text-white">{String(selectedSubKey)}</div>
+                  <div className="text-[11px] text-white/60 truncate">{String(selectedSection.content[selectedSubKey] || "").slice(0,60)}</div>
+                  <div className="mt-2 flex gap-1.5">
+                    <span className="text-[10px] px-2 py-1 rounded-full bg-white/10 text-white/60">Drag untuk pindah</span>
+                    <span className="text-[10px] px-2 py-1 rounded-full bg-white/10 text-white/60">Handle untuk resize</span>
+                  </div>
+                </div>
+                <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
+                  <div className="text-[11px] font-bold tracking-widest text-white/60 flex items-center gap-1.5"><Type className="h-3 w-3"/> TEXT</div>
+                  <div className="mt-2 grid gap-2">
+                    <div><label className="text-xs font-bold text-white/70">Content</label>
+                      {String(selectedSection.content[selectedSubKey] || "").length > 60 ? (
+                        <textarea value={String(selectedSection.content[selectedSubKey] || "")} onChange={e=> updateContentField(selectedSubKey!, e.target.value)} rows={3} className="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-2.5 py-2 text-xs text-white" />
+                      ) : (
+                        <input value={String(selectedSection.content[selectedSubKey] || "")} onChange={e=> updateContentField(selectedSubKey!, e.target.value)} className="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-2.5 py-2 text-xs text-white" />
+                      )}
+                    </div>
+                    {(String(selectedSubKey).toLowerCase().includes("image") || String(selectedSection.content[selectedSubKey] || "").startsWith("http")) && (
+                      <div className="flex gap-1.5">
+                        <Button size="sm" variant="outline" className="flex-1 rounded-full h-8 text-xs" onClick={()=>{
+                          const url = prompt("Ganti gambar URL", String(selectedSection.content[selectedSubKey] || ""))
+                          if(url!==null) updateContentField(selectedSubKey!, url)
+                        }}>Ganti Gambar</Button>
+                        <Button size="sm" variant="ghost" className="rounded-full h-8 text-xs" onClick={()=> updateContentField(selectedSubKey!, "")}>Hapus</Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
+                  <div className="text-[11px] font-bold tracking-widest text-white/60 flex items-center gap-1.5"><Palette className="h-3 w-3"/> STYLE</div>
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    <div><label className="text-xs text-white/60">Warna</label><input type="color" value={selectedSection.settings?.[selectedSubKey+"Color"] || "#C9A86A"} onChange={e=> updateStyleField(selectedSubKey+"Color", e.target.value)} className="mt-1 w-full h-9 rounded-lg bg-white/5 border border-white/10" /></div>
+                    <div><label className="text-xs text-white/60">Ukuran</label><input type="range" min="10" max="72" value={parseInt(String(selectedSection.settings?.[selectedSubKey+"Size"] || "16"))} onChange={e=> updateStyleField(selectedSubKey+"Size", e.target.value+"px")} className="mt-1 w-full" /><span className="text-[10px] text-white/40">{selectedSection.settings?.[selectedSubKey+"Size"] || "16px"}</span></div>
+                  </div>
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <Button variant="outline" size="sm" className="rounded-full h-8 text-xs" onClick={()=> { const v = prompt("Warna background (hex atau transparent)", selectedSection.settings?.[selectedSubKey+"Bg"] || ""); if(v!==null) updateStyleField(selectedSubKey+"Bg", v) }}>Background</Button>
+                    <Button variant="ghost" size="sm" className="rounded-full h-8 text-xs text-red-400" onClick={()=> { updateContentField(selectedSubKey!, ""); setSelectedId(selectedSection.id)}}>Hapus Elemen</Button>
+                  </div>
+                </div>
+                <Button variant="ghost" size="sm" className="w-full rounded-full border border-white/10 bg-white/5 text-white/70" onClick={()=> setSelectedId(selectedSection.id)}>← Kembali ke Section</Button>
+              </>
             ) : (
               <>
                 <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
