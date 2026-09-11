@@ -18,8 +18,8 @@ export function TimelinePreview(){
         </div>
         <div className="mt-6 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
           {timelineStages.map(s=> (
-            <div key={s.id} className={`rounded-2xl border p-3 ${s.status==="current" ? "border-[#C9A86A30] bg-[#C9A86A0A]" : s.status==="completed" ? "border-white/10 bg-white/5 backdrop-blur" : "border-dashed bg-transparent"}`}>
-              <div className={`h-8 w-8 rounded-full grid place-items-center text-xs font-black ${s.status==="completed" ? "bg-[#10B981] text-white" : s.status==="current" ? "bg-gold text-gold-foreground" : "bg-white/5 backdrop-blur text-muted-foreground"}`}>
+            <div key={s.id} className={`rounded-2xl border p-3 ${s.status==="current" ? "border-primary/20 bg-primary/5" : s.status==="completed" ? "border-white/10 bg-white/5 backdrop-blur" : "border-dashed bg-transparent"}`}>
+              <div className={`h-8 w-8 rounded-full grid place-items-center text-xs font-black ${s.status==="completed" ? "bg-[#10B981] text-white" : s.status==="current" ? "bg-primary text-black" : "bg-white/5 backdrop-blur text-muted-foreground"}`}>
                 {s.status==="completed" ? <Check className="h-4 w-4"/> : s.sort_order}
               </div>
               <div className="mt-2 text-[12px] font-bold leading-tight line-clamp-1">{s.title}</div>

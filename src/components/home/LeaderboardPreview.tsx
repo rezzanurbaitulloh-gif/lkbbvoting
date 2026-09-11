@@ -15,7 +15,7 @@ export function LeaderboardPreview(){
   },[])
   const Row = ({p,i}:{p:any,i:number})=> (
     <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur px-3 py-2.5">
-      <div className={`h-8 w-8 rounded-full grid place-items-center text-xs font-black ${i<3 ? "bg-gold text-gold-foreground" : "bg-white/5 backdrop-blur text-muted-foreground"}`}>{i+1}</div>
+      <div className={`h-8 w-8 rounded-full grid place-items-center text-xs font-black ${i<3 ? "bg-primary text-black" : "bg-white/5 backdrop-blur text-muted-foreground"}`}>{i+1}</div>
       <img src={p.image_url || p.image} alt="" className="h-9 w-9 rounded-full object-cover border border-white/10" />
       <div className="min-w-0 flex-1">
         <div className="text-[13px] font-bold leading-tight truncate">{p.name}</div>
@@ -28,7 +28,7 @@ export function LeaderboardPreview(){
     <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-10">
       <div className="flex items-end justify-between">
         <div>
-          <div className="label-gold flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-gold"/>Klasemen Sementara</div>
+          <div className="label-gold flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-primary"/>Klasemen Sementara</div>
           <h2 className="mt-1 text-[20px] font-extrabold tracking-tight">PEREBUTAN TAHTA TERFAVORIT</h2>
           <p className="text-sm text-muted-foreground">Peringkat berdasarkan dukungan terverifikasi. Hanya ranking yang ditampilkan ke publik.</p>
         </div>

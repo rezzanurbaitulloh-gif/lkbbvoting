@@ -58,7 +58,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
               <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] border border-white/10 bg-white/5 backdrop-blur shadow-elevated">
                 <img src={photo} alt={peleton.name} className="h-full w-full object-cover" />
                 <div className="absolute left-3 top-3 rounded-full bg-[#0B0C0F] px-3 py-1 text-xs font-black tracking-widest border border-white/10">#{peleton.number}</div>
-                {showRank && rank && <div className="absolute bottom-3 right-3 rounded-full bg-gold px-3 py-1 text-xs font-black text-gold-foreground">Peringkat #{rank}</div>}
+                {showRank && rank && <div className="absolute bottom-3 right-3 rounded-full bg-primary px-3 py-1 text-xs font-black text-black">Peringkat #{rank}</div>}
               </div>
               <div>
                 <div className="flex flex-wrap gap-2">
@@ -70,8 +70,8 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                   <div>
                     <h1 className="text-[28px] md:text-[36px] font-black tracking-[-0.03em] leading-none text-balance">{peleton.name}</h1>
                     <p className="mt-1 text-sm font-medium text-white/70">{peleton.school}</p>
-                    {showSementara && <span className="mt-2 inline-flex rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">HASIL SEMENTARA</span>}
-                    {showFinal && <span className="mt-2 inline-flex rounded-full bg-[#C9A86A] text-[#0C0A06] px-2.5 py-1 text-[10px] font-black">HASIL FINAL</span>}
+                    {showSementara && <span className="mt-2 inline-flex rounded-full bg-[#FACC15] text-black px-2.5 py-1 text-[10px] font-black">HASIL SEMENTARA</span>}
+                    {showFinal && <span className="mt-2 inline-flex rounded-full bg-primary text-black px-2.5 py-1 text-[10px] font-black">HASIL FINAL</span>}
                   </div>
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-white/60 text-pretty max-w-2xl">{peleton.description}</p>
@@ -139,8 +139,8 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                   <div className="inline-flex self-center rounded-full px-3 py-1 text-xs font-bold border backdrop-blur" style={{background: isActive ? "rgba(34,197,94,0.10)" : "rgba(255,255,255,0.04)", color: isActive ? "rgb(134,239,172)" : "rgba(255,255,255,0.85)", borderColor: isActive ? "rgba(34,197,94,0.22)" : "rgba(255,255,255,0.08)"}}>
                     {isNotStarted ? "Belum Dimulai" : isActive ? "Aktif" : isVotingClosed ? "Voting Ditutup" : isPublished ? "Hasil Dipublikasikan" : state}
                   </div>
-                  {isVotingClosed && <div className="inline-flex self-center rounded-full bg-[#FACC15] text-[#0B0C0F] px-2.5 py-1 text-[10px] font-black">Peringkat Online Saja</div>}
-                  {isPublished && <div className="inline-flex self-center rounded-full bg-[#C9A86A] text-[#0C0A06] px-2.5 py-1 text-[10px] font-black">Peringkat Akhir</div>}
+                  {isVotingClosed && <div className="inline-flex self-center rounded-full bg-[#FACC15] text-black px-2.5 py-1 text-[10px] font-black">Peringkat Online Saja</div>}
+                  {isPublished && <div className="inline-flex self-center rounded-full bg-primary text-black px-2.5 py-1 text-[10px] font-black">Peringkat Akhir</div>}
                 </div>
                 <Link href={supportUrl}><Button variant="outline" className="w-full rounded-full h-[44px] font-bold border border-white/10 bg-white/5 backdrop-blur text-white hover:bg-white/10 hover:border-white/12 hover:text-white">DUKUNG</Button></Link>
                 <ShareButtons profileUrl={profileUrl} supportUrl={supportUrl} />

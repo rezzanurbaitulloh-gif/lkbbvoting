@@ -72,7 +72,7 @@ export default function ProfilePage(){
                   <div className="text-[24px] font-black tabular-nums">{favPeletons.length}</div>
                   <div className="text-xs text-muted-foreground">Peleton Favorit</div>
                 </div>
-                <div className="rounded-xl bg-[#C9A86A0A] border border-[#C9A86A20] p-4 text-center">
+                <div className="rounded-xl bg-primary/5 border border-primary/10 p-4 text-center">
                   <div className="text-xs font-bold tracking-widest text-gold">STATUS</div>
                   <div className="text-sm font-black">Pendukung Aktif</div>
                 </div>

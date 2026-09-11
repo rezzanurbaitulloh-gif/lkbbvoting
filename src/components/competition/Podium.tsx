@@ -144,7 +144,7 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
             <div className="text-[10px] xs:text-[11px] sm:text-xs md:text-[13px] lg:text-sm font-black leading-[1.15] tracking-tight text-white line-clamp-2 break-words drop-shadow-[0_1px_4px_rgba(0,0,0,0.55)] min-h-[2.2em] flex items-center">{team.name}</div>
             <div className="mt-1 text-[9px] xs:text-[10px] sm:text-[11px] md:text-xs leading-tight text-white/55 line-clamp-1 max-w-[92%]">{team.school || ""}</div>
             <div className="mt-1.5 xs:mt-2 inline-flex items-center gap-1 xs:gap-1.5 rounded-full bg-black/28 backdrop-blur border border-white/10 px-2 xs:px-2.5 py-1 text-[9px] xs:text-[10px] sm:text-[11px] font-black text-white shadow-[0_1px_6px_rgba(0,0,0,0.25)]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#C9A86A] shrink-0" />#{team.number}
+              <span className="h-1.5 w-1.5 rounded-full bg-primary shrink-0" />#{team.number}
             </div>
             {Number(team.online_ballots ?? 0) > 0 && <div className="mt-1 xs:mt-1.5 text-[9px] xs:text-[10px] sm:text-[11px] font-bold tabular-nums tracking-wide text-[#C9A86A]">{Number(team.online_ballots ?? 0).toLocaleString("id-ID")} online</div>}
           </div>
@@ -186,7 +186,7 @@ export function Podium({ teams, category, showPoints = true }: { teams: Team[]; 
     <div className="w-full">
       {category && (
         <div className="flex items-center justify-center gap-2 mb-6 xs:mb-7 sm:mb-8">
-          <span className="inline-flex rounded-full bg-[#C9A86A] text-[#0B0C0F] px-2.5 sm:px-3 py-1 text-[10px] sm:text-[11px] font-black tracking-wide shadow-[0_2px_10px_rgba(201,168,106,0.25)]">{category}</span>
+          <span className="inline-flex rounded-full bg-primary text-black px-2.5 sm:px-3 py-1 text-[10px] sm:text-[11px] font-black tracking-wide shadow-[0_2px_10px_rgba(201,168,106,0.25)]">{category}</span>
           <span className="text-[10px] sm:text-[11px] text-white/45 tabular-nums">{teams.length} tim</span>
         </div>
       )}
@@ -257,7 +257,7 @@ export function PodiumSection({ smp, sma, isPublished, variant = "final" }: { sm
 
         {festive && (
           <div className="mt-4 flex justify-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#C9A86A] text-[#0B0C0F] px-3 py-1 text-[11px] font-black">🎉 Selamat! 🎉</div>
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary text-black px-3 py-1 text-[11px] font-black">🎉 Selamat! 🎉</div>
           </div>
         )}
 

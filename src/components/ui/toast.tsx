@@ -49,7 +49,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }){
               "bg-[#111318] border-white/10 text-white"
             )}
           >
-            <div className={cn("h-2 w-2 rounded-full mt-1.5 shrink-0", t.variant==="error" ? "bg-red-500" : t.variant==="success" ? "bg-emerald-500" : "bg-[#C9A86A]")} />
+            <div className={cn("h-2 w-2 rounded-full mt-1.5 shrink-0", t.variant==="error" ? "bg-red-500" : t.variant==="success" ? "bg-emerald-500" : "bg-primary")} />
             <div className="flex-1 min-w-0">
               {t.title && <div className="text-sm font-bold leading-tight">{t.title}</div>}
               {t.description && <div className="text-xs leading-relaxed text-white/70">{t.description}</div>}

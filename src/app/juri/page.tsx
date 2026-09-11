@@ -26,7 +26,7 @@ export default function JuriPage(){
                   <img src={j.photo_url || j.photo} alt={j.name} className="h-full w-full object-cover" />
                 </div>
                 <div className="p-5">
-                  <div className="inline-flex rounded-full bg-gold px-2.5 py-1 text-[11px] font-bold tracking-widest text-gold-foreground">{j.role}</div>
+                  <div className="inline-flex rounded-full bg-primary px-2.5 py-1 text-[11px] font-bold tracking-widest text-black">{j.role}</div>
                   <h3 className="mt-3 text-[16px] font-black leading-tight">{j.name}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">{j.bio}</p>
                 </div>

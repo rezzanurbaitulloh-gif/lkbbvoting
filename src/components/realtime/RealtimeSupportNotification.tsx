@@ -35,14 +35,14 @@ function SupportPopup({ item, onClose }: { item: QueueItem; onClose: () => void 
 
   return (
     <div
-      className={`relative w-[420px] max-w-[90vw] md:w-[480px] rounded-[20px] border border-[#C9A86A30] bg-gradient-to-br from-[#1A1208] to-[#0B0C0F] text-white shadow-2xl overflow-hidden ${reduced ? "" : "animate-in zoom-in-95 duration-300"} `}
+      className={`relative w-[420px] max-w-[90vw] md:w-[480px] rounded-[20px] border border-primary/20 bg-gradient-to-br from-[#1A1208] to-[#0B0C0F] text-white shadow-2xl overflow-hidden ${reduced ? "" : "animate-in zoom-in-95 duration-300"} `}
       style={{ boxShadow: "0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,106,0.15)"}}
       role="status"
       aria-live="polite"
     >
       {/* Explosion overlay */}
       {exploding && !reduced && (
-        <div className="absolute inset-0 pointer-events-none grid place-items-center bg-[#C9A86A20] animate-pulse">
+        <div className="absolute inset-0 pointer-events-none grid place-items-center bg-primary/10 animate-pulse">
           <div className="text-4xl animate-bounce">💥</div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#C9A86A30] to-transparent animate-ping" style={{ animationDuration: "0.7s" }} />
         </div>
@@ -51,7 +51,7 @@ function SupportPopup({ item, onClose }: { item: QueueItem; onClose: () => void 
         {item.supporterAvatar ? (
           <img src={item.supporterAvatar} alt={item.supporterName} className="h-12 w-12 rounded-full object-cover border-2 border-white/20 shrink-0" />
         ) : (
-          <div className={`h-12 w-12 rounded-full grid place-items-center shrink-0 ${item.isPrivate ? "bg-emerald-500" : "bg-[#C9A86A]"} text-white`}>
+          <div className={`h-12 w-12 rounded-full grid place-items-center shrink-0 ${item.isPrivate ? "bg-emerald-500" : "bg-primary"} text-white`}>
             <PartyPopper className="h-6 w-6" />
           </div>
         )}

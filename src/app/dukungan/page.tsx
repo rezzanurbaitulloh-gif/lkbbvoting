@@ -112,7 +112,7 @@ function DukunganInner(){
     <div className="mx-auto max-w-[1080px] px-3 xs:px-4 sm:px-6 py-4 xs:py-6 grid lg:grid-cols-[1.1fr_0.9fr] gap-4 xs:gap-6">
       <div className="space-y-4">
         <div className="rounded-[12px] xs:rounded-[16px] border border-white/10 bg-white/5 backdrop-blur overflow-hidden">
-          <div className="h-1.5 xs:h-2 bg-gold" />
+          <div className="h-1.5 xs:h-2 bg-primary" />
           <div className="p-3 xs:p-4 sm:p-5 flex gap-3 xs:gap-4">
             <img src={peleton.image_url} alt="" className="h-16 w-16 xs:h-20 xs:w-20 rounded-xl object-cover border border-white/10 shrink-0" />
             <div className="min-w-0 flex-1">
@@ -141,8 +141,8 @@ function DukunganInner(){
               const price = n * onlinePrice
               const isPop = n===50
               return (
-                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border backdrop-blur transition-all duration-200 ${qty===n ? "border-[#C9A86A] bg-[#C9A86A]/12 text-black scale-[1.02] shadow-[0_2px_12px_rgba(201,168,106,0.12)]" : "border-white/15 bg-transparent hover:border-white/25 text-white/85 hover:scale-[1.01]"} ${isClosed ? "cursor-not-allowed" : ""}`}>
-                  {isPop && <span className="absolute -top-1.5 xs:-top-2 right-2 xs:right-3 rounded-full bg-[#C9A86A] px-1.5 xs:px-2 py-0.5 text-[9px] xs:text-[10px] font-black text-[#0C0A06] border border-[#C9A86A] shadow-sm">POPULER</span>}
+                <button key={n} disabled={isClosed} onClick={()=>setQty(n)} className={`relative rounded-xl border backdrop-blur transition-all duration-200 ${qty===n ? "border-primary bg-primary/10 text-black scale-[1.02] shadow-[0_2px_12px_rgba(201,168,106,0.12)]" : "border-white/15 bg-transparent hover:border-white/25 text-white/85 hover:scale-[1.01]"} ${isClosed ? "cursor-not-allowed" : ""}`}>
+                  {isPop && <span className="absolute -top-1.5 xs:-top-2 right-2 xs:right-3 rounded-full bg-primary px-1.5 xs:px-2 py-0.5 text-[9px] xs:text-[10px] font-black text-black border border-primary shadow-sm">POPULER</span>}
                   <div className={`text-[10px] xs:text-xs font-bold tracking-widest ${qty===n ? "text-black/70" : "text-white/60"}`}>{n} Dukungan</div>
                   <div className="mt-1 text-[15px] xs:text-[17px] sm:text-[18px] font-black tabular-nums">Rp{price.toLocaleString("id-ID")}</div>
                   <div className={`text-[11px] xs:text-xs ${qty===n ? "text-black/60" : "text-white/50"}`}>{n} ballot</div>

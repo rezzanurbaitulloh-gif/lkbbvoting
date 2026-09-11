@@ -89,16 +89,16 @@ export default function AdminOverview(){
           {label:"OFFLINE BALLOT", value: (stats.offline ?? 0).toLocaleString("id-ID"), sub:"Ballot"},
           {label:"TOTAL BALLOT", value: (stats.total ?? 0).toLocaleString("id-ID"), sub:"Ballot", gold:true},
         ].map(card=> (
-          <div key={card.label} className={`rounded-[12px] border p-3.5 sm:p-4 min-w-0 overflow-hidden ${card.gold ? "bg-[#C9A86A] border-[#C9A86A] text-[#0B0C0F]" : "bg-[#17191F] border-white/10 text-white"}`}>
-            <div className={`text-[10px] font-bold tracking-widest leading-tight break-words ${card.gold ? "text-[#0B0C0F]/70" : "text-white/40"}`}>{card.label}</div>
+          <div key={card.label} className={`rounded-[12px] border p-3.5 sm:p-4 min-w-0 overflow-hidden ${card.gold ? "bg-primary border-primary text-black" : "bg-[#17191F] border-white/10 text-white"}`}>
+            <div className={`text-[10px] font-bold tracking-widest leading-tight break-words ${card.gold ? "text-black/70" : "text-white/40"}`}>{card.label}</div>
             <div className="mt-1.5 text-[16px] sm:text-[18px] md:text-[20px] font-black leading-none truncate tracking-tight">{card.value}</div>
-            <div className={`mt-1 text-[11px] ${card.gold ? "text-[#0B0C0F]/60" : "text-white/40"}`}>{card.sub}</div>
+            <div className={`mt-1 text-[11px] ${card.gold ? "text-black/60" : "text-white/40"}`}>{card.sub}</div>
           </div>
         ))}
       </div>
       {/* Podium juara realtime — preview online saja */}
       <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
-        <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-3 sm:p-4">
+        <div className="rounded-[12px] border border-primary/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-3 sm:p-4">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMP <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
             <span className="text-[10px] text-white/40">Online preview</span>
@@ -112,7 +112,7 @@ export default function AdminOverview(){
           </div>
           <div className="mt-2 text-[10px] text-white/30 text-center">Preview hanya online; total ada di list ranking & tabel bawah.</div>
         </div>
-        <div className="rounded-[12px] border border-[#C9A86A]/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-3 sm:p-4 overflow-hidden">
+        <div className="rounded-[12px] border border-primary/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-3 sm:p-4 overflow-hidden">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMA <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
             <span className="text-[10px] text-white/40">Online preview</span>
@@ -137,7 +137,7 @@ export default function AdminOverview(){
           <div className="mt-3 space-y-1">
             {ranking.map((r:any,i:number)=> (
               <div key={r.id} className="flex items-center gap-2 rounded-lg bg-[#0B0C0F] border border-white/5 px-3 py-2 text-xs">
-                <span className={`h-6 w-6 rounded-full grid place-items-center font-black text-[11px] ${i===0 ? "bg-[#C9A86A] text-[#0B0C0F]" : "bg-white/10 text-white"}`}>{i+1}</span>
+                <span className={`h-6 w-6 rounded-full grid place-items-center font-black text-[11px] ${i===0 ? "bg-primary text-black" : "bg-white/10 text-white"}`}>{i+1}</span>
                 <div className="flex-1 min-w-0">
                   <div className="font-bold truncate">#{r.number} {r.name}</div>
                   <div className="text-[11px] text-white/40 tabular-nums">on {Number(r.online_ballots??0).toLocaleString("id-ID")} • off {Number(r.offline_ballots??0).toLocaleString("id-ID")} • tot {Number(r.total_ballots??0).toLocaleString("id-ID")}</div>
@@ -179,7 +179,7 @@ export default function AdminOverview(){
             </ChartContainer>
           )}
           <div className="mt-2 flex gap-3 text-[10px] text-white/40">
-            <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[#C9A86A]"/> Online</span>
+            <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-primary"/> Online</span>
             <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[#9CA3AF]"/> Offline</span>
           </div>
           <div className="mt-1 text-[10px] text-white/30">* 5 hari terakhir — data real dari supports ledger</div>
@@ -194,7 +194,7 @@ export default function AdminOverview(){
               <div className="flex justify-between"><span className="text-white/40">EVENT DIMULAI</span><span className="font-bold">24 Oktober 2026 08:00</span></div>
               <div className="flex justify-between"><span className="text-white/40">VOTING BERAKHIR</span><span className="font-bold">24 Oktober 2026 23:59</span></div>
             </div>
-            <Link href="/admin/settings"><button className="mt-3 w-full rounded-full bg-[#C9A86A] text-[#0B0C0F] py-2 text-xs font-black">KELOLA EVENT</button></Link>
+            <Link href="/admin/settings"><button className="mt-3 w-full rounded-full bg-primary text-black py-2 text-xs font-black">KELOLA EVENT</button></Link>
           </div>
         </div>
       </div>
@@ -251,7 +251,7 @@ export default function AdminOverview(){
             <div className="mt-3 space-y-2 text-xs max-h-[120px] overflow-y-auto">
               {auditLogs.length===0 ? <div className="text-white/40">Belum ada aktivitas.</div> : auditLogs.slice(0,5).map((log:any)=> (
                 <div key={log.id} className="flex gap-2">
-                  <span className="h-2 w-2 rounded-full bg-[#C9A86A] mt-1 shrink-0"/> 
+                  <span className="h-2 w-2 rounded-full bg-primary mt-1 shrink-0"/> 
                   <span className="text-white/70 truncate">{log.action} — {log.target?.slice(0,8) || "-"} <span className="text-white/40">{new Date(log.created_at).toLocaleDateString("id-ID")}</span></span>
                 </div>
               ))}

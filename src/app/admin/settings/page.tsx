@@ -502,7 +502,7 @@ export default function SettingsPage(){
                 <div className="relative px-4">
                   <div className="text-[10px] font-bold tracking-[0.18em] text-[#C9A86A]">LKBB • JAVASOMA THE IMPRESSION</div>
                   <div className="mt-1 text-[22px] font-black leading-none text-white" style={{fontFamily:"var(--font-cormorant)"}}>PELETON<br/><span style={{color: previewPrimary}}>TERFAVORIT</span></div>
-                  <div className="mt-2 inline-flex rounded-full px-3 py-1 text-[10px] font-black text-[#0B0C0F]" style={{background: previewPrimary}}>LIHAT PESERTA</div>
+                  <div className="mt-2 inline-flex rounded-full px-3 py-1 text-[10px] font-black text-black" style={{background: previewPrimary}}>LIHAT PESERTA</div>
                 </div>
                 <div className="absolute bottom-2 left-2 right-2 text-[10px] text-white/50">Preview hero — background & warna primer realtime</div>
               </div>

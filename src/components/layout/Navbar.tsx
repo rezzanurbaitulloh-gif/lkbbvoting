@@ -130,17 +130,17 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                   <div className="px-4 py-3 border-b border-border bg-muted/30">
                     <div className="text-sm font-bold leading-tight truncate">{currentUser.name}</div>
                     <div className="text-xs text-muted-foreground truncate">{currentUser.email}</div>
-                    {isAdmin && <div className="mt-1 inline-flex rounded-full bg-gold px-2 py-0.5 text-[10px] font-black tracking-widest text-gold-foreground">admin</div>}
+                    {isAdmin && <div className="mt-1 inline-flex rounded-full bg-primary px-2 py-0.5 text-[10px] font-black tracking-widest text-black">admin</div>}
                   </div>
                   <div className="p-1.5 flex flex-col gap-2">
-                    <Link href="/profile" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "hover:bg-white/5 backdrop-blur text-muted-foreground hover:text-foreground")}>
+                    <Link href="/profile" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-black shadow-sm" : "hover:bg-white/5 backdrop-blur text-muted-foreground hover:text-foreground")}>
                       <User className="h-4 w-4 shrink-0" /> <span>Profile</span>
                     </Link>
-                    <Link href="/profile/edit" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-[#0B0C0F] shadow-sm" : "hover:bg-white/5 backdrop-blur text-muted-foreground hover:text-foreground")}>
+                    <Link href="/profile/edit" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-black shadow-sm" : "hover:bg-white/5 backdrop-blur text-muted-foreground hover:text-foreground")}>
                       <Settings className="h-4 w-4 shrink-0" /> <span>Pengaturan</span>
                     </Link>
                     {isAdmin && (
-                      <Link href="/admin" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-left transition-colors", pathname.startsWith("/admin") ? "bg-white text-[#0B0C0F] shadow-sm" : "hover:bg-white/5 backdrop-blur text-muted-foreground hover:text-foreground")}>
+                      <Link href="/admin" onClick={()=> setProfileOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-left transition-colors", pathname.startsWith("/admin") ? "bg-white text-black shadow-sm" : "hover:bg-white/5 backdrop-blur text-muted-foreground hover:text-foreground")}>
                         <LayoutDashboard className="h-4 w-4 text-gold shrink-0" /> <span>Dashboard Admin</span>
                       </Link>
                     )}
@@ -190,17 +190,17 @@ export function Navbar({ siteSettings }: { siteSettings?: Record<string, any> } 
                         <div className="text-sm font-bold truncate">{currentUser.name}</div>
                         <div className="text-xs text-muted-foreground truncate">{currentUser.email}</div>
                       </div>
-                      {isAdmin && <span className="ml-auto rounded-full bg-gold px-2 py-0.5 text-[10px] font-black text-gold-foreground">admin</span>}
+                      {isAdmin && <span className="ml-auto rounded-full bg-primary px-2 py-0.5 text-[10px] font-black text-black">admin</span>}
                     </div>
-                    <Link href="/profile" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-white/5 backdrop-blur hover:text-foreground")}><User className="h-4 w-4 shrink-0"/> <span>Profile</span></Link>
-                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-white/5 backdrop-blur hover:text-foreground")}><Settings className="h-4 w-4 shrink-0"/> <span>Pengaturan</span></Link>
-                    {isAdmin && <Link href="/admin" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-left transition-colors", pathname.startsWith("/admin") ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-white/5 backdrop-blur hover:text-foreground")}><LayoutDashboard className="h-4 w-4 text-gold shrink-0"/> <span>Dashboard Admin</span></Link>}
+                    <Link href="/profile" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-black shadow-sm" : "text-muted-foreground hover:bg-white/5 backdrop-blur hover:text-foreground")}><User className="h-4 w-4 shrink-0"/> <span>Profile</span></Link>
+                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-black shadow-sm" : "text-muted-foreground hover:bg-white/5 backdrop-blur hover:text-foreground")}><Settings className="h-4 w-4 shrink-0"/> <span>Pengaturan</span></Link>
+                    {isAdmin && <Link href="/admin" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-left transition-colors", pathname.startsWith("/admin") ? "bg-white text-black shadow-sm" : "text-muted-foreground hover:bg-white/5 backdrop-blur hover:text-foreground")}><LayoutDashboard className="h-4 w-4 text-gold shrink-0"/> <span>Dashboard Admin</span></Link>}
                     <button onClick={async ()=>{ setOpen(false); await logout(); router.push("/"); router.refresh() }} className="flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors text-left"><LogOut className="h-4 w-4 shrink-0"/> <span>Logout</span></button>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2">
-                    <Link href="/profile" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-white/5 backdrop-blur hover:text-foreground")}><User className="h-4 w-4 shrink-0"/> <span>Profile</span></Link>
-                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-[#0B0C0F] shadow-sm" : "text-muted-foreground hover:bg-white/5 backdrop-blur hover:text-foreground")}><Settings className="h-4 w-4 shrink-0"/> <span>Pengaturan</span></Link>
+                    <Link href="/profile" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile" ? "bg-white text-black shadow-sm" : "text-muted-foreground hover:bg-white/5 backdrop-blur hover:text-foreground")}><User className="h-4 w-4 shrink-0"/> <span>Profile</span></Link>
+                    <Link href="/profile/edit" onClick={()=>setOpen(false)} className={cn("flex w-full items-center justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors", pathname==="/profile/edit" ? "bg-white text-black shadow-sm" : "text-muted-foreground hover:bg-white/5 backdrop-blur hover:text-foreground")}><Settings className="h-4 w-4 shrink-0"/> <span>Pengaturan</span></Link>
                     <Link href="/login" onClick={()=>setOpen(false)}><Button variant="outline" className="w-full rounded-full">Masuk</Button></Link>
                   </div>
                 )}

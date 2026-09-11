@@ -62,9 +62,9 @@ export default async function TimPage(){
           const number = String(p.number || "").padStart(2,"0")
           const total = Number(p.total_ballots ?? p.online_ballots ?? 0)
           return (
-            <Link key={p.id} href={`/tim/${p.slug}`} className="group flex items-center justify-between gap-2.5 xs:gap-3 rounded-[12px] xs:rounded-xl border border-white/10 bg-white/5 backdrop-blur px-2.5 xs:px-3 sm:px-4 py-2.5 xs:py-3 hover:border-[#C9A86A]/20 hover:bg-white/5 backdrop-blur/20 transition-colors min-w-0">
+            <Link key={p.id} href={`/tim/${p.slug}`} className="group flex items-center justify-between gap-2.5 xs:gap-3 rounded-[12px] xs:rounded-xl border border-white/10 bg-white/5 backdrop-blur px-2.5 xs:px-3 sm:px-4 py-2.5 xs:py-3 hover:border-primary/20 hover:bg-white/5 backdrop-blur/20 transition-colors min-w-0">
               <div className="flex items-center gap-2 xs:gap-3 min-w-0 flex-1">
-                <span className="shrink-0 rounded-full bg-gold px-2 xs:px-2.5 py-1 text-[10px] xs:text-[11px] font-black tracking-widest text-gold-foreground">#{number}</span>
+                <span className="shrink-0 rounded-full bg-primary px-2 xs:px-2.5 py-1 text-[10px] xs:text-[11px] font-black tracking-widest text-black">#{number}</span>
                 <div className="min-w-0 flex-1">
                   <div className="text-[13px] xs:text-sm sm:text-[15px] font-black tracking-tight truncate">{p.name}</div>
                   <div className="text-[10px] xs:text-[11px] font-bold tracking-wide text-white/50 tabular-nums">{total.toLocaleString("id-ID")} ballot</div>
@@ -87,11 +87,11 @@ export default async function TimPage(){
   }
 
   const getHeaderBadge = () => {
-    if (isNotStarted) return { label: "Belum Dimulai", color: "bg-white text-[#0B0C0F] border border-white shadow-sm" }
-    if (isActive) return { label: "Aktif — Dukungan Dibuka", color: "bg-[#C9A86A] text-[#0C0A06] border border-[#C9A86A] shadow-sm" }
-    if (isVotingClosed) return { label: "Voting Ditutup", color: "bg-[#FACC15] text-[#0B0C0F] border border-[#FACC15] shadow-sm" }
-    if (isPublished) return { label: "Hasil Dipublikasikan", color: "bg-[#C9A86A] text-[#0C0A06] border border-[#C9A86A] shadow-sm" }
-    return { label: state, color: "bg-white text-[#0B0C0F] border border-white" }
+    if (isNotStarted) return { label: "Belum Dimulai", color: "bg-white text-black border border-white shadow-sm" }
+    if (isActive) return { label: "Aktif — Dukungan Dibuka", color: "bg-primary text-black border border-primary shadow-sm" }
+    if (isVotingClosed) return { label: "Voting Ditutup", color: "bg-[#FACC15] text-black border border-[#FACC15] shadow-sm" }
+    if (isPublished) return { label: "Hasil Dipublikasikan", color: "bg-primary text-black border border-primary shadow-sm" }
+    return { label: state, color: "bg-white text-black border border-white" }
   }
   const headerBadge = getHeaderBadge()
 
@@ -118,7 +118,7 @@ export default async function TimPage(){
           <div className="flex flex-wrap items-center gap-2 xs:gap-2.5 mb-3 xs:mb-4">
             <span className="inline-flex rounded-full border border-white/12 bg-white/5 backdrop-blur px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-bold tracking-wide text-white">SMP / SEDERAJAT</span>
             {isVotingClosed && <span className="inline-flex rounded-full border border-white/10 bg-white/5 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-white">ONLINE SAJA</span>}
-            {isPublished && <span className="inline-flex rounded-full border border-[#C9A86A]/20 bg-[#C9A86A]/10 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-black">FINAL</span>}
+            {isPublished && <span className="inline-flex rounded-full border border-primary/20 bg-primary/10 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-black">FINAL</span>}
             <span className="text-[11px] xs:text-xs text-muted-foreground tabular-nums border border-white/10 bg-white/5 backdrop-blur px-2 py-1 rounded-full text-white">{smp.length} tim</span>
           </div>
           {smp.length===0 ? <div className="rounded-xl border border-dashed border-white/10 p-6 xs:p-8 text-center text-[13px] xs:text-sm text-muted-foreground">Belum ada peleton SMP.</div> : renderGrid(smp)}
@@ -129,7 +129,7 @@ export default async function TimPage(){
           <div className="flex flex-wrap items-center gap-2 xs:gap-2.5 mb-3 xs:mb-4">
             <span className="inline-flex rounded-full border border-white/12 bg-white/5 backdrop-blur px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-bold tracking-wide text-white">SMA / SEDERAJAT</span>
             {isVotingClosed && <span className="inline-flex rounded-full border border-white/10 bg-white/5 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-white">ONLINE SAJA</span>}
-            {isPublished && <span className="inline-flex rounded-full border border-[#C9A86A]/20 bg-[#C9A86A]/10 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-black">FINAL</span>}
+            {isPublished && <span className="inline-flex rounded-full border border-primary/20 bg-primary/10 backdrop-blur px-2 xs:px-2.5 py-1 text-[10px] font-bold tracking-wide text-black">FINAL</span>}
             <span className="text-[11px] xs:text-xs text-muted-foreground tabular-nums border border-white/10 bg-white/5 backdrop-blur px-2 py-1 rounded-full text-white">{sma.length} tim</span>
           </div>
           {sma.length===0 ? <div className="rounded-xl border border-dashed border-white/10 p-6 xs:p-8 text-center text-[13px] xs:text-sm text-muted-foreground">Belum ada peleton SMA.</div> : renderGrid(sma)}

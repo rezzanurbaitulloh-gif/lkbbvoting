@@ -14,7 +14,7 @@ export default function Roles(){
               <div className="text-sm font-black">{r.name}</div>
               <div className="text-xs text-muted-foreground">{r.perms} • {r.users}</div>
             </div>
-            <span className={`rounded-full px-3 py-1 text-xs font-bold ${r.name==="Super Admin" ? "bg-[#C9A86A] text-[#0B0C0F]" : "bg-secondary"}`}>{r.name==="Super Admin" ? "Akses Penuh" : "Terbatas"}</span>
+            <span className={`rounded-full px-3 py-1 text-xs font-bold ${r.name==="Super Admin" ? "bg-primary text-black" : "bg-secondary"}`}>{r.name==="Super Admin" ? "Akses Penuh" : "Terbatas"}</span>
           </div>
         ))}
       </div>

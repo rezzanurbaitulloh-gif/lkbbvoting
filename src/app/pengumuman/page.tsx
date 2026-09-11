@@ -7,7 +7,7 @@ import { createBrowserSupabase } from "@/lib/supabase"
 
 const catColor: Record<string,string> = {
   Important:"bg-red-500 text-white",
-  Voting:"bg-gold text-gold-foreground",
+  Voting:"bg-primary text-black",
   Schedule:"bg-secondary text-foreground",
   Payment:"bg-emerald-500 text-white",
   Competition:"bg-[#1A1C1E] text-white dark:bg-white dark:text-black",

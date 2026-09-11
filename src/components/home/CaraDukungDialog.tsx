@@ -23,7 +23,7 @@ export function CaraDukungDialog({ open, onOpenChange }: { open: boolean, onOpen
           <div className="space-y-4">
             {steps.map((s,i)=> (
               <div key={i} className="relative flex gap-3">
-                <div className="h-9 w-9 rounded-full bg-[#C9A86A] text-[#0B0C0F] grid place-items-center shrink-0 z-10 border-2 border-background shadow">
+                <div className="h-9 w-9 rounded-full bg-primary text-black grid place-items-center shrink-0 z-10 border-2 border-background shadow">
                   <s.icon className="h-4 w-4" />
                 </div>
                 <div className="flex-1 min-w-0 pb-1">
@@ -37,7 +37,7 @@ export function CaraDukungDialog({ open, onOpenChange }: { open: boolean, onOpen
             ))}
           </div>
         </div>
-        <div className="mt-4 rounded-xl bg-[#C9A86A0A] border border-[#C9A86A20] p-3">
+        <div className="mt-4 rounded-xl bg-primary/5 border border-primary/10 p-3">
           <div className="flex gap-2">
             <Check className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
             <p className="text-xs leading-relaxed text-muted-foreground"><b className="text-foreground">Tips:</b> Pastikan koneksi stabil saat membayar. Jika pembayaran pending, klik <b>Cek Status</b> di halaman Checkout — jangan transfer ulang tanpa konfirmasi.</p>

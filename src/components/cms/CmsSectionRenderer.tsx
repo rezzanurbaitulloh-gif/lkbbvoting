@@ -26,7 +26,7 @@ export function CmsSectionRenderer({ section }: { section: Section }){
             <h2 className="text-3xl font-black text-[#C9A86A]">{c.headingLine1 || ""} {c.headingLine2 || ""}</h2>
             <p className="text-white/60 text-sm mt-2 max-w-[520px]">{c.description || ""}</p>
             <div className="mt-4 flex gap-2">
-              {c.ctaPrimaryLabel && <Link href={c.ctaPrimaryLink || "/tim"}><Button className="rounded-full bg-[#C9A86A] text-[#0B0C0F]">{c.ctaPrimaryLabel}</Button></Link>}
+              {c.ctaPrimaryLabel && <Link href={c.ctaPrimaryLink || "/tim"}><Button className="rounded-full bg-primary text-black">{c.ctaPrimaryLabel}</Button></Link>}
               {c.ctaSecondaryLabel && <Button variant="outline" className="rounded-full bg-transparent border-white/20 text-white">{c.ctaSecondaryLabel}</Button>}
             </div>
           </div>

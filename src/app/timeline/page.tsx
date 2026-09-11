@@ -25,8 +25,8 @@ export default async function TimelinePage(){
           {/* Desktop horizontal, mobile vertical */}
           <div className="hidden md:grid grid-cols-8 gap-3">
             {timelineStages.map(s=> (
-              <div key={s.id} className={`rounded-2xl border p-4 text-center ${s.status==="current" ? "border-[#C9A86A] bg-[#C9A86A0A]" : s.status==="completed" ? "border-emerald-500/20 bg-emerald-500/5" : "border-dashed bg-white/5 backdrop-blur"}`}>
-                <div className={`mx-auto h-10 w-10 rounded-full grid place-items-center text-sm font-black border ${s.status==="completed" ? "bg-emerald-500 text-white border-emerald-500" : s.status==="current" ? "bg-gold text-gold-foreground border-gold" : "bg-white/5 backdrop-blur text-muted-foreground border-white/10"}`}>
+              <div key={s.id} className={`rounded-2xl border p-4 text-center ${s.status==="current" ? "border-primary bg-primary/5" : s.status==="completed" ? "border-emerald-500/20 bg-emerald-500/5" : "border-dashed bg-white/5 backdrop-blur"}`}>
+                <div className={`mx-auto h-10 w-10 rounded-full grid place-items-center text-sm font-black border ${s.status==="completed" ? "bg-emerald-500 text-white border-emerald-500" : s.status==="current" ? "bg-primary text-black border-primary" : "bg-white/5 backdrop-blur text-muted-foreground border-white/10"}`}>
                   {s.status==="completed" ? <Check className="h-5 w-5"/> : s.sort_order}
                 </div>
                 <div className="mt-3 text-xs font-black leading-tight">{s.title}</div>
@@ -38,8 +38,8 @@ export default async function TimelinePage(){
 
           <div className="md:hidden space-y-3">
             {timelineStages.map(s=> (
-              <div key={s.id} className={`flex gap-3 rounded-2xl border p-4 ${s.status==="current" ? "border-[#C9A86A] bg-[#C9A86A0A]" : "border-white/10 bg-white/5 backdrop-blur"}`}>
-                <div className={`h-9 w-9 rounded-full grid place-items-center text-xs font-black shrink-0 ${s.status==="completed" ? "bg-emerald-500 text-white" : s.status==="current" ? "bg-gold text-gold-foreground" : "bg-white/5 backdrop-blur text-muted-foreground"}`}>
+              <div key={s.id} className={`flex gap-3 rounded-2xl border p-4 ${s.status==="current" ? "border-primary bg-primary/5" : "border-white/10 bg-white/5 backdrop-blur"}`}>
+                <div className={`h-9 w-9 rounded-full grid place-items-center text-xs font-black shrink-0 ${s.status==="completed" ? "bg-emerald-500 text-white" : s.status==="current" ? "bg-primary text-black" : "bg-white/5 backdrop-blur text-muted-foreground"}`}>
                   {s.status==="completed" ? <Check className="h-4 w-4"/> : s.sort_order}
                 </div>
                 <div>

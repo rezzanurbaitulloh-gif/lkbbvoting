@@ -383,19 +383,18 @@ html:not(.dark) { --background: #09090b; --foreground: #F4F4F1; --surface: #1113
   .selection\:bg-\[\#C9A86A\]\/20 *::selection { background-color: color-mix(in oklab, var(--primary) 20%, transparent) !important; }
 }
 
-/* === Border text color enforcement === */
-/* Aturan: border + background transparan => teks putih, border + background primer => teks hitam (sesuai request "semuanya") */
+/* === Border text color enforcement — SATU CLASS WARNA === */
+/* Background berwarna TERPUSAT di 1 class: bg-primary (+ opacity bg-primary/5, /10, /20) */
+/*   -> Diubah admin via AppearanceProvider (--primary) di /admin/settings */
+/*   -> Semua bg-[#C9A86A], bg-gold, bg-[#D4B77A] sudah di-refactor ke bg-primary */
+/* Aturan: border + bg transparan => putih | border + bg-primary (unified) => hitam */
 @layer utilities {
-  /* 1) Border dengan background transparan/semi-transparan gelap => putih */
-  /* Selector menangkap: bg-transparent, bg-white/5,5%, bg-white/10, bg-white/[0.0x], bg-black/x, bg-[#09090b], bg-[#0B0C0F], bg-[#111318], bg-[#17191F], bg-white/[0.03], bg-white/[0.04], bg-white/[0.06], bg-white/[0.07] */
+  /* 1) Border + background TRANSPARAN (gelap) => putih */
+  /* Transparan = bg-transparent, bg-white/5, bg-white/10, bg-white/[0.0x], bg-black/*, bg-[#09090b], bg-[#0B0C0F], bg-[#111318] */
   [class*="border"][class*="bg-transparent"],
   [class*="border"][class*="bg-white/5"],
   [class*="border"][class*="bg-white/10"],
   [class*="border"][class*="bg-white/[0."],
-  [class*="border"][class*="bg-white/[0.03"],
-  [class*="border"][class*="bg-white/[0.04"],
-  [class*="border"][class*="bg-white/[0.06"],
-  [class*="border"][class*="bg-white/[0.07"],
   [class*="border"][class*="bg-black/"],
   [class*="border"][class*="bg-[#09090b"],
   [class*="border"][class*="bg-[#0B0C0F"],
@@ -403,7 +402,6 @@ html:not(.dark) { --background: #09090b; --foreground: #F4F4F1; --surface: #1113
   [class*="border"][class*="bg-[#17191F"] {
     color: white !important;
   }
-  /* Paksa semua teks turunan di dalam border transparan jadi putih (override muted-foreground, text-black, dll) */
   [class*="border"][class*="bg-transparent"] *,
   [class*="border"][class*="bg-white/5"] *,
   [class*="border"][class*="bg-white/10"] *,
@@ -415,53 +413,30 @@ html:not(.dark) { --background: #09090b; --foreground: #F4F4F1; --surface: #1113
   [class*="border"][class*="bg-[#17191F"] * {
     color: white !important;
   }
-  /* Kecualikan elemen yang memang harus tetap primer/gold (misal ikon gold, label gold) - biar tidak ke-override */
-  [class*="border"][class*="bg-transparent"] .text-\[\#C9A86A\],
-  [class*="border"][class*="bg-white/5"] .text-\[\#C9A86A\],
-  [class*="border"][class*="bg-white/5"] .text-gold,
-  [class*="border"][class*="bg-transparent"] .text-gold {
+  /* Kecualikan accent primer yang memang harus tetap gold (ikon) */
+  [class*="border"][class*="bg-transparent"] .text-primary,
+  [class*="border"][class*="bg-white/5"] .text-primary {
     color: var(--primary) !important;
   }
 
-  /* 2) Border dengan background primer (solid) => hitam */
-  /* Solid primer: bg-primary, bg-gold, bg-[#C9A86A] tanpa opacity /20 /0A, bg-[#D4B77A] tanpa opacity */
-  [class*="border"][class*="bg-primary"],
-  [class*="border"][class*="bg-gold"],
-  [class*="border"].bg-\[\#C9A86A\],
-  [class*="border"].bg-\[\#D4B77A\],
-  [class*="border"][class*=" bg-[#C9A86A]"]:not([class*="bg-[#C9A86A]/"]):not([class*="bg-[#C9A86A]0A"]):not([class*="bg-[#C9A86A]14"]):not([class*="bg-[#C9A86A]20"]):not([class*="bg-[#C9A86A]30"]),
-  [class*="border"][class*=" bg-[#D4B77A]"]:not([class*="bg-[#D4B77A]/"]):not([class*="bg-[#D4B77A]14"]) {
+  /* 2) Border + background BERWARNA UNIFIED (bg-primary + opacity) => hitam */
+  /* Satu class bg-primary (admin controllable) — semua varian opacity harus hitam */
+  [class*="border"][class*="bg-primary"] {
     color: black !important;
   }
-  [class*="border"][class*="bg-primary"] *,
-  [class*="border"][class*="bg-gold"] *,
-  [class*="border"].bg-\[\#C9A86A\] *,
-  [class*="border"].bg-\[\#D4B77A\] * {
+  [class*="border"][class*="bg-primary"] * {
     color: black !important;
   }
-  /* Light solid white backgrounds with border => hitam juga (kontras) */
+  /* Kecualikan badge/crisp yang background-nya gelap (crimson, emerald, red) tetap putih — sudah dipisah */
+  [class*="border"][class*="bg-[#A51D2D"] *, [class*="border"][class*="bg-emerald"] *, [class*="border"][class*="bg-red"] * {
+    color: white !important;
+  }
+
+  /* 3) Solid white dengan border (status) => hitam (kontras) — bukan transparan */
   [class*="border"][class*="bg-white"]:not([class*="bg-white/5"]):not([class*="bg-white/10"]):not([class*="bg-white/"]) {
     color: black !important;
   }
   [class*="border"][class*="bg-white"]:not([class*="bg-white/5"]):not([class*="bg-white/10"]):not([class*="bg-white/"]) * {
-    color: black !important;
-  }
-
-  /* 3) Request terbaru: border berwarna TERANG (emas/primer, amber, zinc, white) yang masih text-white => paksa hitam */
-  /* Hanya untuk background/border terang agar hitam kontras; border gelap (crimson, emerald, red) tetap putih untuk readability */
-  [class*="border-[#C9A86A"][class*="text-white"]:not([class*="bg-[#A51D2D"]):not([class*="bg-emerald"]):not([class*="bg-red"]):not([class*="bg-gradient"]),
-  [class*="border-[#D4B77A"][class*="text-white"],
-  [class*="border-amber"][class*="text-white"],
-  [class*="border-zinc"][class*="text-white"] {
-    color: black !important;
-  }
-  [class*="border-[#C9A86A"] [class*="text-white"]:not([class*="bg-gradient"]),
-  [class*="border-[#D4B77A"] [class*="text-white"] {
-    color: black !important;
-  }
-  /* Badge gold translucent terang => hitam (sesuai instruksi); crimson gelap tetap putih agar terbaca */
-  .border-\[\#C9A86A30\].text-white, .border-\[\#C9A86A30\] .text-white,
-  [class*="bg-[#C9A86A14]"][class*="text-white"] {
     color: black !important;
   }
 }

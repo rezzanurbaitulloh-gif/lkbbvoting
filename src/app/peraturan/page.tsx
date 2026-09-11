@@ -29,14 +29,14 @@ export default function PeraturanPage(){
               <ul className="mt-3 grid gap-2">
                 {sec.items.map((it,i)=> (
                   <li key={i} className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground">
-                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-gold shrink-0" />
+                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
                     <span>{it}</span>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
-          <div className="rounded-[16px] border border-[#C9A86A30] bg-[#C9A86A0A] p-5 text-center">
+          <div className="rounded-[16px] border border-primary/20 bg-primary/5 p-5 text-center">
             <p className="text-sm font-medium">Dokumen lengkap peraturan dapat diunduh di Technical Meeting.</p>
             <p className="text-xs text-muted-foreground">Hubungi panitia untuk pertanyaan lebih lanjut.</p>
           </div>

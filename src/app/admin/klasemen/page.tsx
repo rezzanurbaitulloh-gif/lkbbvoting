@@ -24,7 +24,7 @@ export default function AdminKlasemen(){
         {list.length===0 ? <div className="p-6 text-center text-sm text-muted-foreground">Belum ada ranking.</div> :
           list.map((p,i)=> (
           <div key={p.id} className="flex items-center gap-3 rounded-xl border border-white/[0.06] p-2.5">
-            <div className={`h-7 w-7 rounded-full grid place-items-center text-xs font-black shrink-0 ${i===0 ? "bg-[#C9A86A] text-[#0B0C0F]" : i===1 ? "bg-zinc-300 text-black" : i===2 ? "bg-amber-700 text-white" : "bg-white/[0.04] backdrop-blur"}`}>{i+1}</div>
+            <div className={`h-7 w-7 rounded-full grid place-items-center text-xs font-black shrink-0 ${i===0 ? "bg-primary text-black" : i===1 ? "bg-zinc-300 text-black" : i===2 ? "bg-amber-700 text-white" : "bg-white/[0.04] backdrop-blur"}`}>{i+1}</div>
             <img src={p.image_url || p.image} alt="" className="h-8 w-8 rounded-full object-cover border shrink-0"/>
             <div className="flex-1 min-w-0">
               <div className="text-sm font-bold truncate">#{p.number} {p.name}</div>
@@ -51,7 +51,7 @@ export default function AdminKlasemen(){
 
       {/* Podium realtime — preview online saja */}
       <div className="grid lg:grid-cols-2 gap-4">
-        <div className="rounded-[16px] border border-[#C9A86A]/20 bg-white/[0.03] backdrop-blur p-4">
+        <div className="rounded-[16px] border border-primary/20 bg-white/[0.03] backdrop-blur p-4">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMP <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
             <span className="text-[10px] text-muted-foreground">Online preview</span>
@@ -61,7 +61,7 @@ export default function AdminKlasemen(){
           </div>
           <p className="mt-2 text-[11px] text-muted-foreground text-center">Podium preview online saja</p>
         </div>
-        <div className="rounded-[16px] border border-[#C9A86A]/20 bg-white/[0.03] backdrop-blur p-4">
+        <div className="rounded-[16px] border border-primary/20 bg-white/[0.03] backdrop-blur p-4">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black tracking-wide flex items-center gap-1.5">🏆 PODIUM SMA <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /></h3>
             <span className="text-[10px] text-muted-foreground">Online preview</span>

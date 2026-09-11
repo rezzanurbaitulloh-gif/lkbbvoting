@@ -98,7 +98,7 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
       </Link>
       <div className="flex flex-col gap-2 p-2.5 xs:p-3 sm:p-4 pt-2">
         <Link href={supportUrl} className="block">
-          <Button variant="outline" size="sm" className="w-full rounded-full h-11 text-[13px] xs:text-sm font-bold tracking-wide border-white/10 bg-white/5 text-white hover:bg-white/5 hover:border-[#C9A86A]/30 hover:text-white">DUKUNG</Button>
+          <Button variant="outline" size="sm" className="w-full rounded-full h-11 text-[13px] xs:text-sm font-bold tracking-wide border-white/10 bg-white/5 text-white hover:bg-white/5 hover:border-primary/30 hover:text-white">DUKUNG</Button>
         </Link>
         <div className="grid grid-cols-2 gap-1.5 xs:gap-2">
           <Button variant="outline" className="rounded-full h-11 w-full border-white/10 bg-white/5 text-white hover:bg-white/5 hover:text-white hover:border-white/15" onClick={() => handleShare("profile")} aria-label="Bagikan Profil">
