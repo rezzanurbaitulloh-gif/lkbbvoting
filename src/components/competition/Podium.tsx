@@ -190,18 +190,11 @@ export function Podium({ teams, category, showPoints = true }: { teams: Team[]; 
           <span className="text-[10px] sm:text-[11px] text-white/45 tabular-nums">{teams.length} tim</span>
         </div>
       )}
-      {/* Mobile: vertical stack (tidak tumpuk), desktop: 3 kolom side-by-side */}
-      <div className="flex flex-col gap-4 sm:grid sm:grid-cols-3 sm:items-end sm:gap-2 md:gap-3 lg:gap-3 xl:gap-4 max-w-[560px] lg:max-w-none mx-auto w-full px-0">
-        {[...ordered].sort((a,b)=> a.rank-b.rank).map(({team, rank, delay})=> (
-          <div key={`m-${team.id}`} className="sm:hidden">
-            <ShieldPodiumCard team={team} rank={rank} delay={delay} />
-          </div>
+      {/* 1 card per kategori, 3 shields side-by-side — tidak tumpuk, proporsional */}
+      <div className="grid grid-cols-3 items-end gap-1 xs:gap-1.5 sm:gap-2 md:gap-3 lg:gap-3 xl:gap-4 max-w-[560px] lg:max-w-none mx-auto w-full px-0">
+        {ordered.map(({ team, rank, delay }) => (
+          <ShieldPodiumCard key={team.id} team={team} rank={rank} delay={delay} />
         ))}
-        <div className="hidden sm:contents">
-          {ordered.map(({ team, rank, delay }) => (
-            <ShieldPodiumCard key={team.id} team={team} rank={rank} delay={delay} />
-          ))}
-        </div>
       </div>
     </div>
   )
