@@ -383,14 +383,17 @@ html:not(.dark) { --background: #09090b; --foreground: #F4F4F1; --surface: #1113
   .selection\:bg-\[\#C9A86A\]\/20 *::selection { background-color: color-mix(in oklab, var(--primary) 20%, transparent) !important; }
 }
 
-/* === Border text color enforcement — SATU CLASS WARNA === */
+/* === Border text color enforcement — SATU CLASS WARNA + GLASSMORPH === */
 /* Background berwarna TERPUSAT di 1 class: bg-primary (+ opacity bg-primary/5, /10, /20) */
 /*   -> Diubah admin via AppearanceProvider (--primary) di /admin/settings */
 /*   -> Semua bg-[#C9A86A], bg-gold, bg-[#D4B77A] sudah di-refactor ke bg-primary */
-/* Aturan: border + bg transparan => putih | border + bg-primary (unified) => hitam */
+/* Aturan final: */
+/*  - border + bg TRANSPARAN / GLASSMORPH (bg-transparent, bg-white/5, bg-black/40 + backdrop-blur) => teks PUTIH */
+/*  - border + bg-primary (unified, admin controllable) => teks HITAM */
+/*  - Card tim beranda: kategori bg-white/90 sudah diubah jadi bg-black/40 agar sama dengan nomor (#) & love */
 @layer utilities {
-  /* 1) Border + background TRANSPARAN (gelap) => putih */
-  /* Transparan = bg-transparent, bg-white/5, bg-white/10, bg-white/[0.0x], bg-black/*, bg-[#09090b], bg-[#0B0C0F], bg-[#111318] */
+  /* 1) Border + background TRANSPARAN / GLASSMORPH (gelap) => putih */
+  /* Transparan = bg-transparent, bg-white/5, bg-white/10, bg-white/[0.0x], bg-black/* (+backdrop-blur), bg-[#09090b], bg-[#0B0C0F], bg-[#111318] */
   [class*="border"][class*="bg-transparent"],
   [class*="border"][class*="bg-white/5"],
   [class*="border"][class*="bg-white/10"],
