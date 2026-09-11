@@ -26,22 +26,22 @@ export default function SponsorPage(){
             const list = sponsors.filter(s=>s.tier===tier)
             if(list.length===0) return null
             return (
-              <div key={tier} className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-6">
-                <h2 className="text-xs font-black tracking-[0.14em] text-gold">{tier.toUpperCase()}</h2>
+              <div key={tier} className="rounded-[16px] border border-primary bg-primary p-6">
+                <h2 className="text-xs font-black tracking-[0.14em] text-black">{tier.toUpperCase()}</h2>
                 <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {list.map(s=> (
-                    <div key={s.id} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-4 grid place-items-center h-[84px] text-center">
-                      <div className="text-sm font-black tracking-tight">{s.name}</div>
+                    <div key={s.id} className="rounded-xl border border-primary bg-primary p-4 grid place-items-center h-[84px] text-center">
+                      <div className="text-sm font-black tracking-tight text-black">{s.name}</div>
                     </div>
                   ))}
                 </div>
               </div>
             )
           })}
-          <div className="rounded-[16px] border border-dashed border-white/10 bg-white/5 backdrop-blur/20 p-6 text-center">
-            <div className="text-sm font-bold">Tertarik menjadi sponsor?</div>
-            <p className="text-xs text-muted-foreground">Hubungi panitia untuk paket sponsorship.</p>
-            <a href="/kontak" className="inline-flex mt-3 rounded-full bg-white/10 backdrop-blur border border-white/10 text-white px-5 py-2 text-xs font-bold">Hubungi Kami</a>
+          <div className="rounded-[16px] border border-dashed border-primary bg-primary/10 backdrop-blur p-6 text-center">
+            <div className="text-sm font-bold text-white">Tertarik menjadi sponsor?</div>
+            <p className="text-xs text-white/70">Hubungi panitia untuk paket sponsorship.</p>
+            <a href="/kontak" className="inline-flex mt-3 rounded-full bg-primary border border-primary text-black px-5 py-2 text-xs font-bold">Hubungi Kami</a>
           </div>
         </div>
       </main>
