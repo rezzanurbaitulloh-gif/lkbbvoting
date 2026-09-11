@@ -33,10 +33,11 @@ export function CmsSectionRenderer({ section }: { section: Section }){
         </section>
       )
     case "banner":
+      if (!c.image && !c.heading && !c.description) return null
       return (
         <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6">
           <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur">
-            {c.image ? <img src={c.image} alt={c.alt || c.heading || ""} className="h-auto w-full object-cover" /> : <div className="p-8 text-center text-sm text-muted-foreground">Banner: {c.heading || "—"}</div>}
+            {c.image ? <img src={c.image} alt={c.alt || c.heading || ""} className="h-auto w-full object-cover" /> : null}
             {(c.heading || c.description) && (
               <div className="p-4">
                 {c.heading && <div className="text-sm font-black">{c.heading}</div>}
@@ -48,6 +49,7 @@ export function CmsSectionRenderer({ section }: { section: Section }){
         </section>
       )
     case "cta":
+      if (!c.heading && !c.description && !c.buttonLabel) return null
       return (
         <section className={`mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 ${s.variant==="dark" ? "bg-[#09090b] text-white rounded-2xl my-6" : ""}`}>
           <div className="text-center">
@@ -58,10 +60,12 @@ export function CmsSectionRenderer({ section }: { section: Section }){
         </section>
       )
     case "text_block":
+      if (!c.heading && !c.body && !c.text && !section.title) return null
+      if (!c.body && !c.text && !c.heading) return null
       return (
         <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8">
           <h3 className="text-lg font-black">{c.heading || section.title}</h3>
-          {c.body && <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{c.body}</p>}
+          {(c.body || c.text) && <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{c.body || c.text}</p>}
         </section>
       )
     case "rich_text":
@@ -71,31 +75,33 @@ export function CmsSectionRenderer({ section }: { section: Section }){
         </section>
       )
     case "image":
+      if (!c.src) return null
       return (
         <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6 flex justify-center">
-          {c.src ? <img src={c.src} alt={c.alt || ""} className="max-w-full rounded-2xl border border-white/10" /> : <div className="text-sm text-muted-foreground">— belum ada gambar —</div>}
+          <img src={c.src} alt={c.alt || ""} className="max-w-full rounded-2xl border border-white/10" />
         </section>
       )
     case "gallery":
+      if (!Array.isArray(c.images) || c.images.length===0) return null
       return (
         <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6 sm:py-8 overflow-hidden">
           <h3 className="text-sm font-black mb-3 break-words">{c.title || section.title}</h3>
           <div className="grid grid-cols-1 min-[360px]:grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3">
-            {Array.isArray(c.images) ? c.images.map((url: string, i:number)=> <img key={i} src={url} alt="" className="h-36 sm:h-40 w-full object-cover rounded-xl border" />) : <span className="text-xs text-muted-foreground">— belum ada gambar —</span>}
+            {c.images.map((url: string, i:number)=> <img key={i} src={url} alt="" className="h-36 sm:h-40 w-full object-cover rounded-xl border" />)}
           </div>
         </section>
       )
     case "stats":
+      if (!Array.isArray(c.items) || c.items.length===0) return null
       return (
         <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6 sm:py-8 overflow-hidden">
           <div className="grid grid-cols-1 min-[360px]:grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
-            {(Array.isArray(c.items) ? c.items : []).map((item:any,i:number)=>(
+            {c.items.map((item:any,i:number)=>(
               <div key={i} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-4 text-center">
                 <div className="text-xl font-black">{item.value}</div>
                 <div className="text-xs text-muted-foreground">{item.label}</div>
               </div>
             ))}
-            {(!c.items || c.items.length===0) && <div className="col-span-full text-center text-xs text-muted-foreground">— stats kosong —</div>}
           </div>
         </section>
       )
@@ -106,7 +112,10 @@ export function CmsSectionRenderer({ section }: { section: Section }){
       // These are handled by dedicated components (PodiumSection, Featured, Hero countdown) — do not render raw JSON on public web
       return null
     default:
-      // Generic fallback — never show raw JSON / programming language on public web
+      // Generic fallback — hide if no meaningful content, never show raw JSON
+      if (!c.description && !c.heading && !c.title && !c.text && !c.body && Object.keys(c).length===0) return null
+      // Also hide placeholder video without src
+      if (section.type==="video" && !c.src && !c.url) return null
       return (
         <section className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6">
           <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-4">
