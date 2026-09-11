@@ -146,7 +146,7 @@ function ShieldPodiumCard({ team, rank, delay = 0 }: { team: Team; rank: number;
             <div className="mt-1.5 xs:mt-2 inline-flex items-center gap-1 xs:gap-1.5 rounded-full bg-black/28 backdrop-blur border border-white/10 px-2 xs:px-2.5 py-1 text-[9px] xs:text-[10px] sm:text-[11px] font-black text-white shadow-[0_1px_6px_rgba(0,0,0,0.25)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#C9A86A] shrink-0" />#{team.number}
             </div>
-            <div className="mt-1 xs:mt-1.5 text-[9px] xs:text-[10px] sm:text-[11px] font-bold tabular-nums tracking-wide text-[#C9A86A]">{Number(team.online_ballots ?? 0).toLocaleString("id-ID")} online</div>
+            {Number(team.online_ballots ?? 0) > 0 && <div className="mt-1 xs:mt-1.5 text-[9px] xs:text-[10px] sm:text-[11px] font-bold tabular-nums tracking-wide text-[#C9A86A]">{Number(team.online_ballots ?? 0).toLocaleString("id-ID")} online</div>}
           </div>
           <div className="absolute bottom-[10px] xs:bottom-3 left-2 right-2 xs:left-3 xs:right-3">
             <div className={`relative h-[26px] xs:h-[28px] sm:h-8 flex items-center justify-center bg-gradient-to-r ${cfg.juaraBar} shadow-[0_2px_8px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.18)] overflow-hidden`} style={{ clipPath: "polygon(9px 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 9px 100%, 0 50%)" }}>
