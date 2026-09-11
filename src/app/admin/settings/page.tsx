@@ -604,8 +604,8 @@ export default function SettingsPage(){
             <div><label className="text-xs font-bold">Nama Kompetisi (competitions.name)</label><Input defaultValue={event.name} id="name" /></div>
             <div><label className="text-xs font-bold">Sub-judul</label><Input defaultValue={event.subtitle} id="subtitle" /></div>
             <div><label className="text-xs font-bold">Tagline</label><Input defaultValue={event.tagline} id="tagline" /></div>
-            <div><label className="text-xs font-bold">Status Event Saat Ini</label><Select value={stateVal} onValueChange={setStateVal} options={STATE_OPTIONS} /></div>
-            <div className="text-xs text-muted-foreground">Hanya <b>Aktif</b> yang mengizinkan transaksi. <b>Belum Dimulai</b>: belum bisa dukung. <b>Voting Ditutup</b>: transaksi dihentikan, tampil peringkat <b>online saja</b>. <b>Hasil Dipublikasikan</b>: peringkat akhir + podium.</div>
+            <div className="relative z-20"><label className="text-xs font-bold">Status Event Saat Ini</label><Select value={stateVal} onValueChange={setStateVal} options={STATE_OPTIONS} /></div>
+            <div className="relative z-10 text-xs text-muted-foreground">Hanya <b>Aktif</b> yang mengizinkan transaksi. <b>Belum Dimulai</b>: belum bisa dukung. <b>Voting Ditutup</b>: transaksi dihentikan, tampil peringkat <b>online saja</b>. <b>Hasil Dipublikasikan</b>: peringkat akhir + podium.</div>
             <Button disabled={saving} className="rounded-full" onClick={()=>{
               const name=(document.getElementById("name") as HTMLInputElement).value
               const subtitle=(document.getElementById("subtitle") as HTMLInputElement).value
