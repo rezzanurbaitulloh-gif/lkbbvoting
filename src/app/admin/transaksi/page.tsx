@@ -30,8 +30,8 @@ export default function Transaksi(){
               <div className="text-xs truncate">{t.peletons?.name || t.peleton_id.slice(0,8)}<div className="text-[10px] text-muted-foreground">{t.supports} ballot</div></div>
               <div className="font-bold tabular-nums text-xs">{t.supports}</div>
               <div className="font-bold tabular-nums text-xs">Rp{t.amount?.toLocaleString("id-ID")}</div>
-              <div><span className={`rounded-full px-2 py-1 text-[10px] font-black ${t.provider==="DOKU" ? "bg-[#1E3A8A] text-white" : "bg-zinc-500 text-white"}`}>{t.provider || "DOKU"}</span></div>
-              <div><span className={`rounded-full px-2 py-1 text-xs font-bold ${t.status==="Success"?"bg-emerald-500 text-white":t.status==="Pending"?"bg-amber-500 text-white":t.status==="Expired"?"bg-zinc-500 text-white":"bg-red-500 text-white"}`}>{t.status==="Success" ? "PAID" : t.status==="Pending" ? "PENDING" : t.status==="Expired" ? "EXPIRED" : t.status}</span></div>
+              <div><span className={`rounded-full px-2 py-1 text-[10px] font-black ${t.provider==="DOKU" ? "bg-[#1E3A8A] text-black" : "bg-zinc-500 text-black"}`}>{t.provider || "DOKU"}</span></div>
+              <div><span className={`rounded-full px-2 py-1 text-xs font-bold ${t.status==="Success"?"bg-emerald-500 text-black":t.status==="Pending"?"bg-amber-500 text-black":t.status==="Expired"?"bg-zinc-500 text-black":"bg-red-500 text-black"}`}>{t.status==="Success" ? "PAID" : t.status==="Pending" ? "PENDING" : t.status==="Expired" ? "EXPIRED" : t.status}</span></div>
             </div>
           ))}
         </div>
@@ -43,8 +43,8 @@ export default function Transaksi(){
               <div className="flex justify-between items-center">
                 <label className="flex items-center gap-2 text-xs font-mono"><input type="checkbox" checked={selected.has(t.id)} onChange={()=> toggleSelect(t.id)} />{t.id.slice(0,8)}</label>
                 <div className="flex items-center gap-1.5">
-                  <span className={`rounded-full px-2 py-1 text-[10px] font-black ${t.provider==="DOKU" ? "bg-[#1E3A8A] text-white" : "bg-zinc-500 text-white"}`}>{t.provider || "DOKU"}</span>
-                  <span className={`rounded-full px-2 py-1 text-[10px] font-bold ${t.status==="Success"?"bg-emerald-500 text-white":t.status==="Pending"?"bg-amber-500 text-white":t.status==="Expired"?"bg-zinc-500 text-white":"bg-red-500 text-white"}`}>{t.status==="Success" ? "PAID" : t.status==="Pending" ? "PENDING" : t.status}</span>
+                  <span className={`rounded-full px-2 py-1 text-[10px] font-black ${t.provider==="DOKU" ? "bg-[#1E3A8A] text-black" : "bg-zinc-500 text-black"}`}>{t.provider || "DOKU"}</span>
+                  <span className={`rounded-full px-2 py-1 text-[10px] font-bold ${t.status==="Success"?"bg-emerald-500 text-black":t.status==="Pending"?"bg-amber-500 text-black":t.status==="Expired"?"bg-zinc-500 text-black":"bg-red-500 text-black"}`}>{t.status==="Success" ? "PAID" : t.status==="Pending" ? "PENDING" : t.status}</span>
                 </div>
               </div>
               <div className="text-sm font-bold truncate">{t.peletons?.name || t.peleton_id.slice(0,8)}</div>

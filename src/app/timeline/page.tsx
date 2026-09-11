@@ -39,7 +39,7 @@ export default async function TimelinePage(){
           <div className="md:hidden space-y-3">
             {timelineStages.map(s=> (
               <div key={s.id} className={`flex gap-3 rounded-2xl border p-4 ${s.status==="current" ? "border-primary bg-primary/5" : "border-white/10 bg-white/5 backdrop-blur"}`}>
-                <div className={`h-9 w-9 rounded-full grid place-items-center text-xs font-black shrink-0 ${s.status==="completed" ? "bg-emerald-500 text-white" : s.status==="current" ? "bg-primary text-black" : "bg-white/5 backdrop-blur text-muted-foreground"}`}>
+                <div className={`h-9 w-9 rounded-full grid place-items-center text-xs font-black shrink-0 ${s.status==="completed" ? "bg-emerald-500 text-black" : s.status==="current" ? "bg-primary text-black" : "bg-white/5 backdrop-blur text-muted-foreground"}`}>
                   {s.status==="completed" ? <Check className="h-4 w-4"/> : s.sort_order}
                 </div>
                 <div>

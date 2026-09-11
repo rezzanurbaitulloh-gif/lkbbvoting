@@ -137,7 +137,7 @@ export default function AdminPeleton(){
                 </div>
               </Link>
               <div className="text-xs"><Badge variant="outline">{p.category}</Badge></div>
-              <div><span className={`inline-flex rounded-full px-2 py-1 text-[11px] font-bold ${p.active ? "bg-emerald-500 text-white" : "bg-zinc-500 text-white"}`}>{p.active ? "Tampil" : "Disembunyikan"}</span></div>
+              <div><span className={`inline-flex rounded-full px-2 py-1 text-[11px] font-bold ${p.active ? "bg-emerald-500 text-black" : "bg-zinc-500 text-black"}`}>{p.active ? "Tampil" : "Disembunyikan"}</span></div>
               <div className="flex justify-end gap-1.5">
                 <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs gap-1" onClick={()=> openEdit(p)}><Pencil className="h-3 w-3"/>Ubah</Button>
                 <Button variant="ghost" size="sm" className="rounded-full h-7 text-xs text-red-600 gap-1" onClick={()=> setDelTarget(p)}><Trash2 className="h-3 w-3"/>Hapus</Button>
@@ -158,7 +158,7 @@ export default function AdminPeleton(){
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-xs font-bold">#{p.number}</span>
                       <Badge variant="outline" className="text-[11px]">{p.category}</Badge>
-                      <span className={`ml-auto inline-flex rounded-full px-2 py-0.5 text-[11px] font-bold ${p.active ? "bg-emerald-500 text-white" : "bg-zinc-500 text-white"}`}>{p.active ? "Tampil" : "Sembunyi"}</span>
+                      <span className={`ml-auto inline-flex rounded-full px-2 py-0.5 text-[11px] font-bold ${p.active ? "bg-emerald-500 text-black" : "bg-zinc-500 text-black"}`}>{p.active ? "Tampil" : "Sembunyi"}</span>
                     </div>
                     <div className="text-sm font-bold truncate hover:text-primary transition-colors">{p.name}</div>
                     <div className="text-xs text-muted-foreground truncate">{p.school}</div>

@@ -89,7 +89,7 @@ export default function AdminOverview(){
           {label:"OFFLINE BALLOT", value: (stats.offline ?? 0).toLocaleString("id-ID"), sub:"Ballot"},
           {label:"TOTAL BALLOT", value: (stats.total ?? 0).toLocaleString("id-ID"), sub:"Ballot", gold:true},
         ].map(card=> (
-          <div key={card.label} className={`rounded-[12px] border p-3.5 sm:p-4 min-w-0 overflow-hidden ${card.gold ? "bg-primary border-primary text-black" : "bg-[#17191F] border-white/10 text-white"}`}>
+          <div key={card.label} className={`rounded-[12px] border p-3.5 sm:p-4 min-w-0 overflow-hidden ${card.gold ? "bg-primary border-primary text-black" : "bg-[#17191F] border-white/10 text-black"}`}>
             <div className={`text-[10px] font-bold tracking-widest leading-tight break-words ${card.gold ? "text-black/70" : "text-white/40"}`}>{card.label}</div>
             <div className="mt-1.5 text-[16px] sm:text-[18px] md:text-[20px] font-black leading-none truncate tracking-tight">{card.value}</div>
             <div className={`mt-1 text-[11px] ${card.gold ? "text-black/60" : "text-white/40"}`}>{card.sub}</div>
@@ -216,7 +216,7 @@ export default function AdminOverview(){
                   <div className="truncate">{t.peletons?.name || t.peleton_id.slice(0,8)}</div>
                   <div className="tabular-nums">{t.supports}</div>
                   <div className="tabular-nums">Rp{t.amount?.toLocaleString("id-ID")}</div>
-                  <div><span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${t.status==="Success" ? "bg-emerald-500 text-white" : t.status==="Failed" ? "bg-red-500 text-white" : "bg-amber-500 text-white"}`}>{t.status}</span></div>
+                  <div><span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${t.status==="Success" ? "bg-emerald-500 text-black" : t.status==="Failed" ? "bg-red-500 text-black" : "bg-amber-500 text-black"}`}>{t.status}</span></div>
                 </div>
               ))}
             </div>
@@ -226,7 +226,7 @@ export default function AdminOverview(){
                 <div key={t.id} className="rounded-xl border border-white/10 bg-white/[0.04] p-3 flex flex-col gap-1.5">
                   <div className="flex justify-between items-center">
                     <span className="font-mono text-[11px] text-white/60">{t.id.slice(0,8)}</span>
-                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${t.status==="Success" ? "bg-emerald-500 text-white" : t.status==="Failed" ? "bg-red-500 text-white" : "bg-amber-500 text-white"}`}>{t.status==="Success"?"Berhasil":t.status==="Failed"?"Gagal":"Menunggu"}</span>
+                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${t.status==="Success" ? "bg-emerald-500 text-black" : t.status==="Failed" ? "bg-red-500 text-black" : "bg-amber-500 text-black"}`}>{t.status==="Success"?"Berhasil":t.status==="Failed"?"Gagal":"Menunggu"}</span>
                   </div>
                   <div className="text-sm font-bold truncate">{t.peletons?.name || t.peleton_id.slice(0,8)}</div>
                   <div className="flex justify-between text-xs"><span className="text-white/50">Jumlah</span><span className="font-bold tabular-nums">{t.supports} • Rp{t.amount?.toLocaleString("id-ID")}</span></div>

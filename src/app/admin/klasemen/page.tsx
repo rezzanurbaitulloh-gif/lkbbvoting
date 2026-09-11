@@ -24,7 +24,7 @@ export default function AdminKlasemen(){
         {list.length===0 ? <div className="p-6 text-center text-sm text-muted-foreground">Belum ada ranking.</div> :
           list.map((p,i)=> (
           <div key={p.id} className="flex items-center gap-3 rounded-xl border border-white/[0.06] p-2.5">
-            <div className={`h-7 w-7 rounded-full grid place-items-center text-xs font-black shrink-0 ${i===0 ? "bg-primary text-black" : i===1 ? "bg-zinc-300 text-black" : i===2 ? "bg-amber-700 text-white" : "bg-white/[0.04] backdrop-blur"}`}>{i+1}</div>
+            <div className={`h-7 w-7 rounded-full grid place-items-center text-xs font-black shrink-0 ${i===0 ? "bg-primary text-black" : i===1 ? "bg-zinc-300 text-black" : i===2 ? "bg-amber-700 text-black" : "bg-white/[0.04] backdrop-blur"}`}>{i+1}</div>
             <img src={p.image_url || p.image} alt="" className="h-8 w-8 rounded-full object-cover border shrink-0"/>
             <div className="flex-1 min-w-0">
               <div className="text-sm font-bold truncate">#{p.number} {p.name}</div>

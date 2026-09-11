@@ -125,7 +125,7 @@ export default function InvoicePage(){
                       <div className="font-mono text-xs text-white/60">Ref: {tx.provider_ref || tx.doku_reference_no || "-"}</div>
                     </div>
                     <div className="text-right">
-                      <div className={`inline-flex rounded-full px-3 py-1 text-xs font-black ${tx.status==="Success" ? "bg-emerald-500 text-white" : tx.status==="Pending" ? "bg-amber-500 text-white" : "bg-red-500 text-white"}`}>{tx.status}</div>
+                      <div className={`inline-flex rounded-full px-3 py-1 text-xs font-black ${tx.status==="Success" ? "bg-emerald-500 text-black" : tx.status==="Pending" ? "bg-amber-500 text-black" : "bg-red-500 text-black"}`}>{tx.status}</div>
                       <div className="mt-1 text-xs text-white/50">{new Date(tx.created_at).toLocaleString("id-ID", { timeZone: "Asia/Jakarta" })}</div>
                     </div>
                   </div>

@@ -219,7 +219,7 @@ export default function CmsSectionBuilder(){
         <Link href="/admin/cms" className="inline-flex items-center gap-1 rounded-full border border-white/[0.06] px-3 py-1 hover:bg-white/[0.04] backdrop-blur"><ArrowLeft className="h-3.5 w-3.5"/> Daftar Halaman</Link>
         <span className="text-muted-foreground">/</span>
         <span className="font-bold">/{page.slug}</span>
-        <span className={`ml-2 rounded-full px-2 py-0.5 text-[11px] font-bold ${page.is_published ? "bg-emerald-500 text-white" : "bg-zinc-400 text-white"}`}>{page.is_published ? "Publish" : "Draft"}</span>
+        <span className={`ml-2 rounded-full px-2 py-0.5 text-[11px] font-bold ${page.is_published ? "bg-emerald-500 text-black" : "bg-zinc-400 text-white"}`}>{page.is_published ? "Publish" : "Draft"}</span>
       </div>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
