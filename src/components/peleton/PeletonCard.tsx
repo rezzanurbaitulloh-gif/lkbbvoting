@@ -47,7 +47,7 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-[14px] xs:rounded-[16px] border border-white/10 bg-white/5 backdrop-blur max-w-full">
-      <div className="absolute top-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-[#C9A86A]/0 group-hover:via-[#C9A86A]/40 to-transparent transition-all duration-500" />
+      <div className="absolute top-0 inset-x-0 h-[0.5px] bg-gradient-to-r from-transparent via-primary/0 group-hover:via-primary/40 to-transparent transition-all duration-500" />
       <Link href={profileUrl} className="block">
         <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-white/5 backdrop-blur">
           {!imgLoaded && !imgError && <div className="absolute inset-0 animate-pulse bg-white/5 backdrop-blur" />}
@@ -69,7 +69,7 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
                 <div className="h-20 w-20 xs:h-24 xs:w-24 rounded-full bg-white/5 border border-white/10 grid place-items-center p-3">
                   <img src={logo} alt={`${name} logo`} className="h-full w-full object-contain opacity-90" />
                 </div>
-                <div className="text-[11px] font-bold tracking-[0.16em] text-[#C9A86A]">#{number} • {category}</div>
+                <div className="text-[11px] font-bold tracking-[0.16em] text-primary">#{number} • {category}</div>
                 <div className="text-xs font-bold text-white/60 line-clamp-1">{name}</div>
               </div>
               <div className="pointer-events-none absolute inset-0 opacity-[0.025]" style={{ backgroundImage: `linear-gradient(rgba(201,168,106,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,106,0.5) 1px, transparent 1px)`, backgroundSize: "24px 24px" }} />
@@ -82,7 +82,7 @@ export function PeletonCard({ peleton, eager = false }: { peleton: any; eager?: 
           <button onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); handleFav(); }} aria-label={fav ? "Hapus dari favorit" : "Tambah ke favorit"} aria-pressed={fav} className={cn("absolute right-2 xs:right-3 top-2 xs:top-3 h-11 w-11 grid place-items-center rounded-full backdrop-blur border transition-colors", fav ? "bg-[#A51D2D] border-[#A51D2D] text-white" : "bg-black/40 border-white/15 text-white hover:bg-black/60")}>
             <Heart className={cn("h-[18px] w-[18px]", fav && "fill-white")} />
           </button>
-          <div className="absolute bottom-2 xs:bottom-3 right-2 xs:right-3 rounded-full bg-primary border border-primary px-1.5 xs:px-2.5 py-0.5 text-[9px] xs:text-[10px] font-bold tracking-widest text-black max-w-[42%] xs:max-w-[45%] truncate">
+          <div className="absolute bottom-2 xs:bottom-3 right-2 xs:right-3 rounded-full bg-black/40 backdrop-blur border border-white/15 px-1.5 xs:px-2.5 py-0.5 text-[9px] xs:text-[10px] font-bold tracking-widest text-white max-w-[42%] xs:max-w-[45%] truncate">
             {category}
           </div>
         </div>
@@ -123,7 +123,7 @@ export function PeletonCardCompact({ peleton, showPoints }: { peleton: any, show
         <img src={logo} alt={peleton.name} className="h-full w-full object-contain bg-transparent" />
       </div>
       <div className="flex-1 min-w-0 overflow-hidden">
-        <div className="text-[11px] font-bold tracking-[0.12em] text-gold truncate">#{peleton.number}</div>
+        <div className="text-[11px] font-bold tracking-[0.12em] text-primary truncate">#{peleton.number}</div>
         <div className="text-sm font-black leading-tight truncate">{peleton.name}</div>
         <div className="text-xs text-muted-foreground truncate">{peleton.school}</div>
       </div>
