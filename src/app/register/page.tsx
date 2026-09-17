@@ -37,7 +37,7 @@ export default function RegisterPage(){
           <h1 className="text-[20px] font-black tracking-tight text-center">Buat Akun Baru</h1>
           <p className="text-sm text-muted-foreground text-center">Dukung peleton favoritmu sekarang</p>
           <form onSubmit={onSubmit} className="mt-6 grid gap-3">
-            <div><label className="text-xs font-bold">Nama <span className="text-muted-foreground font-normal">(unik, 3-30 karakter)</span></label><Input value={name} onChange={e=>setName(e.target.value)} placeholder="Contoh: Reja123" autoComplete="username" /></div>
+            <div><label className="text-xs font-bold">Nama <span className="text-muted-foreground font-normal">(unik, 3-30 karakter)</span></label><Input value={name} onChange={e=>setName(e.target.value)} placeholder="Contoh: User123" autoComplete="username" /></div>
             <div>
               <label className="text-xs font-bold">Password</label>
               <div className="relative">
