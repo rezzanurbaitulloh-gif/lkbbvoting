@@ -22,6 +22,27 @@ function txStatusColor(s: string){
   return "bg-zinc-500 text-white" // Expired & lainnya
 }
 
+function parseBool(v: any, def: boolean){
+  if(v === undefined || v === null || v === "") return def
+  if(typeof v === "boolean") return v
+  if(typeof v === "object" && v?.value !== undefined) return parseBool(v.value, def)
+  const s = String(v).replace(/^"|"$/g,"").toLowerCase()
+  if(s==="true"||s==="1") return true
+  if(s==="false"||s==="0") return false
+  return def
+}
+
+function SettingToggle({ label, on, busy, onToggle }: { label: string; on: boolean; busy: boolean; onToggle: ()=>void }){
+  return (
+    <button type="button" disabled={busy} onClick={onToggle} className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-bold transition-colors ${on ? "border-primary/40 bg-primary/15 text-primary" : "border-white/10 bg-white/5 text-white/50"} disabled:opacity-50`}>
+      <span className={`relative h-3.5 w-6 rounded-full transition-colors ${on ? "bg-primary" : "bg-white/15"}`}>
+        <span className={`absolute top-0.5 h-2.5 w-2.5 rounded-full bg-black transition-all ${on ? "left-3" : "left-0.5"}`} />
+      </span>
+      {label}
+    </button>
+  )
+}
+
 export default function AdminOverview(){
   const [stats, setStats] = useState<any>({})
   const [ranking, setRanking] = useState<any[]>([])
@@ -29,6 +50,10 @@ export default function AdminOverview(){
   const [auditLogs, setAuditLogs] = useState<any[]>([])
   const [podiumSmp, setPodiumSmp] = useState<any[]>([])
   const [podiumSma, setPodiumSma] = useState<any[]>([])
+  // Toggle tampilan podium & skor end-user (/tim) — disimpan di site_settings
+  const [showPodiumActive, setShowPodiumActive] = useState(true)
+  const [showScoreActive, setShowScoreActive] = useState(false)
+  const [toggleBusy, setToggleBusy] = useState<string | null>(null)
   // Saat status final (sudah gabung rekap offline): jumlah ballot di podium disembunyikan
   const isEventFinal = stats.state === "RESULT_PUBLISHED" || stats.state === "COMPLETED"
   const fetchPodium = async ()=>{
@@ -65,9 +90,31 @@ export default function AdminOverview(){
       setAuditLogs(data.auditLogs || [])
     }catch{}
   }
+  const fetchPodiumSettings = async ()=>{
+    try{
+      const r = await fetch("/api/admin/settings")
+      const data = await r.json()
+      if(data.error) return
+      const map = data.map || {}
+      setShowPodiumActive(parseBool(map["podium.show_when_active"], true))
+      setShowScoreActive(parseBool(map["podium.show_score_when_active"], false))
+    }catch{}
+  }
+  const savePodiumSetting = async (key: string, value: boolean, apply: (v:boolean)=>void)=>{
+    setToggleBusy(key)
+    try{
+      const r = await fetch("/api/admin/settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key, value, category: "podium", is_public: false })
+      })
+      if(r.ok) apply(value)
+    }catch{}finally{ setToggleBusy(null) }
+  }
   useEffect(()=>{
     fetchStats()
     fetchPodium()
+    fetchPodiumSettings()
     const podiumInterval = setInterval(fetchPodium, 4000)
     // Polling stats tiap 5 detik agar status transaksi di dashboard selalu sama dengan halaman transaksi
     const statsInterval = setInterval(fetchStats, 5000)
@@ -127,6 +174,20 @@ export default function AdminOverview(){
         ))}
       </div>
       {/* Podium juara realtime — preview online saja */}
+      {/* Toggle tampilan podium & skor end-user (/tim saat voting aktif) */}
+      <div className="rounded-[12px] border border-white/10 bg-[#17191F] p-3 sm:p-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="text-xs font-black tracking-wide text-white">PENGATURAN PODIUM END-USER</h3>
+            <p className="mt-1 text-[11px] text-white/40 leading-relaxed">Berlaku di halaman <span className="font-bold text-white/60">/tim</span> selama voting berlangsung (status Aktif).</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <SettingToggle label="Podium saat aktif" on={showPodiumActive} busy={toggleBusy==="podium.show_when_active"} onToggle={()=>savePodiumSetting("podium.show_when_active", !showPodiumActive, setShowPodiumActive)} />
+            <SettingToggle label="Tampilkan skor" on={showScoreActive} busy={toggleBusy==="podium.show_score_when_active"} onToggle={()=>savePodiumSetting("podium.show_score_when_active", !showScoreActive, setShowScoreActive)} />
+          </div>
+        </div>
+        <div className="mt-2 text-[10px] text-white/30">Podium aktif: peringkat sementara 1-2-3 per kategori{showScoreActive ? " dengan" : " tanpa"} angka ballot. Saat voting ditutup podium & skor tampil otomatis (di luar kendali toggle ini).</div>
+      </div>
       <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
         <div className="rounded-[12px] border border-primary/20 bg-gradient-to-b from-[#0B0C0F] to-[#0B0C0F]/95 p-3 sm:p-4">
           <div className="flex items-center justify-between">

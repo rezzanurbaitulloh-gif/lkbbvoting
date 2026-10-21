@@ -4,6 +4,7 @@ import { createServerSupabase } from "@/lib/supabase"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
+import { PodiumSection } from "@/components/competition/Podium"
 
 export const revalidate = 0
 
@@ -13,8 +14,11 @@ export default async function TimPage(){
   // Fetch background: tim-specific, fallback to hero background (beranda)
   let timBg: string | null = null
   let heroBg: string | null = null
+  // Toggle podium end-user: default ON untuk tampil saat aktif, skor OFF
+  let showPodiumActive = true
+  let showScoreActive = false
   try {
-    const { data: rows } = await supabase.from("site_settings").select("key,value").in("key", ["tim.background_image","hero.background_image"])
+    const { data: rows } = await supabase.from("site_settings").select("key,value").in("key", ["tim.background_image","hero.background_image","podium.show_when_active","podium.show_score_when_active"])
     for(const r of (rows as any)||[]){
       let v = (r as any).value
       if(typeof v === "string") v = v.replace(/^"|"$/g,"")
@@ -22,6 +26,8 @@ export default async function TimPage(){
       else v = String(v).replace(/^"|"$/g,"")
       if(r.key === "tim.background_image" && v) timBg = v
       if(r.key === "hero.background_image" && v) heroBg = v
+      if(r.key === "podium.show_when_active") showPodiumActive = v !== "false" && v !== "0"
+      if(r.key === "podium.show_score_when_active") showScoreActive = v === "true" || v === "1"
     }
   } catch {}
   const state = (event?.state as string) || "NOT_STARTED"
@@ -116,7 +122,12 @@ export default async function TimPage(){
           </div>
         </div>
 
-        {/* Podium disembunyikan di halaman end-user saat hasil final */}
+        {/* Podium end-user saat voting aktif — tampil di posisi top tanpa skor kecuali toggle aktif */}
+        {isActive && showPodiumActive && (() => {
+          const hasBallots = [...smp, ...sma].some(t => Number(t.online_ballots ?? 0) > 0)
+          if (!hasBallots) return null
+          return <PodiumSection smp={smp.slice(0,3)} sma={sma.slice(0,3)} isPublished={false} variant="provisional" showBallotCount={showScoreActive} />
+        })()}
 
         {/* SMP */}
         <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6 xs:py-7 sm:py-8">
