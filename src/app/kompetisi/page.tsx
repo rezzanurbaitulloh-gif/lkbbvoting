@@ -94,7 +94,7 @@ export default async function KompetisiPage(){
                 <h3 className="text-sm font-black">Persyaratan Peserta</h3>
                 <ul className="mt-3 grid gap-2 text-sm leading-relaxed text-muted-foreground list-disc list-inside">
                   <li>Siswa aktif SMP/MTs atau SMA/MA/SMK sederajat se-Jawa Timur</li>
-                  <li>Satu peleton terdiri dari 16 anggota termasuk Danton & Danru</li>
+                  <li>Satu peleton terdiri dari 13-16 anggota termasuk Danton</li>
                   <li>Membawa surat tugas/rekomendasi dari sekolah</li>
                   <li>Melengkapi administrasi pendaftaran dan verifikasi</li>
                   <li>Mentaati peraturan kompetisi dan keputusan juri</li>

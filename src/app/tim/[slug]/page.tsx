@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
@@ -50,13 +51,13 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="relative border-b border-white/10 overflow-hidden bg-[#09090b] text-white">
           <div className="absolute inset-0">
-            <img src={photo} alt="" className="h-full w-full object-cover opacity-20" />
+            <Image src={photo} alt="" fill sizes="100vw" className="object-cover opacity-20" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/70 to-transparent" />
           </div>
           <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 md:py-10">
             <div className="grid lg:grid-cols-[360px_1fr] gap-6 items-end">
               <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] border border-white/10 bg-white/5 backdrop-blur shadow-elevated">
-                <img src={photo} alt={peleton.name} className="h-full w-full object-cover" />
+                <Image src={photo} alt={peleton.name} fill priority sizes="(max-width:1024px) 100vw, 360px" className="object-cover" />
                 <div className="absolute left-3 top-3 rounded-full bg-[#0B0C0F] px-3 py-1 text-xs font-black tracking-widest border border-white/10">#{peleton.number}</div>
                 {showRank && rank && <div className="absolute bottom-3 right-3 rounded-full bg-primary px-3 py-1 text-xs font-black text-black">Peringkat #{rank}</div>}
               </div>
@@ -66,7 +67,7 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                   <Badge variant="outline" className="bg-white/5 backdrop-blur border border-white/10 text-white">{peleton.city} • {peleton.province}</Badge>
                 </div>
                 <div className="mt-3 flex gap-3 items-center">
-                  <img src={logo} alt="logo" className="h-14 w-14 object-contain bg-transparent hidden md:block drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.5))" }} />
+                  <Image src={logo} alt="logo" width={56} height={56} sizes="56px" className="h-14 w-14 object-contain bg-transparent hidden md:block drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.5))" }} />
                   <div>
                     <h1 className="text-[28px] md:text-[36px] font-black tracking-[-0.03em] leading-none text-balance">{peleton.name}</h1>
                     <p className="mt-1 text-sm font-medium text-white/70">{peleton.school}</p>
@@ -115,7 +116,6 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
                 <div className="rounded-xl border border-white/10 p-3 text-sm bg-white/5 backdrop-blur"><div className="font-bold text-foreground">Nomor Peserta</div><div className="text-muted-foreground">#{peleton.number} — nomor urut tampil tim</div></div>
                 <div className="rounded-xl border border-white/10 p-3 text-sm bg-white/5 backdrop-blur"><div className="font-bold text-foreground">Kategori</div><div className="text-muted-foreground">{peleton.category} / SEDERAJAT</div></div>
               </div>
-              <p className="mt-3 text-xs leading-relaxed text-muted-foreground">Nomor urut tampil tim dan ranking adalah konsep berbeda. #{peleton.number} tetap #{peleton.number} meskipun memimpin klasemen.</p>
             </section>
           </div>
 

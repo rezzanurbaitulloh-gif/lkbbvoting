@@ -134,7 +134,7 @@ function DukunganInner(){
 
         <div className="rounded-[12px] xs:rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-3 xs:p-4 sm:p-5">
           <h3 className="text-[13px] xs:text-sm font-black">Pilih Paket Dukungan</h3>
-          <p className="text-[11px] xs:text-xs text-muted-foreground">Harga resmi (dari DB): Rp{onlinePrice.toLocaleString("id-ID")} / ballot (online)</p>
+          <p className="text-[11px] xs:text-xs text-muted-foreground">Harga resmi : Rp{onlinePrice.toLocaleString("id-ID")} / ballot (online)</p>
           {isClosed && <p className="mt-2 text-[11px] xs:text-xs font-bold text-red-600">Pilih Paket dinonaktifkan — transaksi dihentikan.</p>}
           <div className={`mt-3 xs:mt-4 grid grid-cols-2 gap-2 xs:gap-3 ${isClosed ? "opacity-50 pointer-events-none" : ""}`}>
             {presets.map((n:number)=> {

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { createServerSupabase } from "@/lib/supabase"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
@@ -80,7 +81,7 @@ export default async function TimPage(){
                 </div>
                 )}
                 <div className="h-8 w-8 xs:h-9 xs:w-9 sm:h-10 sm:w-10 md:h-11 md:w-11 bg-transparent shrink-0 grid place-items-center">
-                  <img src={logo} alt={p.name} className="h-full w-full object-contain bg-transparent" loading="lazy" style={{ filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.5))" }} />
+                  <Image src={logo} alt={p.name} width={44} height={44} loading="lazy" sizes="44px" className="h-full w-full object-contain bg-transparent" style={{ filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.5))" }} />
                 </div>
               </div>
             </Link>
@@ -107,7 +108,7 @@ export default async function TimPage(){
       <Navbar />
       <main className="flex-1 pb-[72px] md:pb-0">
         <div className="border-b border-white/10 bg-[#09090b] text-white relative overflow-hidden">
-          <div className="absolute inset-0 opacity-[0.18]"><img src={bgImage} alt="" className="h-full w-full object-cover" /></div>
+          <div className="absolute inset-0 opacity-[0.18]"><Image src={bgImage} alt="" fill sizes="100vw" className="object-cover" /></div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#09090b] via-[#09090b]/85 to-transparent" />
           <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-6 xs:py-7 sm:py-8">
             <div className={`inline-flex rounded-full px-2.5 xs:px-3 py-1 text-[11px] xs:text-xs font-black tracking-wide border ${headerBadge.box}`}><span className={headerBadge.text}>{headerBadge.label}</span></div>
