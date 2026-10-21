@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { PodiumSection } from "@/components/competition/Podium"
+import { sortTimRanking } from "@/lib/ranking"
 
 export const revalidate = 0
 
@@ -38,25 +39,21 @@ export default async function TimPage(){
   const showRanking = isVotingClosed || isPublished
   // Podium end-user disembunyikan saat hasil final (sudah gabung rekap offline)
 
-  // Ambil data — urutan berdasar poin tertinggi (bukan nomor urut)
-  // Selalu pakai team_ranking order by total_ballots desc (atau online_ballots saat voting closed)
+  // Ambil data — urutan peringkat: yang punya ballot di atas (poin tertinggi),
+  // yang nol di bawah (semua nol -> nomor kecil dulu; ada yang punya ballot -> nomor besar dulu).
+  // Lihat src/lib/ranking.ts
   let smp: any[] = []
   let sma: any[] = []
-  if (isVotingClosed) {
-    const { data } = await supabase.from("team_ranking").select("*").order("online_ballots", { ascending: false })
-    smp = (data||[]).filter(p=>p.category==='SMP')
-    sma = (data||[]).filter(p=>p.category==='SMA')
-  } else {
-    // Untuk semua state lain (NOT_STARTED, ACTIVE, PUBLISHED) pakai total_ballots tertinggi di atas
-    const { data } = await supabase.from("team_ranking").select("*").order("total_ballots", { ascending: false })
+  {
+    const { data } = await supabase.from("team_ranking").select("*")
     if (data && data.length > 0) {
-      smp = data.filter(p=>p.category==='SMP')
-      sma = data.filter(p=>p.category==='SMA')
+      smp = sortTimRanking(data.filter(p=>p.category==='SMP'), { closed: isVotingClosed })
+      sma = sortTimRanking(data.filter(p=>p.category==='SMA'), { closed: isVotingClosed })
     } else {
-      // Fallback jika team_ranking kosong (belum ada support) — ambil peletons lalu urutkan by support 0 (tetap pakai number sebagai secondary)
-      const { data: fallback } = await supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("number", { ascending: true })
-      smp = (fallback||[]).filter(p=>p.category==='SMP')
-      sma = (fallback||[]).filter(p=>p.category==='SMA')
+      // Fallback jika team_ranking kosong (belum ada support) — ambil peletons lalu urutkan dgn aturan sama (semua nol -> nomor kecil dulu)
+      const { data: fallback } = await supabase.from("peletons").select("*").eq("verified", true).eq("active", true)
+      smp = sortTimRanking((fallback||[]).filter(p=>p.category==='SMP'), { closed: isVotingClosed })
+      sma = sortTimRanking((fallback||[]).filter(p=>p.category==='SMA'), { closed: isVotingClosed })
     }
   }
 
@@ -122,11 +119,16 @@ export default async function TimPage(){
           </div>
         </div>
 
-        {/* Podium end-user saat voting aktif — tampil di posisi top tanpa skor kecuali toggle aktif */}
-        {isActive && showPodiumActive && (() => {
+        {/* Podium end-user — hanya di /tim:
+            - Saat voting aktif: sesuai toggle admin (default tanpa skor).
+            - Saat voting ditutup: selalu tampil dengan angka ballot online.
+            - Saat hasil final: tidak tampil (keputusan lama). */}
+        {(() => {
+          const showPodium = (isActive && showPodiumActive) || isVotingClosed
+          if (!showPodium) return null
           const hasBallots = [...smp, ...sma].some(t => Number(t.online_ballots ?? 0) > 0)
           if (!hasBallots) return null
-          return <PodiumSection smp={smp.slice(0,3)} sma={sma.slice(0,3)} isPublished={false} variant="provisional" showBallotCount={showScoreActive} />
+          return <PodiumSection smp={smp.slice(0,3)} sma={sma.slice(0,3)} isPublished={false} variant="provisional" showBallotCount={isVotingClosed ? true : showScoreActive} />
         })()}
 
         {/* SMP */}

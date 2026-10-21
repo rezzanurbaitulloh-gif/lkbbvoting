@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Trophy } from "lucide-react"
 import { createServerSupabase, createStaticSupabase } from "@/lib/supabase"
 import { ShareButtons } from "@/components/tim/ShareButtons"
+import { sortTimRanking } from "@/lib/ranking"
 
 export const revalidate = 0
 
@@ -34,10 +35,10 @@ export default async function PeletonDetail({ params }: { params: Promise<{slug:
   const showSementara = isVotingClosed
   const showFinal = isPublished
 
-  // Ranking: VOTING_CLOSED -> online saja, RESULT_PUBLISHED -> total
-  const orderField = isPublished ? "total_ballots" : isVotingClosed ? "online_ballots" : "total_ballots"
-  const { data: ranking } = await supabase.from("team_ranking").select("*").eq("category", peleton.category).order(orderField as any, { ascending: false })
-  const rankIndex = (ranking || []).findIndex((r:any)=> r.id === peleton.id)
+  // Ranking — urutan sama persis dengan halaman /tim (lihat src/lib/ranking.ts)
+  const { data: ranking } = await supabase.from("team_ranking").select("*").eq("category", peleton.category)
+  const sorted = sortTimRanking((ranking || []) as any[], { closed: isVotingClosed })
+  const rankIndex = sorted.findIndex((r:any)=> r.id === peleton.id)
   const rank = rankIndex >= 0 ? rankIndex + 1 : null
 
   const photo = peleton.image_url

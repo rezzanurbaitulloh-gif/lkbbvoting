@@ -3,7 +3,6 @@ import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { Hero } from "@/components/home/Hero"
 import { Featured } from "@/components/home/Featured"
-import { PodiumSection } from "@/components/competition/Podium"
 import { CmsSections } from "@/components/cms/CmsSectionRenderer"
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp"
 import { createServerSupabase } from "@/lib/supabase"
@@ -36,8 +35,6 @@ export default async function HomePage(){
   const isPublished = state === "RESULT_PUBLISHED"
 
   let teams: any[] = []
-  let smpPodium: any[] = []
-  let smaPodium: any[] = []
   if (isNotStarted || isActive) {
     const { data } = await supabase.from("peletons").select("*").eq("verified", true).eq("active", true).order("category", { ascending: true }).order("number", { ascending: true })
     teams = (data||[]).sort((a:any,b:any)=>{
@@ -47,22 +44,17 @@ export default async function HomePage(){
   } else if (isVotingClosed) {
     const { data } = await supabase.from("team_ranking").select("*").order("online_ballots", { ascending: false })
     teams = data||[]
-    smpPodium = teams.filter(p=>p.category==='SMP').slice(0,3)
-    smaPodium = teams.filter(p=>p.category==='SMA').slice(0,3)
   } else if (isPublished) {
     const { data } = await supabase.from("team_ranking").select("*").order("total_ballots", { ascending: false })
     teams = data||[]
-    smpPodium = teams.filter(p=>p.category==='SMP').slice(0,3)
-    smaPodium = teams.filter(p=>p.category==='SMA').slice(0,3)
   }
 
   const ev = event || null
   const showSementara = isVotingClosed
   const showFinal = isPublished
 
-  // Featured & podium dapat di-hide via CMS visibility
+  // Featured dapat di-hide via CMS visibility
   const showFeatured = !cmsSections.find((s:any)=> s.key==="featured") || cmsSections.find((s:any)=> s.key==="featured")?.is_visible !== false
-  const showPodiumViaCms = !cmsSections.find((s:any)=> s.key==="podium") || cmsSections.find((s:any)=> s.key==="podium")?.is_visible !== false
 
 
 
@@ -75,11 +67,7 @@ export default async function HomePage(){
         {extraSections.filter((s:any)=> s.sort_order < (cmsSections.find((x:any)=> x.key==="featured")?.sort_order ?? 999)).map((s:any)=> (
           <CmsSections key={s.id} sections={[s]} />
         ))}
-        {/* Podium end-user: hanya saat voting ditutup (sementara, online saja).
-            Saat hasil final (sudah gabung rekap offline): podium disembunyikan. */}
-        {(isVotingClosed) && showPodiumViaCms && (smpPodium.length>0 || smaPodium.length>0) && (
-          <PodiumSection smp={teams.filter(p=>p.category==='SMP')} sma={teams.filter(p=>p.category==='SMA')} isPublished={false} variant="provisional" />
-        )}
+        {/* Podium end-user tidak lagi di beranda — hanya di halaman /tim */}
         {showFeatured && <Featured peletons={teams} showSementara={showSementara} showFinal={showFinal} />}
         {extraSections.filter((s:any)=> {
           const featOrder = cmsSections.find((x:any)=> x.key==="featured")?.sort_order ?? 0
