@@ -1,5 +1,6 @@
 "use client"
 import Link from "next/link"
+import Image from "next/image"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { CaraDukungDialog } from "./CaraDukungDialog"
@@ -90,19 +91,19 @@ export function Hero({ event, cms, siteSettings }: { event: any; cms?: any; site
   return (
     <section className="relative overflow-hidden bg-[#09090b] text-white">
       <div className="absolute inset-0">
-        <img src={bgImage} alt="" className="h-full w-full object-cover" style={{ opacity: overlayOpacity }} />
+        <Image src={bgImage} alt="" fill priority sizes="100vw" className="object-cover" style={{ opacity: overlayOpacity }} />
         <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/30 via-[#09090b]/55 to-[#09090b]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#09090b] via-[#09090b]/80 to-transparent" />
       </div>
 
       {showLogo && logoAsBackground && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
-          <img src={logoImage} alt="" aria-hidden="true" className="h-[380px] w-[380px] sm:h-[480px] sm:w-[480px] lg:h-[620px] lg:w-[620px] max-h-[75vh] max-w-[92vw] object-contain select-none" style={{ opacity: logoOpacity, objectPosition: bgPosition }} />
+          <Image src={logoImage} alt="" aria-hidden="true" width={620} height={620} sizes="(max-width:640px) 380px, (max-width:1024px) 480px, 620px" className="h-[380px] w-[380px] sm:h-[480px] sm:w-[480px] lg:h-[620px] lg:w-[620px] max-h-[75vh] max-w-[92vw] object-contain select-none" style={{ opacity: logoOpacity, objectPosition: bgPosition }} />
         </div>
       )}
       {showLogo && !logoAsBackground && (
         <div className="absolute right-[3%] top-[8%] hidden lg:flex pointer-events-none opacity-20">
-          <img src={logoImage} alt="" className="h-[220px] w-[220px] object-contain" style={{ opacity: logoOpacity * 2 }} />
+          <Image src={logoImage} alt="" width={220} height={220} sizes="220px" className="h-[220px] w-[220px] object-contain" style={{ opacity: logoOpacity * 2 }} />
         </div>
       )}
       <div className="relative mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6">

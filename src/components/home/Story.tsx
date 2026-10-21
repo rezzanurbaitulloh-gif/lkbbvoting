@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 
 export function Story({ sponsors, event }: { sponsors?: any[] | null; event?: any }){
@@ -31,12 +32,12 @@ export function Story({ sponsors, event }: { sponsors?: any[] | null; event?: an
           </div>
         </div>
         <div className="relative">
-          <div className="overflow-hidden rounded-[20px] border border-white/10 bg-white/5 backdrop-blur aspect-[4/3]">
-            <img src="https://images.unsplash.com/photo-1599707367072-cd6ada2bc32d?w=900&auto=format&fit=crop&q=70" alt="LKBB" className="h-full w-full object-cover" />
+          <div className="relative overflow-hidden rounded-[20px] border border-white/10 bg-white/5 backdrop-blur aspect-[4/3]">
+            <Image src="https://images.unsplash.com/photo-1599707367072-cd6ada2bc32d?w=900&auto=format&fit=crop&q=70" alt="LKBB" fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover" />
           </div>
           {/* Poster card */}
           <div className="absolute -bottom-4 -left-4 hidden md:flex gap-3 rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-3 shadow-elevated max-w-[320px]">
-            <img src="/assets/poster/lkbb-poster.jpg" alt="Poster" className="h-20 w-14 rounded-lg object-cover border border-white/10" />
+            <Image src="/assets/poster/lkbb-poster.jpg" alt="Poster" width={56} height={80} sizes="56px" className="rounded-lg object-cover border border-white/10" />
             <div>
               <div className="text-xs font-bold leading-tight">LKBB JAVASOMA 2026</div>
               <div className="text-xs text-muted-foreground leading-relaxed">Pendaftaran Agustus s.d. kuota terpenuhi • Pelaksanaan 24 Okt 2026</div>
