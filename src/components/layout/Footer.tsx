@@ -115,7 +115,6 @@ export function Footer({ siteSettings }: { siteSettings?: Record<string, any> } 
             <ul className="grid gap-2 text-sm">
               <li><Link href="/peraturan" className="hover:text-foreground text-muted-foreground">Peraturan</Link></li>
               <li><Link href="/timeline" className="hover:text-foreground text-muted-foreground">Jadwal</Link></li>
-              <li><Link href="/juri" className="hover:text-foreground text-muted-foreground">Dewan Juri</Link></li>
               <li><Link href="/pengumuman" className="hover:text-foreground text-muted-foreground">Pengumuman</Link></li>
               <li><Link href="/kompetisi" className="hover:text-foreground text-muted-foreground">Kompetisi</Link></li>
             </ul>

@@ -88,7 +88,6 @@ export default async function KompetisiPage(){
                     <div className="col-span-2 rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">Belum ada juri terdaftar — data real, menunggu admin menambah.</div>
                   )}
                 </div>
-                <Link href="/juri" className="mt-3 inline-flex text-xs font-bold text-primary hover:underline">Lihat profil juri lengkap →</Link>
               </div>
 
               <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-6">
