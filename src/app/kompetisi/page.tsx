@@ -48,9 +48,9 @@ export default async function KompetisiPage(){
         <div className="mx-auto max-w-[1280px] px-3 sm:px-4 md:px-6 py-8 space-y-8">
           <section className="grid lg:grid-cols-3 gap-4">
             {[
-              {icon: Calendar, title:"Pelaksanaan", desc:"24 Oktober 2026", sub:"SMKN 1 Kertosono, Nganjuk"},
-              {icon: Users, title:"Kategori", desc:"SMP & SMA / Sederajat", sub:"20 kuota per kategori • 16 anggota/peleton"},
-              {icon: Award, title:"Sistem Penilaian", desc:"PBB + Variasi + Formasi", sub:"Dewan juri kompeten & independen"},
+              {icon: Calendar, title:"Pelaksanaan", desc:"Sabtu, 24 Oktober 2026 • 07.00 WIB", sub:"SMKN 1 Kertosono, Nganjuk"},
+              {icon: Users, title:"Kategori", desc:"SMP/MTs & SMA/SMK/MA", sub:"30 kuota SMP/MTs • 15 kuota SMA/SMK/MA • 13–16 anggota termasuk Danton"},
+              {icon: Award, title:"Sistem Penilaian", desc:"PBB 75% • Variasi 10% • Formasi 10% • Danton 5%", sub:"Dewan juri kompeten & independen"},
             ].map(item=> (
               <div key={item.title} className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5">
                 <item.icon className="h-5 w-5 text-muted-foreground"/>
@@ -93,10 +93,11 @@ export default async function KompetisiPage(){
               <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-6">
                 <h3 className="text-sm font-black">Persyaratan Peserta</h3>
                 <ul className="mt-3 grid gap-2 text-sm leading-relaxed text-muted-foreground list-disc list-inside">
-                  <li>Siswa aktif SMP/MTs atau SMA/MA/SMK sederajat se-Jawa Timur</li>
-                  <li>Satu peleton terdiri dari 13-16 anggota termasuk Danton</li>
-                  <li>Membawa surat tugas/rekomendasi dari sekolah</li>
-                  <li>Melengkapi administrasi pendaftaran dan verifikasi</li>
+                  <li>Siswa aktif SMP/MTs atau SMA/MA/SMK sederajat</li>
+                  <li>Satu peleton terdiri dari 13-16 anggota termasuk Danton — maksimal 2 pasukan per instansi</li>
+                  <li>Fotocopy kartu pelajar atau surat rekomendasi dari instansi + pasfoto 3x4 (2 lembar)</li>
+                  <li>Berkas diserahkan saat Technical Meeting (2 Oktober 2026) dan ditutup pada hari-H sebelum apel pembukaan</li>
+                  <li>Setiap peserta wajib membawa 3 trashbag hitam besar (dikumpulkan saat Technical Meeting)</li>
                   <li>Mentaati peraturan kompetisi dan keputusan juri</li>
                 </ul>
               </div>
@@ -119,11 +120,19 @@ export default async function KompetisiPage(){
             </div>
 
             <div className="space-y-4">
+              <div className="rounded-[16px] border border-primary/25 bg-primary/5 backdrop-blur p-5">
+                <h4 className="text-sm font-black flex items-center gap-2"><FileText className="h-4 w-4 text-primary"/> Juknis Resmi</h4>
+                <p className="mt-1 text-xs text-muted-foreground">Juknis LKBB Javasoma The Impression — aturan, ketentuan, penilaian, dan formulir pendaftaran.</p>
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <a href="/juknis/juknis-lkbb-javasoma.pdf" target="_blank" rel="noopener noreferrer" className="inline-flex h-9 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-xs font-bold hover:bg-primary/20 transition-colors">Lihat Juknis</a>
+                  <a href="/juknis/juknis-lkbb-javasoma.pdf" download className="inline-flex h-9 items-center justify-center rounded-full bg-primary text-black text-xs font-bold hover:opacity-90 transition-opacity">Unduh PDF</a>
+                </div>
+              </div>
               <div className="rounded-[16px] border border-white/10 overflow-hidden bg-white/5 backdrop-blur">
                 <img src="/assets/poster/lkbb-poster.jpg" alt="Poster LKBB" className="w-full object-cover" />
                 <div className="p-4">
                   <div className="text-sm font-black">Poster Resmi LKBB 2026</div>
-                  <div className="text-xs text-muted-foreground">Pendaftaran Agustus s.d. kuota terpenuhi • IDR 550.000/pasukan</div>
+                  <div className="text-xs text-muted-foreground">Pendaftaran 3 Agustus 2026 s.d. kuota terpenuhi • IDR 550.000/pasukan</div>
                 </div>
               </div>
               <div className="rounded-[16px] border border-white/10 bg-white/5 backdrop-blur p-5">

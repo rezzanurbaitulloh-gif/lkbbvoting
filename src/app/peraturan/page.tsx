@@ -3,9 +3,9 @@ import { Footer } from "@/components/layout/Footer"
 import { BottomNav } from "@/components/layout/BottomNav"
 
 const sections = [
-  { title:"Ketentuan Umum", items:["Peserta adalah siswa aktif SMP/MTs & SMA/MA/SMK se-Jawa Timur","Satu peleton terdiri dari 15 anggota + 1 Danton (total 16)","Pakaian seragam ditentukan panitia, atribut tambahan diperbolehkan","Keputusan juri bersifat mutlak dan tidak dapat diganggu gugat"]},
-  { title:"Ketentuan Peserta", items:["Membawa surat tugas dari sekolah","Registrasi ulang H-1 pelaksanaan","Wajib hadir Technical Meeting 3 Oktober 2026","Terlambat lebih dari 15 menit dianggap mengundurkan diri"]},
-  { title:"Ketentuan Kompetisi", items:["Durasi penampilan maksimal 12 menit","Gerakan PBB mengacu pada Peraturan Baris-Berbaris TNI","Variasi dan formasi dinilai kreativitas & kekompakan","Dilarang membawa alat berbahaya"]},
+  { title:"Ketentuan Umum", items:["Peserta adalah siswa aktif SMP/MTs & SMA/MA/SMK se-derajat","Satu peleton terdiri dari 13-16 anggota termasuk Danton (15+1 atau 12+1)","Maksimal 2 pasukan per instansi, homogen atau campuran dalam 1 instansi","Keputusan juri bersifat mutlak dan dapat dipertanggungjawabkan"]},
+  { title:"Ketentuan Peserta", items:["Pendaftaran 3 Agustus 2026 s.d. kuota terpenuhi (booking 1 Agustus, DP maksimal 30 Agustus)","Berkas diserahkan saat Technical Meeting 2 Oktober 2026 dan ditutup hari-H sebelum apel","Wajib Technical Meeting 2 Oktober 2026 pukul 13.30 WIB di SMKN 1 Kertosono","Peserta tidak boleh terlambat di DP 1 (absen)"]},
+  { title:"Ketentuan Kompetisi", items:["Setiap tim diberikan waktu tampil 10 menit","Gerakan PBB mengacu pada PERPANG TNI No. 58 Tahun 2018","Urutan penampilan PBB → Variasi → Formasi, tidak boleh dibalik","Variasi & Formasi dilarang menggunakan musik dan unsur SARA"]},
   { title:"Ketentuan Dukungan", items:["Dukungan via ballot online Rp3.000 / offline Rp5.000","Dukungan hanya tercatat setelah pembayaran berhasil","Dukungan tidak dapat dikembalikan","Hanya ranking yang ditampilkan ke publik"]},
   { title:"Diskualifikasi", items:["Memalsukan data peserta","Melakukan kecurangan voting/payment","Bersikap tidak sportif kepada juri/peserta lain","Melanggar norma kesopanan"]},
   { title:"Hasil & Pengumuman", items:["Rekapitulasi online + offline oleh panitia","Hasil final dipublikasikan 26 Oktober 2026","Protes diajukan maksimal 1x24 jam setelah pengumuman"]},
@@ -37,8 +37,11 @@ export default function PeraturanPage(){
             </div>
           ))}
           <div className="rounded-[16px] border border-primary/20 bg-primary/5 p-5 text-center">
-            <p className="text-sm font-medium">Dokumen lengkap peraturan dapat diunduh di Technical Meeting.</p>
-            <p className="text-xs text-muted-foreground">Hubungi panitia untuk pertanyaan lebih lanjut.</p>
+            <p className="text-sm font-medium">Aturan lengkap ada di Juknis Resmi.</p>
+            <div className="mt-3 flex justify-center gap-2">
+              <a href="/juknis/juknis-lkbb-javasoma.pdf" target="_blank" rel="noopener noreferrer" className="inline-flex h-9 items-center justify-center rounded-full border border-primary/30 bg-primary/10 px-4 text-xs font-bold hover:bg-primary/20 transition-colors">Lihat Juknis</a>
+              <a href="/juknis/juknis-lkbb-javasoma.pdf" download className="inline-flex h-9 items-center justify-center rounded-full bg-primary px-4 text-xs font-bold text-black hover:opacity-90 transition-opacity">Unduh PDF</a>
+            </div>
           </div>
         </div>
       </main>

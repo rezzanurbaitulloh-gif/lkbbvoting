@@ -40,7 +40,7 @@ export function Story({ sponsors, event }: { sponsors?: any[] | null; event?: an
             <Image src="/assets/poster/lkbb-poster.jpg" alt="Poster" width={56} height={80} sizes="56px" className="rounded-lg object-cover border border-white/10" />
             <div>
               <div className="text-xs font-bold leading-tight">LKBB JAVASOMA 2026</div>
-              <div className="text-xs text-muted-foreground leading-relaxed">Pendaftaran Agustus s.d. kuota terpenuhi • Pelaksanaan 24 Okt 2026</div>
+              <div className="text-xs text-muted-foreground leading-relaxed">Pendaftaran 3 Agustus 2026 s.d. kuota terpenuhi • Pelaksanaan 24 Okt 2026</div>
             </div>
           </div>
         </div>

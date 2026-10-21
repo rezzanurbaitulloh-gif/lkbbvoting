@@ -221,7 +221,7 @@ export default function AdminOverview(){
             <div className="mt-1 inline-flex rounded-full bg-emerald-500 px-3 py-1 text-xs font-black text-black">{stats.state || "ACTIVE"}</div>
             <div className="mt-2 text-xs text-white/60">Dukungan sedang berlangsung</div>
             <div className="mt-3 grid gap-1 text-[11px]">
-              <div className="flex justify-between"><span className="text-white/40">EVENT DIMULAI</span><span className="font-bold">24 Oktober 2026 08:00</span></div>
+                  <div className="flex justify-between"><span className="text-white/40">EVENT DIMULAI</span><span className="font-bold">24 Oktober 2026 07:00</span></div>
               <div className="flex justify-between"><span className="text-white/40">VOTING BERAKHIR</span><span className="font-bold">24 Oktober 2026 23:59</span></div>
             </div>
             <Link href="/admin/settings"><button className="mt-3 w-full rounded-full bg-primary text-black py-2 text-xs font-black">KELOLA EVENT</button></Link>
