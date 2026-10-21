@@ -40,7 +40,7 @@ export default async function TimPage(){
   // Podium end-user disembunyikan saat hasil final (sudah gabung rekap offline)
 
   // Ambil data — urutan peringkat: yang punya ballot di atas (poin tertinggi),
-  // yang nol di bawah (semua nol -> nomor kecil dulu; ada yang punya ballot -> nomor besar dulu).
+  // yang nol di bawah urut nomor peserta (01, 02, 3... ke bawah).
   // Lihat src/lib/ranking.ts
   let smp: any[] = []
   let sma: any[] = []
