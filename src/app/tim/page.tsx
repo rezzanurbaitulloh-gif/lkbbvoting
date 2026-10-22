@@ -126,13 +126,9 @@ export default async function TimPage(){
         {(() => {
           const showPodium = (isActive && showPodiumActive) || isVotingClosed
           if (!showPodium) return null
-          // Podium hanya berisi tim yang benar-benar punya ballot —
-          // kategori/tanpa ballot tidak ditampilkan (biar tidak ada "juara" palsu)
-          const top3WithBallots = (teams: any[]) => teams.filter(t => Number(t.online_ballots ?? 0) > 0).slice(0,3)
-          const smpTop = top3WithBallots(smp)
-          const smaTop = top3WithBallots(sma)
-          if (smpTop.length === 0 && smaTop.length === 0) return null
-          return <PodiumSection smp={smpTop} sma={smaTop} isPublished={false} variant="provisional" showBallotCount={isVotingClosed ? true : showScoreActive} />
+          // Podium SELALU tampil meski belum ada ballot sama sekali.
+          // Urutan juara: poin tertinggi dulu; jika semua nol → nomor urut tim (01, 02, 03...).
+          return <PodiumSection smp={smp.slice(0,3)} sma={sma.slice(0,3)} isPublished={false} variant="provisional" showBallotCount={isVotingClosed ? true : showScoreActive} />
         })()}
 
         {/* SMP */}
