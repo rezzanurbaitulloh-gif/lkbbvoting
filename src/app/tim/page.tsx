@@ -58,8 +58,8 @@ export default async function TimPage(){
   }
 
   const renderGrid = (teams: any[]) => {
-    // Jumlah ballot: tampil saat voting ditutup (online saja), atau saat toggle skor aktif.
-    const showCount = isVotingClosed || showScoreActive
+    // Jumlah ballot: tampil hanya saat toggle skor aktif (podium.show_score_when_active).
+    const showCount = showScoreActive
     return (
       <div className="flex flex-col gap-2">
         {teams.map((p:any)=> {
@@ -130,7 +130,7 @@ export default async function TimPage(){
           if (!showPodium) return null
           // Podium SELALU tampil meski belum ada ballot sama sekali.
           // Urutan juara: poin tertinggi dulu; jika semua nol → nomor urut tim (01, 02, 03...).
-          return <PodiumSection smp={smp.slice(0,3)} sma={sma.slice(0,3)} isPublished={false} variant="provisional" showBallotCount={isVotingClosed || showScoreActive} />
+          return <PodiumSection smp={smp.slice(0,3)} sma={sma.slice(0,3)} isPublished={false} variant="provisional" showBallotCount={showScoreActive} />
         })()}
 
         {/* SMP */}
