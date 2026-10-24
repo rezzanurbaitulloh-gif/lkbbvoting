@@ -58,9 +58,8 @@ export default async function TimPage(){
   }
 
   const renderGrid = (teams: any[]) => {
-    // Jumlah ballot hanya tampil saat voting ditutup sementara (online saja).
-    // Saat aktif / belum mulai / final: disembunyikan.
-    const showCount = isVotingClosed
+    // Jumlah ballot: tampil saat voting ditutup (online saja), atau saat toggle skor aktif.
+    const showCount = isVotingClosed || showScoreActive
     return (
       <div className="flex flex-col gap-2">
         {teams.map((p:any)=> {
@@ -120,15 +119,18 @@ export default async function TimPage(){
         </div>
 
         {/* Podium end-user — hanya di /tim:
-            - Saat voting aktif: sesuai toggle admin (default tanpa skor).
-            - Saat voting ditutup: selalu tampil dengan angka ballot online.
-            - Saat hasil final: tidak tampil (keputusan lama). */}
+            - Toggle admin (`podium.show_when_active`) berlaku untuk semua status
+              (aktif / belum mulai / voting ditutup); saat hasil final tetap disembunyikan
+              (skema TANGGA JUARA).
+            - Saat voting ditutup: angka ballot online selalu tampil via toggle skor.
+            - Podium SELALU tampil meski belum ada ballot sama sekali.
+            - Urutan juara: poin tertinggi dulu; jika semua nol → nomor urut tim (01, 02, 03...). */}
         {(() => {
-          const showPodium = (isActive && showPodiumActive) || isVotingClosed
+          const showPodium = !isPublished && showPodiumActive
           if (!showPodium) return null
           // Podium SELALU tampil meski belum ada ballot sama sekali.
           // Urutan juara: poin tertinggi dulu; jika semua nol → nomor urut tim (01, 02, 03...).
-          return <PodiumSection smp={smp.slice(0,3)} sma={sma.slice(0,3)} isPublished={false} variant="provisional" showBallotCount={isVotingClosed ? true : showScoreActive} />
+          return <PodiumSection smp={smp.slice(0,3)} sma={sma.slice(0,3)} isPublished={false} variant="provisional" showBallotCount={isVotingClosed || showScoreActive} />
         })()}
 
         {/* SMP */}
